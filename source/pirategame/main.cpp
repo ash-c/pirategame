@@ -12,8 +12,8 @@ SDL_Surface* loadMessage(const std::string &msg, const std::string &font, int si
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, SDL_Rect *clip = nullptr);
 void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, SDL_Rect dst, SDL_Rect *clip = nullptr);
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1920;
+const int SCREEN_HEIGHT = 1080;
 // Square tiles
 const int TILE_SIZE = 40;
 
@@ -37,14 +37,15 @@ int main(int argc, char **argv)
 		return 3;
 	}
 
-	SDL_Window* window = SDL_CreateWindow("Hello World!", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	SDL_Window* window = SDL_CreateWindow("Hello World!", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | 
+		SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
 	if (nullptr == window)
 	{
 		logSDLError(cout, "SDL_CreateWindow");
 		return 4;
 	}
 
-	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	if (nullptr == renderer)
 	{
 		logSDLError(cout, "SDL_CreateRenderer");
@@ -69,7 +70,7 @@ int main(int argc, char **argv)
 	// Specify a default clip to start with
 	int useClip = 0;
 
-	SDL_Texture* image = loadTexture("spritesheet.png", renderer);
+	SDL_Texture* image = loadTexture("data/textures/spritesheet.png", renderer);
 	if (nullptr == image)
 	{
 		logSDLError(cout, "loadTexture");
@@ -81,7 +82,7 @@ int main(int argc, char **argv)
 	col.g = 0;
 	col.b = 0;
 	col.a = 0;
-	SDL_Surface* font = loadMessage("Hello World", "fonts/SourceSansPro-Regular.ttf", 32, col);
+	SDL_Surface* font = loadMessage("Hello World", "data/fonts/SourceSansPro-Regular.ttf", 32, col);
 	SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, font);
 
 	SDL_Event e;
