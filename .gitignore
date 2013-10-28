@@ -2,3 +2,4 @@
 /source/pirategame/*.filters
 /source/*.suo
 /obj
+/source/*.sdf
