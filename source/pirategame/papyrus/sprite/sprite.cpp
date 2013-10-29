@@ -5,10 +5,11 @@
 // Local Includes
 #include "sprite.h"
 #include "isprite.h"
+#include "staticsprite.h"
 
 using namespace Papyrus;
 
-Renderer::IRenderer* activeRenderer = 0;
+Renderer::IRenderer* Sprite::activeRenderer = 0;
 
 Bool Sprite::Initialise()
 {
@@ -40,7 +41,10 @@ Sprite::ISprite* Sprite::CreateSprite(Int8* _spriteSheet, Bool _animated)
 	}
 	else
 	{
+		CREATEPOINTER(sprite, CStaticSprite);
 	}
+
+	VALIDATE(sprite->Initialise(_spriteSheet));
 
 	return sprite;
 }

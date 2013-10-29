@@ -8,6 +8,11 @@
 
 // Local Includes
 #include "papyrus\core\utility\singleton.h"
+#include "papyrus\core\core.h"
+#include "papyrus\renderer\renderer.h"
+#include "papyrus\sprite\sprite.h"
+
+// Prototypes
 
 class CGame : public TSingleton<CGame>
 {
@@ -59,7 +64,8 @@ private:
 
 	// Member Variables
 private:
-	Bool		active;
+	Papyrus::Sprite::ISprite*	background;
+	Bool						active;
 };
 #define GAME CGame::GetInstance();
 

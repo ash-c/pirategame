@@ -35,7 +35,10 @@ namespace Papyrus
 			virtual Bool	ShutDown() = 0;			
 
 			virtual void	Clear() = 0;
+			virtual void	Render(SDL_Texture* _tex, SDL_Rect* _dst, SDL_Rect* _clip) = 0;
 			virtual void	Present() = 0;
+
+			virtual Bool	LoadTexture(Int8* _path, SDL_Texture** _result) = 0;
 
 		private:
 			IRenderer(const IRenderer& _rhs);

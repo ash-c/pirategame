@@ -8,14 +8,12 @@
 
 // Local Includes
 #include "../defines.h"
+#include "irenderer.h"
 
 namespace Papyrus
 {
 	namespace Renderer
 	{
-		// Forward declaration.
-		class IRenderer;
-
 		Bool	Initialise(Int32 _width, Int32 _height, Int8* _title, Bool _fullScreen);
 		Bool	ShutDown();
 

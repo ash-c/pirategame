@@ -20,7 +20,6 @@ namespace Papyrus
 		public:
 			// Default Constructor
 			ISprite()
-				: m_Texture(0)
 			{
 			}
 
@@ -32,9 +31,10 @@ namespace Papyrus
 			virtual Bool		Initialise(Int8* _spriteSheet) = 0;
 			virtual Bool		ShutDown() = 0;
 
+			virtual void		Render() = 0;
+
 			// Member Variables
 		protected:
-			SDL_Texture*		m_Texture;
 		};
 	}
 }

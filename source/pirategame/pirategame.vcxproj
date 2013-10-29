@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />
     <ClCompile Include="papyrus\parser\ini\iniparser.cpp" />
     <ClCompile Include="papyrus\parser\json\jsonparser.cpp" />
@@ -96,6 +97,7 @@
     <ClCompile Include="papyrus\renderer\renderer.cpp" />
     <ClCompile Include="papyrus\renderer\sdlrenderer.cpp" />
     <ClCompile Include="papyrus\sprite\sprite.cpp" />
+    <ClCompile Include="papyrus\sprite\staticsprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -114,6 +116,7 @@
     <ClInclude Include="papyrus\renderer\sdlrenderer.h" />
     <ClInclude Include="papyrus\sprite\isprite.h" />
     <ClInclude Include="papyrus\sprite\sprite.h" />
+    <ClInclude Include="papyrus\sprite\staticsprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -24,7 +24,10 @@ namespace Papyrus
 			virtual Bool	ShutDown();			
 
 			virtual void	Clear();
+			virtual void	Render(SDL_Texture* _tex, SDL_Rect* _dst, SDL_Rect* _clip);
 			virtual void	Present();
+
+			virtual Bool	LoadTexture(Int8* _path, SDL_Texture** _result);
 
 			// Member Variables
 		protected:

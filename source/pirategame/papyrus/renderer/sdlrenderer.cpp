@@ -1,5 +1,6 @@
 
 // Library Includes
+#include <SDL_image.h>
 
 // Local Includes
 #include "sdlrenderer.h"
@@ -56,7 +57,19 @@ void Renderer::CSDLRenderer::Clear()
 	SDL_RenderClear(m_Renderer);
 }
 
+void Renderer::CSDLRenderer::Render(SDL_Texture* _tex, SDL_Rect* _dst, SDL_Rect* _clip)
+{
+	SDL_RenderCopy(m_Renderer, _tex, _clip, _dst);
+}
+
 void Renderer::CSDLRenderer::Present()
 {
 	SDL_RenderPresent(m_Renderer);
+}
+
+Bool Renderer::CSDLRenderer::LoadTexture(Int8* _path, SDL_Texture** _result)
+{
+	*_result = IMG_LoadTexture(m_Renderer, _path);
+	assert(*_result);
+	return true;
 }

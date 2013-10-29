@@ -4,19 +4,19 @@
 
 // Local Includes
 #include "game.h"
-#include "papyrus\core\core.h"
-#include "papyrus\renderer\renderer.h"
 
 using namespace Papyrus;
 
 CGame::CGame()
-	: active(true)
+	: background(0)
+	, active(true)
 {
 	
 }
 
 CGame::~CGame()
 {
+	background->Release();
 	Core::ShutDown();
 }
 
@@ -30,6 +30,9 @@ Bool CGame::Initialise()
 {
 	Core::Initialise(10);
 
+	background = Sprite::CreateSprite("data/spritesheets/background.png", false);
+	background->AddRef();
+
 	return true;
 }
 
@@ -38,22 +41,19 @@ void CGame::Process()
 	Core::Process();
 
 	SDL_Event e;
-	while (active)
+	while (SDL_PollEvent(&e))
 	{
-		while (SDL_PollEvent(&e))
+		if (e.type == SDL_QUIT)
+			active = false;			
+		if (e.type == SDL_KEYDOWN)
 		{
-			if (e.type == SDL_QUIT)
-				active = false;			
-			if (e.type == SDL_KEYDOWN)
+			switch (e.key.keysym.sym)
 			{
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_ESCAPE:
-					active = false;
-					break;
-				default:
-					break;
-				}
+			case SDLK_ESCAPE:
+				active = false;
+				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -62,6 +62,8 @@ void CGame::Process()
 void CGame::Render()
 {
 	Renderer::Clear();
+
+	background->Render();
 
 	Renderer::Present();
 }

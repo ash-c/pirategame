@@ -8,6 +8,7 @@
 
 // Local Includes
 #include "../defines.h"
+#include "isprite.h"
 #include "../renderer/renderer.h"
 #include "../renderer/irenderer.h"
 
@@ -15,9 +16,6 @@ namespace Papyrus
 {
 	namespace Sprite
 	{
-		// Forward Declaration
-		class ISprite;
-
 		Bool		Initialise();
 		Bool		ShutDown();
 
