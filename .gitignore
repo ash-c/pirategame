@@ -4,3 +4,6 @@
 /obj
 /source/*.sdf
 /source/pirategame/*.user
+/test/pirategame_D.ilk
+/test/pirategame_D.exe
+/test/pirategame_D.pdb
