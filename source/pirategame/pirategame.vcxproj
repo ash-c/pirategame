@@ -63,7 +63,7 @@
       <SubSystem>Windows</SubSystem>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
-      <OutputFile>$(IntDir)$(TargetName)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,7 +86,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="papyrus\core\utility\timer.cpp" />
+    <ClCompile Include="papyrus\parser\ini\iniparser.cpp" />
+    <ClCompile Include="papyrus\parser\json\jsonparser.cpp" />
+    <ClCompile Include="papyrus\parser\parser.cpp" />
+    <ClCompile Include="papyrus\parser\xml\xmlparser.cpp" />
+    <ClCompile Include="papyrus\renderer\renderer.cpp" />
+    <ClCompile Include="papyrus\renderer\sdlrenderer.cpp" />
+    <ClCompile Include="papyrus\sprite\sprite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="papyrus\core\core.h" />
+    <ClInclude Include="papyrus\core\utility\refcount.h" />
+    <ClInclude Include="papyrus\core\utility\singleton.h" />
+    <ClInclude Include="papyrus\core\utility\timer.h" />
+    <ClInclude Include="papyrus\defines.h" />
+    <ClInclude Include="papyrus\parser\ini\iniparser.h" />
+    <ClInclude Include="papyrus\parser\iparser.h" />
+    <ClInclude Include="papyrus\parser\json\jsonparser.h" />
+    <ClInclude Include="papyrus\parser\parser.h" />
+    <ClInclude Include="papyrus\parser\xml\xmlparser.h" />
+    <ClInclude Include="papyrus\renderer\irenderer.h" />
+    <ClInclude Include="papyrus\renderer\renderer.h" />
+    <ClInclude Include="papyrus\renderer\sdlrenderer.h" />
+    <ClInclude Include="papyrus\sprite\isprite.h" />
+    <ClInclude Include="papyrus\sprite\sprite.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,6 +4,8 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
+#include "game.h"
+
 using namespace std;
 
 void logSDLError(ostream &os, const char* msg);
@@ -19,37 +21,27 @@ const int TILE_SIZE = 40;
 
 int main(int argc, char **argv)
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	CGame& game = CGame::GetInstance();
+
+	if (!game.Initialise())
 	{
-		logSDLError(cout, "SDL_Init_Error");
+		// Failed to initialise.
 		return 1;
 	}
 
-	if ((IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG)
+	while (game.IsActive())
 	{
-		logSDLError(cout, "IMG _Init");
-		return 2;
+		game.ExecuteOneFrame();
 	}
+
+	game.DestroyInstance();
+
+	/*
 
 	if (TTF_Init() != 0)
 	{
 		logSDLError(cout, "TTF_Init");
 		return 3;
-	}
-
-	SDL_Window* window = SDL_CreateWindow("Hello World!", 100, 100, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | 
-		SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
-	if (nullptr == window)
-	{
-		logSDLError(cout, "SDL_CreateWindow");
-		return 4;
-	}
-
-	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
-	if (nullptr == renderer)
-	{
-		logSDLError(cout, "SDL_CreateRenderer");
-		return 5;
 	}
 
 	// iW and iH are the clip width and height
@@ -79,62 +71,29 @@ int main(int argc, char **argv)
 
 	SDL_Colour col;
 	col.r = 255;
-	col.g = 0;
-	col.b = 0;
+	col.g = 255;
+	col.b = 255;
 	col.a = 0;
-	SDL_Surface* font = loadMessage("Hello World", "data/fonts/SourceSansPro-Regular.ttf", 32, col);
-	SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, font);
 
-	SDL_Event e;
-	bool quit = false;
+	Papyrus::Timer::CTimer* timer = new Papyrus::Timer::CTimer();
+	timer->Initialise();
+	timer->Start();
 
-	while (!quit)
-	{
-		while (SDL_PollEvent(&e))
-		{
-			if (e.type == SDL_QUIT)
-				quit = true;
-			if (e.type == SDL_KEYDOWN)
-			{
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_1:
-					useClip = 0;
-					break;
-				case SDLK_2:
-					useClip = 1;
-					break;
-				case SDLK_3:
-					useClip = 2;
-					break;
-				case SDLK_4:
-					useClip = 3;
-					break;
-				case SDLK_ESCAPE:
-					quit = true;
-					break;
-				default:
-					break;
-				}
-			}
-			/*if (e.type == SDL_MOUSEBUTTONDOWN)
-				quit = true;*/
-		}
-		// Clear
-		SDL_RenderClear(renderer);
+
+		Int8 buffer[MAX_BUFFER];
+		timer->Restart();
+		sprintf_s(buffer, MAX_BUFFER, "%i", timer->GetFPS());
+		SDL_Surface* font = loadMessage(buffer, "data/fonts/SourceSansPro-Regular.ttf", 32, col);
+		SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, font);
 
 		renderTexture(image, renderer, x, y, &clips[useClip]);
 		renderTexture(message, renderer, 50, 50);
 
-		// Present
-		SDL_RenderPresent(renderer);
+		
+		SDL_DestroyTexture(message);
 	}
 
-	SDL_DestroyRenderer(renderer);
-	SDL_DestroyWindow(window);
-	TTF_Quit();
-	IMG_Quit();
-	SDL_Quit();
+	TTF_Quit();*/
 
 	return 0;
 }
