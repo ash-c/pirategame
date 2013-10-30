@@ -16,7 +16,6 @@ CGame::CGame()
 
 CGame::~CGame()
 {
-	background->Release();
 	Core::ShutDown();
 }
 
@@ -28,10 +27,7 @@ void CGame::ExecuteOneFrame()
 
 Bool CGame::Initialise()
 {
-	Core::Initialise(10);
-
-	background = Sprite::CreateSprite("data/spritesheets/background.png", false);
-	background->AddRef();
+	VALIDATE(Core::Initialise(10));
 
 	return true;
 }
@@ -62,8 +58,6 @@ void CGame::Process()
 void CGame::Render()
 {
 	Renderer::Clear();
-
-	background->Render();
 
 	Renderer::Present();
 }

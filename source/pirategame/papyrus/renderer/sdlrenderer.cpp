@@ -17,7 +17,7 @@ Renderer::CSDLRenderer::~CSDLRenderer()
 
 Bool Renderer::CSDLRenderer::Initialise(Int32 _width, Int32 _height, Int8* _title, Bool _fullScreen)
 {
-	assert(_width >= 1280 && _height >= 1024 && "Resolution too low.");
+	assert(_width >= 800 && _height >= 600 && "Resolution too low.");
 	m_Height = _height;
 	m_Width = _width;
 	m_FullScreen = _fullScreen;
@@ -27,7 +27,17 @@ Bool Renderer::CSDLRenderer::Initialise(Int32 _width, Int32 _height, Int8* _titl
 		return false;
 	}
 	
-	m_Window = SDL_CreateWindow(_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Width, m_Height, SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS);
+	UInt32 flags = 0;
+	if (m_FullScreen)
+	{
+		flags = SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_BORDERLESS;
+	}
+	/*else
+	{
+		flags = SDL_WINDOW_BORDERLESS;
+	}*/
+
+	m_Window = SDL_CreateWindow(_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Width, m_Height, flags);
 	if (nullptr == m_Window)
 	{
 		return false;

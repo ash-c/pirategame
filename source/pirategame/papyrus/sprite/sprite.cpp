@@ -13,7 +13,7 @@ Renderer::IRenderer* Sprite::activeRenderer = 0;
 
 Bool Sprite::Initialise()
 {
-	if ((IMG_Init(IMG_INIT_PNG | IMG_INIT_TIF) & (IMG_INIT_PNG | IMG_INIT_TIF)) != (IMG_INIT_PNG | IMG_INIT_TIF))
+	if ((IMG_Init(IMG_INIT_PNG) & (IMG_INIT_PNG)) != (IMG_INIT_PNG))
 	{
 		return false;
 	}
