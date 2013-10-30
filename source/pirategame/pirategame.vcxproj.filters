@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="papyrus\parser\ini\iniparser.cpp">
+      <Filter>papyrus\parser\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\parser\json\jsonparser.cpp">
+      <Filter>papyrus\parser\json</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\parser\xml\xmlparser.cpp">
+      <Filter>papyrus\parser\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\parser\parser.cpp">
+      <Filter>papyrus\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\core\utility\timer.cpp">
+      <Filter>papyrus\core\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="papyrus\renderer\sdlrenderer.cpp">
+      <Filter>papyrus\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\renderer\renderer.cpp">
+      <Filter>papyrus\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\sprite\sprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\sprite\staticsprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\core\core.cpp">
+      <Filter>papyrus\core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="papyrus">
+      <UniqueIdentifier>{575306bc-0862-4b4c-8b28-06c0aed11984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\core">
+      <UniqueIdentifier>{97b58afc-d981-4a7e-a5f7-2af3a6416219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser">
+      <UniqueIdentifier>{877994ba-f866-4c9d-9a9d-9c586ee12d46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser\ini">
+      <UniqueIdentifier>{e576388c-9ebd-4271-929b-408897bc1f95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser\xml">
+      <UniqueIdentifier>{613a9099-02ec-482f-b36e-c464fe19bc09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser\json">
+      <UniqueIdentifier>{86f9853e-fdd2-4289-8c0d-d9f6deaee665}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\core\utility">
+      <UniqueIdentifier>{7c1af2c8-ac3b-4f47-aca0-ec14369f1568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\renderer">
+      <UniqueIdentifier>{a1264092-f509-4f52-8881-a51b55836ef0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\sprite">
+      <UniqueIdentifier>{c8694433-5a15-4095-97c6-86bccc54658d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="papyrus\parser\ini\iniparser.h">
+      <Filter>papyrus\parser\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\json\jsonparser.h">
+      <Filter>papyrus\parser\json</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\xml\xmlparser.h">
+      <Filter>papyrus\parser\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\iparser.h">
+      <Filter>papyrus\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\parser.h">
+      <Filter>papyrus\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\defines.h">
+      <Filter>papyrus</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\utility\timer.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="papyrus\core\core.h">
+      <Filter>papyrus\core</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\utility\singleton.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\renderer\sdlrenderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\renderer\renderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\renderer\irenderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\utility\refcount.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\sprite\sprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\sprite\isprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\sprite\staticsprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
