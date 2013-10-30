@@ -39,10 +39,7 @@ namespace Papyrus
 			virtual void	Present() = 0;
 
 			virtual Bool	LoadTexture(Int8* _path, SDL_Texture** _result) = 0;
-
-		private:
-			IRenderer(const IRenderer& _rhs);
-			IRenderer& operator = (const IRenderer& _rhs);
+			virtual Bool	LoadTexture(SDL_Surface* _surface, SDL_Texture** _result) = 0;
 
 			// Member Variables
 		protected:

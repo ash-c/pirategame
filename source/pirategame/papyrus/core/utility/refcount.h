@@ -45,6 +45,10 @@ public:
 		--m_refCount;
 	}
 
+	private:
+		TRefCount(const TRefCount& _rhs);
+		TRefCount& operator = (const TRefCount& _rhs);
+
 	// Member Variables
 private:
 	UInt16					m_refCount;

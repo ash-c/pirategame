@@ -83,3 +83,10 @@ Bool Renderer::CSDLRenderer::LoadTexture(Int8* _path, SDL_Texture** _result)
 	assert(*_result);
 	return true;
 }
+
+Bool Renderer::CSDLRenderer::LoadTexture(SDL_Surface* _surface, SDL_Texture** _result)
+{
+	*_result = SDL_CreateTextureFromSurface(m_Renderer, _surface);
+	assert(*_result);
+	return true;
+}

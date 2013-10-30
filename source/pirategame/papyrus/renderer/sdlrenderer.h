@@ -28,6 +28,7 @@ namespace Papyrus
 			virtual void	Present();
 
 			virtual Bool	LoadTexture(Int8* _path, SDL_Texture** _result);
+			virtual Bool	LoadTexture(SDL_Surface* _surface, SDL_Texture** _result);
 
 			// Member Variables
 		protected:

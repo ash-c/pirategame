@@ -10,17 +10,20 @@
 #include "../defines.h"
 #include "../parser/parser.h"
 #include "../renderer/renderer.h"
+#include "../logging/logger.h"
 #include "../sprite/sprite.h"
 
 namespace Papyrus
 {
 	namespace Core
 	{
-		Bool Initialise(Int32 _numParsers);
+		Bool		Initialise(Int32 _numParsers);
 
-		Float32 Process();
+		Float32		Process();
 
-		Bool ShutDown();
+		void		Render();
+
+		Bool		ShutDown();
 	}
 }
 

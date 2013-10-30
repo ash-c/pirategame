@@ -37,13 +37,6 @@ int main(int argc, char **argv)
 	game.DestroyInstance();
 
 	/*
-
-	if (TTF_Init() != 0)
-	{
-		logSDLError(cout, "TTF_Init");
-		return 3;
-	}
-
 	// iW and iH are the clip width and height
 	// We'll be drawing only clips so get a center position for the w/h of a clip
 	int iW = 100, iH = 100;
@@ -68,12 +61,6 @@ int main(int argc, char **argv)
 		logSDLError(cout, "loadTexture");
 		return 6;
 	}
-
-	SDL_Colour col;
-	col.r = 255;
-	col.g = 255;
-	col.b = 255;
-	col.a = 0;
 
 	Papyrus::Timer::CTimer* timer = new Papyrus::Timer::CTimer();
 	timer->Initialise();

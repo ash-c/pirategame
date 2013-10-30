@@ -33,6 +33,12 @@
     <ClCompile Include="papyrus\core\core.cpp">
       <Filter>papyrus\core</Filter>
     </ClCompile>
+    <ClCompile Include="papyrus\logging\logger.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\logging\logtoscreen.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -61,6 +67,9 @@
     </Filter>
     <Filter Include="papyrus\sprite">
       <UniqueIdentifier>{c8694433-5a15-4095-97c6-86bccc54658d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\logging">
+      <UniqueIdentifier>{c5b233ff-55af-46aa-9b98-985143a97139}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +121,15 @@
     </ClInclude>
     <ClInclude Include="papyrus\sprite\staticsprite.h">
       <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\logger.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\ilogtype.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\logtoscreen.h">
+      <Filter>papyrus\logging</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

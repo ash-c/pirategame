@@ -90,6 +90,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />
+    <ClCompile Include="papyrus\logging\logger.cpp" />
+    <ClCompile Include="papyrus\logging\logtoscreen.cpp" />
     <ClCompile Include="papyrus\parser\ini\iniparser.cpp" />
     <ClCompile Include="papyrus\parser\json\jsonparser.cpp" />
     <ClCompile Include="papyrus\parser\parser.cpp" />
@@ -106,6 +108,9 @@
     <ClInclude Include="papyrus\core\utility\singleton.h" />
     <ClInclude Include="papyrus\core\utility\timer.h" />
     <ClInclude Include="papyrus\defines.h" />
+    <ClInclude Include="papyrus\logging\ilogtype.h" />
+    <ClInclude Include="papyrus\logging\logger.h" />
+    <ClInclude Include="papyrus\logging\logtoscreen.h" />
     <ClInclude Include="papyrus\parser\ini\iniparser.h" />
     <ClInclude Include="papyrus\parser\iparser.h" />
     <ClInclude Include="papyrus\parser\json\jsonparser.h" />

@@ -27,19 +27,33 @@ Bool Core::Initialise(Int32 _numParsers)
 	VALIDATE(Renderer::Initialise(width, height, title, fullscreen));
 	CLEANDELETE(title);
 
+	VALIDATE(Logger::Initialise());
+
 	VALIDATE(Sprite::Initialise());
+
+	Logger::Write("this is a \ntest", NULL);
 
 	return true;
 }
 
 Float32 Core::Process()
 {
-	return 0.0f;
+	Float32 fDelta = 0.0f;
+
+	Logger::Process(fDelta);
+
+	return fDelta;
+}
+
+void Core::Render()
+{
+	Logger::Render();
 }
 
 Bool Core::ShutDown()
 {
 	VALIDATE(Sprite::ShutDown());
+	VALIDATE(Logger::ShutDown());
 	VALIDATE(FileParser::ShutDown());
 	VALIDATE(Renderer::ShutDown());
 	SDL_Quit();

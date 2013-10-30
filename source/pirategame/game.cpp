@@ -8,8 +8,7 @@
 using namespace Papyrus;
 
 CGame::CGame()
-	: background(0)
-	, active(true)
+	: active(true)
 {
 	
 }
@@ -58,6 +57,8 @@ void CGame::Process()
 void CGame::Render()
 {
 	Renderer::Clear();
+
+	Core::Render();
 
 	Renderer::Present();
 }
