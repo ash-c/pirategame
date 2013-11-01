@@ -8,6 +8,7 @@
 
 // Local Includes
 #include "../defines.h"
+#include "../core/utility/timer.h"
 #include "../parser/parser.h"
 #include "../renderer/renderer.h"
 #include "../logging/logger.h"
@@ -24,6 +25,8 @@ namespace Papyrus
 		void		Render();
 
 		Bool		ShutDown();
+
+		extern Timer::CTimer* timer;
 	}
 }
 

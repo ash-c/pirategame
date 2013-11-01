@@ -12,7 +12,20 @@
 namespace Papyrus
 {
 	namespace Logger
-	{
+	{		
+		typedef enum _ETrackType
+		{
+			INVALID_TRACKTYPE = INVALID_ID,
+			TRACKTYPE_BOOL,
+			TRACKTYPE_CHAR,
+			TRACKTYPE_INT,
+			TRACKTYPE_UINT,
+			TRACKTYPE_FLOAT,
+			TRACKTYPE_VECTOR3,
+			TRACKTYPE_VECTOR4,
+			MAX_TRACKTYPE
+		} ETrackType;
+
 		class ILogTarget : public TRefCount<ILogTarget>
 		{
 			// Member Functions
@@ -34,6 +47,9 @@ namespace Papyrus
 			virtual void		Render() = 0;
 
 			virtual void		Write(Int8* _msg) = 0;
+
+			virtual void		TrackValue(void* _value, ETrackType _type, const Int8* _tag) = 0;			
+			virtual void		StopTracking(const Int8* _tag) = 0;
 
 			// Member Variables
 		protected:

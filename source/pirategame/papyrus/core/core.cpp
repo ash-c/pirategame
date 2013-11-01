@@ -6,6 +6,8 @@
 
 using namespace Papyrus;
 
+Timer::CTimer* Core::timer = 0;
+
 Bool Core::Initialise(Int32 _numParsers)
 {
 	assert(_numParsers > 0 && "Need more than 0 parsers");
@@ -24,21 +26,25 @@ Bool Core::Initialise(Int32 _numParsers)
 
 	VALIDATE(!FileParser::FlushFile(setup));
 
+	VALIDATE(Logger::Initialise());
+
 	VALIDATE(Renderer::Initialise(width, height, title, fullscreen));
 	CLEANDELETE(title);
 
-	VALIDATE(Logger::Initialise());
-
 	VALIDATE(Sprite::Initialise());
 
-	Logger::Write("this is a \ntest", NULL);
+	CREATEPOINTER(timer, Timer::CTimer);
+	VALIDATE(timer->Initialise());
+	timer->Start();
+
+	Logger::Write("Core Initialised", NULL);
 
 	return true;
 }
 
 Float32 Core::Process()
 {
-	Float32 fDelta = 0.0f;
+	Float32 fDelta = timer->Restart();
 
 	Logger::Process(fDelta);
 
@@ -52,6 +58,7 @@ void Core::Render()
 
 Bool Core::ShutDown()
 {
+	CLEANDELETE(timer);
 	VALIDATE(Sprite::ShutDown());
 	VALIDATE(Logger::ShutDown());
 	VALIDATE(FileParser::ShutDown());

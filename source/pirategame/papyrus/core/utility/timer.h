@@ -44,7 +44,7 @@ namespace Papyrus
 
 			Float32 Ticks();
 
-			Int32 GetFPS() const;
+			Float32 GetFPS() const;
 
 			Bool Started() const;
 
@@ -60,7 +60,7 @@ namespace Papyrus
 			Float32				m_pausedTicks;
 			Float32				m_delta;
 			Float32				m_timePassed;
-			Int32				m_FPS;
+			Float32				m_FPS;
 			Int32				m_maxFPS;
 			Bool				m_started;
 			Bool				m_paused;

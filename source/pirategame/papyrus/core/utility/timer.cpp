@@ -4,6 +4,7 @@
 #include <SDL.h>
 
 // Local Includes
+#include "../logging/logger.h"
 
 // This Include
 #include "timer.h"
@@ -31,6 +32,8 @@ Papyrus::Timer::CTimer::~CTimer()
 Bool Papyrus::Timer::CTimer::Initialise()
 {
 	//LOGGING.TrackValue(&m_iFPS, L"FPS");
+	Papyrus::Logger::TrackValue((Float32*)(&m_FPS), "FPS");
+	Papyrus::Logger::Write("Timer initialised", NULL);
 		
 	return true;
 }
@@ -91,7 +94,7 @@ Float32 Papyrus::Timer::CTimer::Ticks()
 			else
 			{
 				m_timePassed = 0.0f;
-				m_FPS = m_maxFPS;
+				m_FPS = static_cast<Float32>(m_maxFPS);
 				m_maxFPS = 0;
 			}
 			return m_delta;
@@ -100,7 +103,7 @@ Float32 Papyrus::Timer::CTimer::Ticks()
 	return 0;
 }
 
-Int32 Papyrus::Timer::CTimer::GetFPS() const
+Float32 Papyrus::Timer::CTimer::GetFPS() const
 {
 	return m_FPS;
 }
