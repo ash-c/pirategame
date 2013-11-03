@@ -41,7 +41,7 @@ public:
 	*
 	* @return	Returns void.
 	*/
-	void		Process();
+	void		Process(Float32 _delta);
 
 	/*
 	* Renders the game to screen.

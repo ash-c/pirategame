@@ -3,41 +3,52 @@
 
 // Local Includes
 #include "core.h"
+#include "../parser/ini/iniparser.h"
 
 using namespace Papyrus;
 
 Timer::CTimer* Core::timer = 0;
 
-Bool Core::Initialise(Int32 _numParsers)
+Bool Core::Initialise()
 {
-	assert(_numParsers > 0 && "Need more than 0 parsers");
-	FileParser::maxNumParsers = _numParsers;
-	FileParser::Initialise();
-	FileParser::IParser* setup = FileParser::LoadFile("data/setup.ini");
-	assert(setup);
-	setup->AddRef();
-	Int32 width, height;
+	FileParser::CIniparser setup;
+	setup.Initialise("data/setup.ini");
+	setup.Load();
+
+	Int32 width, height, numParsers;
 	Int8* title = 0;
 	Bool fullscreen;
-	VALIDATE(setup->GetValue("width", width, "screen"));
-	VALIDATE(setup->GetValue("height", height, "screen"));
-	VALIDATE(setup->GetValue("fullscreen", fullscreen, "screen"));
-	VALIDATE(setup->GetValue("title", &title, "screen"));
 
-	VALIDATE(!FileParser::FlushFile(setup));
+	setup.AddRef();
+	VALIDATE(setup.GetValue("parsers", numParsers, "init"));
+	VALIDATE(setup.GetValue("width", width, "screen"));
+	VALIDATE(setup.GetValue("height", height, "screen"));
+	VALIDATE(setup.GetValue("fullscreen", fullscreen, "screen"));
+	VALIDATE(setup.GetValue("title", &title, "screen"));
+	setup.Release();
 
 	VALIDATE(Logger::Initialise());
+	VALIDATE(Logger::InitFile("data/startup.log"));
+	PY_WRITETOFILE("Logging initialised\n");
+
+	FileParser::maxNumParsers = numParsers;
+	VALIDATE(FileParser::Initialise());
+	PY_WRITETOFILE("File parsing initialised\n");
 
 	VALIDATE(Renderer::Initialise(width, height, title, fullscreen));
 	CLEANDELETE(title);
+	PY_WRITETOFILE("Renderer initialised\n");
 
 	VALIDATE(Sprite::Initialise());
+	PY_WRITETOFILE("Sprites initialised\n");
 
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
-	timer->Start();
+	PY_WRITETOFILE("Logger initialised\n");
 
 	Logger::Write("Core Initialised", NULL);
+
+	timer->Start();
 
 	return true;
 }

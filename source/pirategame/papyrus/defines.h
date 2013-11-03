@@ -66,6 +66,8 @@ typedef struct _TVECTOR4
 #define CLEANDELETE(Object) if (Object != 0) { delete Object; Object = 0; }
 #define CLEANARRAY(Object) if (Object != 0) { delete[] Object; Object = 0; }
 
+#define PY_RELEASE(Object) if (0 != Object) { Object->Release(); Object->ShutDown(); Object = 0; }
+
 #define CLEANVECTOR(VectorObject) for (UInt32 i = 0; i < VectorObject.size(); ++i)\
 	{\
 	CLEANDELETE(VectorObject[i]);\

@@ -54,16 +54,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir)\pirategame\papyrus\sdl\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\pirategame\papyrus\vld;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\pirategame\papyrus\sdl\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\pirategame\papyrus\vld;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>vld.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,6 +94,7 @@
     <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />
     <ClCompile Include="papyrus\logging\logger.cpp" />
+    <ClCompile Include="papyrus\logging\logtofile.cpp" />
     <ClCompile Include="papyrus\logging\logtoscreen.cpp" />
     <ClCompile Include="papyrus\parser\ini\iniparser.cpp" />
     <ClCompile Include="papyrus\parser\json\jsonparser.cpp" />
@@ -110,6 +114,7 @@
     <ClInclude Include="papyrus\defines.h" />
     <ClInclude Include="papyrus\logging\ilogtype.h" />
     <ClInclude Include="papyrus\logging\logger.h" />
+    <ClInclude Include="papyrus\logging\logtofile.h" />
     <ClInclude Include="papyrus\logging\logtoscreen.h" />
     <ClInclude Include="papyrus\parser\ini\iniparser.h" />
     <ClInclude Include="papyrus\parser\iparser.h" />

@@ -4,15 +4,14 @@
 // Local Includes
 #include "logger.h"
 #include "logtoscreen.h"
+#include "logtofile.h"
 
 using namespace Papyrus;
 
-Logger::ILogTarget** Logger::logTargets = 0;
+Logger::ILogType* Logger::logTargets[MAX_TYPE];
 
 Bool Logger::Initialise()
 {
-	Logger::logTargets = new ILogTarget*[MAX_TYPE];
-
 	Logger::logTargets[LOG_TO_SCREEN] = new CLogToScreen();
 	assert(Logger::logTargets[LOG_TO_SCREEN]);
 	VALIDATE(Logger::logTargets[LOG_TO_SCREEN]->Initialise());
@@ -23,8 +22,22 @@ Bool Logger::Initialise()
 
 Bool Logger::ShutDown()
 {
-	Logger::logTargets[LOG_TO_SCREEN]->Release();
-	Logger::logTargets[LOG_TO_SCREEN]->ShutDown();
+	PY_RELEASE(Logger::logTargets[LOG_TO_SCREEN]);
+	PY_RELEASE(Logger::logTargets[LOG_TO_FILE]);
+	
+	return true;
+}
+
+Bool Logger::InitFile(const Int8* _path)
+{
+	// Clean existing file logging if present.
+	PY_RELEASE(Logger::logTargets[LOG_TO_FILE]);
+
+	Logger::logTargets[LOG_TO_FILE] = new CLogToFile();
+	assert(Logger::logTargets[LOG_TO_FILE]);
+	VALIDATE(Logger::logTargets[LOG_TO_FILE]->Initialise(_path));
+	Logger::logTargets[LOG_TO_FILE]->AddRef();
+
 	return true;
 }
 
@@ -70,12 +83,20 @@ void Logger::WriteToConsole(Int8* _format, ...)
 
 void Logger::WriteToFile(Int8* _format, ...)
 {
-	va_list args;
-	va_start(args, _format);
+	if (0 != Logger::logTargets[LOG_TO_FILE])
+	{
+		va_list args;
+		va_start(args, _format);
 
-	Int8* text = new Int8[MAX_BUFFER];
-	SDL_vsnprintf(text, MAX_BUFFER, _format, args);
-	Logger::logTargets[LOG_TO_FILE]->Write(text);
+		Int8* text = new Int8[MAX_BUFFER];
+		SDL_vsnprintf(text, MAX_BUFFER, _format, args);
+		Logger::logTargets[LOG_TO_FILE]->Write(text);
+	}
+}
+
+Bool Logger::ToggleScreenLogging()
+{
+	return Logger::logTargets[LOG_TO_SCREEN]->Toggle();
 }
 
 void Logger::TrackValue(VECTOR4* _v4, const Int8* _tag)

@@ -49,7 +49,7 @@ Bool Renderer::CSDLRenderer::Initialise(Int32 _width, Int32 _height, Int8* _titl
 		return false;
 	}
 
-	SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0);
+	SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 0);
 
 	return true;
 }

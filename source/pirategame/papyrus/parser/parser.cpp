@@ -161,23 +161,26 @@ IParser* Papyrus::FileParser::LoadFile(Int8* _filePath)
 
 IParser* Papyrus::FileParser::FlushFile(IParser* _parser, Bool _delete)
 {
-	assert(0 != _parser);
-	for (Int16 i = 0; i < maxNumParsers; ++i)
+	if (0 != parserArray)
 	{
-		if (_parser == parserArray[i])
+		assert(0 != _parser);
+		for (Int16 i = 0; i < maxNumParsers; ++i)
 		{
-			if (_delete)
+			if (_parser == parserArray[i])
 			{
-				parserArray[i]->ShutDown();
-				parserArray[i]->Release();
-				delete parserArray[i];
-				parserArray[i] = 0;
+				if (_delete)
+				{
+					parserArray[i]->Release();
+					parserArray[i]->ShutDown();
+					delete parserArray[i];
+					parserArray[i] = 0;
+				}
+				else
+				{
+					parserArray[i] = 0;
+				}
+				return 0;
 			}
-			else
-			{
-				parserArray[i] = 0;
-			}
-			return 0;
 		}
 	}
 

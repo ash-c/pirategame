@@ -38,6 +38,14 @@ namespace Papyrus
 		Bool		ShutDown();
 
 		/*
+		* Initialises a file to log to. If file logging is already active, the pre-existing one is shut down.
+		*
+		* @param	_path			File to log to.
+		* @return	Returns true if successfully initialised, false otherwise.
+		*/
+		Bool		InitFile(const Int8* _path);
+
+		/*
 		* Processes the screen logging, to remove values after a set time.
 		*
 		* @param	_fDelta			Time since last process.
@@ -88,18 +96,93 @@ namespace Papyrus
 		*/
 		void		WriteToFile(Int8* _format, ...);
 
+		/*
+		* Turns screen debug display on or off.
+		*
+		* @param	What to set the debug display status too.
+		* @return	Returns the display status of screen logging.
+		*/
+		Bool		ToggleScreenLogging();
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v4				Pointer to the VECTOR4 value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
 		void		TrackValue(VECTOR4* _v4, const Int8* _tag);
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v4				Pointer to the VECTOR3 value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
 		void		TrackValue(VECTOR3* _v3, const Int8* _tag);
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v4				Pointer to the Float32 value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
 		void		TrackValue(Float32* _f, const Int8* _tag);
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v4				Pointer to the Int32 value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
 		void		TrackValue(Int32* _i, const Int8* _tag);
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v4				Pointer to the UInt32 value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
 		void		TrackValue(UInt32* _u, const Int8* _tag);
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v4				Pointer to the Int8 value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
 		void		TrackValue(Int8* _c, const Int8* _tag);
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v4				Pointer to the Bool value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
 		void		TrackValue(Bool* _b, const Int8* _tag);
 
+		/*
+		* Stops tracking a value.
+		*
+		* @param	_tag			Tag of the value to stop tracking.
+		* @return	Returns void.
+		*/
 		void		StopTracking(const Int8* _tag);
 
-		extern ILogTarget** logTargets;
+		// Array that holds pointers to the active log targets.
+		extern ILogType* logTargets[MAX_TYPE];
 	}
 }
+
+// Some macros to make writing more convenient
+#define PY_WRITETOFILE(text) Papyrus::Logger::WriteToFile((text), NULL);
+#define PY_WRITETOSCREEN(text) Papyrus::Logger::WriteToScreen((text), NULL);
+#define PY_WRITETOCONSOLE(text) Papyrus::Logger::WriteToConsole((text), NULL);
 
 #endif // __PAPYURS_LOGGER_H__

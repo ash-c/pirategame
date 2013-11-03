@@ -1,8 +1,8 @@
 
 #pragma once
 
-#ifndef __PAPYRUS_LOGGER_LOGTOFILE_H__
-#define __PAPYRUS_LOGGER_LOGTOFILE_H__
+#ifndef __PAPYRUS_LOGGER_LOGTOSCREEN_H__
+#define __PAPYRUS_LOGGER_LOGTOSCREEN_H__
 
 // Library Includes
 #include <SDL_ttf.h>
@@ -21,7 +21,7 @@ namespace Papyrus
 			void*			value;
 		} TTrackInfo;
 
-		class CLogToScreen : public ILogTarget
+		class CLogToScreen : public ILogType
 		{
 			// Member Functions
 		public:
@@ -31,13 +31,15 @@ namespace Papyrus
 			// Default Destructor
 			virtual ~CLogToScreen();
 
-			virtual Bool		Initialise();
+			virtual Bool		Initialise(const Int8* _path = 0);
 			virtual Bool		ShutDown();
 
 			virtual void		Process(Float32 _fDelta);
 			virtual void		Render();
 
 			virtual void		Write(Int8* _msg);
+
+			virtual Bool		Toggle();
 
 			virtual void		TrackValue(void* _value, ETrackType _type, const Int8* _tag);
 			virtual void		StopTracking(const Int8* _tag);
@@ -48,7 +50,7 @@ namespace Papyrus
 			static const Int32	SM_MAXTEMP = 15;
 			static const Int32	SM_DEFAULT_X = 10;
 			static const Int32	SM_DEFAULT_Y = 10;
-			static const Int32	SM_TIMER = 5;
+			static const Int32	SM_TIMER = 3;
 
 			TTF_Font*			m_font;
 			SDL_Surface*		m_surface;
@@ -57,10 +59,10 @@ namespace Papyrus
 			SDL_Colour			m_col;
 			TTrackInfo*			m_trackedInfo[SM_MAXTRACKED];
 			Float32				m_timer;
-			Int8*				m_trackedText[SM_MAXTRACKED];
 			Int8*				m_tempText[SM_MAXTEMP];
+			Bool				m_active;
 		};
 	}
 }
 
-#endif // __PAPYRUS_LOGGER_LOGTOFILE_H__
+#endif // __PAPYRUS_LOGGER_LOGTOSCREEN_H__

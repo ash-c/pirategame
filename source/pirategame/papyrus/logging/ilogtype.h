@@ -26,30 +26,31 @@ namespace Papyrus
 			MAX_TRACKTYPE
 		} ETrackType;
 
-		class ILogTarget : public TRefCount<ILogTarget>
+		class ILogType : public TRefCount<ILogType>
 		{
 			// Member Functions
 		public:
 			// Default Constructor
-			ILogTarget()
+			ILogType()
 			{
 			}
 
 			// Default Destructor
-			virtual ~ILogTarget()
+			virtual ~ILogType()
 			{
 			}
 
-			virtual Bool		Initialise() = 0;
+			virtual Bool		Initialise(const Int8* _path = 0) = 0;
 			virtual Bool		ShutDown() = 0;
 
-			virtual void		Process(Float32 _fDelta) = 0;
-			virtual void		Render() = 0;
+			virtual void		Process(Float32 _fDelta) { }
+			virtual void		Render()  { }
 
 			virtual void		Write(Int8* _msg) = 0;
 
-			virtual void		TrackValue(void* _value, ETrackType _type, const Int8* _tag) = 0;			
-			virtual void		StopTracking(const Int8* _tag) = 0;
+			virtual Bool		Toggle() { return true; }
+			virtual void		TrackValue(void* _value, ETrackType _type, const Int8* _tag) { }			
+			virtual void		StopTracking(const Int8* _tag) { }
 
 			// Member Variables
 		protected:

@@ -18,7 +18,7 @@ namespace Papyrus
 {
 	namespace Core
 	{
-		Bool		Initialise(Int32 _numParsers);
+		Bool		Initialise();
 
 		Float32		Process();
 

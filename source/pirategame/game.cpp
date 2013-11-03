@@ -20,21 +20,19 @@ CGame::~CGame()
 
 void CGame::ExecuteOneFrame()
 {
-	Process();
+	Process(Core::Process());
 	Render();
 }
 
 Bool CGame::Initialise()
 {
-	VALIDATE(Core::Initialise(10));
+	VALIDATE(Core::Initialise());
 
 	return true;
 }
 
-void CGame::Process()
+void CGame::Process(Float32 _delta)
 {
-	Core::Process();
-
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
@@ -44,6 +42,9 @@ void CGame::Process()
 		{
 			switch (e.key.keysym.sym)
 			{
+			case SDLK_BACKQUOTE: // `
+				Logger::ToggleScreenLogging();
+				break;
 			case SDLK_ESCAPE:
 				active = false;
 				break;

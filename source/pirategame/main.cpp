@@ -1,4 +1,3 @@
-#include <vld.h>
 
 #include "game.h"
 
@@ -50,25 +49,9 @@ int main(int argc, char **argv)
 		return 6;
 	}
 
-	Papyrus::Timer::CTimer* timer = new Papyrus::Timer::CTimer();
-	timer->Initialise();
-	timer->Start();
-
-
-		Int8 buffer[MAX_BUFFER];
-		timer->Restart();
-		sprintf_s(buffer, MAX_BUFFER, "%i", timer->GetFPS());
-		SDL_Surface* font = loadMessage(buffer, "data/fonts/SourceSansPro-Regular.ttf", 32, col);
-		SDL_Texture* message = SDL_CreateTextureFromSurface(renderer, font);
-
-		renderTexture(image, renderer, x, y, &clips[useClip]);
-		renderTexture(message, renderer, 50, 50);
-
-		
-		SDL_DestroyTexture(message);
-	}
-
-	TTF_Quit();*/
+	renderTexture(image, renderer, x, y, &clips[useClip]);		
+	SDL_DestroyTexture(image);
+	*/
 
 	return 0;
 }
