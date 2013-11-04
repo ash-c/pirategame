@@ -93,6 +93,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />
+    <ClCompile Include="papyrus\logging\logconsole.cpp" />
     <ClCompile Include="papyrus\logging\logger.cpp" />
     <ClCompile Include="papyrus\logging\logtofile.cpp" />
     <ClCompile Include="papyrus\logging\logtoscreen.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="papyrus\core\utility\timer.h" />
     <ClInclude Include="papyrus\defines.h" />
     <ClInclude Include="papyrus\logging\ilogtype.h" />
+    <ClInclude Include="papyrus\logging\logconsole.h" />
     <ClInclude Include="papyrus\logging\logger.h" />
     <ClInclude Include="papyrus\logging\logtofile.h" />
     <ClInclude Include="papyrus\logging\logtoscreen.h" />

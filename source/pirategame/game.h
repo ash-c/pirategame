@@ -10,6 +10,8 @@
 #include "papyrus\core\utility\singleton.h"
 #include "papyrus\core\core.h"
 
+using namespace Papyrus;
+
 // Prototypes
 
 class CGame : public TSingleton<CGame>
@@ -62,7 +64,8 @@ private:
 
 	// Member Variables
 private:
-	Bool						active;
+	Sprite::ISprite*			m_background;
+	Bool						m_active;
 };
 #define GAME CGame::GetInstance();
 

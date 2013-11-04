@@ -29,6 +29,7 @@ Bool Core::Initialise()
 
 	VALIDATE(Logger::Initialise());
 	VALIDATE(Logger::InitFile("data/startup.log"));
+	PY_WRITETOFILE("Initialisation started\n");
 	PY_WRITETOFILE("Logging initialised\n");
 
 	FileParser::maxNumParsers = numParsers;
@@ -36,7 +37,7 @@ Bool Core::Initialise()
 	PY_WRITETOFILE("File parsing initialised\n");
 
 	VALIDATE(Renderer::Initialise(width, height, title, fullscreen));
-	CLEANDELETE(title);
+	CLEANDELETE(title); // This is needed as the parser allocates memory on the heap.
 	PY_WRITETOFILE("Renderer initialised\n");
 
 	VALIDATE(Sprite::Initialise());
@@ -44,9 +45,9 @@ Bool Core::Initialise()
 
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
-	PY_WRITETOFILE("Logger initialised\n");
+	PY_WRITETOFILE("Timer initialised\n");
 
-	Logger::Write("Core Initialised", NULL);
+	PY_WRITETOFILE("Core Initialised");
 
 	timer->Start();
 

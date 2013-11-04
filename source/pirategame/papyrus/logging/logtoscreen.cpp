@@ -14,9 +14,9 @@ Logger::CLogToScreen::CLogToScreen()
 	, m_timer(0.0f)
 	, m_active(true)
 {
-	m_col.r = 0;
-	m_col.g = 0;
-	m_col.b = 0;
+	m_col.r = 255;
+	m_col.g = 255;
+	m_col.b = 255;
 	m_col.a = 0;
 
 	m_pos.w = 0;
@@ -115,7 +115,7 @@ void Logger::CLogToScreen::Process(Float32 _fDelta)
 				text = TTF_RenderText_Blended(m_font, displayText, m_col);
 				SDL_BlitSurface(text, NULL, m_surface, &m_pos);
 				SDL_FreeSurface(text);
-				messageAdded =  true;
+				messageAdded = true;
 				m_pos.y += 20;
 			}
 		}
@@ -184,9 +184,8 @@ void Logger::CLogToScreen::Write(Int8* _msg)
 		{
 			if (0 == m_tempText[i])
 			{			
-				UInt16 length = SDL_strlen(_msg) + 1;
-				m_tempText[i] = new Int8[length];
-				SDL_strlcpy(m_tempText[i], _msg, length);
+				m_tempText[i] = new Int8[MAX_BUFFER];
+				SDL_strlcpy(m_tempText[i], _msg, MAX_BUFFER);
 				break;
 			}
 		}

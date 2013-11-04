@@ -42,6 +42,9 @@
     <ClCompile Include="papyrus\logging\logtofile.cpp">
       <Filter>papyrus\logging</Filter>
     </ClCompile>
+    <ClCompile Include="papyrus\logging\logconsole.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -135,6 +138,9 @@
       <Filter>papyrus\logging</Filter>
     </ClInclude>
     <ClInclude Include="papyrus\logging\logtofile.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\logconsole.h">
       <Filter>papyrus\logging</Filter>
     </ClInclude>
   </ItemGroup>

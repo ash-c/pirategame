@@ -42,6 +42,7 @@ Sprite::ISprite* Sprite::CreateSprite(Int8* _spriteSheet, Bool _animated)
 	else
 	{
 		CREATEPOINTER(sprite, CStaticSprite);
+		assert(sprite);
 	}
 
 	VALIDATE(sprite->Initialise(_spriteSheet));

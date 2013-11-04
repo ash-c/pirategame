@@ -51,7 +51,7 @@ namespace Papyrus
 		* @param	_fDelta			Time since last process.
 		* @return	Returns void.
 		*/
-		void		Process(Float32 _fDelta);
+		void		Process(Float32 _delta);
 
 		/*
 		* Renders required logging elements to screen.
@@ -102,7 +102,7 @@ namespace Papyrus
 		* @param	What to set the debug display status too.
 		* @return	Returns the display status of screen logging.
 		*/
-		Bool		ToggleScreenLogging();
+		Bool		ToggleConsole();
 
 		/*
 		* Tracks the given value, and displays it permanently on screen.
@@ -181,8 +181,8 @@ namespace Papyrus
 }
 
 // Some macros to make writing more convenient
-#define PY_WRITETOFILE(text) Papyrus::Logger::WriteToFile((text), NULL);
-#define PY_WRITETOSCREEN(text) Papyrus::Logger::WriteToScreen((text), NULL);
-#define PY_WRITETOCONSOLE(text) Papyrus::Logger::WriteToConsole((text), NULL);
+#define PY_WRITETOFILE(text) Papyrus::Logger::WriteToFile(text, NULL);
+#define PY_WRITETOSCREEN(text) Papyrus::Logger::WriteToScreen(text, NULL);
+#define PY_WRITETOCONSOLE(text) Papyrus::Logger::WriteToConsole(text, NULL);
 
 #endif // __PAPYURS_LOGGER_H__

@@ -43,6 +43,10 @@ Bool Renderer::CSDLRenderer::Initialise(Int32 _width, Int32 _height, Int8* _titl
 		return false;
 	}
 
+	SDL_Surface* icon = IMG_Load("data/icon.png");
+	SDL_SetWindowIcon(m_Window, icon);
+	SDL_FreeSurface(icon);
+
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	if (nullptr == m_Renderer)
 	{
