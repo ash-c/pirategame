@@ -12,7 +12,7 @@ Timer::CTimer* Core::timer = 0;
 Bool Core::Initialise()
 {
 	FileParser::CIniparser setup;
-	setup.Initialise("data/setup.ini");
+	setup.Initialise("data/papyrus/setup.ini");
 	setup.Load();
 
 	Int32 width, height, numParsers;
@@ -28,29 +28,28 @@ Bool Core::Initialise()
 	setup.Release();
 
 	VALIDATE(Logger::Initialise());
-	VALIDATE(Logger::InitFile("data/startup.log"));
-	PY_WRITETOFILE("Initialisation started\n");
-	PY_WRITETOFILE("Logging initialised\n");
+	VALIDATE(Logger::InitFile("data/papyrus/startup.log"));
+	PY_WRITETOFILE("Initialisation started");
+	PY_WRITETOFILE("Logging initialised");
 
 	FileParser::maxNumParsers = numParsers;
 	VALIDATE(FileParser::Initialise());
-	PY_WRITETOFILE("File parsing initialised\n");
+	PY_WRITETOFILE("File parsing initialised");
 
 	VALIDATE(Renderer::Initialise(width, height, title, fullscreen));
 	CLEANDELETE(title); // This is needed as the parser allocates memory on the heap.
-	PY_WRITETOFILE("Renderer initialised\n");
+	PY_WRITETOFILE("Renderer initialised");
 
 	VALIDATE(Sprite::Initialise());
-	PY_WRITETOFILE("Sprites initialised\n");
+	PY_WRITETOFILE("Sprites initialised");
 
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
-	PY_WRITETOFILE("Timer initialised\n");
-
-	PY_WRITETOFILE("Core Initialised");
+	PY_WRITETOFILE("Timer initialised");
 
 	timer->Start();
 
+	Logger::Write("Core init success", NULL);
 	return true;
 }
 
@@ -72,9 +71,9 @@ Bool Core::ShutDown()
 {
 	CLEANDELETE(timer);
 	VALIDATE(Sprite::ShutDown());
-	VALIDATE(Logger::ShutDown());
 	VALIDATE(FileParser::ShutDown());
 	VALIDATE(Renderer::ShutDown());
+	VALIDATE(Logger::ShutDown());
 	SDL_Quit();
 	return true;
 }

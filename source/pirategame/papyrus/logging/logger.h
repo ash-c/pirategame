@@ -175,14 +175,26 @@ namespace Papyrus
 		*/
 		void		StopTracking(const Int8* _tag);
 
+		/*
+		* Logs an SDL error.
+		*
+		* @param	_msg			Message to associate with the error.
+		* @return	Returns void.
+		*/
+		Bool		LogSDLError(const Int32 _code, const Int8* _msg);
+
+		void SendInputToConsole(SDL_Event _e);
+
 		// Array that holds pointers to the active log targets.
 		extern ILogType* logTargets[MAX_TYPE];
 	}
 }
 
-// Some macros to make writing more convenient
+// Some macros to assist with logging
 #define PY_WRITETOFILE(text) Papyrus::Logger::WriteToFile(text, NULL);
 #define PY_WRITETOSCREEN(text) Papyrus::Logger::WriteToScreen(text, NULL);
 #define PY_WRITETOCONSOLE(text) Papyrus::Logger::WriteToConsole(text, NULL);
+
+#define PY_SDLASSERT(code, msg) Papyrus::Logger::LogSDLError(code, msg)
 
 #endif // __PAPYURS_LOGGER_H__

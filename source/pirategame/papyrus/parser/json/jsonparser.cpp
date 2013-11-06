@@ -4,38 +4,42 @@
 #include <iostream>
 
 // Local Includes
-#include "..\parser.h"
+#include "../parser.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/filestream.h"
 #include "rapidjson/stringbuffer.h"
 
+#include "../logging/logger.h"
+
+using namespace Papyrus;
+
 // This Includes
 #include "jsonparser.h"
 
-Papyrus::FileParser::CJSONParser::CJSONParser()
+FileParser::CJSONParser::CJSONParser()
 {
 	
 }
 
-Papyrus::FileParser::CJSONParser::~CJSONParser()
+FileParser::CJSONParser::~CJSONParser()
 {	
 	Papyrus::FileParser::FlushFile(this, false);
 }
 
 
-Bool Papyrus::FileParser::CJSONParser::Initialise(const Int8* _path, Bool _create)
+Bool FileParser::CJSONParser::Initialise(const Int8* _path, Bool _create)
 {
 	m_json.SetObject();
 
 	return Papyrus::FileParser::IParser::Initialise(_path, _create);
 }
 
-Bool Papyrus::FileParser::CJSONParser::ShutDown()
+Bool FileParser::CJSONParser::ShutDown()
 {
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::Load(const Int8* _path)
+Bool FileParser::CJSONParser::Load(const Int8* _path)
 {
 	if (0 != _path && 0 == m_filePath) 
 	{
@@ -65,13 +69,13 @@ Bool Papyrus::FileParser::CJSONParser::Load(const Int8* _path)
 	}
 	else
 	{
-//#pragma todo("Error logging here.")
+		Logger::Write("FileParser:: Unable to open %s for reading", _path);
 		m_filestream.close();
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::Save(const Int8* _path)
+Bool FileParser::CJSONParser::Save(const Int8* _path)
 {
 	if (0 != _path && 0 == m_filePath) 
 	{
@@ -90,17 +94,19 @@ Bool Papyrus::FileParser::CJSONParser::Save(const Int8* _path)
 	if (m_filestream.is_open())
 	{
 		string contents = buffer.GetString();
-		//cout << contents << endl;
 		m_filestream << contents;
 		m_filestream.close();
 		return true;
 	}
-
-	m_filestream.close();
-	return false;
+	else 
+	{
+		Logger::Write("FileParser:: Unable to open %s for writing", _path);
+		m_filestream.close();
+		return false;
+	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const Bool _value, const Int8* _section)
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, const Bool _value, const Int8* _section)
 {
 	if (!m_json.HasMember(_key))
 	{
@@ -113,7 +119,7 @@ Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const Bool _va
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const Int8* _value, const Int8* _section)
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, const Int8* _value, const Int8* _section)
 {
 	if (!m_json.HasMember(_key))
 	{
@@ -126,7 +132,7 @@ Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const Int8* _v
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, Int32 _value, const Int8* _section)
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, Int32 _value, const Int8* _section)
 {
 	if (!m_json.HasMember(_key))
 	{
@@ -139,7 +145,7 @@ Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, Int32 _value, 
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, UInt32 _value, const Int8* _section)
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, UInt32 _value, const Int8* _section)
 {
 	if (!m_json.HasMember(_key))
 	{
@@ -152,7 +158,7 @@ Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, UInt32 _value,
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, Float32 _value, const Int8* _section)
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, Float32 _value, const Int8* _section)
 {
 	// Casting to Float64 as rapidjson deals with doubles, not floats.
 	if (!m_json.HasMember(_key))
@@ -166,7 +172,7 @@ Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, Float32 _value
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
 {
 	rapidjson::Value& arr = m_json[_key].SetArray();
 	rapidjson::Document::AllocatorType& allocator = m_json.GetAllocator();
@@ -175,7 +181,7 @@ Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR3&
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
 {
 	rapidjson::Value& arr = m_json[_key].SetArray();
 	rapidjson::Document::AllocatorType& allocator = m_json.GetAllocator();
@@ -184,12 +190,12 @@ Bool Papyrus::FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR4&
 	return true;
 }
 
-Bool Papyrus::FileParser::CJSONParser::DeleteValue(const Int8* _key, const Int8* _section)
+Bool FileParser::CJSONParser::DeleteValue(const Int8* _key, const Int8* _section)
 {
 	return m_json.RemoveMember(_key);
 }
 
-Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Bool& _value, const Int8* _section)
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, Bool& _value, const Int8* _section)
 {
 	if (m_json[_key].IsBool())
 	{
@@ -198,11 +204,12 @@ Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Bool& _value, 
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Int8** _value, const Int8* _section)
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, Int8** _value, const Int8* _section)
 {
 	if (m_json[_key].IsString())
 	{
@@ -214,11 +221,12 @@ Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Int8** _value,
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Int32& _value, const Int8* _section)
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, Int32& _value, const Int8* _section)
 {
 	if (m_json[_key].IsInt())
 	{
@@ -227,11 +235,12 @@ Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Int32& _value,
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, UInt32& _value, const Int8* _section)
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, UInt32& _value, const Int8* _section)
 {
 	if (m_json[_key].IsUint())
 	{
@@ -240,11 +249,12 @@ Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, UInt32& _value
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Float32& _value, const Int8* _section)
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, Float32& _value, const Int8* _section)
 {
 	if (m_json[_key].IsDouble())
 	{
@@ -253,11 +263,12 @@ Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, Float32& _valu
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR3& _value, const Int8* _section)
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR3& _value, const Int8* _section)
 {
 	if (m_json[_key].IsArray())
 	{
@@ -272,11 +283,12 @@ Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR3& _valu
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR4& _value, const Int8* _section)
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR4& _value, const Int8* _section)
 {
 	if (m_json[_key].IsArray())
 	{
@@ -292,6 +304,7 @@ Bool Papyrus::FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR4& _valu
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
 		return false;
 	}
 }

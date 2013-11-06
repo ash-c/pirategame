@@ -11,6 +11,8 @@ Logger::CLogConsole::CLogConsole()
 	: m_font(0)
 	, m_surface(0)
 	, m_texture(0)
+	, m_height(0)
+	, m_width(0)
 	, m_active(false)
 {
 	m_col.r = 255;
@@ -36,7 +38,7 @@ Logger::CLogConsole::~CLogConsole()
 
 Bool Logger::CLogConsole::Initialise(const Int8* _path)
 {
-	m_font = TTF_OpenFont("data/fonts/Oxygen-Regular.ttf", 18);
+	m_font = TTF_OpenFont("data/papyrus/fonts/Oxygen-Regular.ttf", SM_FONTSIZE);
 	if (nullptr == m_font)
 	{
 		return false;
@@ -65,11 +67,27 @@ void Logger::CLogConsole::Process(Float32 _fDelta)
 {
 	if (m_active)
 	{
-		m_surface = SDL_CreateRGBSurface(0, 1600, 450, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+		if (0 == m_height && 0 == m_width)
+		{
+			m_width = Renderer::activeRenderer->GetWidth();
+			m_height = Renderer::activeRenderer->GetHeight()/2;
+		}
+
+		m_surface = SDL_CreateRGBSurface(0, m_width, m_height, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
 		SDL_FillRect(m_surface, NULL, 0x00000088); // Transparent black
 
 		SDL_Surface* text = 0;
-		m_textPos.y = 450 - 50;
+		m_textPos.y = static_cast<Int32>(m_height - (SM_FONTSIZE * 1.5));
+
+		if (!m_input.isEmpty())
+		{
+			text = TTF_RenderText_Blended(m_font, m_input.buffer, m_col);
+			SDL_BlitSurface(text, NULL, m_surface, &m_textPos);
+			SDL_FreeSurface(text);
+		}
+
+		m_textPos.y -= static_cast<Int32>(SM_FONTSIZE * 1.5);
+
 		for (Int16 i = (SM_MAXDISPLAY - 1); i >= 0; --i)
 		{
 			if (0 != m_displayText[i])
@@ -77,7 +95,7 @@ void Logger::CLogConsole::Process(Float32 _fDelta)
 				text = TTF_RenderText_Blended(m_font, m_displayText[i], m_col);
 				SDL_BlitSurface(text, NULL, m_surface, &m_textPos);
 				SDL_FreeSurface(text);
-				m_textPos.y -= 20;
+				m_textPos.y -= SM_FONTSIZE;
 			}
 		}
 
@@ -132,4 +150,136 @@ Bool Logger::CLogConsole::Toggle()
 {
 	m_active = !m_active;
 	return m_active;
+}
+
+void Logger::CLogConsole::Input(SDL_Event _e)
+{
+	if (m_active)
+	{
+		if (_e.type == SDL_KEYDOWN)
+		{
+			switch (_e.key.keysym.sym)
+			{
+			case SDLK_0:
+				m_input.push('0');
+				break;
+			case SDLK_1:
+				m_input.push('1');
+				break;
+			case SDLK_2:
+				m_input.push('2');
+				break;
+			case SDLK_3:
+				m_input.push('3');
+				break;
+			case SDLK_4:
+				m_input.push('4');
+				break;
+			case SDLK_5:
+				m_input.push('5');
+				break;
+			case SDLK_6:
+				m_input.push('6');
+				break;
+			case SDLK_7:
+				m_input.push('7');
+				break;
+			case SDLK_8:
+				m_input.push('8');
+				break;
+			case SDLK_9:
+				m_input.push('9');
+				break;
+			case SDLK_a:
+				m_input.push('a');
+				break;
+			case SDLK_b:
+				m_input.push('b');
+				break;
+			case SDLK_c:
+				m_input.push('c');
+				break;
+			case SDLK_d:
+				m_input.push('d');
+				break;
+			case SDLK_e:
+				m_input.push('e');
+				break;
+			case SDLK_f:
+				m_input.push('f');
+				break;
+			case SDLK_g:
+				m_input.push('g');
+				break;
+			case SDLK_h:
+				m_input.push('h');
+				break;
+			case SDLK_i:
+				m_input.push('i');
+				break;
+			case SDLK_j:
+				m_input.push('j');
+				break;
+			case SDLK_k:
+				m_input.push('k');
+				break;
+			case SDLK_l:
+				m_input.push('l');
+				break;
+			case SDLK_m:
+				m_input.push('m');
+				break;
+			case SDLK_n:
+				m_input.push('n');
+				break;
+			case SDLK_o:
+				m_input.push('o');
+				break;
+			case SDLK_p:
+				m_input.push('p');
+				break;
+			case SDLK_q:
+				m_input.push('q');
+				break;
+			case SDLK_r:
+				m_input.push('r');
+				break;
+			case SDLK_s:
+				m_input.push('s');
+				break;
+			case SDLK_t:
+				m_input.push('t');
+				break;
+			case SDLK_u:
+				m_input.push('u');
+				break;
+			case SDLK_v:
+				m_input.push('v');
+				break;
+			case SDLK_w:
+				m_input.push('w');
+				break;
+			case SDLK_x:
+				m_input.push('x');
+				break;
+			case SDLK_y:
+				m_input.push('y');
+				break;
+			case SDLK_z:
+				m_input.push('z');
+				break;
+			case SDLK_RETURN:
+			case SDLK_RETURN2:
+			case SDLK_KP_ENTER:
+				if (!m_input.isEmpty())
+				{
+					Write(m_input.buffer);
+					m_input.clear();
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }

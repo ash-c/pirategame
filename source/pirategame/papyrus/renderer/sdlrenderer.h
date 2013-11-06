@@ -30,6 +30,9 @@ namespace Papyrus
 			virtual Bool	LoadTexture(Int8* _path, SDL_Texture** _result);
 			virtual Bool	LoadTexture(SDL_Surface* _surface, SDL_Texture** _result);
 
+			virtual Int32	GetWidth() const;
+			virtual Int32	GetHeight() const;
+
 			// Member Variables
 		protected:
 			SDL_Window*		m_Window;

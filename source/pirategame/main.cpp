@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 
 	if (!game.Initialise())
 	{
-		// Failed to initialise.
+		// Failed to initialise. Should do some windows based logging of some sort?
 		return 1;
 	}
 

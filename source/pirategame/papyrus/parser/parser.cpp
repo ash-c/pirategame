@@ -116,7 +116,6 @@ IParser* Papyrus::FileParser::CreateParser(Int8* _path)
 	}
 	CLEANARRAY(lower);
 
-	assert(newParser && "Failed to create IParser pointer");
 	for (Int16 i = 0; i < maxNumParsers; ++i)
 	{
 		if (0 == parserArray[i])
@@ -170,10 +169,7 @@ IParser* Papyrus::FileParser::FlushFile(IParser* _parser, Bool _delete)
 			{
 				if (_delete)
 				{
-					parserArray[i]->Release();
-					parserArray[i]->ShutDown();
-					delete parserArray[i];
-					parserArray[i] = 0;
+					PY_RELEASE(parserArray[i]);
 				}
 				else
 				{

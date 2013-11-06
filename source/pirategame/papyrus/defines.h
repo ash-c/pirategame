@@ -61,12 +61,12 @@ typedef struct _TVECTOR4
 
 #define VALIDATE(a) if (!a) return false;
 
-#define CREATEPOINTER(Pointer,Class) if ((Pointer) == 0) { (Pointer) = new (Class); assert(Pointer); }
+#define CREATEPOINTER(Pointer,Class) if (Pointer == 0) { Pointer = new Class; assert(Pointer); }
 #define CLEANRELEASE(Object) if (Object != 0) { Object->Release(); }
 #define CLEANDELETE(Object) if (Object != 0) { delete Object; Object = 0; }
 #define CLEANARRAY(Object) if (Object != 0) { delete[] Object; Object = 0; }
 
-#define PY_RELEASE(Object) if (0 != Object) { Object->Release(); Object->ShutDown(); Object = 0; }
+#define PY_RELEASE(Object) if (0 != Object) { Object->Release(); Object->ShutDown(); delete Object; Object = 0; }
 
 #define CLEANVECTOR(VectorObject) for (UInt32 i = 0; i < VectorObject.size(); ++i)\
 	{\

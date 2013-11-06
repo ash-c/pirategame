@@ -37,7 +37,7 @@ Bool Logger::CLogToScreen::Initialise(const Int8* _path)
 		return false;
 	}
 
-	m_font = TTF_OpenFont("data/fonts/Oxygen-Regular.ttf", 18);
+	m_font = TTF_OpenFont("data/papyrus/fonts/Oxygen-Regular.ttf", SM_FONTSIZE);
 	if (nullptr == m_font)
 	{
 		return false;
@@ -116,7 +116,7 @@ void Logger::CLogToScreen::Process(Float32 _fDelta)
 				SDL_BlitSurface(text, NULL, m_surface, &m_pos);
 				SDL_FreeSurface(text);
 				messageAdded = true;
-				m_pos.y += 20;
+				m_pos.y += SM_FONTSIZE;
 			}
 		}
 	
@@ -129,7 +129,7 @@ void Logger::CLogToScreen::Process(Float32 _fDelta)
 				SDL_BlitSurface(text, NULL, m_surface, &m_pos);
 				SDL_FreeSurface(text);
 				messageAdded = true;
-				m_pos.y += 20;
+				m_pos.y += SM_FONTSIZE;
 			}
 		}
 	

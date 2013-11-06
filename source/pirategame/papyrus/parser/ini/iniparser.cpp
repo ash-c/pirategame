@@ -6,36 +6,39 @@
 using namespace std;
 
 // Local Includes
-#include "..\parser.h"
+#include "../parser.h"
+#include "../logging/logger.h"
+
+using namespace Papyrus;
 
 // This Include
 #include "iniparser.h"
 
 // Implementation
 
-Papyrus::FileParser::CIniparser::CIniparser()
+FileParser::CIniparser::CIniparser()
 {	
 }
 
-Papyrus::FileParser::CIniparser::~CIniparser()
+FileParser::CIniparser::~CIniparser()
 {	
-	Papyrus::FileParser::FlushFile(this, false);
+	FileParser::FlushFile(this, false);
 }
 
-Bool Papyrus::FileParser::CIniparser::Initialise(const Int8* _path, Bool _create)
+Bool FileParser::CIniparser::Initialise(const Int8* _path, Bool _create)
 {
 	m_mapPairs.clear();
 
-	return Papyrus::FileParser::IParser::Initialise(_path, _create);
+	return FileParser::IParser::Initialise(_path, _create);
 }
 
-Bool Papyrus::FileParser::CIniparser::ShutDown()
+Bool FileParser::CIniparser::ShutDown()
 {
 	m_mapPairs.clear();
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::Load(const Int8* _path)
+Bool FileParser::CIniparser::Load(const Int8* _path)
 {
 	if (0 != _path && 0 == m_filePath) 
 	{
@@ -108,12 +111,12 @@ Bool Papyrus::FileParser::CIniparser::Load(const Int8* _path)
 	else
 	{
 		m_filestream.close();
-//#pragma todo("Error logging here.")
+		Logger::Write("FileParser:: Unable to open %s for reading", _path);
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::Save(const Int8* _path)
+Bool FileParser::CIniparser::Save(const Int8* _path)
 {
 	if (0 != _path && 0 == m_filePath) 
 	{
@@ -173,12 +176,13 @@ Bool Papyrus::FileParser::CIniparser::Save(const Int8* _path)
 	}
 	else
 	{
+		m_filestream.close();
+		Logger::Write("FileParser:: Unable to open %s for writing", _path);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, const Bool _value, const Int8* _section)
+Bool FileParser::CIniparser::AddValue(const Int8* _key, const Bool _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	Int8* b = new Int8[MAX_BUFFER];
@@ -189,7 +193,7 @@ Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, const Bool _val
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _section, const Int8* _key, const Int8* _value)
+Bool FileParser::CIniparser::AddValue(const Int8* _section, const Int8* _key, const Int8* _value)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	m_mapPairs[CreateMapKey(string(_section), string(_key))] = string(_value);
@@ -197,7 +201,7 @@ Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _section, const Int8*
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, Int32 _value, const Int8* _section)
+Bool FileParser::CIniparser::AddValue(const Int8* _key, Int32 _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	Int8* integer = new Int8[MAX_BUFFER];
@@ -208,7 +212,7 @@ Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, Int32 _value, c
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, UInt32 _value, const Int8* _section)
+Bool FileParser::CIniparser::AddValue(const Int8* _key, UInt32 _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	Int8* integer = new Int8[MAX_BUFFER];
@@ -219,7 +223,7 @@ Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, UInt32 _value, 
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, Float32 _value, const Int8* _section)
+Bool FileParser::CIniparser::AddValue(const Int8* _key, Float32 _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	Int8* floatValue = new Int8[MAX_BUFFER];
@@ -230,7 +234,7 @@ Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, Float32 _value,
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
+Bool FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	Int8* vector = new Int8[MAX_BUFFER];
@@ -241,7 +245,7 @@ Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR3& 
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
+Bool FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	Int8* vector = new Int8[MAX_BUFFER];
@@ -252,7 +256,7 @@ Bool Papyrus::FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR4& 
 	return true;
 }
 
-Bool Papyrus::FileParser::CIniparser::DeleteValue(const Int8* _key, const Int8* _section)
+Bool FileParser::CIniparser::DeleteValue(const Int8* _key, const Int8* _section)
 {	
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -266,7 +270,7 @@ Bool Papyrus::FileParser::CIniparser::DeleteValue(const Int8* _key, const Int8* 
 	return false;
 }
 
-Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Bool& _rbValue, const Int8* _section)
+Bool FileParser::CIniparser::GetValue(const Int8* _key, Bool& _rbValue, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -295,13 +299,12 @@ Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Bool& _rbValue,
 	}
 	else
 	{
-		_rbValue = false;
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Int8** _kcpValue, const Int8* _section)
+Bool FileParser::CIniparser::GetValue(const Int8* _key, Int8** _kcpValue, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -318,12 +321,12 @@ Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Int8** _kcpValu
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Int32& _riValue, const Int8* _section)
+Bool FileParser::CIniparser::GetValue(const Int8* _key, Int32& _riValue, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -337,12 +340,12 @@ Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Int32& _riValue
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, UInt32& _rufValue, const Int8* _section)
+Bool FileParser::CIniparser::GetValue(const Int8* _key, UInt32& _rufValue, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -355,12 +358,12 @@ Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, UInt32& _rufVal
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Float32& _rfValue, const Int8* _section)
+Bool FileParser::CIniparser::GetValue(const Int8* _key, Float32& _rfValue, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -373,12 +376,12 @@ Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, Float32& _rfVal
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, VECTOR3& _rv3Value, const Int8* _section)
+Bool FileParser::CIniparser::GetValue(const Int8* _key, VECTOR3& _rv3Value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -416,12 +419,12 @@ Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, VECTOR3& _rv3Va
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, VECTOR4& _rv4Value, const Int8* _section)
+Bool FileParser::CIniparser::GetValue(const Int8* _key, VECTOR4& _rv4Value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	string strSection = _section;
@@ -466,12 +469,12 @@ Bool Papyrus::FileParser::CIniparser::GetValue(const Int8* _key, VECTOR4& _rv4Va
 	}
 	else
 	{
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
 		return false;
-//#pragma todo("Error logging here.")
 	}
 }
 
-string Papyrus::FileParser::CIniparser::CreateMapKey(string& _strSection, string& _strKey)
+string FileParser::CIniparser::CreateMapKey(string& _strSection, string& _strKey)
 {
 	return(_strSection + "|" + _strKey);
 }

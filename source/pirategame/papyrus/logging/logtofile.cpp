@@ -26,15 +26,18 @@ Bool Logger::CLogToFile::Initialise(const Int8* _path)
 Bool Logger::CLogToFile::ShutDown()
 {
 	VALIDATE(SDL_RWclose(m_file));
-	assert(m_file);
 	return true;
 }
 
 void Logger::CLogToFile::Write(Int8* _msg)
 {
-	size_t length = SDL_strlen(_msg);
-	if (SDL_RWwrite(m_file, _msg, 1, length) != length)
+	size_t length = SDL_strlen(_msg) + 2;
+	Int8* newMsg = new Int8[length];
+	SDL_snprintf(newMsg, length, "%s\n", _msg);
+	length = SDL_strlen(newMsg);
+	if (SDL_RWwrite(m_file, newMsg, 1, length) != length)
 	{
-#pragma todo("Error logging here")
+		assert("Failed to write to file");
 	}
+	CLEANARRAY(newMsg);
 }

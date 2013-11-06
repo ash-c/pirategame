@@ -4,36 +4,40 @@
 #include <iostream>
 
 // Local Includes
-#include "..\parser.h"
-#include "rapidxml\rapidxml_print.hpp"
+#include "../parser.h"
+#include "rapidxml/rapidxml_print.hpp"
+
+#include "../logging/logger.h"
+
+using namespace Papyrus;
 
 // This Includes
 #include "xmlparser.h"
 
-Papyrus::FileParser::CXMLParser::CXMLParser()
+FileParser::CXMLParser::CXMLParser()
 {
 	
 }
 
-Papyrus::FileParser::CXMLParser::~CXMLParser()
+FileParser::CXMLParser::~CXMLParser()
 {	
 	Papyrus::FileParser::FlushFile(this, false);
 }
 
 
-Bool Papyrus::FileParser::CXMLParser::Initialise(const Int8* _path, Bool _create)
+Bool FileParser::CXMLParser::Initialise(const Int8* _path, Bool _create)
 {
 	m_xml.clear();
-	return Papyrus::FileParser::IParser::Initialise(_path, _create);
+	return FileParser::IParser::Initialise(_path, _create);
 }
 
-Bool Papyrus::FileParser::CXMLParser::ShutDown()
+Bool FileParser::CXMLParser::ShutDown()
 {
 	m_xml.clear();
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::Load(const Int8* _path)
+Bool FileParser::CXMLParser::Load(const Int8* _path)
 {
 	if (0 != _path && 0 == m_filePath) 
 	{
@@ -63,13 +67,13 @@ Bool Papyrus::FileParser::CXMLParser::Load(const Int8* _path)
 	}
 	else
 	{
-//#pragma todo("Error logging here.")
+		Logger::Write("FileParser:: Unable to load %s for reading", _path);
 		m_filestream.close();
 		return false;
 	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::Save(const Int8* _path)
+Bool FileParser::CXMLParser::Save(const Int8* _path)
 {
 	if (0 != _path && 0 == m_filePath) 
 	{
@@ -88,12 +92,15 @@ Bool Papyrus::FileParser::CXMLParser::Save(const Int8* _path)
 		m_filestream.close();
 		return true;
 	}
-
-	m_filestream.close();
-	return false;
+	else
+	{
+		Logger::Write("FileParser:: Unable to load %s for writing", _path);
+		m_filestream.close();
+		return false;
+	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, const Bool _value, const Int8* _section)
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, const Bool _value, const Int8* _section)
 {
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%i", _value);
@@ -102,14 +109,14 @@ Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, const Bool _val
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, const Int8* _value, const Int8* _section)
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, const Int8* _value, const Int8* _section)
 {
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_value));
 	m_xml.append_node(node);
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, Int32 _value, const Int8* _section)
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, Int32 _value, const Int8* _section)
 {
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%i", _value);
@@ -118,7 +125,7 @@ Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, Int32 _value, c
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, UInt32 _value, const Int8* _section)
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, UInt32 _value, const Int8* _section)
 {
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%u", _value);
@@ -127,7 +134,7 @@ Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, UInt32 _value, 
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, Float32 _value, const Int8* _section)
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, Float32 _value, const Int8* _section)
 {
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%f", _value);
@@ -136,7 +143,7 @@ Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, Float32 _value,
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
 {
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_key));
 	m_xml.append_node(node);
@@ -150,7 +157,7 @@ Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR3& 
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
 {
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_key));
 	m_xml.append_node(node);
@@ -166,17 +173,18 @@ Bool Papyrus::FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR4& 
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::DeleteValue(const Int8* _key, const Int8* _section)
+Bool FileParser::CXMLParser::DeleteValue(const Int8* _key, const Int8* _section)
 {
 	m_xml.remove_node(m_xml.first_node(_key));
 	return true;
 }
 
-Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Bool& _value, const Int8* _section)
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, Bool& _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);
 	if (nullptr == node)
 	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
 		return false;
 	}
 	else
@@ -186,11 +194,12 @@ Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Bool& _value, c
 	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Int8** _value, const Int8* _section)
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, Int8** _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);
 	if (nullptr == node)
 	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
 		return false;
 	}
 	else
@@ -202,11 +211,12 @@ Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Int8** _value, 
 	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Int32& _value, const Int8* _section)
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, Int32& _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);
 	if (nullptr == node)
 	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
 		return false;
 	}
 	else
@@ -216,11 +226,12 @@ Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Int32& _value, 
 	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, UInt32& _value, const Int8* _section)
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, UInt32& _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);
 	if (nullptr == node)
 	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
 		return false;
 	}
 	else
@@ -230,11 +241,12 @@ Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, UInt32& _value,
 	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Float32& _value, const Int8* _section)
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, Float32& _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);
 	if (nullptr == node)
 	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
 		return false;
 	}
 	else
@@ -244,11 +256,12 @@ Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, Float32& _value
 	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, VECTOR3& _value, const Int8* _section)
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, VECTOR3& _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);
 	if (nullptr == node)
 	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
 		return false;
 	}
 	else
@@ -260,11 +273,12 @@ Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, VECTOR3& _value
 	}
 }
 
-Bool Papyrus::FileParser::CXMLParser::GetValue(const Int8* _key, VECTOR4& _value, const Int8* _section)
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, VECTOR4& _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);
 	if (nullptr == node)
 	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
 		return false;
 	}
 	else

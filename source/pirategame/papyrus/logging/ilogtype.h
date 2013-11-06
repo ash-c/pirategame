@@ -5,6 +5,7 @@
 #define __PAPYRUS_LOGGER_ILOGTYPE_H__
 
 // Library Includes
+#include <SDL.h>
 
 // Local Includes
 #include "../core/utility/refcount.h"
@@ -51,6 +52,8 @@ namespace Papyrus
 			virtual Bool		Toggle() { return true; }
 			virtual void		TrackValue(void* _value, ETrackType _type, const Int8* _tag) { }			
 			virtual void		StopTracking(const Int8* _tag) { }
+
+			virtual void Input(SDL_Event _e) { };
 
 			// Member Variables
 		protected:

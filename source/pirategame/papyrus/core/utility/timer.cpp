@@ -32,7 +32,6 @@ Papyrus::Timer::CTimer::~CTimer()
 Bool Papyrus::Timer::CTimer::Initialise()
 {
 	Papyrus::Logger::TrackValue((Float32*)(&m_FPS), "FPS");
-	Papyrus::Logger::Write("Timer initialised", NULL);
 		
 	return true;
 }

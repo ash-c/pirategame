@@ -14,7 +14,6 @@ Bool Renderer::Initialise(Int32 _width, Int32 _height, Int8* _title, Bool _fullS
 {
 	assert(activeRenderer == 0);
 	CREATEPOINTER(activeRenderer, CSDLRenderer);
-	assert(activeRenderer && "Failed to create the SDL renderer");
 
 	VALIDATE(activeRenderer->Initialise(_width, _height, _title, _fullScreen));
 	activeRenderer->AddRef();
@@ -23,10 +22,8 @@ Bool Renderer::Initialise(Int32 _width, Int32 _height, Int8* _title, Bool _fullS
 
 Bool Renderer::ShutDown()
 {
-	assert(activeRenderer != 0);
-	
-	activeRenderer->Release();
-	return activeRenderer->ShutDown();
+	PY_RELEASE(activeRenderer);
+	return true;
 }
 
 void Renderer::Clear()

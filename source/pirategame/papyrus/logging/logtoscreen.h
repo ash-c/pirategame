@@ -46,11 +46,12 @@ namespace Papyrus
 
 			// Member Variables
 		private:
-			static const Int32	SM_MAXTRACKED = 10;
-			static const Int32	SM_MAXTEMP = 15;
-			static const Int32	SM_DEFAULT_X = 10;
-			static const Int32	SM_DEFAULT_Y = 10;
-			static const Int32	SM_TIMER = 3;
+			static const Int16	SM_MAXTRACKED = 10;
+			static const Int16	SM_MAXTEMP = 15;
+			static const Int16	SM_DEFAULT_X = 10;
+			static const Int16	SM_DEFAULT_Y = 10;
+			static const Int16	SM_TIMER = 3;
+			static const Int16	SM_FONTSIZE = 18;
 
 			TTF_Font*			m_font;
 			SDL_Surface*		m_surface;

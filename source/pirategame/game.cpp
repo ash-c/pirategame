@@ -32,9 +32,10 @@ Bool CGame::Initialise()
 	m_background = Sprite::CreateSprite("data/spritesheets/background.png", false);
 	assert(m_background);
 	m_background->AddRef();
+	PY_WRITETOFILE("Background created");
 
 	PY_WRITETOFILE("Initialistion complete");
-	Logger::InitFile("data/errors.log");
+	Logger::InitFile("data/papyrus/errors.log");
 
 	return true;
 }
@@ -53,13 +54,11 @@ void CGame::Process(Float32 _delta)
 			case SDLK_BACKQUOTE: // `
 				Logger::ToggleConsole();
 				break;
-			case SDLK_1:
-				PY_WRITETOCONSOLE("Console test message");
-				break;
 			case SDLK_ESCAPE:
 				m_active = false;
 				break;
 			default:
+				Logger::SendInputToConsole(e);
 				break;
 			}
 		}

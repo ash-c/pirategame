@@ -14,13 +14,11 @@ Logger::ILogType* Logger::logTargets[MAX_TYPE];
 Bool Logger::Initialise()
 {
 #ifdef _DEBUG
-	Logger::logTargets[LOG_TO_SCREEN] = new CLogToScreen();
-	assert(Logger::logTargets[LOG_TO_SCREEN]);
+	CREATEPOINTER(Logger::logTargets[LOG_TO_SCREEN], CLogToScreen);
 	VALIDATE(Logger::logTargets[LOG_TO_SCREEN]->Initialise());
 	Logger::logTargets[LOG_TO_SCREEN]->AddRef();
 
-	Logger::logTargets[LOG_TO_CONSOLE] = new CLogConsole();
-	assert(Logger::logTargets[LOG_TO_CONSOLE]);
+	CREATEPOINTER(Logger::logTargets[LOG_TO_CONSOLE], CLogConsole);
 	VALIDATE(Logger::logTargets[LOG_TO_CONSOLE]->Initialise());
 	Logger::logTargets[LOG_TO_CONSOLE]->AddRef();
 #endif // _DEBUG
@@ -43,7 +41,6 @@ Bool Logger::InitFile(const Int8* _path)
 	PY_RELEASE(Logger::logTargets[LOG_TO_FILE]);
 
 	Logger::logTargets[LOG_TO_FILE] = new CLogToFile();
-	assert(Logger::logTargets[LOG_TO_FILE]);
 	VALIDATE(Logger::logTargets[LOG_TO_FILE]->Initialise(_path));
 	Logger::logTargets[LOG_TO_FILE]->AddRef();
 
@@ -181,4 +178,24 @@ void Logger::StopTracking(const Int8* _tag)
 #ifdef _DEBUG
 	Logger::logTargets[LOG_TO_SCREEN]->StopTracking(_tag);
 #endif // _DEBUG
+}
+
+Bool Logger::LogSDLError(const Int32 _code, const Int8* _msg)
+{
+#ifdef _DEBUG
+	assert(!_code && _msg);
+	return false;
+#endif // _DEBUG
+	if (0 != _code)
+	{
+		Logger::WriteToFile("%s failed: %s", _msg, SDL_GetError());
+		return false;
+	}
+
+	return true;
+}
+
+void Logger::SendInputToConsole(SDL_Event _e)
+{
+	Logger::logTargets[LOG_TO_CONSOLE]->Input(_e);
 }
