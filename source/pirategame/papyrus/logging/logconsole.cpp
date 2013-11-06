@@ -3,6 +3,7 @@
 
 // Local Includes
 #include "logconsole.h"
+#include "logger.h"
 #include "../renderer/renderer.h"
 
 using namespace Papyrus;
@@ -161,33 +162,43 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 			switch (_e.key.keysym.sym)
 			{
 			case SDLK_0:
+			case SDLK_KP_0:
 				m_input.push('0');
 				break;
 			case SDLK_1:
+			case SDLK_KP_1:
 				m_input.push('1');
 				break;
 			case SDLK_2:
+			case SDLK_KP_2:
 				m_input.push('2');
 				break;
 			case SDLK_3:
+			case SDLK_KP_3:
 				m_input.push('3');
 				break;
 			case SDLK_4:
+			case SDLK_KP_4:
 				m_input.push('4');
 				break;
 			case SDLK_5:
+			case SDLK_KP_5:
 				m_input.push('5');
 				break;
 			case SDLK_6:
+			case SDLK_KP_6:
 				m_input.push('6');
 				break;
 			case SDLK_7:
+			case SDLK_KP_7:
 				m_input.push('7');
 				break;
 			case SDLK_8:
+			case SDLK_KP_8:
 				m_input.push('8');
 				break;
 			case SDLK_9:
+			case SDLK_KP_9:
 				m_input.push('9');
 				break;
 			case SDLK_a:
@@ -268,13 +279,19 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 			case SDLK_z:
 				m_input.push('z');
 				break;
+			case SDLK_SPACE:
+				m_input.push(' ');
+				break;
+			case SDLK_PERIOD:
+			case SDLK_KP_PERIOD:
+				m_input.push('.');
+				break;
 			case SDLK_RETURN:
 			case SDLK_RETURN2:
 			case SDLK_KP_ENTER:
 				if (!m_input.isEmpty())
 				{
-					Write(m_input.buffer);
-					m_input.clear();
+					InterpretInput();
 				}
 				break;
 			default:
@@ -282,4 +299,18 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 			}
 		}
 	}
+}
+
+void Logger::CLogConsole::InterpretInput()
+{
+	// break input buffer up by looking for first period
+
+	// buffer up to first period is name of lua file, load it
+
+
+
+	luaL_dofile(Logger::luaState, "data/lua/debug.lua");
+
+	Write(m_input.buffer);
+	m_input.clear();
 }

@@ -10,6 +10,12 @@
 #include "../defines.h"
 #include "ilogtype.h"
 
+extern "C" {
+	#include "lua.h"
+	#include "lualib.h"
+	#include "lauxlib.h"
+}
+
 namespace Papyrus
 {
 	namespace Logger
@@ -186,7 +192,9 @@ namespace Papyrus
 		void SendInputToConsole(SDL_Event _e);
 
 		// Array that holds pointers to the active log targets.
-		extern ILogType* logTargets[MAX_TYPE];
+		extern ILogType*	logTargets[MAX_TYPE];
+
+		extern lua_State*	luaState;
 	}
 }
 

@@ -9,7 +9,8 @@
 
 using namespace Papyrus;
 
-Logger::ILogType* Logger::logTargets[MAX_TYPE];
+Logger::ILogType*	Logger::logTargets[MAX_TYPE];
+lua_State*			Logger::luaState = 0;
 
 Bool Logger::Initialise()
 {
@@ -22,12 +23,17 @@ Bool Logger::Initialise()
 	VALIDATE(Logger::logTargets[LOG_TO_CONSOLE]->Initialise());
 	Logger::logTargets[LOG_TO_CONSOLE]->AddRef();
 #endif // _DEBUG
+
+	Logger::luaState = lua_open();
+	luaL_openlibs(Logger::luaState);
 	
 	return true;
 }
 
 Bool Logger::ShutDown()
 {
+	lua_close(Logger::luaState);
+
 	PY_RELEASE(Logger::logTargets[LOG_TO_SCREEN]);
 	PY_RELEASE(Logger::logTargets[LOG_TO_FILE]);
 	PY_RELEASE(Logger::logTargets[LOG_TO_CONSOLE]);
@@ -75,6 +81,7 @@ void Logger::Write(Int8* _format, ...)
 	Logger::logTargets[LOG_TO_SCREEN]->Write(text);
 	Logger::logTargets[LOG_TO_CONSOLE]->Write(text);
 #endif // _DEBUG
+	CLEANARRAY(text);
 }
 
 void Logger::WriteToScreen(Int8* _format, ...)
@@ -86,6 +93,7 @@ void Logger::WriteToScreen(Int8* _format, ...)
 	Int8* text = new Int8[MAX_BUFFER];
 	SDL_vsnprintf(text, MAX_BUFFER, _format, args);
 	Logger::logTargets[LOG_TO_SCREEN]->Write(text);
+	CLEANARRAY(text);
 #endif // _DEBUG
 }
 
@@ -98,6 +106,7 @@ void Logger::WriteToConsole(Int8* _format, ...)
 	Int8* text = new Int8[MAX_BUFFER];
 	SDL_vsnprintf(text, MAX_BUFFER, _format, args);
 	Logger::logTargets[LOG_TO_CONSOLE]->Write(text);
+	CLEANARRAY(text);
 #endif // _DEBUG
 }
 
@@ -111,13 +120,14 @@ void Logger::WriteToFile(Int8* _format, ...)
 		Int8* text = new Int8[MAX_BUFFER];
 		SDL_vsnprintf(text, MAX_BUFFER, _format, args);
 		Logger::logTargets[LOG_TO_FILE]->Write(text);
+		CLEANARRAY(text);
 	}
 }
 
 Bool Logger::ToggleConsole()
 {
 #ifdef _DEBUG
-	Logger::logTargets[LOG_TO_SCREEN]->Toggle();
+	//Logger::logTargets[LOG_TO_SCREEN]->Toggle();
 	return Logger::logTargets[LOG_TO_CONSOLE]->Toggle();
 #else
 	return true;

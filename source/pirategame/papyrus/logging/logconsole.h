@@ -67,6 +67,8 @@ namespace Papyrus
 				}
 			} TInputStore;
 
+			void			InterpretInput();
+
 			// Member Variables
 		private:
 			static const Int16	SM_MAXDISPLAY = 20;

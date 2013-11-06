@@ -94,7 +94,7 @@ Bool FileParser::CIniparser::Load(const Int8* _path)
 						strValue = strValue.substr(FirstQuotes + 1, SecondQuotes - 1);
 					}	
 
-					AddValue(strSection.c_str(), strKey.c_str(), strValue.c_str());
+					AddValue(strKey.c_str(), strValue.c_str(), strSection.c_str());
 				}				
 			}
 			else
@@ -193,7 +193,7 @@ Bool FileParser::CIniparser::AddValue(const Int8* _key, const Bool _value, const
 	return true;
 }
 
-Bool FileParser::CIniparser::AddValue(const Int8* _section, const Int8* _key, const Int8* _value)
+Bool FileParser::CIniparser::AddValue(const Int8* _key, const Int8* _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
 	m_mapPairs[CreateMapKey(string(_section), string(_key))] = string(_value);

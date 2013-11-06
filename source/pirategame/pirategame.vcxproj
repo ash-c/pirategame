@@ -53,15 +53,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir)\pirategame\papyrus\sdl\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\pirategame\papyrus\vld;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\pirategame\papyrus\sdl\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\pirategame\papyrus\vld;$(SolutionDir)\pirategame\papyrus\lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\pirategame\papyrus\sdl\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\pirategame\papyrus\vld;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vld.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\pirategame\papyrus\sdl\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\pirategame\papyrus\vld;$(SolutionDir)\pirategame\papyrus\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vld.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
@@ -75,14 +75,14 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\pirategame\papyrus\sdl\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\pirategame\papyrus\vld;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\pirategame\papyrus\sdl\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\pirategame\papyrus\vld;$(SolutionDir)\pirategame\papyrus\lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\pirategame\papyrus\sdl\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\pirategame\papyrus\vld;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vld.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\pirategame\papyrus\sdl\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\pirategame\papyrus\vld;$(SolutionDir)\pirategame\papyrus\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vld.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
