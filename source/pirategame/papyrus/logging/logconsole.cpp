@@ -303,12 +303,18 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 
 void Logger::CLogConsole::InterpretInput()
 {
+	// sample command: debug.toggle,p1,p2,p3
+	// parameters might need a type definition in front of them? ie: i-p1,b-p2,s-p3 for int,bool,string
+
 	// break input buffer up by looking for first period
 
 	// buffer up to first period is name of lua file, load it
 
+	// buffer after first peroid is name of function in lua file
 
+	// any parameters are comma separated after name of function
 
+	
 	luaL_dofile(Logger::luaState, "data/lua/debug.lua");
 
 	Write(m_input.buffer);
