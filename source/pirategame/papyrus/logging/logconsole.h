@@ -55,6 +55,14 @@ namespace Papyrus
 					++numChars;
 				}
 
+				void backspace()
+				{
+					if (numChars == 0) return;
+
+					--numChars;
+					buffer[numChars] = 0;
+				}
+
 				Bool isEmpty()
 				{
 					return 0 == numChars;

@@ -279,12 +279,18 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 			case SDLK_z:
 				m_input.push('z');
 				break;
+			case SDLK_COMMA:
+				m_input.push(',');
+				break;
 			case SDLK_SPACE:
 				m_input.push(' ');
 				break;
 			case SDLK_PERIOD:
 			case SDLK_KP_PERIOD:
 				m_input.push('.');
+				break;
+			case SDLK_BACKSPACE:
+				m_input.backspace();
 				break;
 			case SDLK_RETURN:
 			case SDLK_RETURN2:
@@ -307,15 +313,29 @@ void Logger::CLogConsole::InterpretInput()
 	// parameters might need a type definition in front of them? ie: i-p1,b-p2,s-p3 for int,bool,string
 
 	// break input buffer up by looking for first period
+	Int8* chr = SDL_strchr(m_input.buffer, '.');
+
+	if (nullptr == chr)
+	{
+		Write("Unknown console input");
+		m_input.clear();
+		return;
+	}
+
+	Int16 peroid = chr - m_input.buffer + 1; 
+	Int8 file[MAX_BUFFER];
+	SDL_strlcpy(file, m_input.buffer, peroid);
 
 	// buffer up to first period is name of lua file, load it
+	Int8 path[MAX_BUFFER];
+	SDL_snprintf(path, MAX_BUFFER, "data/lua/%s.lua", file);
+	luaL_dofile(Logger::luaState, path);
 
-	// buffer after first peroid is name of function in lua file
+	// buffer after first peroid is name of function in lua file, call this function
+	++chr;
 
 	// any parameters are comma separated after name of function
-
-	
-	luaL_dofile(Logger::luaState, "data/lua/debug.lua");
+	++chr;
 
 	Write(m_input.buffer);
 	m_input.clear();
