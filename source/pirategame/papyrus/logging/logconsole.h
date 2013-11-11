@@ -30,7 +30,7 @@ namespace Papyrus
 			virtual void		Process(Float32 _fDelta);
 			virtual void		Render();
 
-			virtual void		Write(Int8* _msg);
+			virtual void		Write(const Int8* _msg);
 
 			virtual Bool		Toggle();
 

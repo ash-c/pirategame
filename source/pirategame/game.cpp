@@ -52,7 +52,7 @@ void CGame::Process(Float32 _delta)
 			switch (e.key.keysym.sym)
 			{
 			case SDLK_BACKQUOTE: // `
-				Logger::ToggleConsole();
+				Logger::ToggleConsole(nullptr);
 				break;
 			case SDLK_ESCAPE:
 				m_active = false;

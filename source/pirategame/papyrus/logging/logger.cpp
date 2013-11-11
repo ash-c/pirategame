@@ -26,6 +26,9 @@ Bool Logger::Initialise()
 
 	Logger::luaState = lua_open();
 	luaL_openlibs(Logger::luaState);
+
+	lua_register(Logger::luaState, "ToggleScreenDebug", ToggleScreenDebug);
+	lua_register(Logger::luaState, "ToggleConsole", ToggleConsole);
 	
 	return true;
 }
@@ -124,14 +127,18 @@ void Logger::WriteToFile(Int8* _format, ...)
 	}
 }
 
-Bool Logger::ToggleConsole()
+Int32 Logger::ToggleConsole(lua_State *L)
+{
+	Logger::logTargets[LOG_TO_CONSOLE]->Toggle();
+	return 0;
+}
+
+Int32 Logger::ToggleScreenDebug(lua_State *L)
 {
 #ifdef _DEBUG
-	//Logger::logTargets[LOG_TO_SCREEN]->Toggle();
-	return Logger::logTargets[LOG_TO_CONSOLE]->Toggle();
-#else
-	return true;
+	Logger::logTargets[LOG_TO_SCREEN]->Toggle();
 #endif // _DEBUG
+	return 0;
 }
 
 void Logger::TrackValue(VECTOR4* _v4, const Int8* _tag)

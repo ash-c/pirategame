@@ -29,7 +29,7 @@ Bool Logger::CLogToFile::ShutDown()
 	return true;
 }
 
-void Logger::CLogToFile::Write(Int8* _msg)
+void Logger::CLogToFile::Write(const Int8* _msg)
 {
 	size_t length = SDL_strlen(_msg) + 2;
 	Int8* newMsg = new Int8[length];

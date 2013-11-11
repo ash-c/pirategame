@@ -47,7 +47,7 @@ namespace Papyrus
 			virtual void		Process(Float32 _fDelta) { }
 			virtual void		Render()  { }
 
-			virtual void		Write(Int8* _msg) = 0;
+			virtual void		Write(const Int8* _msg) = 0;
 
 			virtual Bool		Toggle() { return true; }
 			virtual void		TrackValue(void* _value, ETrackType _type, const Int8* _tag) { }			

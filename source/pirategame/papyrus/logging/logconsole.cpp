@@ -121,7 +121,7 @@ void Logger::CLogConsole::Render()
 	}
 }
 
-void Logger::CLogConsole::Write(Int8* _msg)
+void Logger::CLogConsole::Write(const Int8* _msg)
 {
 	for (Int16 i = 0; i < SM_MAXDISPLAY; ++i)
 	{
@@ -289,6 +289,10 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 			case SDLK_KP_PERIOD:
 				m_input.push('.');
 				break;
+			case SDLK_MINUS:
+			case SDLK_KP_MINUS:
+				m_input.push('-');
+				break;
 			case SDLK_BACKSPACE:
 				m_input.backspace();
 				break;
@@ -309,7 +313,7 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 
 void Logger::CLogConsole::InterpretInput()
 {
-	// sample command: debug.toggle,p1,p2,p3
+	// sample command: debug.toggle,i-p1,s-p2,b-p3
 	// parameters might need a type definition in front of them? ie: i-p1,b-p2,s-p3 for int,bool,string
 
 	// break input buffer up by looking for first period
@@ -332,11 +336,72 @@ void Logger::CLogConsole::InterpretInput()
 	luaL_dofile(Logger::luaState, path);
 
 	// buffer after first peroid is name of function in lua file, call this function
-	++chr;
-
 	// any parameters are comma separated after name of function
 	++chr;
 
-	Write(m_input.buffer);
+	Int8* comma = SDL_strchr(chr, ',');
+	Int8 function[MAX_BUFFER];
+	Int16 numParams = 0;
+	Int16 numResults = 1;
+
+	if (nullptr == comma)
+	{
+		SDL_strlcpy(function, chr, SDL_strlen(chr) + 1);
+	}
+	else
+	{
+		Int16 length = comma - chr + 1;
+		SDL_strlcpy(function, chr, length);
+		chr += length;
+
+		while (nullptr != comma)
+		{
+			++numParams;
+
+			Int8 type[2];
+			SDL_strlcpy(type, chr, 2);
+
+			chr = SDL_strchr(chr, '-');
+			// hyphen needs to exist for command syntax to be correct
+			if (nullptr == chr)
+			{
+				m_input.clear();
+				Write("Invalid command - Parameters need a hyphen separating type and value");
+			}
+			++chr;
+
+			// check for next parameter
+			comma = SDL_strchr(chr, ',');
+			Int8 value[MAX_BUFFER];
+			length = (comma - chr) + 1;
+			SDL_strlcpy(value, chr, length);
+			chr += length;
+
+			if (!SDL_strcmp(type, "i")) // integer value
+			{
+				lua_pushinteger(Logger::luaState, SDL_atoi(value));
+			}
+			else if (!SDL_strcmp(type, "s")) // string value
+			{
+				lua_pushstring(Logger::luaState, value);
+			}
+			else if (!SDL_strcmp(type, "b")) // boolean value
+			{
+				lua_pushboolean(Logger::luaState, !SDL_strcmp(value, "true"));
+			}
+			else // unknown type
+			{
+				m_input.clear();
+				Write("Invalid command - unrecognised parameter type. Acceptable types include: i, s, b, for integer, string, bool");
+			}
+		}
+	}
+	
+	lua_getglobal(Logger::luaState, function);
+	lua_call(Logger::luaState, numParams, numResults);
+
 	m_input.clear();
+	const Int8* text = lua_tolstring(Logger::luaState, -1, NULL);
+	lua_pop(Logger::luaState, 1);
+	Write(text);
 }

@@ -4,6 +4,7 @@
 // Local Includes
 #include "logtoscreen.h"
 #include "../renderer/renderer.h"
+#include "logger.h"
 
 using namespace Papyrus;
 
@@ -176,7 +177,7 @@ void Logger::CLogToScreen::Render()
 	}
 }
 
-void Logger::CLogToScreen::Write(Int8* _msg)
+void Logger::CLogToScreen::Write(const Int8* _msg)
 {
 	if (m_active)
 	{
@@ -194,7 +195,7 @@ void Logger::CLogToScreen::Write(Int8* _msg)
 
 Bool Logger::CLogToScreen::Toggle()
 {
-	m_active = !m_active;
+	m_active = !m_active;	
 	return m_active;
 }
 

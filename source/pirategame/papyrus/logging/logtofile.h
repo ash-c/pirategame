@@ -27,7 +27,7 @@ namespace Papyrus
 			virtual Bool		Initialise(const Int8* _path = 0);
 			virtual Bool		ShutDown();
 
-			virtual void		Write(Int8* _msg);
+			virtual void		Write(const Int8* _msg);
 
 			// Member Variables
 		private:

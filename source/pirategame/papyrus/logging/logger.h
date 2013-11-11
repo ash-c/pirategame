@@ -103,12 +103,18 @@ namespace Papyrus
 		void		WriteToFile(Int8* _format, ...);
 
 		/*
-		* Turns screen debug display on or off.
+		* Turns the console on or off.
 		*
-		* @param	What to set the debug display status too.
-		* @return	Returns the display status of screen logging.
+		* @return	Returns the display status of the consle.
 		*/
-		Bool		ToggleConsole();
+		Int32		ToggleConsole(lua_State *L);
+
+		/*
+		* Turns screen debug display on or off. Called via lua scripting.
+		*
+		* @return	Number of values pushed onto the stack.
+		*/
+		Int32		ToggleScreenDebug(lua_State *L);
 
 		/*
 		* Tracks the given value, and displays it permanently on screen.
