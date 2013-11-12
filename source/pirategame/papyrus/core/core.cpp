@@ -15,12 +15,13 @@ Bool Core::Initialise()
 	setup.Initialise("data/papyrus/setup.ini");
 	setup.Load();
 
-	Int32 width, height, numParsers;
+	Int32 width, height, numParsers, numSprites;
 	Int8* title = 0;
 	Bool fullscreen;
 
 	setup.AddRef();
 	VALIDATE(setup.GetValue("parsers", numParsers, "init"));
+	VALIDATE(setup.GetValue("sprites", numSprites, "init"));
 	VALIDATE(setup.GetValue("width", width, "screen"));
 	VALIDATE(setup.GetValue("height", height, "screen"));
 	VALIDATE(setup.GetValue("fullscreen", fullscreen, "screen"));
@@ -40,6 +41,7 @@ Bool Core::Initialise()
 	CLEANDELETE(title); // This is needed as the parser allocates memory on the heap.
 	PY_WRITETOFILE("Renderer initialised");
 
+	Sprite::maxNumSprites = numSprites;
 	VALIDATE(Sprite::Initialise());
 	PY_WRITETOFILE("Sprites initialised");
 

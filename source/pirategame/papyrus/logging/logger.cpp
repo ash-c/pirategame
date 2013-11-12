@@ -29,6 +29,7 @@ Bool Logger::Initialise()
 
 	lua_register(Logger::luaState, "ToggleScreenDebug", ToggleScreenDebug);
 	lua_register(Logger::luaState, "ToggleConsole", ToggleConsole);
+	lua_register(Logger::luaState, "TestFunction", TestFunction);
 	
 	return true;
 }
@@ -37,9 +38,9 @@ Bool Logger::ShutDown()
 {
 	lua_close(Logger::luaState);
 
-	PY_RELEASE(Logger::logTargets[LOG_TO_SCREEN]);
-	PY_RELEASE(Logger::logTargets[LOG_TO_FILE]);
-	PY_RELEASE(Logger::logTargets[LOG_TO_CONSOLE]);
+	PY_DELETE_RELEASE(Logger::logTargets[LOG_TO_SCREEN]);
+	PY_DELETE_RELEASE(Logger::logTargets[LOG_TO_FILE]);
+	PY_DELETE_RELEASE(Logger::logTargets[LOG_TO_CONSOLE]);
 	
 	return true;
 }
@@ -47,7 +48,7 @@ Bool Logger::ShutDown()
 Bool Logger::InitFile(const Int8* _path)
 {
 	// Clean existing file logging if present.
-	PY_RELEASE(Logger::logTargets[LOG_TO_FILE]);
+	PY_DELETE_RELEASE(Logger::logTargets[LOG_TO_FILE]);
 
 	Logger::logTargets[LOG_TO_FILE] = new CLogToFile();
 	VALIDATE(Logger::logTargets[LOG_TO_FILE]->Initialise(_path));
@@ -215,4 +216,17 @@ Bool Logger::LogSDLError(const Int32 _code, const Int8* _msg)
 void Logger::SendInputToConsole(SDL_Event _e)
 {
 	Logger::logTargets[LOG_TO_CONSOLE]->Input(_e);
+}
+
+Int32 Logger::TestFunction(lua_State *L)
+{
+	Int32 i = static_cast<Int32>(lua_tonumber(L, 1));
+	size_t length = MAX_BUFFER;
+	const Int8* s = 0;
+	s = lua_tolstring(L, 2, &length);
+	Bool b = lua_toboolean(L, 3) == 1;
+
+	Logger::WriteToConsole("Passed parameters: int - %i, string - %s, bool - %s", i, s, (b ? "true" : "false"));
+
+	return 0;
 }

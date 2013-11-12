@@ -52,7 +52,19 @@ public:
 	*/
 	void		Render();
 
+	/*
+	* Checks if the game is still active.
+	*
+	* @return	Returns true if the game is active, false otherwise.
+	*/
 	Bool		IsActive();
+
+	/*
+	* Quits the game, used via a command in the debug console.
+	*
+	* @return	Returns the number of variables on the lua stack.
+	*/
+	static Int32		QuitGame(lua_State* L);
 
 protected:
 	// Default Constructor
@@ -63,7 +75,7 @@ private:
 	CGame& operator = (const CGame& _rhs);
 
 	// Member Variables
-private:
+protected:
 	Sprite::ISprite*			m_background;
 	Bool						m_active;
 };

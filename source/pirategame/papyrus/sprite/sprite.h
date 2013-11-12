@@ -21,7 +21,15 @@ namespace Papyrus
 
 		ISprite*	CreateSprite(Int8* _spriteSheet, Bool _animated);
 
+		/*
+		* None of the below variables should be touched outside of program intialisation.
+		*/
+
+		extern ISprite**		activeSprites;
+
 		extern Renderer::IRenderer* activeRenderer;
+
+		extern UInt16			maxNumSprites;
 	}
 }
 

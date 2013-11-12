@@ -22,7 +22,7 @@ Bool Renderer::Initialise(Int32 _width, Int32 _height, Int8* _title, Bool _fullS
 
 Bool Renderer::ShutDown()
 {
-	PY_RELEASE(activeRenderer);
+	PY_DELETE_RELEASE(activeRenderer);
 	return true;
 }
 

@@ -80,12 +80,12 @@ void Logger::CLogConsole::Process(Float32 _fDelta)
 		SDL_Surface* text = 0;
 		m_textPos.y = static_cast<Int32>(m_height - (SM_FONTSIZE * 1.5));
 
-		if (!m_input.isEmpty())
-		{
-			text = TTF_RenderText_Blended(m_font, m_input.buffer, m_col);
+		//if (!m_input.isEmpty())
+		//{
+			text = TTF_RenderText_Blended(m_font, m_input.render(), m_col);
 			SDL_BlitSurface(text, NULL, m_surface, &m_textPos);
 			SDL_FreeSurface(text);
-		}
+		//}
 
 		m_textPos.y -= static_cast<Int32>(SM_FONTSIZE * 1.5);
 
@@ -294,7 +294,7 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 				m_input.push('-');
 				break;
 			case SDLK_BACKSPACE:
-				m_input.backspace();
+				m_input.pop();
 				break;
 			case SDLK_RETURN:
 			case SDLK_RETURN2:
@@ -313,6 +313,8 @@ void Logger::CLogConsole::Input(SDL_Event _e)
 
 void Logger::CLogConsole::InterpretInput()
 {
+	Write(m_input.buffer);
+
 	// sample command: debug.toggle,i-p1,s-p2,b-p3
 	// parameters might need a type definition in front of them? ie: i-p1,b-p2,s-p3 for int,bool,string
 
@@ -343,16 +345,18 @@ void Logger::CLogConsole::InterpretInput()
 	Int8 function[MAX_BUFFER];
 	Int16 numParams = 0;
 	Int16 numResults = 1;
-
+	
 	if (nullptr == comma)
 	{
-		SDL_strlcpy(function, chr, SDL_strlen(chr) + 1);
+		SDL_strlcpy(function, chr, SDL_strlen(chr));
+		lua_getglobal(Logger::luaState, function);
 	}
 	else
 	{
 		Int16 length = comma - chr + 1;
 		SDL_strlcpy(function, chr, length);
 		chr += length;
+		lua_getglobal(Logger::luaState, function);
 
 		while (nullptr != comma)
 		{
@@ -373,7 +377,14 @@ void Logger::CLogConsole::InterpretInput()
 			// check for next parameter
 			comma = SDL_strchr(chr, ',');
 			Int8 value[MAX_BUFFER];
-			length = (comma - chr) + 1;
+			if (nullptr == comma)
+			{
+				length = SDL_strlen(chr); // no +1 accounts for the _ at the end of the input
+			}
+			else 
+			{
+				length = (comma - chr) + 1;
+			}
 			SDL_strlcpy(value, chr, length);
 			chr += length;
 
@@ -393,11 +404,11 @@ void Logger::CLogConsole::InterpretInput()
 			{
 				m_input.clear();
 				Write("Invalid command - unrecognised parameter type. Acceptable types include: i, s, b, for integer, string, bool");
+				return;
 			}
 		}
 	}
 	
-	lua_getglobal(Logger::luaState, function);
 	lua_call(Logger::luaState, numParams, numResults);
 
 	m_input.clear();

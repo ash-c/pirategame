@@ -105,14 +105,16 @@ namespace Papyrus
 		/*
 		* Turns the console on or off.
 		*
-		* @return	Returns the display status of the consle.
+		* @param	L				The luastate variable.
+		* @return	Returns the number of variables on the lua stack when the function finishes.
 		*/
 		Int32		ToggleConsole(lua_State *L);
 
 		/*
 		* Turns screen debug display on or off. Called via lua scripting.
 		*
-		* @return	Number of values pushed onto the stack.
+		* @param	L				The luastate variable.
+		* @return	Returns the number of variables on the lua stack when the function finishes.
 		*/
 		Int32		ToggleScreenDebug(lua_State *L);
 
@@ -194,6 +196,14 @@ namespace Papyrus
 		* @return	Returns void.
 		*/
 		Bool		LogSDLError(const Int32 _code, const Int8* _msg);
+		
+		/*
+		* Function for testing parameters through console input.
+		*
+		* @param	L				The luastate variable.
+		* @return	Returns the number of variables on the lua stack when the function finishes.
+		*/
+		Int32		TestFunction(lua_State *L);
 
 		void SendInputToConsole(SDL_Event _e);
 

@@ -10,14 +10,14 @@
 // This Include
 #include "parser.h"
 
-using namespace Papyrus::FileParser;
+using namespace Papyrus;
 
-IParser** Papyrus::FileParser::parserArray = 0;
-Float32* Papyrus::FileParser::timerArray = 0;
-UInt16 Papyrus::FileParser::maxNumParsers = 10;
-UInt16 Papyrus::FileParser::timeDelay = 30;
+FileParser::IParser**	FileParser::parserArray = 0;
+Float32*				FileParser::timerArray = 0;
+UInt16					FileParser::maxNumParsers = 10;
+UInt16					FileParser::timeDelay = 30;
 
-Bool Papyrus::FileParser::Initialise()
+Bool FileParser::Initialise()
 {
 	assert(maxNumParsers > 0);
 
@@ -33,7 +33,7 @@ Bool Papyrus::FileParser::Initialise()
 	return true;
 }
 
-void Papyrus::FileParser::Process(Float32 _fDelta)
+void FileParser::Process(Float32 _fDelta)
 {
 	for (Int16 i = 0; i < maxNumParsers; ++i)
 	{
@@ -48,23 +48,26 @@ void Papyrus::FileParser::Process(Float32 _fDelta)
 	}
 }
 
-Bool Papyrus::FileParser::ShutDown()
+Bool FileParser::ShutDown()
 {
-	for (Int16 i = 0; i < maxNumParsers; ++i)
+	/*for (Int16 i = 0; i < maxNumParsers; ++i)
 	{
 		if (0 != parserArray[i])
 		{
+			parserArray[i]->Release();
 			parserArray[i]->ShutDown();
 			CLEANDELETE(parserArray[i]);
 		}
-	}
+	}*/
+	PY_CLEANARRAY(parserArray, maxNumParsers);
 
 	CLEANARRAY(parserArray);
 	CLEANARRAY(timerArray);
+
 	return true;
 }
 
-IParser* Papyrus::FileParser::CreateParser(Int8* _path)
+FileParser::IParser* FileParser::CreateParser(Int8* _path)
 {
 	assert(parserArray && timerArray && "Can't create, arrays missing.");
 	assert(0 != _path && "Missing filepath to create.");
@@ -132,7 +135,7 @@ IParser* Papyrus::FileParser::CreateParser(Int8* _path)
 	return 0;
 }
 
-IParser* Papyrus::FileParser::LoadFile(Int8* _filePath)
+FileParser::IParser* FileParser::LoadFile(Int8* _filePath)
 {
 	assert(parserArray && timerArray && "Can't load, arrays missing.");
 	assert(0 != _filePath && "Missing filepath to load.");
@@ -149,7 +152,7 @@ IParser* Papyrus::FileParser::LoadFile(Int8* _filePath)
 		}
 	}
 
-	Papyrus::FileParser::IParser* temp = CreateParser(_filePath);
+	FileParser::IParser* temp = CreateParser(_filePath);
 	if (temp)
 	{
 		temp->Load(_filePath);
@@ -158,7 +161,7 @@ IParser* Papyrus::FileParser::LoadFile(Int8* _filePath)
 	return 0;
 }
 
-IParser* Papyrus::FileParser::FlushFile(IParser* _parser, Bool _delete)
+FileParser::IParser* FileParser::FlushFile(IParser* _parser, Bool _delete)
 {
 	if (0 != parserArray)
 	{
@@ -169,7 +172,7 @@ IParser* Papyrus::FileParser::FlushFile(IParser* _parser, Bool _delete)
 			{
 				if (_delete)
 				{
-					PY_RELEASE(parserArray[i]);
+					PY_DELETE_RELEASE(parserArray[i]);
 				}
 				else
 				{

@@ -43,6 +43,7 @@ namespace Papyrus
 				Int16			numChars;
 
 				_TInputStore()
+					: numChars(0)
 				{
 					clear();
 				}
@@ -55,12 +56,21 @@ namespace Papyrus
 					++numChars;
 				}
 
-				void backspace()
+				void pop()
 				{
 					if (numChars == 0) return;
-
-					--numChars;
+					
+					buffer[numChars + 1] = 0;
 					buffer[numChars] = 0;
+					--numChars;
+				}
+
+				Int8* render()
+				{
+					if (numChars == MAX_BUFFER) return buffer;
+
+					buffer[numChars] = '_';
+					return buffer;
 				}
 
 				Bool isEmpty()

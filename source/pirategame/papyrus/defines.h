@@ -62,38 +62,21 @@ typedef struct _TVECTOR4
 #define VALIDATE(a) if (!a) return false;
 
 #define CREATEPOINTER(Pointer,Class) if (Pointer == 0) { Pointer = new Class; assert(Pointer); }
-#define CLEANRELEASE(Object) if (Object != 0) { Object->Release(); }
 #define CLEANDELETE(Object) if (Object != 0) { delete Object; Object = 0; }
 #define CLEANARRAY(Object) if (Object != 0) { delete[] Object; Object = 0; }
 
-#define PY_RELEASE(Object) if (0 != Object) { Object->Release(); Object->ShutDown(); delete Object; Object = 0; }
+#define PY_DELETE_RELEASE(Object) if (0 != Object) { Object->Release(); Object->ShutDown(); delete Object; Object = 0; }
+#define PY_SAFE_RELEASE(Object) if (0 != Object) { Object->Release(); Object = 0; }
 
-#define CLEANVECTOR(VectorObject) for (UInt32 i = 0; i < VectorObject.size(); ++i)\
-	{\
-	CLEANDELETE(VectorObject[i]);\
-	}\
-	VectorObject.clear();
-
-#define CLEANMAP(MapObject) for (UInt32 i = 0; i < MapObject.size(); ++i)\
-	{\
-		CLEANDELETE(MapObject[i]);\
-	}\
-	MapObject.clear();
-
-#define CLEANLIST(ListObject) Int32 iLength = static_cast<Int32>(ListObject.size());\
-for(Int32 i = 0; i < iLength; ++i)\
+#define PY_CLEANARRAY(Array, Length) \
+for (Int16 i = 0; i < Length; ++i)\
 {\
-	CLEANDELETE(ListObject.back())\
-	ListObject.pop_back();\
+	if (0 != Array[i])\
+	{\
+		Array[i]->Release();\
+		Array[i]->ShutDown();\
+		CLEANDELETE(Array[i]);\
+	}\
 }\
-ListObject.clear();
-
-#define VWPRINTF(Buffer,Format,Args) Int32 iLength = 0;\
-iLength = _vscwprintf((Format), (Args)) + 1;\
-assert(iLength);\
-(Buffer) = new WInt8[iLength];\
-assert((Buffer));\
-vswprintf_s((Buffer), iLength, (Format), (Args));\
-assert((Buffer));
 
 #endif // __DEFINES_H__

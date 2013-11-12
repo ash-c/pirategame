@@ -71,19 +71,20 @@ namespace Papyrus
 		/*
 		* None of the below variables should be touched outside of program intialisation.
 		*/
+
 		// Holds pointers to all current IParser objects.
-		extern IParser** parserArray;
+		extern IParser**	parserArray;
 
 		// Holds how long each parser has been present for. Indexes match those in parserArray.
-		extern Float32* timerArray;
+		extern Float32*		timerArray;
 
 		// Maximum number of parsers that will be active at one time. 
 		// Needs to be set before Initialise is run as this determines the size of the above arrays.
-		extern UInt16 maxNumParsers;
+		extern UInt16		maxNumParsers;
 
 		// Default time delay, in seconds, before automatically removing a parser.
 		// Defaults to 30 seconds.
-		extern UInt16 timeDelay;
+		extern UInt16		timeDelay;
 	}
 }
 

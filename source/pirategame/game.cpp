@@ -14,7 +14,7 @@ CGame::CGame()
 
 CGame::~CGame()
 {
-	PY_RELEASE(m_background);
+	PY_DELETE_RELEASE(m_background);
 
 	Core::ShutDown();
 }
@@ -36,6 +36,9 @@ Bool CGame::Initialise()
 
 	PY_WRITETOFILE("Initialistion complete");
 	Logger::InitFile("data/papyrus/errors.log");
+
+	// Register the quit function called via the debug console
+	lua_register(Logger::luaState, "QuitGame", QuitGame);
 
 	return true;
 }
@@ -80,4 +83,11 @@ void CGame::Render()
 Bool CGame::IsActive()
 {
 	return m_active;
+}
+
+Int32 CGame::QuitGame(lua_State* L)
+{
+	// Access member variable through the singleton pointer.
+	sm_pTheInstance->m_active = false;
+	return 0;
 }
