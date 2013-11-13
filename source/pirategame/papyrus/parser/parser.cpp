@@ -25,11 +25,9 @@ Bool FileParser::Initialise()
 	parserArray = new IParser*[maxNumParsers];
 	assert(parserArray && timerArray && "FileParser initialisation failed.");
 
-	for (Int16 i = 0; i < maxNumParsers; ++i)
-	{
-		parserArray[i] = 0;
-		timerArray[i] = 0;
-	}
+	memset(parserArray, 0, sizeof(IParser*) * maxNumParsers);
+	memset(timerArray, 0, sizeof(Float32) * maxNumParsers);
+
 	return true;
 }
 
@@ -125,7 +123,7 @@ FileParser::IParser* FileParser::CreateParser(Int8* _path)
 		{
 			parserArray[i] = newParser;
 			timerArray[i] = timeDelay;
-			newParser->Initialise(_path, true);
+			VALIDATE(newParser->Initialise(_path, true));
 			return newParser;
 		}
 	}

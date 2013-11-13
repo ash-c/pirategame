@@ -8,39 +8,40 @@
 using namespace Papyrus;
 
 Sprite::CStaticSprite::CStaticSprite()
-	: m_SpriteSheet(0)
 {
-	m_Sprite.x = 0;
-	m_Sprite.y = 0;
-	m_Sprite.w = 0;
-	m_Sprite.h = 0;
 }
 
 Sprite::CStaticSprite::~CStaticSprite()
 {
 }
 
-Bool Sprite::CStaticSprite::Initialise(Int8* _spriteSheet)
+Bool Sprite::CStaticSprite::Initialise(Int8* _spriteSheet, Int16 _id)
 {
-	Renderer::activeRenderer->LoadTexture(_spriteSheet, &m_SpriteSheet);
+	Renderer::activeRenderer->LoadTexture(_spriteSheet, &m_spriteSheet);
 
-	if (nullptr == m_SpriteSheet) 
+	if (nullptr == m_spriteSheet) 
 	{
 			return false;
 	}
 
-	SDL_QueryTexture(m_SpriteSheet, NULL, NULL, &m_Sprite.w, &m_Sprite.h);
+	SDL_QueryTexture(m_spriteSheet, NULL, NULL, &m_sprite.w, &m_sprite.h);
+
+	ISprite::Initialise(nullptr, _id);
 
 	return true;
 }
 
 Bool Sprite::CStaticSprite::ShutDown()
 {
-	SDL_DestroyTexture(m_SpriteSheet);
+	SDL_DestroyTexture(m_spriteSheet);
 	return true;
+}
+
+void Sprite::CStaticSprite::Process(Float32 _fDelta)
+{
 }
 
 void Sprite::CStaticSprite::Render()
 {
-	Renderer::activeRenderer->Render(m_SpriteSheet, &m_Sprite, NULL);
+	Renderer::activeRenderer->Render(m_spriteSheet, &m_sprite, NULL);
 }

@@ -14,7 +14,7 @@ CGame::CGame()
 
 CGame::~CGame()
 {
-	PY_DELETE_RELEASE(m_background);
+	Sprite::FlushFile(m_background);
 
 	Core::ShutDown();
 }

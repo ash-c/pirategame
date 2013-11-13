@@ -21,15 +21,14 @@ namespace Papyrus
 			CStaticSprite();
 			virtual ~CStaticSprite();
 
-			virtual Bool		Initialise(Int8* _spriteSheet);
+			virtual Bool		Initialise(Int8* _spriteSheet, Int16 _id);
 			virtual Bool		ShutDown();
 			
+			virtual void		Process(Float32 _fDelta);
 			virtual void		Render();
 
 			// Member Variables
 		private:
-			SDL_Texture*		m_SpriteSheet;
-			SDL_Rect			m_Sprite;
 		};
 	}
 }

@@ -96,7 +96,7 @@ void Logger::CLogConsole::Process(Float32 _fDelta)
 				text = TTF_RenderText_Blended(m_font, m_displayText[i], m_col);
 				SDL_BlitSurface(text, NULL, m_surface, &m_textPos);
 				SDL_FreeSurface(text);
-				m_textPos.y -= SM_FONTSIZE;
+				m_textPos.y -= (SM_FONTSIZE + 2);
 			}
 		}
 
