@@ -6,6 +6,7 @@
 #include "sprite.h"
 #include "isprite.h"
 #include "staticsprite.h"
+#include "animsprite.h"
 
 using namespace Papyrus;
 
@@ -32,6 +33,7 @@ Bool Sprite::Initialise()
 	activeRenderer->AddRef();
 
 	lua_register(Logger::luaState, "SetSpritePosition", SetSpritePosition);
+	lua_register(Logger::luaState, "SetSpriteScale", SetSpriteScale);
 
 	return true;
 }
@@ -45,7 +47,7 @@ Bool Sprite::ShutDown()
 	return true;
 }
 
- Sprite::ISprite* Sprite::CreateSprite(Int8* _spriteSheet, Bool _animated)
+ Sprite::ISprite* Sprite::CreateSprite(Int8* _spriteSheet, Int8* _setup, Bool _animated)
 {
 	assert(activeSprites != 0 && "Can't create sprites, array missing");
 	assert(_spriteSheet != 0 && "Need a spritesheet path");
@@ -66,6 +68,8 @@ Bool Sprite::ShutDown()
 	Sprite::ISprite* sprite = 0;
 	if (_animated)
 	{
+		CREATEPOINTER(sprite, CAnimSprite);
+		assert(sprite);
 	}
 	else
 	{
@@ -78,7 +82,7 @@ Bool Sprite::ShutDown()
 		if (0 == activeSprites[i])
 		{
 			activeSprites[i] = sprite;
-			VALIDATE(sprite->Initialise(_spriteSheet, i));
+			VALIDATE(sprite->Initialise(_spriteSheet, _setup, i));
 			return sprite;
 		}
 	}
@@ -118,7 +122,7 @@ Bool Sprite::ShutDown()
 	 Int32 x = static_cast<Int32>(lua_tonumber(L, 2));
 	 Int32 y = static_cast<Int32>(lua_tonumber(L, 3));
 
-	 if (0 < id && id < maxNumSprites)
+	 if (0 <= id && id < maxNumSprites)
 	 {
 		 if (0 != activeSprites[id])
 		 {
@@ -132,6 +136,31 @@ Bool Sprite::ShutDown()
 	 else 
 	 {
 		 PY_WRITETOCONSOLE("Invalid ID for SetSpritePosition - too low or too high");
+	 }
+
+	 return 0;
+ }
+
+ Int32 Sprite::SetSpriteScale(lua_State* L)
+ {
+	 Int16 id = static_cast<Int32>(lua_tonumber(L, 1));
+	 Int32 w = static_cast<Int32>(lua_tonumber(L, 2));
+	 Int32 h = static_cast<Int32>(lua_tonumber(L, 3));
+
+	 if (0 <= id && id < maxNumSprites)
+	 {
+		 if (0 != activeSprites[id])
+		 {
+			 activeSprites[id]->SetScale(w, h);
+		 }
+		 else
+		 {
+			 Logger::WriteToConsole("Invalid ID for SetSpriteScale - ID: %i does not exist", id);
+		 }
+	 }
+	 else 
+	 {
+		 PY_WRITETOCONSOLE("Invalid ID for SetSpriteScale - too low or too high");
 	 }
 
 	 return 0;

@@ -38,7 +38,7 @@ namespace Papyrus
 		* @param	_animated			To make an animated sprite or not.
 		* @return	Returns a pointer to the created sprite, 0 if creation failed.
 		*/
-		ISprite*	CreateSprite(Int8* _spriteSheet, Bool _animated);
+		ISprite*	CreateSprite(Int8* _spriteSheet, Int8* _setup, Bool _animated);
 		
 		/*
 		* Removes a sprite from the system.
@@ -50,6 +50,7 @@ namespace Papyrus
 		ISprite*	FlushFile(ISprite* _sprite, Bool _delete = true);
 
 		Int32		SetSpritePosition(lua_State* L);
+		Int32		SetSpriteScale(lua_State* L);
 
 		/*
 		* None of the below variables should be touched outside of program intialisation.

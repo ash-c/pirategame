@@ -42,9 +42,12 @@ namespace Papyrus
 			* @param	_spriteSheet	Path to the spritesheet to use.
 			* @return	Returns true if successfull, false otherwise.
 			*/
-			virtual Bool		Initialise(Int8* _spriteSheet, Int16 _id)
+			virtual Bool		Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id)
 			{
 				m_id = _id;
+				Int16 length = SDL_strlen(_spriteSheet) + 1;
+				m_filePath = new Int8[length];
+				SDL_strlcpy(m_filePath, _spriteSheet, length);
 				return true;
 			}
 
@@ -87,8 +90,8 @@ namespace Papyrus
 			*/
 			virtual void		SetPosition(Int32 _x, Int32 _y)
 			{
-				m_sprite.x = _x;
-				m_sprite.y = _y;
+				m_sprite.x = static_cast<Int32>(_x - m_sprite.w * 0.5f);
+				m_sprite.y = static_cast<Int32>(_y + m_sprite.h * 0.5f);
 			}
 
 			/*
@@ -103,9 +106,25 @@ namespace Papyrus
 				m_sprite.w = _w;
 				m_sprite.h = _h;
 			}
+
+			/*
+			* Set which animation to play.
+			*
+			* @param	_i				Which animation to start.
+			* @return	Returns void.
+			*/
+			virtual void		SetAnim(Int16 _i) {}
+
+			/*
+			* Play an animation once.
+			*
+			* @param	_i				Which animation to play.
+			* @return	Returns void.
+			*/
+			virtual void		PlayAnim(Int16 _i) {}
 			
 			/*
-			* Compares the given file path against the one loaded into this parser.
+			* Compares the given file path against the one loaded into this sprite.
 			*
 			* @param	_path			Path to compare.
 			* @return	Returns true if _path matches this sprite ie:this spritesheet has already been loaded, false otherwise.

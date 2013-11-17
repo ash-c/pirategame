@@ -103,6 +103,7 @@
     <ClCompile Include="papyrus\parser\xml\xmlparser.cpp" />
     <ClCompile Include="papyrus\renderer\renderer.cpp" />
     <ClCompile Include="papyrus\renderer\sdlrenderer.cpp" />
+    <ClCompile Include="papyrus\sprite\animsprite.cpp" />
     <ClCompile Include="papyrus\sprite\sprite.cpp" />
     <ClCompile Include="papyrus\sprite\staticsprite.cpp" />
   </ItemGroup>
@@ -126,6 +127,7 @@
     <ClInclude Include="papyrus\renderer\irenderer.h" />
     <ClInclude Include="papyrus\renderer\renderer.h" />
     <ClInclude Include="papyrus\renderer\sdlrenderer.h" />
+    <ClInclude Include="papyrus\sprite\animsprite.h" />
     <ClInclude Include="papyrus\sprite\isprite.h" />
     <ClInclude Include="papyrus\sprite\sprite.h" />
     <ClInclude Include="papyrus\sprite\staticsprite.h" />

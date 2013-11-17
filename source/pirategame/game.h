@@ -77,6 +77,7 @@ private:
 	// Member Variables
 protected:
 	Sprite::ISprite*			m_background;
+	Sprite::ISprite*			m_anim;
 	Bool						m_active;
 };
 #define GAME CGame::GetInstance();

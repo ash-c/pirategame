@@ -15,7 +15,7 @@ Sprite::CStaticSprite::~CStaticSprite()
 {
 }
 
-Bool Sprite::CStaticSprite::Initialise(Int8* _spriteSheet, Int16 _id)
+Bool Sprite::CStaticSprite::Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id)
 {
 	Renderer::activeRenderer->LoadTexture(_spriteSheet, &m_spriteSheet);
 
@@ -26,7 +26,7 @@ Bool Sprite::CStaticSprite::Initialise(Int8* _spriteSheet, Int16 _id)
 
 	SDL_QueryTexture(m_spriteSheet, NULL, NULL, &m_sprite.w, &m_sprite.h);
 
-	ISprite::Initialise(nullptr, _id);
+	ISprite::Initialise(_spriteSheet, _setup, _id);
 
 	return true;
 }
