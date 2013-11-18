@@ -45,6 +45,8 @@ Bool Core::Initialise()
 	VALIDATE(Sprite::Initialise());
 	PY_WRITETOFILE("Sprites initialised");
 
+	
+
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
 	PY_WRITETOFILE("Timer initialised");

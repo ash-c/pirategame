@@ -93,6 +93,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />
+    <ClCompile Include="papyrus\input\manager.cpp" />
+    <ClCompile Include="papyrus\input\observer.cpp" />
     <ClCompile Include="papyrus\logging\logconsole.cpp" />
     <ClCompile Include="papyrus\logging\logger.cpp" />
     <ClCompile Include="papyrus\logging\logtofile.cpp" />
@@ -114,6 +116,8 @@
     <ClInclude Include="papyrus\core\utility\singleton.h" />
     <ClInclude Include="papyrus\core\utility\timer.h" />
     <ClInclude Include="papyrus\defines.h" />
+    <ClInclude Include="papyrus\input\manager.h" />
+    <ClInclude Include="papyrus\input\observer.h" />
     <ClInclude Include="papyrus\logging\ilogtype.h" />
     <ClInclude Include="papyrus\logging\logconsole.h" />
     <ClInclude Include="papyrus\logging\logger.h" />
