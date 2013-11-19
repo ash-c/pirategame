@@ -98,15 +98,23 @@ void Sprite::CAnimSprite::Render()
 
 void Sprite::CAnimSprite::SetAnim(Int16 _i)
 {
-	m_clips[m_currClip].x = 0;
-	m_currFrame = 0;
-	m_currClip = _i;
+	if (m_currClip != _i)
+	{
+		m_clips[m_currClip].x = 0;
+		m_currFrame = 0;
+		m_currClip = _i;
+		m_timer = 0.0f;
+	}
 }
 
 void Sprite::CAnimSprite::PlayAnim(Int16 _i)
 {
-	m_clips[m_currClip].x = 0;
-	m_prevAnim = m_currClip;
-	m_currFrame = 0;
-	m_currClip = _i;
+	if (m_currClip != _i)
+	{
+		m_clips[m_currClip].x = 0;
+		m_prevAnim = m_currClip;
+		m_currFrame = 0;
+		m_currClip = _i;
+		m_timer = 0.0f;
+	}
 }

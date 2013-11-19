@@ -10,11 +10,13 @@ CGame::CGame()
 	, m_anim(0)
 	, m_active(true)
 {
-	
+	m_pos.x = 1600/2;
+	m_pos.y = 900/2;
 }
 
 CGame::~CGame()
 {
+	SDL_JoystickClose(m_joystick);
 	Core::ShutDown();
 }
 
@@ -36,7 +38,7 @@ Bool CGame::Initialise()
 	m_anim = Sprite::CreateSprite("data/spritesheets/spritesheet.png", "data/spritesheets/spritesheet.xml", true);
 	assert(m_anim);
 	m_anim->AddRef();
-	m_anim->SetPosition(800, 300);
+	m_anim->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
 	PY_WRITETOFILE("Animiation created");
 
 	// Register the quit function called via the debug console
@@ -46,37 +48,17 @@ Bool CGame::Initialise()
 	PY_WRITETOFILE("Initialistion complete");
 	Logger::InitFile("data/papyrus/errors.log");
 
+	Input::inputManager->Register(this);
+
+	m_joystick = SDL_JoystickOpen(0);
+	assert(m_joystick);
+
 	return true;
 }
 
 void CGame::Process(Float32 _delta)
 {
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
-	{
-		if (e.type == SDL_QUIT)
-			m_active = false;			
-		if (e.type == SDL_KEYDOWN)
-		{
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_BACKQUOTE: // `
-				Logger::ToggleConsole(nullptr);
-				break;
-			case SDLK_ESCAPE:
-				m_active = false;
-				break;
-			case SDLK_1:
-				m_anim->PlayAnim(1);
-				Logger::SendInputToConsole(e);
-				break;
-			default:
-				Logger::SendInputToConsole(e);
-				break;
-			}
-		}
-	}
-
+	m_anim->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
 	m_anim->Process(_delta);
 }
 
@@ -97,6 +79,92 @@ void CGame::Render()
 Bool CGame::IsActive()
 {
 	return m_active;
+}
+
+void CGame::Notify(SDL_Event* _e)
+{
+	Int32 speed = 400;
+
+	if (_e->type == SDL_QUIT)
+		m_active = false;			
+	else if (_e->type == SDL_KEYDOWN)
+	{
+		switch (_e->key.keysym.sym)
+		{
+		case SDLK_BACKQUOTE: // `
+			Logger::ToggleConsole(nullptr);
+			break;
+		case SDLK_ESCAPE:
+			m_active = false;
+			break;
+		case SDLK_LEFT:
+			m_pos.x -= speed * 1/60;
+			m_anim->SetAnim(1);
+			break;
+		case SDLK_RIGHT:
+			m_pos.x += speed * 1/60;
+			m_anim->SetAnim(1);
+			break;
+		case SDLK_UP:
+			m_pos.y -= speed * 1/60;
+			m_anim->SetAnim(1);
+			break;
+		case SDLK_DOWN:
+			m_pos.y += speed * 1/60;
+			m_anim->SetAnim(1);
+			break;
+		}
+	}
+	else if (_e->type == SDL_KEYUP)
+	{
+		switch (_e->key.keysym.sym)
+		{
+		case SDLK_LEFT:
+		case SDLK_RIGHT:
+		case SDLK_UP:
+		case SDLK_DOWN:
+			m_anim->SetAnim(0);
+			break;
+		}
+	}
+	else if (_e->type == SDL_JOYAXISMOTION)
+	{
+		if (_e->caxis.axis == 0)
+		{
+			if(_e->caxis.value < -10000) // left.
+			{
+				m_pos.x -= speed * 1/60;
+				m_anim->SetAnim(1);
+			}
+			else if (_e->caxis.value > 10000) // right.
+			{
+				m_pos.x += speed * 1/60;
+				m_anim->SetAnim(1);
+			}
+			else
+			{
+				m_anim->SetAnim(0);
+			}
+		}
+		if (_e->caxis.axis == 1)
+		{
+			if(_e->caxis.value < -10000) // up.
+			{
+				m_pos.y -= speed * 1/60;
+				m_anim->SetAnim(1);
+			}
+			else if (_e->caxis.value > 10000) // down.
+			{
+				m_pos.y += speed * 1/60;
+				m_anim->SetAnim(1);
+			}
+			else
+			{
+				m_anim->SetAnim(0);
+			}
+		}
+	}
+
 }
 
 Int32 CGame::QuitGame(lua_State* L)

@@ -15,6 +15,7 @@ Logger::CLogConsole::CLogConsole()
 	, m_height(0)
 	, m_width(0)
 	, m_active(false)
+	, m_registered(false)
 {
 	m_col.r = 255;
 	m_col.g = 255;
@@ -66,6 +67,13 @@ Bool Logger::CLogConsole::ShutDown()
 
 void Logger::CLogConsole::Process(Float32 _fDelta)
 {
+	// Registering here as input isn't created yet when the console is initialised
+	if (!m_registered) 
+	{
+		Input::inputManager->Register(this);
+		m_registered = true;
+	}
+
 	if (m_active)
 	{
 		if (0 == m_height && 0 == m_width)
@@ -153,13 +161,13 @@ Bool Logger::CLogConsole::Toggle()
 	return m_active;
 }
 
-void Logger::CLogConsole::Input(SDL_Event _e)
+void Logger::CLogConsole::Notify(SDL_Event* _e)
 {
 	if (m_active)
 	{
-		if (_e.type == SDL_KEYDOWN)
+		if (_e->type == SDL_KEYDOWN)
 		{
-			switch (_e.key.keysym.sym)
+			switch (_e->key.keysym.sym)
 			{
 			case SDLK_0:
 			case SDLK_KP_0:

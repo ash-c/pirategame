@@ -14,7 +14,7 @@ using namespace Papyrus;
 
 // Prototypes
 
-class CGame : public TSingleton<CGame>
+class CGame : public TSingleton<CGame>, Input::IInputObserver
 {
 	// Friending is required for the singleton template to work.
 	friend class TSingleton<CGame>;
@@ -59,6 +59,8 @@ public:
 	*/
 	Bool		IsActive();
 
+	virtual void		Notify(SDL_Event* _e);
+
 	/*
 	* Quits the game, used via a command in the debug console.
 	*
@@ -78,6 +80,8 @@ private:
 protected:
 	Sprite::ISprite*			m_background;
 	Sprite::ISprite*			m_anim;
+	SDL_Joystick*				m_joystick;
+	VECTOR2						m_pos;
 	Bool						m_active;
 };
 #define GAME CGame::GetInstance();

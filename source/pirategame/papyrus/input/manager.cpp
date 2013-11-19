@@ -3,6 +3,7 @@
 
 // Local Includes
 #include "manager.h"
+#include "../logging/logger.h"
 
 using namespace Papyrus;
 
@@ -13,27 +14,55 @@ Input::CInputManager::CInputManager()
 
 Input::CInputManager::~CInputManager()
 {
+}
+
+Bool Input::CInputManager::Initialise()
+{
+	m_observers = new IInputObserver*[MAX_OBSERVERS];
+	assert(m_observers);
+	SDL_memset(m_observers, 0, sizeof(IInputObserver*) * MAX_OBSERVERS);
+
+	return true;
+}
+
+Bool Input::CInputManager::ShutDown()
+{
 	for (Int16 i = 0; i < MAX_OBSERVERS; ++i)
 	{
 		m_observers[i] = 0;
 	}
 
 	CLEANARRAY(m_observers);
-}
-
-Bool Input::CInputManager::Initialise()
-{
-	m_observers = new IInputObserver*[MAX_OBSERVERS];
-	SDL_memset(m_observers, 0, sizeof(IInputObserver*) * MAX_BUFFER);
 
 	return true;
 }
 
 void Input::CInputManager::Process(Float32 _delta)
 {
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{	
+		for (Int16 i = 0; i < MAX_OBSERVERS; ++i)
+		{
+			if (0 != m_observers[i])
+			{
+				m_observers[i]->Notify(&e);
+			}
+		}
+	}
 }
 
 Bool Input::CInputManager::Register(IInputObserver* _obs)
 {
-	return true;
+	for (Int16 i = 0; i < MAX_OBSERVERS; ++i)
+	{
+		if (0 == m_observers[i])
+		{
+			m_observers[i] = _obs;
+			return true;
+		}
+	}
+
+	Logger::Write("Input Observer failed to register, reached max.");
+	return false;
 }

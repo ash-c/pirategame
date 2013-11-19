@@ -45,7 +45,8 @@ Bool Core::Initialise()
 	VALIDATE(Sprite::Initialise());
 	PY_WRITETOFILE("Sprites initialised");
 
-	
+	VALIDATE(Input::Initialise());
+	PY_WRITETOFILE("Input initialised");
 
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
@@ -61,6 +62,8 @@ Float32 Core::Process()
 {
 	Float32 fDelta = timer->Restart();
 
+	Input::inputManager->Process(fDelta);
+
 	Logger::Process(fDelta);
 
 	return fDelta;
@@ -74,6 +77,7 @@ void Core::Render()
 Bool Core::ShutDown()
 {
 	CLEANDELETE(timer);
+	VALIDATE(Input::ShutDown());
 	VALIDATE(Sprite::ShutDown());
 	VALIDATE(FileParser::ShutDown());
 	VALIDATE(Renderer::ShutDown());

@@ -20,7 +20,13 @@ namespace Papyrus
 			IInputObserver() {}
 			virtual ~IInputObserver() {}
 
-			virtual void		Notify(SDL_Event _e) = 0;
+			/*
+			* Function used by the input manager to tell an object that an input event has happened.
+			*
+			* @param	_e		Pointer to an SDL_Event object.
+			* @return	Returns void.
+			*/
+			virtual void		Notify(SDL_Event* _e) = 0;
 
 			// Member Variables
 		protected:

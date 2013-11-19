@@ -36,6 +36,12 @@ typedef double					Float64;
 ////////////////////
 // Structs
 ////////////////////
+typedef struct _TVECTOR2
+{
+	Float32 x;
+	Float32 y;
+} VECTOR2;
+
 typedef struct _TVECTOR3 
 {
 	Float32 x;

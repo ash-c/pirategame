@@ -51,7 +51,7 @@
     <ClCompile Include="papyrus\input\manager.cpp">
       <Filter>papyrus\input</Filter>
     </ClCompile>
-    <ClCompile Include="papyrus\input\observer.cpp">
+    <ClCompile Include="papyrus\input\input.cpp">
       <Filter>papyrus\input</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,6 +162,9 @@
       <Filter>papyrus\input</Filter>
     </ClInclude>
     <ClInclude Include="papyrus\input\observer.h">
+      <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\input\input.h">
       <Filter>papyrus\input</Filter>
     </ClInclude>
   </ItemGroup>

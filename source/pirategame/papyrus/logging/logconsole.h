@@ -9,12 +9,13 @@
 
 // Local Includes
 #include "ilogtype.h"
+#include "../input/input.h"
 
 namespace Papyrus
 {
 	namespace Logger
 	{
-		class CLogConsole : public ILogType
+		class CLogConsole : public ILogType, Input::IInputObserver
 		{
 			// Member Functions
 		public:
@@ -34,7 +35,7 @@ namespace Papyrus
 
 			virtual Bool		Toggle();
 
-			virtual void Input(SDL_Event _e);
+			virtual void		Notify(SDL_Event* _e);
 
 		private:
 			typedef struct _TInputStore
@@ -104,6 +105,7 @@ namespace Papyrus
 			Int32				m_width;
 			Int8*				m_displayText[SM_MAXDISPLAY];
 			Bool				m_active;
+			Bool				m_registered;
 		};
 	}
 }

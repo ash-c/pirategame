@@ -13,7 +13,7 @@
 #include "../renderer/renderer.h"
 #include "../logging/logger.h"
 #include "../sprite/sprite.h"
-#include "../input/manager.h"
+#include "../input/input.h"
 
 namespace Papyrus
 {

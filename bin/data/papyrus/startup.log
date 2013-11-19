@@ -3,6 +3,7 @@ Logging initialised
 File parsing initialised
 Renderer initialised
 Sprites initialised
+Input initialised
 Timer initialised
 Core init success
 Background created

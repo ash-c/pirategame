@@ -91,7 +91,7 @@ namespace Papyrus
 			virtual void		SetPosition(Int32 _x, Int32 _y)
 			{
 				m_sprite.x = static_cast<Int32>(_x - m_sprite.w * 0.5f);
-				m_sprite.y = static_cast<Int32>(_y + m_sprite.h * 0.5f);
+				m_sprite.y = static_cast<Int32>(_y - m_sprite.h * 0.5f);
 			}
 
 			/*
