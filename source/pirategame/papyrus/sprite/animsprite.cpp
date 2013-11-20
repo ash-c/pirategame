@@ -34,19 +34,19 @@ Bool Sprite::CAnimSprite::Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id
 	// Set up clipping for the spritesheet
 	FileParser::IParser* setup = FileParser::LoadFile(_setup);
 	setup->AddRef();
-	Int32 rows, frames, w, h;
-	VALIDATE(setup->GetValue("rows", rows));
-	VALIDATE(setup->GetValue("frames", frames));
+	Int32 w, h;
+	VALIDATE(setup->GetValue("rows", m_numRows));
+	VALIDATE(setup->GetValue("frames", m_numFrames));
 	VALIDATE(setup->GetValue("width", w));
 	VALIDATE(setup->GetValue("height", h));
+	VALIDATE(setup->GetValue("timer", m_timePerFrame));
 	FileParser::FlushFile(setup);
 	m_sprite.w = w;
 	m_sprite.h = h;
 
-	Int32 size = rows * frames;
-	m_clips = new SDL_Rect[rows];
+	m_clips = new SDL_Rect[m_numRows];
 
-	for (Int16 i = 0; i < rows; ++i)
+	for (UInt16 i = 0; i < m_numRows; ++i)
 	{
 		m_clips[i].x = i * w;
 		m_clips[i].y = i * h;
@@ -65,15 +65,15 @@ Bool Sprite::CAnimSprite::ShutDown()
 	return true;
 }
 
-void Sprite::CAnimSprite::Process(Float32 _fDelta)
+void Sprite::CAnimSprite::Process(Float32 _delta)
 {
-	m_timer += _fDelta;
+	m_timer += _delta;
 
-	if (m_timer > 1.0f)
+	if (m_timer > m_timePerFrame)
 	{
 		++m_currFrame;
 
-		if (m_currFrame == 6)
+		if (m_currFrame == m_numFrames)
 		{
 			m_clips[m_currClip].x = 0;
 			m_currFrame = 0;
@@ -85,9 +85,9 @@ void Sprite::CAnimSprite::Process(Float32 _fDelta)
 		}
 		else
 		{
-			m_clips[m_currClip].x += 50;
+			m_clips[m_currClip].x += m_sprite.w;
 		}
-		m_timer = 0.0f;
+		m_timer -= m_timePerFrame;
 	}
 }
 
@@ -103,7 +103,7 @@ void Sprite::CAnimSprite::SetAnim(Int16 _i)
 		m_clips[m_currClip].x = 0;
 		m_currFrame = 0;
 		m_currClip = _i;
-		m_timer = 0.0f;
+		m_timer -= m_timePerFrame;
 	}
 }
 
@@ -115,6 +115,6 @@ void Sprite::CAnimSprite::PlayAnim(Int16 _i)
 		m_prevAnim = m_currClip;
 		m_currFrame = 0;
 		m_currClip = _i;
-		m_timer = 0.0f;
+		m_timer -= m_timePerFrame;
 	}
 }

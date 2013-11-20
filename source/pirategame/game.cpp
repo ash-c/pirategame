@@ -51,7 +51,6 @@ Bool CGame::Initialise()
 	Input::inputManager->Register(this);
 
 	m_joystick = SDL_JoystickOpen(0);
-	assert(m_joystick);
 
 	return true;
 }

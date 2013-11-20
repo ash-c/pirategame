@@ -23,7 +23,7 @@ Bool Renderer::CSDLRenderer::Initialise(Int32 _width, Int32 _height, Int8* _titl
 	m_Width = _width;
 	m_FullScreen = _fullScreen;
 
-	VALIDATE(!PY_SDLASSERT(SDL_Init(SDL_INIT_EVERYTHING), "SDL_Init"));
+	VALIDATE(PY_SDLASSERT(SDL_Init(SDL_INIT_EVERYTHING), "SDL_Init"));
 	
 	UInt32 flags = 0;
 	if (m_FullScreen)
@@ -32,10 +32,10 @@ Bool Renderer::CSDLRenderer::Initialise(Int32 _width, Int32 _height, Int8* _titl
 	}
 
 	m_Window = SDL_CreateWindow(_title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, m_Width, m_Height, flags);
-	VALIDATE(!PY_SDLASSERT(nullptr == m_Window, "SDL_CreateWindow"));
+	VALIDATE(PY_SDLASSERT(nullptr == m_Window, "SDL_CreateWindow"));
 
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
-	VALIDATE(!PY_SDLASSERT(nullptr == m_Renderer, "SDL_CreateRenderer"));
+	VALIDATE(PY_SDLASSERT(nullptr == m_Renderer, "SDL_CreateRenderer"));
 
 	PY_SDLASSERT(SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 0), "SDL_SetRenderDrawColor");
 	

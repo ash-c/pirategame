@@ -24,7 +24,7 @@ namespace Papyrus
 			virtual Bool		Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id);
 			virtual Bool		ShutDown();
 			
-			virtual void		Process(Float32 _fDelta);
+			virtual void		Process(Float32 _delta);
 			virtual void		Render();
 
 			virtual void		SetAnim(Int16 _i);
@@ -34,6 +34,9 @@ namespace Papyrus
 		private:
 			SDL_Rect*			m_clips;
 			Float32				m_timer;
+			Float32				m_timePerFrame;
+			UInt32				m_numFrames;
+			UInt32				m_numRows;
 			Int16				m_currFrame;
 			Int16				m_currClip;
 			Int16				m_prevAnim;

@@ -202,7 +202,7 @@ Bool Logger::LogSDLError(const Int32 _code, const Int8* _msg)
 {
 #ifdef _DEBUG
 	assert(!_code && _msg);
-	return false;
+	return true;
 #endif // _DEBUG
 	if (0 != _code)
 	{
