@@ -14,6 +14,8 @@ namespace Papyrus
 {
 	namespace Sprite
 	{
+		class FileParser::IParser;
+
 		class ISprite : public TRefCount<ISprite>
 		{
 			// Member Functions
@@ -21,6 +23,7 @@ namespace Papyrus
 			// Default Constructor
 			ISprite()
 				: m_spriteSheet(0)
+				, m_setup(0)
 				, m_id(INVALID_ID)
 				, m_filePath(0)
 			{
@@ -138,6 +141,7 @@ namespace Papyrus
 		protected:
 			SDL_Texture*		m_spriteSheet;
 			SDL_Rect			m_sprite;
+			FileParser::IParser*	m_setup;
 			Int16				m_id;
 			Int8*				m_filePath;
 		};

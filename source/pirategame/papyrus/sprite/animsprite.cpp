@@ -32,15 +32,14 @@ Bool Sprite::CAnimSprite::Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id
 	}
 	
 	// Set up clipping for the spritesheet
-	FileParser::IParser* setup = FileParser::LoadFile(_setup);
-	setup->AddRef();
+	m_setup = FileParser::LoadFile(_setup);
+	m_setup->AddRef();
 	Int32 w, h;
-	VALIDATE(setup->GetValue("rows", m_numRows));
-	VALIDATE(setup->GetValue("frames", m_numFrames));
-	VALIDATE(setup->GetValue("width", w));
-	VALIDATE(setup->GetValue("height", h));
-	VALIDATE(setup->GetValue("timer", m_timePerFrame));
-	FileParser::FlushFile(setup);
+	VALIDATE(m_setup->GetValue("rows", m_numRows));
+	VALIDATE(m_setup->GetValue("frames", m_numFrames));
+	VALIDATE(m_setup->GetValue("width", w));
+	VALIDATE(m_setup->GetValue("height", h));
+	VALIDATE(m_setup->GetValue("timer", m_timePerFrame));
 	m_sprite.w = w;
 	m_sprite.h = h;
 
@@ -61,6 +60,7 @@ Bool Sprite::CAnimSprite::Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id
 
 Bool Sprite::CAnimSprite::ShutDown()
 {
+	FileParser::FlushFile(m_setup);
 	SDL_DestroyTexture(m_spriteSheet);
 	return true;
 }
