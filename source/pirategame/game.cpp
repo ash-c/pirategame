@@ -57,8 +57,8 @@ Bool CGame::Initialise()
 
 void CGame::Process(Float32 _delta)
 {
-	m_anim->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
 	m_anim->Process(_delta);
+	m_anim->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
 }
 
 void CGame::Render()

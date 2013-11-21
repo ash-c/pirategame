@@ -9,6 +9,7 @@
 
 // Local Includes
 #include "../core/utility/refcount.h"
+#include "../parser/parser.h"
 
 namespace Papyrus
 {
@@ -85,7 +86,7 @@ namespace Papyrus
 			virtual void		Render() = 0;
 
 			/*
-			* Sets the position of the sprite.
+			* Sets the centre position of the sprite.
 			*
 			* @param	_x				X position to set.
 			* @param	_y				Y position to set.
