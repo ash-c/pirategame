@@ -55,9 +55,10 @@ namespace Papyrus
 
 			// Member Variables
 		protected:
-			static const Int16			MAX_OBSERVERS = 10;
+			static const Int16	MAX_OBSERVERS = 10;
 
 			IInputObserver**	m_observers;
+			SDL_Joystick*		m_joystick;
 		};
 	}
 }

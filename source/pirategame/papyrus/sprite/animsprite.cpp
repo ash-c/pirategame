@@ -47,7 +47,7 @@ Bool Sprite::CAnimSprite::Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id
 
 	for (UInt16 i = 0; i < m_numRows; ++i)
 	{
-		m_clips[i].x = i * w;
+		m_clips[i].x = 0;
 		m_clips[i].y = i * h;
 		m_clips[i].w = w;
 		m_clips[i].h = h;
@@ -69,11 +69,11 @@ void Sprite::CAnimSprite::Process(Float32 _delta)
 {
 	m_timer += _delta;
 
-	if (m_timer > m_timePerFrame)
+	if (m_timer >= m_timePerFrame)
 	{
 		++m_currFrame;
 
-		if (m_currFrame == m_numFrames)
+		if (m_currFrame >= m_numFrames)
 		{
 			m_clips[m_currClip].x = 0;
 			m_currFrame = 0;
@@ -111,10 +111,7 @@ void Sprite::CAnimSprite::PlayAnim(Int16 _i)
 {
 	if (m_currClip != _i)
 	{
-		m_clips[m_currClip].x = 0;
 		m_prevAnim = m_currClip;
-		m_currFrame = 0;
-		m_currClip = _i;
-		m_timer -= m_timePerFrame;
+		SetAnim(_i);
 	}
 }

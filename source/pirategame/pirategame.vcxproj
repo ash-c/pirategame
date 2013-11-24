@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="character\playable.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
@@ -110,6 +111,8 @@
     <ClCompile Include="papyrus\sprite\staticsprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="character\character.h" />
+    <ClInclude Include="character\playable.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="papyrus\core\core.h" />
     <ClInclude Include="papyrus\core\utility\refcount.h" />

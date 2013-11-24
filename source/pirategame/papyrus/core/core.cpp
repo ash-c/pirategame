@@ -41,6 +41,8 @@ Bool Core::Initialise()
 	CLEANDELETE(title); // This is needed as the parser allocates memory on the heap.
 	PY_WRITETOFILE("Renderer initialised");
 
+	SDL_ShowCursor(SDL_DISABLE);
+
 	Sprite::maxNumSprites = numSprites;
 	VALIDATE(Sprite::Initialise());
 	PY_WRITETOFILE("Sprites initialised");

@@ -54,6 +54,9 @@
     <ClCompile Include="papyrus\input\input.cpp">
       <Filter>papyrus\input</Filter>
     </ClCompile>
+    <ClCompile Include="character\playable.cpp">
+      <Filter>character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -88,6 +91,9 @@
     </Filter>
     <Filter Include="papyrus\input">
       <UniqueIdentifier>{f5ab5dcf-11f2-4e96-9374-4f9f24e6bfe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="character">
+      <UniqueIdentifier>{9e258c3a-22cc-41dd-a81e-5b2bb20eb930}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +172,12 @@
     </ClInclude>
     <ClInclude Include="papyrus\input\input.h">
       <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="character\character.h">
+      <Filter>character</Filter>
+    </ClInclude>
+    <ClInclude Include="character\playable.h">
+      <Filter>character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

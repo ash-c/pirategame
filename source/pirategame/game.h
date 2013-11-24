@@ -13,6 +13,7 @@
 using namespace Papyrus;
 
 // Prototypes
+class ICharacter;
 
 class CGame : public TSingleton<CGame>, Input::IInputObserver
 {
@@ -79,8 +80,7 @@ private:
 	// Member Variables
 protected:
 	Sprite::ISprite*			m_background;
-	Sprite::ISprite*			m_anim;
-	SDL_Joystick*				m_joystick;
+	ICharacter*					m_anim;
 	VECTOR2						m_pos;
 	Bool						m_active;
 };

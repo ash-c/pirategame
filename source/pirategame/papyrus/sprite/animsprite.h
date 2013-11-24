@@ -37,7 +37,7 @@ namespace Papyrus
 			Float32				m_timePerFrame;
 			UInt32				m_numFrames;
 			UInt32				m_numRows;
-			Int16				m_currFrame;
+			UInt16				m_currFrame;
 			Int16				m_currClip;
 			Int16				m_prevAnim;
 		};

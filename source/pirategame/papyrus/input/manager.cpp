@@ -9,6 +9,7 @@ using namespace Papyrus;
 
 Input::CInputManager::CInputManager()
 	: m_observers(0)
+	, m_joystick(0)
 {
 }
 
@@ -22,11 +23,23 @@ Bool Input::CInputManager::Initialise()
 	assert(m_observers);
 	SDL_memset(m_observers, 0, sizeof(IInputObserver*) * MAX_OBSERVERS);
 
+	m_joystick = SDL_JoystickOpen(0);
+	if (0 == m_joystick)
+	{
+		Logger::Write("No controller connected");
+	}
+	else 
+	{
+		Logger::Write("Controller connected");
+	}
+
 	return true;
 }
 
 Bool Input::CInputManager::ShutDown()
 {
+	SDL_JoystickClose(m_joystick);
+
 	for (Int16 i = 0; i < MAX_OBSERVERS; ++i)
 	{
 		m_observers[i] = 0;

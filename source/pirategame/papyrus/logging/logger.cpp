@@ -130,7 +130,9 @@ void Logger::WriteToFile(Int8* _format, ...)
 
 Int32 Logger::ToggleConsole(lua_State *L)
 {
+#ifdef _DEBUG
 	Logger::logTargets[LOG_TO_CONSOLE]->Toggle();
+#endif // _DEBUG
 	return 0;
 }
 
