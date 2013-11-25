@@ -50,6 +50,9 @@ Bool Core::Initialise()
 	VALIDATE(Input::Initialise());
 	PY_WRITETOFILE("Input initialised");
 
+	VALIDATE(Physics::Initialise());
+	PY_WRITETOFILE("Physics initialised");
+
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
 	PY_WRITETOFILE("Timer initialised");
@@ -79,6 +82,7 @@ void Core::Render()
 Bool Core::ShutDown()
 {
 	CLEANDELETE(timer);
+	VALIDATE(Physics::ShutDown());
 	VALIDATE(Input::ShutDown());
 	VALIDATE(Sprite::ShutDown());
 	VALIDATE(FileParser::ShutDown());

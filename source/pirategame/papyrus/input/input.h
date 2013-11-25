@@ -29,6 +29,8 @@ namespace Papyrus
 
 		// Use this variable to register observers
 		extern CInputManager*	inputManager;
+
+		const Int32				CONTROLLER_DEAD_ZONE = 10000;
 	}
 }
 

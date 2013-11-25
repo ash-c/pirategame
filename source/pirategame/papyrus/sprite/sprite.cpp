@@ -27,6 +27,7 @@ Bool Sprite::Initialise()
 	}
 
 	activeSprites = new ISprite*[maxNumSprites];
+	assert(activeSprites);
 	SDL_memset(activeSprites, 0, sizeof(ISprite*) * maxNumSprites);
 
 	activeRenderer = Renderer::activeRenderer;

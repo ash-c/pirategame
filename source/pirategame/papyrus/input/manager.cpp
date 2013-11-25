@@ -10,6 +10,7 @@ using namespace Papyrus;
 Input::CInputManager::CInputManager()
 	: m_observers(0)
 	, m_joystick(0)
+	, m_controller(0)
 {
 }
 
@@ -23,14 +24,20 @@ Bool Input::CInputManager::Initialise()
 	assert(m_observers);
 	SDL_memset(m_observers, 0, sizeof(IInputObserver*) * MAX_OBSERVERS);
 
-	m_joystick = SDL_JoystickOpen(0);
-	if (0 == m_joystick)
+	if (SDL_NumJoysticks() < 1)
 	{
 		Logger::Write("No controller connected");
 	}
 	else 
 	{
-		Logger::Write("Controller connected");
+		if (SDL_IsGameController(0))
+		{
+			m_controller = SDL_GameControllerOpen(0);
+			assert(m_controller);
+			m_joystick = SDL_GameControllerGetJoystick(m_controller);
+			assert(m_joystick);
+			Logger::Write("Controller connected");
+		}
 	}
 
 	return true;
@@ -38,7 +45,11 @@ Bool Input::CInputManager::Initialise()
 
 Bool Input::CInputManager::ShutDown()
 {
-	SDL_JoystickClose(m_joystick);
+	if (0 != m_controller)
+	{
+		SDL_GameControllerClose(m_controller);
+		m_controller = 0;
+	}
 
 	for (Int16 i = 0; i < MAX_OBSERVERS; ++i)
 	{
@@ -55,6 +66,21 @@ void Input::CInputManager::Process(Float32 _delta)
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{	
+		if (e.type == SDL_CONTROLLERDEVICEREMOVED)
+		{
+			Logger::WriteToScreen("Controller removed");
+			SDL_GameControllerClose(m_controller);
+			m_controller = 0;
+		}
+		else if (e.type == SDL_CONTROLLERDEVICEADDED)
+		{
+			Logger::WriteToScreen("Controller added");
+			m_controller = SDL_GameControllerOpen(0);
+			assert(m_controller);
+			m_joystick = SDL_GameControllerGetJoystick(m_controller);
+			assert(m_joystick);
+		}
+
 		for (Int16 i = 0; i < MAX_OBSERVERS; ++i)
 		{
 			if (0 != m_observers[i])

@@ -92,50 +92,18 @@ void CGame::Notify(SDL_Event* _e)
 		case SDLK_ESCAPE:
 			m_active = false;
 			break;
+		case SDLK_BACKQUOTE: // `
+			Logger::ToggleConsole(nullptr);
+			break;
+		default:
+			break;
 		}
 	}
-	
-	/*else if (_e->type == SDL_JOYAXISMOTION)
-	{
-		if (_e->caxis.axis == 0) // x axis
-		{
-			if(_e->caxis.value < -10000) // left.
-			{
-				m_pos.x -= speed * 1/60;
-				m_anim->SetAnim(1);
-			}
-			else if (_e->caxis.value > 10000) // right.
-			{
-				m_pos.x += speed * 1/60;
-				m_anim->SetAnim(1);
-			}
-			else
-			{
-				m_anim->SetAnim(0);
-			}
-		}
-		if (_e->caxis.axis == 1) // y axis
-		{
-			if(_e->caxis.value < -10000) // up.
-			{
-				m_pos.y -= speed * 1/60;
-				m_anim->SetAnim(1);
-			}
-			else if (_e->caxis.value > 10000) // down.
-			{
-				m_pos.y += speed * 1/60;
-				m_anim->SetAnim(1);
-			}
-			else
-			{
-				m_anim->SetAnim(0);
-			}
-		}
-	}*/
 }
 
 Int32 CGame::QuitGame(lua_State* L)
 {
+	// Function is static so can't access m_active normally.
 	// Access member variable through the singleton pointer.
 	sm_pTheInstance->m_active = false;
 	return 0;

@@ -102,5 +102,47 @@ void CPlayable::Notify(SDL_Event* _e)
 			break;
 		}
 	}
+	else if (_e->type == SDL_CONTROLLERAXISMOTION)
+	{
+		if (_e->caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) // x axis on the left stick
+		{
+			if(_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE) // left.
+			{
+				m_currAnim = ANIM_RUN_LEFT;
+			}
+			else if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE) // right.
+			{
+				m_currAnim = ANIM_RUN_RIGHT;
+			}
+			else // Idle
+			{
+				if (ANIM_RUN_LEFT == m_currAnim || ANIM_IDLE_LEFT == m_currAnim)
+				{
+					m_currAnim = ANIM_IDLE_LEFT;
+				}
+				else if (ANIM_RUN_RIGHT == m_currAnim || ANIM_IDLE_RIGHT == m_currAnim)
+				{
+					m_currAnim = ANIM_IDLE_RIGHT;
+				}
+			}
+		}
+	}
+	else if (_e->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
+	{
+		if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_A) // Jump or climb a ladder
+		{ 
+			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+			{
+				if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim)
+				{
+					m_currAnim = ANIM_JUMP_LEFT;
+				} 
+				else 
+				{
+					m_currAnim = ANIM_JUMP_RIGHT;
+				}
+			}
+		}
+	}
 	m_sprite->SetAnim(m_currAnim);
 }

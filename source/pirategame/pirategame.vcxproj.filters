@@ -57,6 +57,9 @@
     <ClCompile Include="character\playable.cpp">
       <Filter>character</Filter>
     </ClCompile>
+    <ClCompile Include="papyrus\physics\physics.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -94,6 +97,12 @@
     </Filter>
     <Filter Include="character">
       <UniqueIdentifier>{9e258c3a-22cc-41dd-a81e-5b2bb20eb930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\physics">
+      <UniqueIdentifier>{a760ff88-c731-4952-9f15-c98afdcf73b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\core\math">
+      <UniqueIdentifier>{04eb4fc5-1166-444a-a20e-8f303213e58e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +187,30 @@
     </ClInclude>
     <ClInclude Include="character\playable.h">
       <Filter>character</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\physics.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\idynamicactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\istaticactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vector2.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vector3.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vector4.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vectormath.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\iactor.h">
+      <Filter>papyrus\physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

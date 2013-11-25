@@ -14,6 +14,7 @@
 #include "../logging/logger.h"
 #include "../sprite/sprite.h"
 #include "../input/input.h"
+#include "../physics/physics.h"
 
 namespace Papyrus
 {

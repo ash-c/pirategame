@@ -5,10 +5,11 @@
 #define __DEFINES_H__
 
 // Library Includes
-#include <ctime>
 #include <cassert>
 
 // Local Includes
+#include "core\math\vectormath.h"
+
 using namespace std;
 
 ////////////////////
@@ -36,26 +37,9 @@ typedef double					Float64;
 ////////////////////
 // Structs
 ////////////////////
-typedef struct _TVECTOR2
-{
-	Float32 x;
-	Float32 y;
-} VECTOR2;
-
-typedef struct _TVECTOR3 
-{
-	Float32 x;
-	Float32 y;
-	Float32 z;
-} VECTOR3;
-
-typedef struct _TVECTOR4
-{
-	Float32 x;
-	Float32 y;
-	Float32 z;
-	Float32 w;
-} VECTOR4;
+typedef Papyrus::Math::_TVECTOR2	VECTOR2;
+typedef Papyrus::Math::_TVECTOR3	VECTOR3;
+typedef Papyrus::Math::_TVECTOR4	VECTOR4;
 
 ////////////////////
 // Macros
