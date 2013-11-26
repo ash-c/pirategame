@@ -73,6 +73,7 @@ Float32 Papyrus::Timer::CTimer::Restart()
 	Float32 elapsedTicks = Ticks();
 	Start();
 	return elapsedTicks;
+	//return 1.0f/30.0f;
 }
 
 Float32 Papyrus::Timer::CTimer::Ticks()

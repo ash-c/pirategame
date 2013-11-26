@@ -158,6 +158,13 @@ void Logger::TrackValue(VECTOR3* _v3, const Int8* _tag)
 #endif // _DEBUG
 }
 
+void Logger::TrackValue(VECTOR2* _v2, const Int8* _tag)
+{
+#ifdef _DEBUG
+	Logger::logTargets[LOG_TO_SCREEN]->TrackValue((void*)(_v2), TRACKTYPE_VECTOR2, _tag);
+#endif // _DEBUG
+}
+
 void Logger::TrackValue(Float32* _f, const Int8* _tag)
 {
 #ifdef _DEBUG

@@ -4,6 +4,7 @@
 
 // Local Includes
 #include "physics.h"
+#include "controllable.h"
 
 using namespace Papyrus;
 
@@ -27,6 +28,20 @@ Bool Physics::ShutDown()
 	return true;
 }
 
+void Physics::Process(Float32 _frameTime)
+{
+	for (Int16 i = 0; i < maxActors; ++i)
+	{
+		if (0 != actors[i])
+		{
+			if (actors[i]->IsActive())
+			{
+				actors[i]->Process(_frameTime);
+			}
+		}
+	}
+}
+
 Physics::IStaticActor* Physics::CreateStaticActor()
 {
 	return 0;
@@ -34,5 +49,10 @@ Physics::IStaticActor* Physics::CreateStaticActor()
 
 Physics::IDynamicActor* Physics::CreateDynamicActor()
 {
-	return 0;
+	IDynamicActor* actor = 0;
+	CREATEPOINTER(actor, CControllable);
+	assert(actor);
+	VALIDATE(actor->Initialise());
+	actors[0] = actor;
+	return actor;
 }

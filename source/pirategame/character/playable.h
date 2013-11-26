@@ -44,7 +44,8 @@ protected:
 		MAX_ANIMS
 	} EAnims;
 
-	EAnims			m_currAnim;
+	EAnims					m_currAnim;
+	Physics::IDynamicActor*	m_actor;
 };
 
 #endif // __PIRATEGAME_CHARACTER_PLAYABLE_H__

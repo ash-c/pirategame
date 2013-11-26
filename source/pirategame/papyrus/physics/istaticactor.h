@@ -23,7 +23,7 @@ namespace Papyrus
 			virtual Bool	Initialise() = 0;
 			virtual Bool	ShutDown() = 0;
 
-			virtual void	Process(Float32 _delta) = 0;
+			virtual void	Process(Float32 _frameTime) = 0;
 
 			virtual VECTOR2	GetPosition() = 0;
 

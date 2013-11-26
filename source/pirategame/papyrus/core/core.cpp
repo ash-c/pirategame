@@ -65,13 +65,15 @@ Bool Core::Initialise()
 
 Float32 Core::Process()
 {
-	Float32 fDelta = timer->Restart();
+	Float32 delta = timer->Restart();
 
-	Input::inputManager->Process(fDelta);
+	Input::inputManager->Process(delta);
 
-	Logger::Process(fDelta);
+	Physics::Process(delta);
 
-	return fDelta;
+	Logger::Process(delta);
+
+	return delta;
 }
 
 void Core::Render()

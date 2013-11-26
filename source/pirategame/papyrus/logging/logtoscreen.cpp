@@ -103,12 +103,24 @@ void Logger::CLogToScreen::Process(Float32 _fDelta)
 				case TRACKTYPE_FLOAT:
 					SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f", m_trackedInfo[i]->tag, *(Float32*)(m_trackedInfo[i]->value));
 					break;
+				case TRACKTYPE_VECTOR2:
+					{
+						VECTOR2 vec2 = *(VECTOR2*)(m_trackedInfo[i]->value);
+						SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f, %.2f", m_trackedInfo[i]->tag, vec2.x, vec2.y);
+						break;
+					}
 				case TRACKTYPE_VECTOR3:
-					SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f", m_trackedInfo[i]->tag, *(VECTOR3*)(m_trackedInfo[i]->value));
-					break;
+					{
+						VECTOR3 vec3 = *(VECTOR3*)(m_trackedInfo[i]->value);
+						SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f, %.2f, %.2f", m_trackedInfo[i]->tag, vec3.x, vec3.y, vec3.z);
+						break;
+					}
 				case TRACKTYPE_VECTOR4:
-					SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f", m_trackedInfo[i]->tag, *(VECTOR4*)(m_trackedInfo[i]->value));
-					break;
+					{
+						VECTOR4 vec4 = *(VECTOR4*)(m_trackedInfo[i]->value);
+						SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f, %.2f, %.2f, %.2f", m_trackedInfo[i]->tag, vec4.x, vec4.y, vec4.z, vec4.w);
+						break;
+					}
 				default:
 					break;
 				}

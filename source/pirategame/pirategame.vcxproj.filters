@@ -60,6 +60,9 @@
     <ClCompile Include="papyrus\physics\physics.cpp">
       <Filter>papyrus\physics</Filter>
     </ClCompile>
+    <ClCompile Include="papyrus\physics\controllable.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -210,6 +213,9 @@
       <Filter>papyrus\core\math</Filter>
     </ClInclude>
     <ClInclude Include="papyrus\physics\iactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\controllable.h">
       <Filter>papyrus\physics</Filter>
     </ClInclude>
   </ItemGroup>

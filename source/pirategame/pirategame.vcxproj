@@ -104,6 +104,7 @@
     <ClCompile Include="papyrus\parser\json\jsonparser.cpp" />
     <ClCompile Include="papyrus\parser\parser.cpp" />
     <ClCompile Include="papyrus\parser\xml\xmlparser.cpp" />
+    <ClCompile Include="papyrus\physics\controllable.cpp" />
     <ClCompile Include="papyrus\physics\physics.cpp" />
     <ClCompile Include="papyrus\renderer\renderer.cpp" />
     <ClCompile Include="papyrus\renderer\sdlrenderer.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="papyrus\parser\json\jsonparser.h" />
     <ClInclude Include="papyrus\parser\parser.h" />
     <ClInclude Include="papyrus\parser\xml\xmlparser.h" />
+    <ClInclude Include="papyrus\physics\controllable.h" />
     <ClInclude Include="papyrus\physics\iactor.h" />
     <ClInclude Include="papyrus\physics\idynamicactor.h" />
     <ClInclude Include="papyrus\physics\istaticactor.h" />

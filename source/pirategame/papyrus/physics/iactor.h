@@ -16,16 +16,21 @@ namespace Papyrus
 		{
 			// Member Functions
 		public:
-			IActor() {}
+			IActor() 
+				: m_active(false)
+			{}
 
 			virtual ~IActor() {}
 
 			virtual Bool	Initialise() = 0;
 			virtual Bool	ShutDown() = 0;
 
-			virtual void	Process(Float32 _delta) = 0;
+			virtual void	Process(Float32 _frameTime) = 0;
 
 			virtual VECTOR2	GetPosition() = 0;
+
+			virtual Bool	IsActive() { return m_active; }
+			virtual void	SetActive(Bool _b) { m_active = _b; } 
 
 			// Member Variables
 		protected:
@@ -38,6 +43,7 @@ namespace Papyrus
 			} AABB;
 
 			AABB			m_bounds;
+			Bool			m_active;
 		};
 	}
 }

@@ -8,6 +8,7 @@ using namespace Papyrus;
 
 CPlayable::CPlayable()
 	: m_currAnim(ANIM_IDLE_RIGHT)
+	, m_actor(0)
 {
 	m_pos.x = 800;
 	m_pos.y = 450;
@@ -28,6 +29,12 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo)
 
 	Input::inputManager->Register(this);
 
+	m_actor = Physics::CreateDynamicActor();
+	assert(m_actor);
+	m_actor->AddRef();
+	m_actor->SetPosition(m_pos);
+	m_actor->SetActive(false);
+
 	return true;
 }
 
@@ -41,15 +48,17 @@ void CPlayable::Process(Float32 _delta)
 	switch (m_currAnim)
 	{
 	case ANIM_RUN_LEFT:
-		m_pos.x -= SPEED * _delta;
+		m_actor->SetVelocity(VECTOR2(-SPEED * 1.0f, 0.0f));
 		break;
 	case ANIM_RUN_RIGHT:
-		m_pos.x += SPEED * _delta;
+		m_actor->SetVelocity(VECTOR2(SPEED * 1.0f, 0.0f));
 		break;
 	default: 
+		m_actor->SetVelocity(VECTOR2(0.0f, 0.0f));
 		break;
 	}
 
+	m_pos = m_actor->GetPosition();
 	m_sprite->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
 	m_sprite->Process(_delta);
 }
@@ -67,9 +76,11 @@ void CPlayable::Notify(SDL_Event* _e)
 		{
 		case SDLK_LEFT: // Run left
 			m_currAnim = ANIM_RUN_LEFT;
+			m_actor->SetActive(true);
 			break;
 		case SDLK_RIGHT: // Run right
 			m_currAnim = ANIM_RUN_RIGHT;
+			m_actor->SetActive(true);
 			break; 
 		case SDLK_UP: // Jump or climb a ladder
 			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
@@ -90,6 +101,7 @@ void CPlayable::Notify(SDL_Event* _e)
 	}
 	else if (_e->type == SDL_KEYUP)
 	{
+		m_actor->SetActive(false);
 		switch(_e->key.keysym.sym)
 		{
 		case SDLK_LEFT:

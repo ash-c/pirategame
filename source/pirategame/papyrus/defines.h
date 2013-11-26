@@ -37,9 +37,9 @@ typedef double					Float64;
 ////////////////////
 // Structs
 ////////////////////
-typedef Papyrus::Math::_TVECTOR2	VECTOR2;
-typedef Papyrus::Math::_TVECTOR3	VECTOR3;
-typedef Papyrus::Math::_TVECTOR4	VECTOR4;
+typedef _TVECTOR2	VECTOR2;
+typedef _TVECTOR3	VECTOR3;
+typedef _TVECTOR4	VECTOR4;
 
 ////////////////////
 // Macros

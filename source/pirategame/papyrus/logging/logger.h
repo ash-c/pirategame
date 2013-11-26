@@ -130,11 +130,20 @@ namespace Papyrus
 		/*
 		* Tracks the given value, and displays it permanently on screen.
 		*
-		* @param	_v4				Pointer to the VECTOR3 value to track.
+		* @param	_v3				Pointer to the VECTOR3 value to track.
 		* @param	_tag			String to display what the value is tracking.
 		* @return	Returns void.
 		*/
 		void		TrackValue(VECTOR3* _v3, const Int8* _tag);
+
+		/*
+		* Tracks the given value, and displays it permanently on screen.
+		*
+		* @param	_v2				Pointer to the VECTOR2 value to track.
+		* @param	_tag			String to display what the value is tracking.
+		* @return	Returns void.
+		*/
+		void		TrackValue(VECTOR2* _v2, const Int8* _tag);
 
 		/*
 		* Tracks the given value, and displays it permanently on screen.

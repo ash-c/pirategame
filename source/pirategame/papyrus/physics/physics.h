@@ -18,6 +18,8 @@ namespace Papyrus
 
 		Bool			ShutDown();
 
+		void			Process(Float32 _frameTime);
+
 		IStaticActor*	CreateStaticActor();
 
 		IDynamicActor*	CreateDynamicActor();
@@ -25,7 +27,7 @@ namespace Papyrus
 
 		extern IActor**	actors;
 
-		extern Int32 maxActors;
+		extern Int32	maxActors;
 	}
 }
 
