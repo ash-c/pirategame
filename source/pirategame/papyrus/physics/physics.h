@@ -22,7 +22,7 @@ namespace Papyrus
 
 		IStaticActor*	CreateStaticActor();
 
-		IDynamicActor*	CreateDynamicActor();
+		IDynamicActor*	CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _pos, Float32 _mass);
 
 
 		extern IActor**	actors;

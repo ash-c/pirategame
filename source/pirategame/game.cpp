@@ -31,14 +31,14 @@ Bool CGame::Initialise()
 {
 	VALIDATE(Core::Initialise());
 
-	m_background = Sprite::CreateSprite("data/spritesheets/background.png", 0, false);
+	m_background = Sprite::CreateSprite("data/art/background.png", 0, false);
 	assert(m_background);
 	m_background->AddRef();
 	PY_WRITETOFILE("Background created");
 
 	CREATEPOINTER(m_anim, CPlayable);
 	assert(m_anim);
-	m_anim->Initialise("data/spritesheets/spritesheet.png", "data/spritesheets/spritesheet.xml");
+	m_anim->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml");
 	PY_WRITETOFILE("Animiation created");
 
 	// Register the quit function called via the debug console

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __PIRATEGAME_CHARACTERS_H__
-#define __PIRATEGAME_CHARACTERS_H__
+#ifndef __PIRATEGAME_CHARACTER_H__
+#define __PIRATEGAME_CHARACTER_H__
 
 // Library Includes
 
@@ -31,4 +31,4 @@ protected:
 	VECTOR2				m_pos;
 };
 
-#endif // __PIRATEGAME_CHARACTERS_H__
+#endif // __PIRATEGAME_CHARACTER_H__

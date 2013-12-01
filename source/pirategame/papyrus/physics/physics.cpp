@@ -47,12 +47,12 @@ Physics::IStaticActor* Physics::CreateStaticActor()
 	return 0;
 }
 
-Physics::IDynamicActor* Physics::CreateDynamicActor()
+Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _pos, Float32 _mass)
 {
 	IDynamicActor* actor = 0;
 	CREATEPOINTER(actor, CControllable);
 	assert(actor);
-	VALIDATE(actor->Initialise());
+	VALIDATE(actor->Initialise(_maxVel, _pos, _mass));
 	actors[0] = actor;
 	return actor;
 }

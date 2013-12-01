@@ -29,11 +29,9 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo)
 
 	Input::inputManager->Register(this);
 
-	m_actor = Physics::CreateDynamicActor();
+	m_actor = Physics::CreateDynamicActor(VECTOR2(400.0f, 0.0f), m_pos, 80.0f);
 	assert(m_actor);
 	m_actor->AddRef();
-	m_actor->SetPosition(m_pos);
-	m_actor->SetActive(false);
 
 	return true;
 }
@@ -47,14 +45,28 @@ void CPlayable::Process(Float32 _delta)
 {
 	switch (m_currAnim)
 	{
+	case ANIM_SLIDE_LEFT:
+		if (!m_actor->IsActive())
+		{
+			m_currAnim = ANIM_IDLE_LEFT;
+			m_sprite->SetAnim(m_currAnim);
+		}
+		break;
+	case ANIM_SLIDE_RIGHT:
+		if (!m_actor->IsActive())
+		{
+			m_currAnim = ANIM_IDLE_RIGHT;
+			m_sprite->SetAnim(m_currAnim);
+		}
+		break;
 	case ANIM_RUN_LEFT:
-		m_actor->SetVelocity(VECTOR2(-SPEED * 1.0f, 0.0f));
+		m_actor->ApplyForce(VECTOR2(-150.0f, 0.0f));
 		break;
 	case ANIM_RUN_RIGHT:
-		m_actor->SetVelocity(VECTOR2(SPEED * 1.0f, 0.0f));
+		m_actor->ApplyForce(VECTOR2(150.0f, 0.0f));
 		break;
 	default: 
-		m_actor->SetVelocity(VECTOR2(0.0f, 0.0f));
+		//m_actor->SetVelocity(VECTOR2(0.0f, 0.0f));
 		break;
 	}
 
@@ -101,14 +113,15 @@ void CPlayable::Notify(SDL_Event* _e)
 	}
 	else if (_e->type == SDL_KEYUP)
 	{
-		m_actor->SetActive(false);
 		switch(_e->key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			m_currAnim = ANIM_IDLE_LEFT;
+			//m_currAnim = ANIM_IDLE_LEFT;
+			m_currAnim = ANIM_SLIDE_LEFT;
 			break;
 		case SDLK_RIGHT:
-			m_currAnim = ANIM_IDLE_RIGHT;
+			//m_currAnim = ANIM_IDLE_RIGHT;
+			m_currAnim = ANIM_SLIDE_RIGHT;
 			break;
 		default:
 			break;

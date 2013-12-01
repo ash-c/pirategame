@@ -19,12 +19,13 @@ namespace Papyrus
 			CControllable();
 			virtual ~CControllable();
 
-			virtual Bool	Initialise();
+			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _pos, Float32 _mass);
 			virtual Bool	ShutDown();
+
+			virtual void	Process(Float32 _delta);
 
 			// Member Variables
 		protected:
-
 		};
 	}
 }
