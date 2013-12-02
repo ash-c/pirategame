@@ -15,7 +15,7 @@ public:
 	CPlayable();
 	virtual ~CPlayable();
 
-	virtual Bool		Initialise(Int8* _spriteSheet, Int8* _spriteInfo);
+	virtual Bool		Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings);
 	virtual Bool		ShutDown();
 
 	virtual void		Process(Float32 _delta);
@@ -48,6 +48,9 @@ protected:
 
 	EAnims					m_currAnim;
 	Physics::IDynamicActor*	m_actor;
+
+	VECTOR2					m_moveForce;
+	VECTOR2					m_slowDownForce;
 };
 
 #endif // __PIRATEGAME_CHARACTER_PLAYABLE_H__

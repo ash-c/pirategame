@@ -15,14 +15,28 @@ CControllable::~CControllable()
 {
 }
 
-Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _pos, Float32 _mass)
+Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass)
 {
+	Logger::TrackValue(&m_active, "active");
 	Logger::TrackValue(&m_currState.pos, "position");
 	Logger::TrackValue(&m_currState.vel, "velocity");
+	Logger::TrackValue(&m_currState.acc, "acceleration");
 
 	m_currState.pos = _pos;
+	m_currState.preP = m_currState.pos;
 	m_mass = _mass;
-	m_maxVel = _maxVel;
+	m_maxState.vel = _maxVel;
+	m_maxState.acc = _maxAcc;
+
+	m_bounds.topLX = _pos.x - _scale.x * 0.5f;
+	m_bounds.topLY = _pos.y - _scale.y * 0.5f;
+	m_bounds.botRX = _pos.x + _scale.x * 0.5f;
+	m_bounds.botRY = _pos.y + _scale.y * 0.5f;
+
+	m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
+	m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
+	m_bounds.rect.w = static_cast<Int32>(_scale.x);
+	m_bounds.rect.h = static_cast<Int32>(_scale.y);
 
 	return true;
 }

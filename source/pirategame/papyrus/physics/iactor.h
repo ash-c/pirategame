@@ -4,6 +4,7 @@
 #define __PAPYRUS_PHYSICS_ACTOR_H__
 
 // Library Includes
+#include <SDL.h>
 
 // Local Includes
 #include "../core/utility/refcount.h"
@@ -22,10 +23,12 @@ namespace Papyrus
 
 			virtual ~IActor() {}
 
-			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _pos, Float32 _mass) = 0;
+			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass) = 0;
 			virtual Bool	ShutDown() = 0;
 
 			virtual void	Process(Float32 _frameTime) = 0;
+			virtual void	ProcessInterpolate(Float32 _alpha) = 0;
+			virtual void	RenderDebug() = 0;
 
 			virtual VECTOR2	GetPosition() = 0;
 
@@ -36,6 +39,8 @@ namespace Papyrus
 		protected:
 			typedef struct _TAABB
 			{
+				SDL_Rect	rect;
+
 				Float32		topLX;
 				Float32		topLY;
 				Float32		botRX;

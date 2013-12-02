@@ -67,9 +67,9 @@ Float32 Core::Process()
 {
 	Float32 delta = timer->Restart();
 
-	Input::inputManager->Process(delta);
-
 	Physics::Process(delta);
+
+	Input::inputManager->Process(delta);
 
 	Logger::Process(delta);
 
@@ -79,6 +79,7 @@ Float32 Core::Process()
 void Core::Render()
 {
 	Logger::Render();
+	Physics::RenderDebug();
 }
 
 Bool Core::ShutDown()

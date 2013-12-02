@@ -112,6 +112,16 @@ namespace Papyrus
 			}
 
 			/*
+			* Returns the scale of the sprite.
+			*
+			* @return	Returns a vector2, where the x is the width, and the y is the height of the sprite.
+			*/
+			virtual VECTOR2		GetScale()
+			{
+				return VECTOR2(static_cast<Float32>(m_sprite.w), static_cast<Float32>(m_sprite.h));
+			}
+
+			/*
 			* Set which animation to play.
 			*
 			* @param	_i				Which animation to start.

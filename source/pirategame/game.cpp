@@ -38,7 +38,7 @@ Bool CGame::Initialise()
 
 	CREATEPOINTER(m_anim, CPlayable);
 	assert(m_anim);
-	m_anim->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml");
+	m_anim->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml");
 	PY_WRITETOFILE("Animiation created");
 
 	// Register the quit function called via the debug console

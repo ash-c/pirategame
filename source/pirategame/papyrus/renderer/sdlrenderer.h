@@ -33,6 +33,8 @@ namespace Papyrus
 			virtual Int32	GetWidth() const;
 			virtual Int32	GetHeight() const;
 
+			virtual void	DrawRect(SDL_Rect* _rect);
+
 			// Member Variables
 		protected:
 			SDL_Window*		m_Window;

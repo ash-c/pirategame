@@ -20,10 +20,11 @@ namespace Papyrus
 
 			virtual ~IStaticActor() {}
 
-			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _pos, Float32 _mass) = 0;
+			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass) = 0;
 			virtual Bool	ShutDown() = 0;
 
 			virtual void	Process(Float32 _frameTime) = 0;
+			virtual void	RenderDebug() = 0;
 
 			virtual VECTOR2	GetPosition() = 0;
 

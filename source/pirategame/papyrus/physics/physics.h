@@ -19,14 +19,16 @@ namespace Papyrus
 		Bool			ShutDown();
 
 		void			Process(Float32 _frameTime);
+		void			RenderDebug();
 
 		IStaticActor*	CreateStaticActor();
 
-		IDynamicActor*	CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _pos, Float32 _mass);
+		IDynamicActor*	CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass);
 
 
 		extern IActor**	actors;
 
+		extern Float32	m_accumulator;
 		extern Int32	maxActors;
 	}
 }

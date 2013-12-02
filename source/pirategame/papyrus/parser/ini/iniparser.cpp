@@ -381,6 +381,46 @@ Bool FileParser::CIniparser::GetValue(const Int8* _key, Float32& _rfValue, const
 	}
 }
 
+Bool FileParser::CIniparser::GetValue(const Int8* _key, VECTOR2& _value, const Int8* _section)
+{
+	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
+	string strSection = _section;
+	string strKey = _key;
+	string strResult;
+	Int32 iToY;
+	Int32 iToZ;
+	Int32 iLength;
+
+	if(m_mapPairs.end() != m_mapPairs.find(CreateMapKey(strSection, strKey)))
+	{
+		strResult = m_mapPairs[CreateMapKey(strSection, strKey)];
+
+		iLength = static_cast<Int32>(strResult.length());
+
+		string strModifier;
+		iToY = static_cast<int>(strResult.find(','));
+
+		strModifier = strResult;
+		strModifier = strResult.substr(iToY + 1, iLength);
+
+		iToZ = static_cast<int>(strModifier.find(','));
+		iToZ += iToY + 1;
+
+		string strX = strResult.substr(0, iToY);
+		_value.x = static_cast<Float32>(atof(strX.c_str()));
+
+		string strY = strResult.substr(iToY + 1, iToZ);
+		_value.y = static_cast<Float32>(atof(strY.c_str()));
+
+		return true;
+	}
+	else
+	{
+		Logger::Write("FileParser:: Unable to find %s:%s", _section, _key);
+		return false;
+	}
+}
+
 Bool FileParser::CIniparser::GetValue(const Int8* _key, VECTOR3& _rv3Value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");

@@ -17,7 +17,7 @@ public:
 	ICharacter() {}
 	virtual ~ICharacter() {}
 
-	virtual Bool		Initialise(Int8* _spriteSheet, Int8* _spriteInfo) = 0;
+	virtual Bool		Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings) = 0;
 	virtual Bool		ShutDown() = 0;
 
 	virtual void		Process(Float32 _delta) = 0;

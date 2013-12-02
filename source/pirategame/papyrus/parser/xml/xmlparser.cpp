@@ -256,6 +256,22 @@ Bool FileParser::CXMLParser::GetValue(const Int8* _key, Float32& _value, const I
 	}
 }
 
+Bool FileParser::CXMLParser::GetValue(const Int8* _key, VECTOR2& _value, const Int8* _section)
+{
+	rapidxml::xml_node<>* node = m_xml.first_node(_key);
+	if (nullptr == node)
+	{
+		Logger::Write("FileParser:: Unable to get %s, doesn't exist", _key);
+		return false;
+	}
+	else
+	{
+		_value.x = static_cast<Float32>(atof(node->first_attribute("x")->value()));
+		_value.y = static_cast<Float32>(atof(node->first_attribute("y")->value()));
+		return true;
+	}
+}
+
 Bool FileParser::CXMLParser::GetValue(const Int8* _key, VECTOR3& _value, const Int8* _section)
 {
 	rapidxml::xml_node<>* node = m_xml.first_node(_key);

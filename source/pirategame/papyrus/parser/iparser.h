@@ -214,6 +214,16 @@ namespace Papyrus
 			virtual Bool GetValue(const Int8* _key, Float32& _value, const Int8* _section = 0) = 0;
 
 			/*
+			* Gets a vector2 value from the parser.
+			*
+			* @param	_section		Section of the parser to store the key/value under.
+			* @param	_key			Key attribute.
+			* @param	_value			The vector2 value to be returned.
+			* @return	The _value parameter will be filled out with the value being returned.
+			*/
+			virtual Bool GetValue(const Int8* _key, VECTOR2& _value, const Int8* _section = 0) = 0;
+
+			/*
 			* Gets a vector3 value from the parser.
 			*
 			* @param	_section		Section of the parser to store the key/value under.

@@ -3,6 +3,7 @@
 
 // Local Includes
 #include "playable.h"
+#include "../parser/parser.h"
 
 using namespace Papyrus;
 
@@ -18,7 +19,7 @@ CPlayable::~CPlayable()
 {
 }
 
-Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo)
+Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 {
 	assert(0 != _spriteSheet && 0 != _spriteInfo);
 
@@ -29,7 +30,21 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo)
 
 	Input::inputManager->Register(this);
 
-	m_actor = Physics::CreateDynamicActor(VECTOR2(400.0f, 0.0f), m_pos, 80.0f);
+	FileParser::IParser* settings = FileParser::LoadFile(_settings);
+	assert(settings);
+	settings->AddRef();
+
+	VECTOR2 max;
+	VECTOR2 maxA;
+	Float32 mass;
+	
+	settings->GetValue("maxVel", max);
+	settings->GetValue("maxAcc", maxA);
+	settings->GetValue("mass", mass);
+	settings->GetValue("moveForce", m_moveForce);
+	settings->GetValue("slowDownForce", m_slowDownForce);
+
+	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass);
 	assert(m_actor);
 	m_actor->AddRef();
 
@@ -51,6 +66,10 @@ void CPlayable::Process(Float32 _delta)
 			m_currAnim = ANIM_IDLE_LEFT;
 			m_sprite->SetAnim(m_currAnim);
 		}
+		else 
+		{
+			m_actor->ApplyForce(VECTOR2(m_slowDownForce.x, 0.0f));
+		}
 		break;
 	case ANIM_SLIDE_RIGHT:
 		if (!m_actor->IsActive())
@@ -58,12 +77,30 @@ void CPlayable::Process(Float32 _delta)
 			m_currAnim = ANIM_IDLE_RIGHT;
 			m_sprite->SetAnim(m_currAnim);
 		}
+		else 
+		{
+			m_actor->ApplyForce(VECTOR2(-m_slowDownForce.x, 0.0f));
+		}
 		break;
 	case ANIM_RUN_LEFT:
-		m_actor->ApplyForce(VECTOR2(-150.0f, 0.0f));
+		{
+			VECTOR2 vel = m_actor->GetVelocity();
+			if (vel.x > -m_moveForce.x * 0.5f)
+			{
+				m_actor->SetVelocity(VECTOR2(-m_moveForce.x * 0.5f, 0.0f));
+			}
+			m_actor->ApplyForce(VECTOR2(-m_moveForce.x, 0.0f));
+		}
 		break;
 	case ANIM_RUN_RIGHT:
-		m_actor->ApplyForce(VECTOR2(150.0f, 0.0f));
+		{
+			VECTOR2 vel = m_actor->GetVelocity();
+			if (vel.x < m_moveForce.x * 0.5f)
+			{
+				m_actor->SetVelocity(VECTOR2(m_moveForce.x * 0.5f, 0.0f));
+			}
+			m_actor->ApplyForce(VECTOR2(m_moveForce.x, 0.0f));
+		}
 		break;
 	default: 
 		//m_actor->SetVelocity(VECTOR2(0.0f, 0.0f));
@@ -87,12 +124,18 @@ void CPlayable::Notify(SDL_Event* _e)
 		switch (_e->key.keysym.sym)
 		{
 		case SDLK_LEFT: // Run left
-			m_currAnim = ANIM_RUN_LEFT;
-			m_actor->SetActive(true);
+			if (ANIM_SLIDE_RIGHT != m_currAnim)
+			{
+				m_currAnim = ANIM_RUN_LEFT;
+				m_actor->SetActive(true);
+			}
 			break;
 		case SDLK_RIGHT: // Run right
-			m_currAnim = ANIM_RUN_RIGHT;
-			m_actor->SetActive(true);
+			if (ANIM_SLIDE_LEFT != m_currAnim)
+			{
+				m_currAnim = ANIM_RUN_RIGHT;
+				m_actor->SetActive(true);
+			}
 			break; 
 		case SDLK_UP: // Jump or climb a ladder
 			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
@@ -117,11 +160,17 @@ void CPlayable::Notify(SDL_Event* _e)
 		{
 		case SDLK_LEFT:
 			//m_currAnim = ANIM_IDLE_LEFT;
-			m_currAnim = ANIM_SLIDE_LEFT;
+			if (ANIM_SLIDE_RIGHT != m_currAnim)
+			{
+				m_currAnim = ANIM_SLIDE_LEFT;
+			}
 			break;
 		case SDLK_RIGHT:
 			//m_currAnim = ANIM_IDLE_RIGHT;
-			m_currAnim = ANIM_SLIDE_RIGHT;
+			if (ANIM_SLIDE_LEFT != m_currAnim)
+			{
+				m_currAnim = ANIM_SLIDE_RIGHT;
+			}
 			break;
 		default:
 			break;

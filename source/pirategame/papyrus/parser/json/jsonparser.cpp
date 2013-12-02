@@ -268,6 +268,25 @@ Bool FileParser::CJSONParser::GetValue(const Int8* _key, Float32& _value, const 
 	}
 }
 
+Bool FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR2& _value, const Int8* _section)
+{
+	if (m_json[_key].IsArray())
+	{
+		const rapidjson::Value& arrValues = m_json[_key];
+
+		rapidjson::SizeType i = 0;
+		_value.x = static_cast<Float32>(arrValues[i++].GetDouble());
+		_value.y = static_cast<Float32>(arrValues[i++].GetDouble());
+
+		return true;
+	}
+	else
+	{
+		Logger::Write("FileParser:: Unable to get %s, wrong type or doesn't exist", _key);
+		return false;
+	}
+}
+
 Bool FileParser::CJSONParser::GetValue(const Int8* _key, VECTOR3& _value, const Int8* _section)
 {
 	if (m_json[_key].IsArray())
