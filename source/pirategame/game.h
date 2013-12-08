@@ -10,6 +10,8 @@
 #include "papyrus\core\utility\singleton.h"
 #include "papyrus\core\core.h"
 
+#include "level\levelmanager.h"
+
 using namespace Papyrus;
 
 // Prototypes
@@ -73,15 +75,12 @@ protected:
 	// Default Constructor
 	CGame();
 
-private:
-	CGame(const CGame& _rhs);
-	CGame& operator = (const CGame& _rhs);
-
 	// Member Variables
 protected:
+	CLevelManager*				m_levelMan;
+
 	Sprite::ISprite*			m_background;
 	ICharacter*					m_anim;
-	VECTOR2						m_pos;
 	Bool						m_active;
 };
 #define GAME CGame::GetInstance();

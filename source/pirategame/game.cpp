@@ -8,16 +8,18 @@
 #include "character\playable.h"
 
 CGame::CGame()
-	: m_background(0)
+	: m_levelMan(0)
+	, m_background(0)
 	, m_anim(0)
 	, m_active(true)
 {
-	m_pos.x = 1920/2;
-	m_pos.y = 1080/2;
+
 }
 
 CGame::~CGame()
 {
+	m_levelMan->DestroyInstance();
+	m_levelMan = 0;
 	Core::ShutDown();
 }
 
@@ -50,6 +52,8 @@ Bool CGame::Initialise()
 
 	Input::inputManager->Register(this);
 
+	m_levelMan = &CLevelManager::GetInstance();
+
 	return true;
 }
 
@@ -79,8 +83,6 @@ Bool CGame::IsActive()
 
 void CGame::Notify(SDL_Event* _e)
 {
-	Int32 speed = 400;
-
 	if (_e->type == SDL_QUIT)
 	{
 		m_active = false;			

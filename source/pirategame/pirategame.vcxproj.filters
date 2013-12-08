@@ -63,6 +63,15 @@
     <ClCompile Include="papyrus\physics\controllable.cpp">
       <Filter>papyrus\physics</Filter>
     </ClCompile>
+    <ClCompile Include="level\levelmanager.cpp">
+      <Filter>level</Filter>
+    </ClCompile>
+    <ClCompile Include="level\level.cpp">
+      <Filter>level</Filter>
+    </ClCompile>
+    <ClCompile Include="level\platform.cpp">
+      <Filter>level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -106,6 +115,9 @@
     </Filter>
     <Filter Include="papyrus\core\math">
       <UniqueIdentifier>{04eb4fc5-1166-444a-a20e-8f303213e58e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="level">
+      <UniqueIdentifier>{609e6b2d-03dc-4226-9064-aef5e9426410}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -217,6 +229,18 @@
     </ClInclude>
     <ClInclude Include="papyrus\physics\controllable.h">
       <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="level\levelmanager.h">
+      <Filter>level</Filter>
+    </ClInclude>
+    <ClInclude Include="level\level.h">
+      <Filter>level</Filter>
+    </ClInclude>
+    <ClInclude Include="level\tile.h">
+      <Filter>level</Filter>
+    </ClInclude>
+    <ClInclude Include="level\platform.h">
+      <Filter>level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

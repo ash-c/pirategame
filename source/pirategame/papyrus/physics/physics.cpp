@@ -32,7 +32,7 @@ Bool Physics::ShutDown()
 void Physics::Process(Float32 _frameTime)
 {
 	// fix the framerate that the physics is calculated at.
-	const Float32 dt = 1.0f / 60.0f;
+	const Float32 dt = 1.0f / 60.0f; // 60FPS
 	m_accumulator += _frameTime;
 
 	while (m_accumulator >= dt)
@@ -50,19 +50,19 @@ void Physics::Process(Float32 _frameTime)
 		m_accumulator -= dt;
 	}
 
-	const Float32 alpha = m_accumulator / dt;
+	/*const Float32 alpha = m_accumulator / dt;
 	Logger::WriteToFile("%.4f", alpha);
 
 	for (Int16 i = 0; i < maxActors; ++i)
+	{
+		if (0 != actors[i])
 		{
-			if (0 != actors[i])
+			if (actors[i]->IsActive())
 			{
-				if (actors[i]->IsActive())
-				{
-					actors[i]->ProcessInterpolate(alpha);
-				}
+				actors[i]->ProcessInterpolate(alpha);
 			}
 		}
+	}*/
 }
 
 void Physics::RenderDebug()

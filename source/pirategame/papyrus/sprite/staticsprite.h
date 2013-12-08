@@ -24,11 +24,14 @@ namespace Papyrus
 			virtual Bool		Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _id);
 			virtual Bool		ShutDown();
 			
-			virtual void		Process(Float32 _fDelta);
+			virtual void		Process(Float32 _fDelta) {}
 			virtual void		Render();
+
+			virtual void		SetClip(SDL_Rect* _clip);
 
 			// Member Variables
 		private:
+			SDL_Rect*			m_clip;
 		};
 	}
 }

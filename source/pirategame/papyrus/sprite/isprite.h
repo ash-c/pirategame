@@ -122,6 +122,14 @@ namespace Papyrus
 			}
 
 			/*
+			* Sets the area of a sprite to render for a static sprite. Not implemented for animated sprites.
+			*
+			* @param	_clip			The area to render.
+			* @return	Returns void.
+			*/
+			virtual void		SetClip(SDL_Rect* _clip) { }
+
+			/*
 			* Set which animation to play.
 			*
 			* @param	_i				Which animation to start.

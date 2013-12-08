@@ -88,20 +88,20 @@ namespace Papyrus
 						m_currState.vel.x = 0.0f;
 						m_active = false;
 					}
+
+					// Update bounds
+					m_bounds.topLX = m_currState.pos.x - m_bounds.rect.w * 0.5f;
+					m_bounds.topLY = m_currState.pos.y - m_bounds.rect.h * 0.5f;
+					m_bounds.botRX = m_currState.pos.x + m_bounds.rect.w * 0.5f;
+					m_bounds.botRY = m_currState.pos.y + m_bounds.rect.h * 0.5f;
+					m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
+					m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
 				}
 			}
 
 			virtual void	ProcessInterpolate(Float32 _alpha)
 			{
 				m_currState.pos = m_currState.pos * _alpha + m_currState.preP * (1.0f - _alpha);
-
-				// Update bounds
-				m_bounds.topLX = m_currState.pos.x - m_bounds.rect.w * 0.5f;
-				m_bounds.topLY = m_currState.pos.y - m_bounds.rect.h * 0.5f;
-				m_bounds.botRX = m_currState.pos.x + m_bounds.rect.w * 0.5f;
-				m_bounds.botRY = m_currState.pos.y + m_bounds.rect.h * 0.5f;
-				m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
-				m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
 			}
 
 			virtual void	RenderDebug()

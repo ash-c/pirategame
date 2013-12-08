@@ -91,6 +91,9 @@
   <ItemGroup>
     <ClCompile Include="character\playable.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="level\level.cpp" />
+    <ClCompile Include="level\levelmanager.cpp" />
+    <ClCompile Include="level\platform.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />
@@ -116,6 +119,10 @@
     <ClInclude Include="character\character.h" />
     <ClInclude Include="character\playable.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="level\level.h" />
+    <ClInclude Include="level\levelmanager.h" />
+    <ClInclude Include="level\platform.h" />
+    <ClInclude Include="level\tile.h" />
     <ClInclude Include="papyrus\core\core.h" />
     <ClInclude Include="papyrus\core\math\vector2.h" />
     <ClInclude Include="papyrus\core\math\vector3.h" />
