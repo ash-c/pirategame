@@ -9,8 +9,6 @@
 
 CGame::CGame()
 	: m_levelMan(0)
-	, m_background(0)
-	, m_anim(0)
 	, m_active(true)
 {
 
@@ -18,6 +16,7 @@ CGame::CGame()
 
 CGame::~CGame()
 {
+	m_levelMan->ShutDown();
 	m_levelMan->DestroyInstance();
 	m_levelMan = 0;
 	Core::ShutDown();
@@ -33,16 +32,6 @@ Bool CGame::Initialise()
 {
 	VALIDATE(Core::Initialise());
 
-	m_background = Sprite::CreateSprite("data/art/background.png", 0, false);
-	assert(m_background);
-	m_background->AddRef();
-	PY_WRITETOFILE("Background created");
-
-	CREATEPOINTER(m_anim, CPlayable);
-	assert(m_anim);
-	m_anim->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml");
-	PY_WRITETOFILE("Animiation created");
-
 	// Register the quit function called via the debug console
 	lua_register(Logger::luaState, "QuitGame", QuitGame);
 
@@ -53,23 +42,23 @@ Bool CGame::Initialise()
 	Input::inputManager->Register(this);
 
 	m_levelMan = &CLevelManager::GetInstance();
+	m_levelMan->Initialise();
+	m_levelMan->LoadLevel(0);
 
 	return true;
 }
 
 void CGame::Process(Float32 _delta)
 {
-	m_anim->Process(_delta);
+	m_levelMan->Process(_delta);
 }
 
 void CGame::Render()
 {
 	Renderer::Clear();
+
+	m_levelMan->Render();
 	
-	m_background->Render();
-
-	m_anim->Render();
-
 	// Render core last, as it renders logging.
 	Core::Render();
 

@@ -12,7 +12,9 @@ CPlatform::~CPlatform()
 {
 }
 
-Bool CPlatform::Initialise()
+Bool CPlatform::Initialise(Int8* _spritesheet)
 {
+	
+
 	return true;
 }

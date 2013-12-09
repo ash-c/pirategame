@@ -31,7 +31,7 @@ namespace Papyrus
 
 			// Member Variables
 		private:
-			SDL_Rect*			m_clip;
+			SDL_Rect			m_clip;
 		};
 	}
 }

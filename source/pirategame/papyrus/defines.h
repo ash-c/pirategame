@@ -63,7 +63,6 @@ for (Int16 i = 0; i < Length; ++i)\
 {\
 	if (0 != Array[i])\
 	{\
-		Array[i]->Release();\
 		Array[i]->ShutDown();\
 		CLEANDELETE(Array[i]);\
 	}\

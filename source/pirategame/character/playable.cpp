@@ -47,12 +47,15 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass);
 	assert(m_actor);
 	m_actor->AddRef();
+	settings->Release();
 
 	return true;
 }
 
 Bool CPlayable::ShutDown()
 {
+	m_sprite->Release();
+	m_actor->Release();
 	return true;
 }
 

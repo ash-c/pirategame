@@ -79,8 +79,6 @@ protected:
 protected:
 	CLevelManager*				m_levelMan;
 
-	Sprite::ISprite*			m_background;
-	ICharacter*					m_anim;
 	Bool						m_active;
 };
 #define GAME CGame::GetInstance();
