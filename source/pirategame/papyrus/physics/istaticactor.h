@@ -7,6 +7,7 @@
 
 // Local Includes
 #include "iactor.h"
+#include "../renderer/renderer.h"
 
 namespace Papyrus
 {
@@ -20,16 +21,22 @@ namespace Papyrus
 
 			virtual ~IStaticActor() {}
 
-			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass) = 0;
+			virtual Bool	Initialise(VECTOR2 _pos, VECTOR2 _scale) = 0;
 			virtual Bool	ShutDown() = 0;
 
-			virtual void	Process(Float32 _frameTime) = 0;
-			virtual void	RenderDebug() = 0;
+			virtual void	Process(Float32 _frameTime) {}
 
-			virtual VECTOR2	GetPosition() = 0;
+			virtual void	RenderDebug()
+			{
+				Renderer::activeRenderer->DrawRect(&m_bounds.rect, m_collided);
+			}
+
+			virtual void	SetPosition(VECTOR2 _v) { m_pos = _v; } 
+			virtual VECTOR2	GetPosition() { return m_pos; }
 
 			// Member Variables
 		protected:
+			VECTOR2			m_pos;
 		};
 	}
 }

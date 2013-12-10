@@ -72,6 +72,9 @@
     <ClCompile Include="level\platform.cpp">
       <Filter>level</Filter>
     </ClCompile>
+    <ClCompile Include="papyrus\physics\static.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="level\platform.h">
       <Filter>level</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\static.h">
+      <Filter>papyrus\physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,6 +26,7 @@ namespace Papyrus
 				, m_FullScreen(true)
 			{
 			}
+
 			// Default Destructor
 			virtual ~IRenderer()
 			{
@@ -44,7 +45,7 @@ namespace Papyrus
 			virtual Int32	GetWidth() const = 0;
 			virtual Int32	GetHeight() const = 0;
 
-			virtual void	DrawRect(SDL_Rect* _rect) = 0;
+			virtual void	DrawRect(SDL_Rect* _rect, Bool _red = false) = 0;
 
 			// Member Variables
 		protected:

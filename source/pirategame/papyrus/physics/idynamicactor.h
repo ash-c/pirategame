@@ -21,6 +21,7 @@ namespace Papyrus
 				: m_zero(0.01f)
 				, m_mass(0.0f)
 			{
+				m_currState.acc.y = 10.0f;
 			}
 
 			virtual ~IDynamicActor() {}
@@ -35,7 +36,10 @@ namespace Papyrus
 			virtual VECTOR2	GetVelocity() { return m_currState.vel; }
 
 			virtual void	SetPosition(VECTOR2 _v) { m_currState.pos = _v; m_currState.preP = _v; } 
-			virtual VECTOR2	GetPosition() { return m_currState.pos; }
+			virtual VECTOR2	GetPosition() 
+			{ 
+				return m_currState.pos; 
+			}
 
 			virtual void	ApplyForce(VECTOR2 _force)
 			{
@@ -43,17 +47,25 @@ namespace Papyrus
 				m_currState.acc += _force / m_mass;
 
 				if (m_currState.acc.x > m_maxState.acc.x)
-					{
-						m_currState.acc.x = m_maxState.acc.x;
-					} 
-					else if (m_currState.acc.x < -m_maxState.acc.x)
-					{
-						m_currState.acc.x = -m_maxState.acc.x;
-					}
+				{
+					m_currState.acc.x = m_maxState.acc.x;
+				} 
+				else if (m_currState.acc.x < -m_maxState.acc.x)
+				{
+					m_currState.acc.x = -m_maxState.acc.x;
+				}
 			}
 
 			virtual void	Process(Float32 _delta)
 			{
+				m_currState.preV = m_currState.vel;
+				m_currState.vel += m_currState.acc * _delta;
+
+				if (m_collided)
+				{
+					m_currState.vel.y = 0.0f;
+				}
+				
 				if (m_active)
 				{
 					// accelerate
@@ -63,10 +75,7 @@ namespace Papyrus
 						m_currState.vel.x = 0.0f;
 						m_active = false;
 					}
-
-					m_currState.preV = m_currState.vel;
-					m_currState.vel += m_currState.acc * _delta;
-
+					
 					// cap velocity
 					if (m_currState.vel.x > m_maxState.vel.x)
 					{
@@ -88,25 +97,26 @@ namespace Papyrus
 						m_currState.vel.x = 0.0f;
 						m_active = false;
 					}
-
-					// Update bounds
-					m_bounds.topLX = m_currState.pos.x - m_bounds.rect.w * 0.5f;
-					m_bounds.topLY = m_currState.pos.y - m_bounds.rect.h * 0.5f;
-					m_bounds.botRX = m_currState.pos.x + m_bounds.rect.w * 0.5f;
-					m_bounds.botRY = m_currState.pos.y + m_bounds.rect.h * 0.5f;
-					m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
-					m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
 				}
-			}
+				else 
+				{
+					// change position				
+					m_currState.preP = m_currState.pos;
+					m_currState.pos += m_currState.vel * _delta; 
+				}
 
-			virtual void	ProcessInterpolate(Float32 _alpha)
-			{
-				m_currState.pos = m_currState.pos * _alpha + m_currState.preP * (1.0f - _alpha);
+				// Update bounds
+				m_bounds.topLX = m_currState.pos.x - m_bounds.rect.w * 0.5f;
+				m_bounds.topLY = m_currState.pos.y - m_bounds.rect.h * 0.5f;
+				m_bounds.botRX = m_currState.pos.x + m_bounds.rect.w * 0.5f;
+				m_bounds.botRY = m_currState.pos.y + m_bounds.rect.h * 0.5f;
+				m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
+				m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
 			}
 
 			virtual void	RenderDebug()
 			{
-				Renderer::activeRenderer->DrawRect(&m_bounds.rect);
+				Renderer::activeRenderer->DrawRect(&m_bounds.rect, m_collided);
 			}
 
 		protected:

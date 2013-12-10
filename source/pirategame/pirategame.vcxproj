@@ -109,6 +109,7 @@
     <ClCompile Include="papyrus\parser\xml\xmlparser.cpp" />
     <ClCompile Include="papyrus\physics\controllable.cpp" />
     <ClCompile Include="papyrus\physics\physics.cpp" />
+    <ClCompile Include="papyrus\physics\static.cpp" />
     <ClCompile Include="papyrus\renderer\renderer.cpp" />
     <ClCompile Include="papyrus\renderer\sdlrenderer.cpp" />
     <ClCompile Include="papyrus\sprite\animsprite.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="papyrus\physics\idynamicactor.h" />
     <ClInclude Include="papyrus\physics\istaticactor.h" />
     <ClInclude Include="papyrus\physics\physics.h" />
+    <ClInclude Include="papyrus\physics\static.h" />
     <ClInclude Include="papyrus\renderer\irenderer.h" />
     <ClInclude Include="papyrus\renderer\renderer.h" />
     <ClInclude Include="papyrus\renderer\sdlrenderer.h" />

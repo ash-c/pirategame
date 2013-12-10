@@ -93,7 +93,16 @@ Int32 Renderer::CSDLRenderer::GetHeight() const
 	return m_Height;
 }
 
-void Renderer::CSDLRenderer::DrawRect(SDL_Rect* _rect)
+void Renderer::CSDLRenderer::DrawRect(SDL_Rect* _rect, Bool _red)
 {
-	SDL_RenderDrawRect(m_Renderer, _rect);
+	if (_red)
+	{
+		SDL_SetRenderDrawColor(m_Renderer, 255, 0, 0, 0);
+		SDL_RenderDrawRect(m_Renderer, _rect);
+		SDL_SetRenderDrawColor(m_Renderer, 0, 255, 0, 0);
+	}
+	else
+	{
+		SDL_RenderDrawRect(m_Renderer, _rect);
+	}
 }

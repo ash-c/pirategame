@@ -30,7 +30,13 @@ class CTile : public TRefCount<CTile>
 {
 	// Member Functions
 public:
-	CTile() {}
+	CTile() 
+		: m_actor(0)
+		, m_sprite(0)
+	{
+		SDL_memset(&m_clips, 0, sizeof(Int32) * 4);
+	}
+
 	~CTile() {}
 
 	Bool		Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
@@ -85,6 +91,9 @@ public:
 			break;
 		}
 
+		m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(50.0f,50.0f));
+		assert(m_actor);
+
 		return true;
 	}
 
@@ -103,6 +112,7 @@ public:
 
 	// Member Variables
 protected:
+	Physics::IActor*	m_actor;
 	Sprite::ISprite*	m_sprite;
 	SDL_Rect			m_clips;
 	VECTOR2				m_pos;

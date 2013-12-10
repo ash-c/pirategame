@@ -32,6 +32,8 @@ Bool Sprite::CStaticSprite::Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _
 
 	ISprite::Initialise(_spriteSheet, _setup, _id);
 
+	
+
 	return true;
 }
 

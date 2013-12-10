@@ -15,13 +15,14 @@ Bool Core::Initialise()
 	setup.Initialise("data/papyrus/setup.ini");
 	setup.Load();
 
-	Int32 width, height, numParsers, numSprites;
+	Int32 width, height, numParsers, numSprites, numActors;
 	Int8* title = 0;
 	Bool fullscreen;
 
 	setup.AddRef();
 	VALIDATE(setup.GetValue("parsers", numParsers, "init"));
 	VALIDATE(setup.GetValue("sprites", numSprites, "init"));
+	VALIDATE(setup.GetValue("actors", numActors, "init"));
 	VALIDATE(setup.GetValue("width", width, "screen"));
 	VALIDATE(setup.GetValue("height", height, "screen"));
 	VALIDATE(setup.GetValue("fullscreen", fullscreen, "screen"));
@@ -49,7 +50,8 @@ Bool Core::Initialise()
 
 	VALIDATE(Input::Initialise());
 	PY_WRITETOFILE("Input initialised");
-
+	
+	Physics::maxActors = numActors;
 	VALIDATE(Physics::Initialise());
 	PY_WRITETOFILE("Physics initialised");
 
