@@ -21,7 +21,7 @@ namespace Papyrus
 				: m_zero(0.01f)
 				, m_mass(0.0f)
 			{
-				m_currState.acc.y = 10.0f;
+				m_currState.acc.y = 500.0f;
 			}
 
 			virtual ~IDynamicActor() {}
@@ -54,6 +54,11 @@ namespace Papyrus
 				{
 					m_currState.acc.x = -m_maxState.acc.x;
 				}
+
+				if (m_currState.acc.y < -m_maxState.acc.y)
+				{
+					m_currState.acc.y = -m_maxState.acc.y;
+				}
 			}
 
 			virtual void	Process(Float32 _delta)
@@ -61,14 +66,19 @@ namespace Papyrus
 				m_currState.preV = m_currState.vel;
 				m_currState.vel += m_currState.acc * _delta;
 
-				if (m_collided)
+				if (m_collided && m_currState.acc.y > 0.0f)
 				{
 					m_currState.vel.y = 0.0f;
+				}
+
+				if (m_currState.acc.y <= 0.0f || m_currState.acc.y < 500.0f)
+				{
+					m_currState.acc.y += 500.0f * _delta;
 				}
 				
 				if (m_active)
 				{
-					// accelerate
+					// come to a stop
 					if ((m_currState.vel.x > 0 && m_currState.preV.x < 0) || (m_currState.vel.x < 0 && m_currState.preV.x > 0))
 					{
 						m_currState.acc.x = 0.0f;

@@ -86,27 +86,26 @@ void CPlayable::Process(Float32 _delta)
 		}
 		break;
 	case ANIM_RUN_LEFT:
-		{
-			VECTOR2 vel = m_actor->GetVelocity();
-			if (vel.x > -m_moveForce.x * 0.5f)
-			{
-				m_actor->SetVelocity(VECTOR2(-m_moveForce.x * 0.5f, 0.0f));
-			}
 			m_actor->ApplyForce(VECTOR2(-m_moveForce.x, 0.0f));
-		}
 		break;
 	case ANIM_RUN_RIGHT:
-		{
-			VECTOR2 vel = m_actor->GetVelocity();
-			if (vel.x < m_moveForce.x * 0.5f)
-			{
-				m_actor->SetVelocity(VECTOR2(m_moveForce.x * 0.5f, 0.0f));
-			}
 			m_actor->ApplyForce(VECTOR2(m_moveForce.x, 0.0f));
+		break;
+	case ANIM_JUMP_LEFT:
+		if (m_actor->IsCollided() && m_actor->GetVelocity().y >= 0.0f)
+		{
+			m_currAnim = ANIM_IDLE_LEFT;
+			m_sprite->SetAnim(m_currAnim);
+		}
+		break;
+	case ANIM_JUMP_RIGHT:	
+		if (m_actor->IsCollided() && m_actor->GetVelocity().y >= 0.0f)
+		{
+			m_currAnim = ANIM_IDLE_RIGHT;
+			m_sprite->SetAnim(m_currAnim);
 		}
 		break;
 	default: 
-		//m_actor->SetVelocity(VECTOR2(0.0f, 0.0f));
 		break;
 	}
 
@@ -120,23 +119,37 @@ void CPlayable::Render()
 	m_sprite->Render();
 }
 
+void CPlayable::SetPosition(VECTOR2 _v)
+{
+	m_actor->SetPosition(_v);
+}
+
 void CPlayable::Notify(SDL_Event* _e)
 {
+	VECTOR2 vel = m_actor->GetVelocity();
 	if (_e->type == SDL_KEYDOWN)
 	{
 		switch (_e->key.keysym.sym)
 		{
 		case SDLK_LEFT: // Run left
-			if (ANIM_SLIDE_RIGHT != m_currAnim)
+			if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
 			{
 				m_currAnim = ANIM_RUN_LEFT;
+				if (vel.x > -m_moveForce.x)
+				{
+					m_actor->SetVelocity(VECTOR2(-m_moveForce.x, vel.y));
+				}
 				m_actor->SetActive(true);
 			}
 			break;
 		case SDLK_RIGHT: // Run right
-			if (ANIM_SLIDE_LEFT != m_currAnim)
+			if (ANIM_SLIDE_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim)
 			{
 				m_currAnim = ANIM_RUN_RIGHT;
+				if (vel.x < m_moveForce.x)
+				{
+					m_actor->SetVelocity(VECTOR2(m_moveForce.x, vel.y));
+				}
 				m_actor->SetActive(true);
 			}
 			break; 
@@ -146,10 +159,14 @@ void CPlayable::Notify(SDL_Event* _e)
 				if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim)
 				{
 					m_currAnim = ANIM_JUMP_LEFT;
+					m_actor->ApplyForce(VECTOR2(0.0f, -50000.0f));
+					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
 				} 
 				else 
 				{
 					m_currAnim = ANIM_JUMP_RIGHT;
+					m_actor->ApplyForce(VECTOR2(0.0f, -50000.0f));
+					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
 				}
 			}
 			break;
@@ -163,14 +180,14 @@ void CPlayable::Notify(SDL_Event* _e)
 		{
 		case SDLK_LEFT:
 			//m_currAnim = ANIM_IDLE_LEFT;
-			if (ANIM_SLIDE_RIGHT != m_currAnim)
+			if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
 			{
 				m_currAnim = ANIM_SLIDE_LEFT;
 			}
 			break;
 		case SDLK_RIGHT:
 			//m_currAnim = ANIM_IDLE_RIGHT;
-			if (ANIM_SLIDE_LEFT != m_currAnim)
+			if (ANIM_SLIDE_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim)
 			{
 				m_currAnim = ANIM_SLIDE_RIGHT;
 			}

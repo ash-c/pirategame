@@ -62,6 +62,9 @@ Bool CLevel::Initialise(Int8* _setup)
 		m_platforms[i]->AddRef();
 	}
 
+	VALIDATE(setup->GetValue("playerStart", pos));
+	m_playable->SetPosition(pos);
+
 	setup->Release();
 	return true;
 }
@@ -92,10 +95,10 @@ void CLevel::Render()
 {
 	m_background->Render();
 
-	m_playable->Render();
-
 	for (Int16 i = 0; i < m_numTiles; ++i)
 	{
 		m_platforms[i]->Render();
 	}
+
+	m_playable->Render();
 }

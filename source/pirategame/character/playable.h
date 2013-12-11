@@ -21,6 +21,8 @@ public:
 	virtual void		Process(Float32 _delta);
 	virtual void		Render();
 
+	virtual void		SetPosition(VECTOR2 _v);
+
 	virtual void		Notify(SDL_Event* _e);
 
 	// Member Variables

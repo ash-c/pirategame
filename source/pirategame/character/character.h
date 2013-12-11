@@ -23,6 +23,8 @@ public:
 	virtual void		Process(Float32 _delta) = 0;
 	virtual void		Render() = 0;
 
+	virtual void		SetPosition(VECTOR2 _v) = 0;
+
 	// Member Variables
 protected:
 	static const Int32	SPEED = 400;

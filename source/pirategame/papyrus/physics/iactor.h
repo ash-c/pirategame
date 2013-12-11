@@ -37,6 +37,7 @@ namespace Papyrus
 			virtual Bool	IsActive() { return m_active; }
 			virtual void	SetActive(Bool _b) { m_active = _b; } 
 			virtual void	SetCollided(Bool _b) { m_collided = _b; }
+			virtual Bool	IsCollided() { return m_collided; }
 
 			// Member Variables
 		protected:
