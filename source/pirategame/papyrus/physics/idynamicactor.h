@@ -65,6 +65,16 @@ namespace Papyrus
 			{
 				m_currState.preV = m_currState.vel;
 				m_currState.vel += m_currState.acc * _delta;
+					
+				// cap velocity
+				if (m_currState.vel.x > m_maxState.vel.x)
+				{
+					m_currState.vel.x = m_maxState.vel.x;
+				} 
+				else if (m_currState.vel.x < -m_maxState.vel.x)
+				{
+					m_currState.vel.x = -m_maxState.vel.x;
+				}
 
 				if (m_collided && m_currState.acc.y > 0.0f)
 				{
@@ -84,16 +94,6 @@ namespace Papyrus
 						m_currState.acc.x = 0.0f;
 						m_currState.vel.x = 0.0f;
 						m_active = false;
-					}
-					
-					// cap velocity
-					if (m_currState.vel.x > m_maxState.vel.x)
-					{
-						m_currState.vel.x = m_maxState.vel.x;
-					} 
-					else if (m_currState.vel.x < -m_maxState.vel.x)
-					{
-						m_currState.vel.x = -m_maxState.vel.x;
 					}
 
 					// change position				

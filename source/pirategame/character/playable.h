@@ -48,11 +48,22 @@ protected:
 		MAX_ANIMS
 	} EAnims;
 
-	EAnims					m_currAnim;
+	typedef enum _EMovement
+	{
+		INVALID_MOVE = INVALID_ID,
+		MOVE_IDLE,
+		MOVE_RIGHT,
+		MOVE_LEFT,
+		MAX_MOVE
+	} EMovement;
+
 	Physics::IDynamicActor*	m_actor;
 
 	VECTOR2					m_moveForce;
 	VECTOR2					m_slowDownForce;
+
+	EAnims					m_currAnim;
+	EMovement				m_moveDir;
 };
 
 #endif // __PIRATEGAME_CHARACTER_PLAYABLE_H__

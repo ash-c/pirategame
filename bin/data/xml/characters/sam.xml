@@ -1,5 +1,5 @@
 <mass>60</mass>
 <maxVel x="400" y="0">maxVel</maxVel>
 <maxAcc x="1000" y="500">maxAcc</maxAcc>
-<moveForce x="50" y="100">moveForce</moveForce>
+<moveForce x="70" y="100">moveForce</moveForce>
 <slowDownForce x="800" y="0">slowDownForce</slowDownForce>
