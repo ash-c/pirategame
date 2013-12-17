@@ -13,6 +13,7 @@ using namespace Papyrus;
 
 class ICharacter;
 class CTile;
+class CPlatform;
 
 class CLevel : public TRefCount<CLevel>
 {
@@ -31,10 +32,12 @@ public:
 protected:
 	Sprite::ISprite*	m_background;
 	ICharacter*			m_playable;
-	CTile**				m_platforms;
+	CTile**				m_tiles;
+	CPlatform**			m_platforms;
 
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
+	Int32				m_numPlatforms;
 };
 
 #endif // __PIRATEGAME_LEVEL_H__

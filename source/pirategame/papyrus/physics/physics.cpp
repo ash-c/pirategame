@@ -49,43 +49,82 @@ void Physics::Process(Float32 _frameTime)
 				//}
 			}
 		}
-		m_accumulator -= dt;
-	}
 
-	// reset
-	for (Int16 i = 0; i < maxActors; ++i)
-	{
-		if (0 != actors[i])
+		// reset
+		for (Int16 i = 0; i < maxActors; ++i)
 		{
-			actors[i]->SetCollided(false);
+			if (0 != actors[i])
+			{
+				actors[i]->SetCollided(false);
+			}
 		}
-	}
 
-	// collision detection
-	for (Int16 i = 0; i < maxActors; ++i)
-	{
-		if (0 != actors[i])
+		// collision detection
+		for (Int16 i = 0; i < maxActors; ++i)
 		{
-			for (Int16 j = i; j < maxActors; ++j)
-			{			
-				if (0 != actors[j])
+			if (0 != actors[i])
+			{
+				for (Int16 j = i; j < maxActors; ++j)
 				{			
-					if (actors[i] != actors[j])
-					{
-						SDL_Rect result;
-						if (SDL_IntersectRect(&actors[i]->GetRect(), &actors[j]->GetRect(), &result))
+					if (0 != actors[j])
+					{			
+						if (actors[i] != actors[j])
 						{
-							// collision!
-							actors[i]->SetCollided(true);
-							actors[j]->SetCollided(true);
+							SDL_Rect result;
+							if (SDL_IntersectRect(&actors[i]->GetRect(), &actors[j]->GetRect(), &result))
+							{
+								VECTOR2 pos = actors[i]->GetPosition();
+								// clamp values
+								pos.x = static_cast<Float32>(static_cast<Int32>(pos.x));
+								pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
 
-							//VECTOR2 pos = actors[i]->GetPosition();
-							//actors[i]->SetPosition(VECTOR2(pos.x, static_cast<Int32>(pos.y) - result.h));
+								// collision!
+								actors[i]->SetCollided(true);
+								actors[j]->SetCollided(true);
+								Bool bYCollision = false;
+
+								if (result.y < pos.y) // below
+								{
+									if ((result.y + 50 + result.h) > pos.y)
+									{
+										if ((pos.y + result.h) > result.y)
+										{
+											pos.y += result.h;
+										}
+										actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
+									}
+									bYCollision = true;
+								}
+								else if (result.y > pos.y) // above
+								{
+									if (result.y - 50 < pos.y)
+									{
+										if ((pos.y - result.h) < result.y)
+										{
+											pos.y -= result.h;
+										}
+										actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
+									}
+									bYCollision = true;
+								}
+
+								if (result.x > pos.x && !bYCollision) // left
+								{
+									pos.x -= result.w;
+									actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
+								}
+								else if (result.x < pos.x && !bYCollision) // right
+								{
+									pos.x += result.w;
+									actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
+								}
+							}
 						}
 					}
 				}
 			}
 		}
+		m_accumulator -= dt;
 	}
 }
 
@@ -120,7 +159,7 @@ Physics::IStaticActor* Physics::CreateStaticActor(VECTOR2 _pos, VECTOR2 _scale)
 	return actor;
 }
 
-Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass)
+Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass, EType _type)
 {
 	IDynamicActor* actor = 0;
 
@@ -130,7 +169,7 @@ Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _ma
 		{
 			CREATEPOINTER(actor, CControllable);
 			assert(actor);
-			VALIDATE(actor->Initialise(_maxVel, _maxAcc, _pos, _scale, _mass));
+			VALIDATE(actor->Initialise(_maxVel, _maxAcc, _pos, _scale, _mass, _type));
 			actors[i] = actor;
 			return actor;
 		}

@@ -19,7 +19,7 @@ namespace Papyrus
 			CControllable();
 			virtual ~CControllable();
 
-			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass);
+			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass, EType _type);
 			virtual Bool	ShutDown();
 
 			virtual void	Process(Float32 _delta);

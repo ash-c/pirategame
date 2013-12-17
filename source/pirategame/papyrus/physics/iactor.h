@@ -13,12 +13,22 @@ namespace Papyrus
 {
 	namespace Physics
 	{
+		typedef enum _EType
+		{
+			INVALID_TYPE = INVALID_ID,
+			TYPE_STATIC,
+			TYPE_PLAYER,
+			TYPE_PLATFORM,
+			MAX_TYPE
+		} EType;
+
 		class IActor : public TRefCount<IActor>
 		{
 			// Member Functions
 		public:
 			IActor() 
-				: m_active(false)
+				: m_type(INVALID_TYPE)
+				, m_active(false)
 				, m_collided(false)
 			{}
 
@@ -36,8 +46,11 @@ namespace Papyrus
 
 			virtual Bool	IsActive() { return m_active; }
 			virtual void	SetActive(Bool _b) { m_active = _b; } 
-			virtual void	SetCollided(Bool _b) { m_collided = _b; }
+
 			virtual Bool	IsCollided() { return m_collided; }
+			virtual void	SetCollided(Bool _b) { m_collided = _b; }
+
+			virtual EType	GetType() { return m_type; }
 
 			// Member Variables
 		protected:
@@ -52,6 +65,7 @@ namespace Papyrus
 			} AABB;
 
 			AABB			m_bounds;
+			EType			m_type;
 			Bool			m_active;
 			Bool			m_collided;
 		};

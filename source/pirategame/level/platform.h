@@ -6,23 +6,28 @@
 // Library Includes
 
 // Local Includes
-#include "tile.h"
 #include "../core/core.h"
 
 using namespace Papyrus;
+
+class CTile;
 
 class CPlatform
 {
 	// Member Functions
 public:
 	CPlatform();
-	virtual ~CPlatform();
+	~CPlatform();
 
-	virtual Bool		Initialise(Int8* _spritesheet);
+	Bool		Initialise(FileParser::IParser* _setup, Int32 _number, Int32 _platNum);
+	Bool		ShutDown();
+
+	void		Render();
 
 	// Member Variables
 protected:
-	CTile*				m_tiles;
+	CTile**		m_tiles;
+	Int32		m_numTiles;
 };
 
 #endif // __PIRATEGAME_LEVEL_PLATFORM_H__

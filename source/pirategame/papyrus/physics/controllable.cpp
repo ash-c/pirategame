@@ -15,7 +15,7 @@ CControllable::~CControllable()
 {
 }
 
-Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass)
+Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass, EType _type)
 {
 	Logger::TrackValue(&m_active, "active");
 	Logger::TrackValue(&m_currState.pos, "position");
@@ -27,6 +27,7 @@ Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, V
 	m_mass = _mass;
 	m_maxState.vel = _maxVel;
 	m_maxState.acc = _maxAcc;
+	m_type = _type;
 
 	m_bounds.topLX = _pos.x - _scale.x * 0.5f;
 	m_bounds.topLY = _pos.y - _scale.y * 0.5f;

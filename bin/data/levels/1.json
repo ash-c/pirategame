@@ -1,6 +1,8 @@
 {
+	"levelNumber": 1,
 	"playerStart":[200,980],
 	"tiles":52, 
+	"platforms":1,
 	"1-pos":[25,1055], 
 	"1-type":1,
 	"2-pos":[75,1055], 
@@ -104,5 +106,18 @@
 	"51-pos": [1350,825],
 	"51-type":2,
 	"52-pos": [1350,875],
-	"52-type":8
+	"52-type":8,
+	"1platform-num":6,
+	"1platform-1pos": [950,825],
+	"1platform-1type":0,
+	"1platform-2pos": [1000,825],
+	"1platform-2type":1,
+	"1platform-3pos": [950,875],
+	"1platform-3type":6,
+	"1platform-4pos": [1000,875],
+	"1platform-4type":7,
+	"1platform-5pos": [1050,825],
+	"1platform-5type":2,
+	"1platform-6pos": [1050,875],
+	"1platform-6type":8
 }

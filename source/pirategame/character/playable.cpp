@@ -45,7 +45,7 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 	settings->GetValue("moveForce", m_moveForce);
 	settings->GetValue("slowDownForce", m_slowDownForce);
 
-	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass);
+	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass, Physics::EType::TYPE_PLAYER);
 	assert(m_actor);
 	m_actor->AddRef();
 	settings->Release();

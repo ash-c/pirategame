@@ -26,7 +26,7 @@ namespace Papyrus
 
 			virtual ~IDynamicActor() {}
 
-			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass) = 0;
+			virtual Bool	Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass, EType _type) = 0;
 			virtual Bool	ShutDown() = 0;
 
 			virtual void	SetMass(Float32 _f) { m_mass = _f; }
@@ -35,7 +35,7 @@ namespace Papyrus
 			virtual void	SetVelocity(VECTOR2 _v) { m_currState.vel = _v; m_currState.preV = _v; }
 			virtual VECTOR2	GetVelocity() { return m_currState.vel; }
 
-			virtual void	SetPosition(VECTOR2 _v) { m_currState.pos = _v; m_currState.preP = _v; } 
+			virtual void	SetPosition(VECTOR2 _v) { m_currState.pos = _v; m_currState.preP = _v; UpdateBounds(); } 
 			virtual VECTOR2	GetPosition() 
 			{ 
 				return m_currState.pos; 
@@ -116,12 +116,7 @@ namespace Papyrus
 				}
 
 				// Update bounds
-				m_bounds.topLX = m_currState.pos.x - m_bounds.rect.w * 0.5f;
-				m_bounds.topLY = m_currState.pos.y - m_bounds.rect.h * 0.5f;
-				m_bounds.botRX = m_currState.pos.x + m_bounds.rect.w * 0.5f;
-				m_bounds.botRY = m_currState.pos.y + m_bounds.rect.h * 0.5f;
-				m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
-				m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
+				UpdateBounds();
 			}
 
 			virtual void	RenderDebug()
@@ -138,6 +133,16 @@ namespace Papyrus
 				VECTOR2		preV;	// previous velocity
 				VECTOR2		preP;	// previous position
 			} State;
+
+			virtual void UpdateBounds()
+			{
+				m_bounds.topLX = m_currState.pos.x - m_bounds.rect.w * 0.5f;
+				m_bounds.topLY = m_currState.pos.y - m_bounds.rect.h * 0.5f;
+				m_bounds.botRX = m_currState.pos.x + m_bounds.rect.w * 0.5f;
+				m_bounds.botRY = m_currState.pos.y + m_bounds.rect.h * 0.5f;
+				m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
+				m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
+			}
 
 			// Member Variables
 		protected:
