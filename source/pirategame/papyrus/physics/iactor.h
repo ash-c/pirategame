@@ -27,9 +27,11 @@ namespace Papyrus
 			// Member Functions
 		public:
 			IActor() 
-				: m_type(INVALID_TYPE)
+				: m_player(0)
+				, m_type(INVALID_TYPE)
 				, m_active(false)
 				, m_collided(false)
+				, m_ppCollision(false)
 			{}
 
 			virtual ~IActor() {}
@@ -50,6 +52,18 @@ namespace Papyrus
 			virtual Bool	IsCollided() { return m_collided; }
 			virtual void	SetCollided(Bool _b) { m_collided = _b; }
 
+			virtual Bool	IsPPCollided() { return m_ppCollision; }
+			virtual void	SetPPCollided(IActor* _player, Bool _b) { m_ppCollision = _b; m_player = _player; }
+			virtual void	UpdatePlayer(VECTOR2 _pos) 
+			{ 
+				if (0 != m_player)
+				{
+					VECTOR2 pos = m_player->GetPosition();
+					pos.x += _pos.x;
+					m_player->SetPosition(pos);
+				}
+			}
+
 			virtual EType	GetType() { return m_type; }
 
 			// Member Variables
@@ -64,10 +78,12 @@ namespace Papyrus
 				Float32		botRY;
 			} AABB;
 
+			IActor*			m_player;
 			AABB			m_bounds;
 			EType			m_type;
 			Bool			m_active;
 			Bool			m_collided;
+			Bool			m_ppCollision; // player on platform
 		};
 	}
 }

@@ -63,8 +63,21 @@ namespace Papyrus
 
 			virtual void	Process(Float32 _delta)
 			{
+				if (m_ppCollision && m_type == Physics::EType::TYPE_PLAYER)
+				{
+					m_currState.acc.x = 0.0f;
+					if ((m_currState.vel.x >= 250) || (m_currState.vel.x <= -250))
+					{
+						m_currState.vel.x = 0.0f;
+						m_active = false;
+					}
+				}
+
 				m_currState.preV = m_currState.vel;
-				m_currState.vel += m_currState.acc * _delta;
+				if (m_type != Physics::EType::TYPE_PLATFORM)
+				{
+					m_currState.vel += m_currState.acc * _delta;
+				}
 					
 				// cap velocity
 				if (m_currState.vel.x > m_maxState.vel.x)
@@ -106,6 +119,20 @@ namespace Papyrus
 						m_currState.acc.x = 0.0f;
 						m_currState.vel.x = 0.0f;
 						m_active = false;
+					}
+
+					// Player on the platform, update their positions
+					if (m_ppCollision && 0 != m_player)
+					{
+						/*VECTOR2 pos = m_currState.pos - m_currState.preP;
+						VECTOR2 player = m_player->GetPosition();
+						player.x += pos.x;
+						m_player->SetPosition(player);*/
+						IDynamicActor* player = reinterpret_cast<IDynamicActor*>(m_player);
+						assert(player);
+						VECTOR2 vel = player->GetVelocity();
+						vel.x = m_currState.vel.x;
+						player->SetVelocity(vel);
 					}
 				}
 				else 

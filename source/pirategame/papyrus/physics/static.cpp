@@ -26,6 +26,8 @@ Bool CStatic::Initialise(VECTOR2 _pos, VECTOR2 _scale)
 	m_bounds.rect.x = static_cast<Int32>(m_bounds.topLX);
 	m_bounds.rect.y = static_cast<Int32>(m_bounds.topLY);
 
+	m_type = Physics::EType::TYPE_STATIC;
+
 	return true;
 }
 

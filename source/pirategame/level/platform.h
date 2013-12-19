@@ -10,8 +10,6 @@
 
 using namespace Papyrus;
 
-class CTile;
-
 class CPlatform
 {
 	// Member Functions
@@ -22,12 +20,20 @@ public:
 	Bool		Initialise(FileParser::IParser* _setup, Int32 _number, Int32 _platNum);
 	Bool		ShutDown();
 
+	void		Process(Float32 _delta);
 	void		Render();
 
 	// Member Variables
 protected:
-	CTile**		m_tiles;
-	Int32		m_numTiles;
+	Sprite::ISprite**		m_sprites;
+	Physics::IDynamicActor*	m_actor;
+
+	SDL_Rect*				m_clips;
+	VECTOR2*				m_positions;
+
+	VECTOR2					m_platPosition;
+	Int32					m_numSprites;
+	Bool					m_moveLeft;
 };
 
 #endif // __PIRATEGAME_LEVEL_PLATFORM_H__

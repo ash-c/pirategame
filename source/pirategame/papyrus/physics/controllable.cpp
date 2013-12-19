@@ -17,10 +17,13 @@ CControllable::~CControllable()
 
 Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass, EType _type)
 {
-	Logger::TrackValue(&m_active, "active");
-	Logger::TrackValue(&m_currState.pos, "position");
-	Logger::TrackValue(&m_currState.vel, "velocity");
-	Logger::TrackValue(&m_currState.acc, "acceleration");
+	if (_type == Physics::EType::TYPE_PLAYER)
+	{
+		Logger::TrackValue(&m_active, "active");
+		Logger::TrackValue(&m_currState.pos, "position");
+		Logger::TrackValue(&m_currState.vel, "velocity");
+		Logger::TrackValue(&m_currState.acc, "acceleration");
+	}
 
 	m_currState.pos = _pos;
 	m_currState.preP = m_currState.pos;

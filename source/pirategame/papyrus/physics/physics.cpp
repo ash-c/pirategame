@@ -38,7 +38,7 @@ void Physics::Process(Float32 _frameTime)
 	m_accumulator += _frameTime;
 
 	while (m_accumulator >= dt)
-	{
+	{		
 		for (Int16 i = 0; i < maxActors; ++i)
 		{
 			if (0 != actors[i])
@@ -47,15 +47,9 @@ void Physics::Process(Float32 _frameTime)
 				//{
 					actors[i]->Process(dt);
 				//}
-			}
-		}
 
-		// reset
-		for (Int16 i = 0; i < maxActors; ++i)
-		{
-			if (0 != actors[i])
-			{
 				actors[i]->SetCollided(false);
+				actors[i]->SetPPCollided(0, false);
 			}
 		}
 
@@ -64,66 +58,45 @@ void Physics::Process(Float32 _frameTime)
 		{
 			if (0 != actors[i])
 			{
-				for (Int16 j = i; j < maxActors; ++j)
+				for (Int16 j = i + 1; j < maxActors; ++j)
 				{			
 					if (0 != actors[j])
 					{			
 						if (actors[i] != actors[j])
 						{
-							SDL_Rect result;
-							if (SDL_IntersectRect(&actors[i]->GetRect(), &actors[j]->GetRect(), &result))
+							Physics::EType type1 = actors[i]->GetType();
+							Physics::EType type2 = actors[j]->GetType();
+
+							if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
 							{
-								VECTOR2 pos = actors[i]->GetPosition();
-								// clamp values
-								pos.x = static_cast<Float32>(static_cast<Int32>(pos.x));
-								pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
-
-								// collision!
-								actors[i]->SetCollided(true);
-								actors[j]->SetCollided(true);
-								Bool bYCollision = false;
-
-								if (result.y < pos.y) // below
-								{
-									if ((result.y + 50 + result.h) > pos.y)
-									{
-										if ((pos.y + result.h) > result.y)
-										{
-											pos.y += result.h;
-										}
-										actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
-									}
-									bYCollision = true;
-								}
-								else if (result.y > pos.y) // above
-								{
-									if (result.y - 50 < pos.y)
-									{
-										if ((pos.y - result.h) < result.y)
-										{
-											pos.y -= result.h;
-										}
-										actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
-									}
-									bYCollision = true;
-								}
-
-								if (result.x > pos.x && !bYCollision) // left
-								{
-									pos.x -= result.w;
-									actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
-								}
-								else if (result.x < pos.x && !bYCollision) // right
-								{
-									pos.x += result.w;
-									actors[i]->SetPosition(VECTOR2(pos.x, pos.y));
-								}
+								PlayerStaticCollision(actors[i], actors[j]);
+							}
+							else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
+							{
+								PlayerStaticCollision(actors[j], actors[i]);
+							}
+							else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
+							{
+								StaticPlatformCollision(actors[i], actors[j]);
+							}
+							else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
+							{
+								StaticPlatformCollision(actors[j], actors[i]);
+							}
+							else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
+							{
+								PlayerPlatformCollision(actors[i], actors[j]);
+							}
+							else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
+							{
+								PlayerPlatformCollision(actors[j], actors[i]);
 							}
 						}
 					}
 				}
 			}
 		}
+
 		m_accumulator -= dt;
 	}
 }
@@ -177,4 +150,139 @@ Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _ma
 
 	Logger::Write("Not enough room to create new dynamic actor. Increase maxActors.");
 	return actor;
+}
+
+void Physics::PlayerStaticCollision(IActor* _actor1, IActor* _actor2)
+{
+	SDL_Rect result;
+	if (SDL_IntersectRect(&_actor1->GetRect(), &_actor2->GetRect(), &result))
+	{
+		VECTOR2 pos = _actor1->GetPosition();
+		// clamp values
+		pos.x = static_cast<Float32>(static_cast<Int32>(pos.x));
+		pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
+
+		// collision!
+		_actor1->SetCollided(true);
+		_actor2->SetCollided(true);
+		Bool bYCollision = false;
+
+		if (result.y < pos.y) // below
+		{
+			if ((result.y + 50 + result.h) > pos.y)
+			{
+				if ((pos.y + result.h) > result.y)
+				{
+					pos.y += result.h;
+				}
+				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+			}
+			bYCollision = true;
+		}
+		else if (result.y > pos.y) // above
+		{
+			if (result.y - 50 < pos.y)
+			{
+				if ((pos.y - result.h) < result.y)
+				{
+					pos.y -= result.h;
+				}
+				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+			}
+			bYCollision = true;
+		}
+
+		if (result.x > pos.x && !bYCollision) // left
+		{
+			pos.x -= result.w;
+			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+		}
+		else if (result.x < pos.x && !bYCollision) // right
+		{
+			pos.x += result.w;
+			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+		}
+	}
+}
+
+void Physics::PlayerPlatformCollision(IActor* _actor1, IActor* _actor2)
+{
+	SDL_Rect result;
+	if (SDL_IntersectRect(&_actor1->GetRect(), &_actor2->GetRect(), &result))
+	{
+		VECTOR2 pos = _actor1->GetPosition();
+		// clamp values
+		pos.x = static_cast<Float32>(static_cast<Int32>(pos.x));
+		pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
+
+		// collision!
+		_actor1->SetCollided(true);
+		Bool bYCollision = false;
+
+		if (result.y < pos.y) // below
+		{
+			if ((result.y + 50 + result.h) > pos.y)
+			{
+				if ((pos.y + result.h) > result.y)
+				{
+					pos.y += result.h;
+				}
+				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+			}
+			bYCollision = true;
+		}
+		else if (result.y > pos.y) // above
+		{
+			if (result.y - 50 < pos.y)
+			{
+				if ((pos.y - result.h) < result.y)
+				{
+					pos.y -= result.h;
+				}
+				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+				_actor2->SetPPCollided(_actor1, true);
+				_actor1->SetPPCollided(0, true);
+			}
+			bYCollision = true;
+		}
+
+		if (result.x > pos.x && !bYCollision) // left
+		{
+			pos.x -= result.w;
+			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+		}
+		else if (result.x < pos.x && !bYCollision) // right
+		{
+			pos.x += result.w;
+			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+		}
+	}
+}
+
+void Physics::StaticPlatformCollision(IActor* _actor1, IActor* _actor2)
+{
+	SDL_Rect result;
+	if (SDL_IntersectRect(&_actor1->GetRect(), &_actor2->GetRect(), &result))
+	{
+		VECTOR2 pos = _actor1->GetPosition();
+		// clamp values
+		pos.x = static_cast<Float32>(static_cast<Int32>(pos.x));
+		pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
+
+		// collision!
+		_actor1->SetCollided(true);
+		_actor2->SetCollided(true);
+		Bool bYCollision = false;
+
+		if (result.x > pos.x && !bYCollision) // left
+		{
+			pos.x -= result.w;
+			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+		}
+		else if (result.x < pos.x && !bYCollision) // right
+		{
+			pos.x += result.w;
+			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+		}
+	}
 }

@@ -6,8 +6,12 @@
 #include "tile.h"
 
 CPlatform::CPlatform()
-	: m_tiles(0)
-	, m_numTiles(0)
+	: m_sprites(0)
+	, m_actor(0)
+	, m_clips(0)
+	, m_positions(0)
+	, m_numSprites(0)
+	, m_moveLeft(true)
 {
 }
 
@@ -17,26 +21,64 @@ CPlatform::~CPlatform()
 
 Bool CPlatform::Initialise(FileParser::IParser* _setup, Int32 _number, Int32 _platNum)
 {
-	m_numTiles = _number;
+	m_numSprites = _number;
 	_setup->AddRef();
 
-	m_tiles = new CTile*[m_numTiles];
-	assert(m_tiles);
-	SDL_memset(m_tiles, 0, sizeof(CTile*) * m_numTiles);
-
 	Int8 text[MAX_BUFFER];
-	VECTOR2 pos;
+	VECTOR2 scale;
 	UInt32 type = 0;
 
-	for (Int16 i = 0; i < m_numTiles; ++i)
+	SDL_snprintf(text, MAX_BUFFER, "%iplatform-pos", _platNum);
+	VALIDATE(_setup->GetValue(text, m_platPosition));
+	SDL_snprintf(text, MAX_BUFFER, "%iplatform-scale", _platNum);
+	VALIDATE(_setup->GetValue(text, scale));
+
+	m_actor = Physics::CreateDynamicActor(VECTOR2(300, 0), VECTOR2(0,0), m_platPosition, scale, 100.0f, Physics::EType::TYPE_PLATFORM);
+	assert(m_actor);
+	m_actor->AddRef();
+	m_actor->SetVelocity(VECTOR2(-250,0));
+	m_actor->SetActive(true);
+
+	m_sprites = new Sprite::ISprite*[m_numSprites];
+	SDL_memset(m_sprites, 0 , sizeof(Sprite::ISprite*) * m_numSprites);
+	m_clips = new SDL_Rect[m_numSprites];
+	SDL_memset(m_clips, 0 , sizeof(SDL_Rect) * m_numSprites);
+	m_positions = new VECTOR2[m_numSprites];
+	SDL_memset(m_positions, 0 , sizeof(VECTOR2) * m_numSprites);
+
+	for (Int16 i = 0; i < m_numSprites; ++i)
 	{
-		CREATEPOINTER(m_tiles[i], CTile);
+		m_sprites[i] = Sprite::CreateSprite("data/art/levels/tiles.png", 0, false);
+		assert(m_sprites[i]);
+		m_sprites[i]->AddRef();
+
 		SDL_snprintf(text, MAX_BUFFER, "%iplatform-%ipos", _platNum, i + 1);
-		VALIDATE(_setup->GetValue(text, pos));
+		VALIDATE(_setup->GetValue(text, m_positions[i]));
 		SDL_snprintf(text, MAX_BUFFER, "%iplatform-%itype", _platNum, i + 1);
 		VALIDATE(_setup->GetValue(text, type));
-		VALIDATE(m_tiles[i]->Initialise("data/art/levels/tiles.png", pos, static_cast<ETileType>(type)));
-		m_tiles[i]->AddRef();
+
+		m_clips[i].w = 50;
+		m_clips[i].h = 50;
+
+		switch (type)
+		{
+		case TYPE_LEFT:
+			m_clips[i].x = 0;
+			m_clips[i].y = 150;
+			break;
+		case TYPE_MID:
+			m_clips[i].x = 50;
+			m_clips[i].y = 150;
+			break;
+		case TYPE_RIGHT:
+			m_clips[i].x = 100;
+			m_clips[i].y = 150;
+			break;
+		default:
+			m_clips[i].x = 0;
+			m_clips[i].y = 0;
+			break;
+		}
 	}
 
 	_setup->Release();
@@ -45,18 +87,52 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int32 _number, Int32 _pl
 
 Bool CPlatform::ShutDown()
 {
-	for (Int16 i = 0; i < m_numTiles; ++i)
+	for (Int16 i = 0; i < m_numSprites; ++i)
 	{
-		PY_DELETE_RELEASE(m_tiles[i]);
+		m_sprites[i]->Release();
 	}
+	
+	m_actor->Release();
 
 	return true;
 }
 
+void CPlatform::Process(Float32 _delta)
+{
+	if (m_actor->IsCollided())
+	{
+		if (m_moveLeft)
+		{
+			m_actor->SetVelocity(VECTOR2(250,0));
+			m_moveLeft = false;
+		}
+		else
+		{
+			m_actor->SetVelocity(VECTOR2(-250,0));
+			m_moveLeft = true;
+		}
+	}
+
+	VECTOR2 pos = m_actor->GetPosition();
+	VECTOR2 diff = pos - m_platPosition;
+	for (Int16 i = 0; i < m_numSprites; ++i)
+	{
+		m_positions[i] += diff;
+	}
+	m_platPosition = pos;
+
+	if (m_actor->IsPPCollided())
+	{
+		m_actor->UpdatePlayer(diff);
+	}
+}
+
 void CPlatform::Render()
 {
-	for (Int16 i = 0; i < m_numTiles; ++i)
+	for (Int16 i = 0; i < m_numSprites; ++i)
 	{
-		m_tiles[i]->Render();
+		m_sprites[i]->SetClip(&m_clips[i]);
+		m_sprites[i]->SetPosition(static_cast<Int32>(m_positions[i].x), static_cast<Int32>(m_positions[i].y));
+		m_sprites[i]->Render();
 	}
 }

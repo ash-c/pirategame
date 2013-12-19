@@ -23,6 +23,9 @@ typedef enum _ETileType
 	TYPE_BOT_LEFT,
 	TYPE_BOT_MID,
 	TYPE_BOT_RIGHT,
+	TYPE_LEFT,
+	TYPE_MID,
+	TYPE_RIGHT,
 	MAX_TYPE
 } ETileType;
 
