@@ -35,7 +35,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	CREATEPOINTER(m_playable, CPlayable);
 	assert(m_playable);
 	m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml");
-	PY_WRITETOFILE("Animation created");
+	PY_WRITETOFILE("Player created");
 
 	// Make platforms
 	Int32 width = Renderer::activeRenderer->GetWidth();

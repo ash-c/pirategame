@@ -54,6 +54,7 @@ namespace Papyrus
 
 			virtual Bool	IsPPCollided() { return m_ppCollision; }
 			virtual void	SetPPCollided(IActor* _player, Bool _b) { m_ppCollision = _b; m_player = _player; }
+
 			virtual void	UpdatePlayer(VECTOR2 _pos) 
 			{ 
 				if (0 != m_player)
