@@ -95,24 +95,24 @@ Bool Sprite::ShutDown()
 
  Sprite::ISprite* Sprite::FlushFile(ISprite* _sprite, Bool _delete)
  {
-	 if (0 != activeSprites)
-	 {
-		 for (Int16 i = 0; i < maxNumSprites; ++i)
-		 {
-			 if (_sprite == activeSprites[i])
-			 {
-				 if (_delete)
-				 {
+	if (0 != activeSprites)
+	{
+		for (Int16 i = 0; i < maxNumSprites; ++i)
+		{
+			if (_sprite == activeSprites[i])
+			{
+				if (_delete)
+				{
 					PY_DELETE_RELEASE(activeSprites[i]);
-				 }
-				 else 
-				 {
-					 activeSprites[i] = 0;
-				 }
-				 return 0;
-			 }
-		 }
-	 }
+				}
+				else 
+				{
+					activeSprites[i] = 0;
+				}
+				return 0;
+			}
+		}
+	}
 
 	 return _sprite;
  }

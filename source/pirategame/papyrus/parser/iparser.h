@@ -12,7 +12,7 @@
 #include <cstring>
 
 // Local Includes
-#include "../../defines.h"
+#include "../defines.h"
 #include "../core/utility/refcount.h"
 
 namespace Papyrus
@@ -25,14 +25,12 @@ namespace Papyrus
 		public:
 			// Default constructor.
 			IParser() 
-				: m_filePath(0)
 			{	
 				
 			}
 			// Default destructor.
 			virtual ~IParser() 
 			{
-				CLEANARRAY(m_filePath);
 			}
 
 			/*
@@ -72,17 +70,6 @@ namespace Papyrus
 			* @return	Returns true if successfully saved to file. False otherwise.
 			*/
 			virtual Bool Save(const Int8* _path = 0) = 0;
-
-			/*
-			* Compares the given file path against the one loaded into this parser.
-			*
-			* @param	_path		Path to compare.
-			* @return	Returns true if _path matches this parser ie:that file has been loaded, false otherwise.
-			*/
-			virtual Bool CompareFilePath(const Int8* _path)
-			{
-				return(!strcmp(m_filePath, _path));
-			}
 
 			/*
 			* Adds a boolean value to the parser.
@@ -245,7 +232,6 @@ namespace Papyrus
 
 			// Member Variables
 		protected:
-			Int8*					m_filePath;
 		};
 	}
 }

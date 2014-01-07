@@ -1,11 +1,14 @@
 Initialisation started
-Logging initialised
-File parsing initialised
-Renderer initialised
-Sprites initialised
+Logging sub-system initialised
+File parsing sub-system initialised
+Rendering sub-system initialised
+Sprite sub-system initialised
 No controller connected
-Input initialised
-Physics initialised
-Timer initialised
-Core init success
+Input sub-system initialised
+Physics sub-system initialised
+User Interface sub-system initialised
+Timing sub-system initialised
+Core initialisation successfull
+Background created
+Player created
 Initialistion complete

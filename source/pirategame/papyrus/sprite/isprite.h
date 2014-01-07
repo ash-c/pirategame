@@ -26,7 +26,6 @@ namespace Papyrus
 				: m_spriteSheet(0)
 				, m_setup(0)
 				, m_id(INVALID_ID)
-				, m_filePath(0)
 			{
 				m_sprite.x = 0;
 				m_sprite.y = 0;
@@ -37,7 +36,6 @@ namespace Papyrus
 			// Default Destructor
 			virtual ~ISprite()
 			{
-				CLEANARRAY(m_filePath);
 			}
 
 			/*
@@ -144,17 +142,6 @@ namespace Papyrus
 			* @return	Returns void.
 			*/
 			virtual void		PlayAnim(Int16 _i) {}
-			
-			/*
-			* Compares the given file path against the one loaded into this sprite.
-			*
-			* @param	_path			Path to compare.
-			* @return	Returns true if _path matches this sprite ie:this spritesheet has already been loaded, false otherwise.
-			*/
-			virtual Bool		CompareFilePath(Int8* _path)
-			{
-				return !SDL_strcmp(_path, m_filePath);
-			}
 
 			// Member Variables
 		protected:
@@ -162,7 +149,6 @@ namespace Papyrus
 			SDL_Rect			m_sprite;
 			FileParser::IParser*	m_setup;
 			Int16				m_id;
-			Int8*				m_filePath;
 		};
 	}
 }

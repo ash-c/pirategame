@@ -15,7 +15,7 @@ Bool Core::Initialise()
 	setup.Initialise("data/papyrus/setup.ini");
 	setup.Load();
 
-	Int32 width, height, numParsers, numSprites, numActors;
+	Int32 width, height, numParsers, numSprites, numActors, numInterfaces;
 	Int8* title = 0;
 	Bool fullscreen;
 
@@ -23,6 +23,7 @@ Bool Core::Initialise()
 	VALIDATE(setup.GetValue("parsers", numParsers, "init"));
 	VALIDATE(setup.GetValue("sprites", numSprites, "init"));
 	VALIDATE(setup.GetValue("actors", numActors, "init"));
+	VALIDATE(setup.GetValue("interfaces", numInterfaces, "init"));
 	VALIDATE(setup.GetValue("width", width, "screen"));
 	VALIDATE(setup.GetValue("height", height, "screen"));
 	VALIDATE(setup.GetValue("fullscreen", fullscreen, "screen"));
@@ -32,36 +33,40 @@ Bool Core::Initialise()
 	VALIDATE(Logger::Initialise());
 	VALIDATE(Logger::InitFile("data/papyrus/startup.log"));
 	PY_WRITETOFILE("Initialisation started");
-	PY_WRITETOFILE("Logging initialised");
+	PY_WRITETOFILE("Logging sub-system initialised");
 
 	FileParser::maxNumParsers = numParsers;
 	VALIDATE(FileParser::Initialise());
-	PY_WRITETOFILE("File parsing initialised");
+	PY_WRITETOFILE("File parsing sub-system initialised");
 
 	VALIDATE(Renderer::Initialise(width, height, title, fullscreen));
 	CLEANDELETE(title); // This is needed as the parser allocates memory on the heap.
-	PY_WRITETOFILE("Renderer initialised");
+	PY_WRITETOFILE("Rendering sub-system initialised");
 
-	SDL_ShowCursor(SDL_DISABLE);
+	//SDL_ShowCursor(SDL_DISABLE);
 
 	Sprite::maxNumSprites = numSprites;
 	VALIDATE(Sprite::Initialise());
-	PY_WRITETOFILE("Sprites initialised");
+	PY_WRITETOFILE("Sprite sub-system initialised");
 
 	VALIDATE(Input::Initialise());
-	PY_WRITETOFILE("Input initialised");
+	PY_WRITETOFILE("Input sub-system initialised");
 	
 	Physics::maxActors = numActors;
 	VALIDATE(Physics::Initialise());
-	PY_WRITETOFILE("Physics initialised");
+	PY_WRITETOFILE("Physics sub-system initialised");
+
+	UI::numInterfaces = numInterfaces;
+	VALIDATE(UI::Initialise());
+	PY_WRITETOFILE("User Interface sub-system initialised");
 
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
-	PY_WRITETOFILE("Timer initialised");
+	PY_WRITETOFILE("Timing sub-system initialised");
 
 	timer->Start();
 
-	Logger::Write("Core init success", NULL);
+	Logger::Write("Core initialisation successfull", NULL);
 	return true;
 }
 

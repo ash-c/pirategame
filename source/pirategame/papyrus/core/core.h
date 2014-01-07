@@ -15,6 +15,7 @@
 #include "../sprite/sprite.h"
 #include "../input/input.h"
 #include "../physics/physics.h"
+#include "../ui/ui.h"
 
 namespace Papyrus
 {

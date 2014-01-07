@@ -35,15 +35,15 @@ Bool CGame::Initialise()
 	// Register the quit function called via the debug console
 	lua_register(Logger::luaState, "QuitGame", QuitGame);
 
-	// Finish setup logging, open error logging file.
-	PY_WRITETOFILE("Initialistion complete");
-	Logger::InitFile("data/papyrus/errors.log");
-
-	Input::inputManager->Register(this);
+	VALIDATE(Input::inputManager->Register(this));
 
 	m_levelMan = &CLevelManager::GetInstance();
 	m_levelMan->Initialise();
 	m_levelMan->LoadLevel(0);
+
+	// Finish setup logging, open error logging file.
+	PY_WRITETOFILE("Initialistion complete");
+	Logger::InitFile("data/papyrus/errors.log");
 
 	return true;
 }

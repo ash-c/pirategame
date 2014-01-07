@@ -61,7 +61,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\pirategame\papyrus\sdl\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\pirategame\papyrus\vld;$(SolutionDir)\pirategame\papyrus\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vld.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
@@ -82,7 +82,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)\pirategame\papyrus\sdl\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\pirategame\papyrus\vld;$(SolutionDir)\pirategame\papyrus\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>vld.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
@@ -115,6 +115,9 @@
     <ClCompile Include="papyrus\sprite\animsprite.cpp" />
     <ClCompile Include="papyrus\sprite\sprite.cpp" />
     <ClCompile Include="papyrus\sprite\staticsprite.cpp" />
+    <ClCompile Include="papyrus\ui\interactive.cpp" />
+    <ClCompile Include="papyrus\ui\staticui.cpp" />
+    <ClCompile Include="papyrus\ui\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="character\character.h" />
@@ -159,6 +162,10 @@
     <ClInclude Include="papyrus\sprite\isprite.h" />
     <ClInclude Include="papyrus\sprite\sprite.h" />
     <ClInclude Include="papyrus\sprite\staticsprite.h" />
+    <ClInclude Include="papyrus\ui\interactive.h" />
+    <ClInclude Include="papyrus\ui\interface.h" />
+    <ClInclude Include="papyrus\ui\staticui.h" />
+    <ClInclude Include="papyrus\ui\ui.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

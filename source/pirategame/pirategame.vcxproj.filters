@@ -75,6 +75,15 @@
     <ClCompile Include="papyrus\physics\static.cpp">
       <Filter>papyrus\physics</Filter>
     </ClCompile>
+    <ClCompile Include="papyrus\ui\ui.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\ui\interactive.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\ui\staticui.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -121,6 +130,9 @@
     </Filter>
     <Filter Include="level">
       <UniqueIdentifier>{609e6b2d-03dc-4226-9064-aef5e9426410}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\ui">
+      <UniqueIdentifier>{42cd077c-2fb9-4f40-b705-b61f52159fef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +259,18 @@
     </ClInclude>
     <ClInclude Include="papyrus\physics\static.h">
       <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\ui.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\interface.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\interactive.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\staticui.h">
+      <Filter>papyrus\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

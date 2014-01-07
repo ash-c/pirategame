@@ -44,7 +44,6 @@ namespace Papyrus
 		* Creates a parser of the given type and filepath.
 		*
 		* @param	_path		Path to save the parser on.
-		* @param	_type		Type of parser to create.
 		* @return	Returns a pointer to an IParser object if successfull, 0 otherwise.
 		*/
 		IParser* CreateParser(Int8* _path);

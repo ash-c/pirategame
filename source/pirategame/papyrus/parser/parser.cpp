@@ -1,5 +1,6 @@
 
 // Library Includes
+#include <SDL.h>
 
 // Local Includes
 #include "iparser.h"
@@ -25,8 +26,8 @@ Bool FileParser::Initialise()
 	parserArray = new IParser*[maxNumParsers];
 	assert(parserArray && timerArray && "FileParser initialisation failed.");
 
-	memset(parserArray, 0, sizeof(IParser*) * maxNumParsers);
-	memset(timerArray, 0, sizeof(Float32) * maxNumParsers);
+	SDL_memset(parserArray, 0, sizeof(IParser*) * maxNumParsers);
+	SDL_memset(timerArray, 0, sizeof(Float32) * maxNumParsers);
 
 	return true;
 }
