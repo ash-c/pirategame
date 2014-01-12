@@ -85,6 +85,10 @@ UI::IUIInterface* UI::LoadInterface(Int8* _filePath, Bool _interactive)
 		{
 			if (interfaces[i]->CompareFilePath(_filePath))
 			{
+				if (!interfaces[i]->IsActive())
+				{
+					interfaces[i]->Toggle();
+				}
 				return interfaces[i]; // Return the interface that already exists for that file.
 			}
 		}

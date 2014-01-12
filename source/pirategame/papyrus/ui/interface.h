@@ -22,6 +22,7 @@ namespace Papyrus
 			IUIInterface()
 				: m_objects(0)
 				, m_numObjects(0)
+				, m_active(true)
 			{
 			}
 
@@ -53,6 +54,23 @@ namespace Papyrus
 				return true;
 			}
 
+			virtual Bool	Toggle()
+			{
+				m_active = !m_active;
+
+				for (UInt16 i = 0; i < m_numObjects; ++i)
+				{
+					m_objects[i]->SetActive(m_active);
+				}
+
+				return m_active;
+			}
+
+			virtual Bool	IsActive()
+			{
+				return m_active;
+			}
+
 			/*
 			* Renders this interface to screen.
 			*
@@ -64,6 +82,7 @@ namespace Papyrus
 		protected:
 			CUIObject**		m_objects;
 			UInt32			m_numObjects;
+			Bool			m_active;
 		};
 	}
 }

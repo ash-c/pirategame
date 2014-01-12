@@ -77,9 +77,9 @@ Float32 Core::Process()
 	if (!timer->Paused())
 	{
 		delta = timer->Restart();
+
+		Physics::Process(delta);
 	}
-	
-	Physics::Process(delta);
 
 	Input::inputManager->Process(delta);
 

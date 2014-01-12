@@ -38,6 +38,8 @@ namespace Papyrus
 
 			virtual void	Notify(SDL_Event* _e);
 
+			virtual void	SetActive(Bool _b);
+
 		private:
 			Bool			CheckForHover(VECTOR2 _mouse);
 			void			ButtonClicked();

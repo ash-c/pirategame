@@ -89,15 +89,16 @@ void CGame::Pause()
 {
 	if (m_paused)
 	{
-		SDL_ShowCursor(false);
+		m_interface->Toggle();
 		m_interface = UI::LoadInterface("data/interfaces/game.ini");
+		SDL_ShowCursor(false);
 		Core::Pause();
 		m_paused = false;
 	}
 	else
 	{
-		m_interface = UI::LoadInterface("data/interfaces/main.ini");
-		assert(m_interface);
+		m_interface->Toggle();
+		m_interface = UI::LoadInterface("data/interfaces/pause.ini");
 		SDL_ShowCursor(true);
 		Core::Pause();
 		m_paused = true;
@@ -137,7 +138,7 @@ Int32 CGame::QuitGame(lua_State* L)
 
 Int32 CGame::StartGame(lua_State* L)
 {
-	Logger::WriteToScreen("Start clicked");
+	sm_pTheInstance->m_interface->Toggle();
 	sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
 	SDL_ShowCursor(false);
 	sm_pTheInstance->m_levelMan->LoadLevel("data/levels/1.json");

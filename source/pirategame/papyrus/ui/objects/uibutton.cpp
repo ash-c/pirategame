@@ -62,58 +62,69 @@ void UI::CUIButton::Render()
 
 void UI::CUIButton::Notify(SDL_Event* _e)
 {
-	if (_e->type == SDL_MOUSEMOTION)
+	if (m_active)
 	{
-		VECTOR2 mousePos(static_cast<Float32>(_e->motion.x), static_cast<Float32>(_e->motion.y));
+		if (_e->type == SDL_MOUSEMOTION)
+		{
+			VECTOR2 mousePos(static_cast<Float32>(_e->motion.x), static_cast<Float32>(_e->motion.y));
 		
-		if (CheckForHover(mousePos))
-		{
-			if (m_buttonDown)
+			if (CheckForHover(mousePos))
 			{
-				m_currState = BUTTON_STATE_CLICK;
+				if (m_buttonDown)
+				{
+					m_currState = BUTTON_STATE_CLICK;
+				}
+				else
+				{
+					m_currState = BUTTON_STATE_HOVER;
+				}
 			}
-			else
-			{
-				m_currState = BUTTON_STATE_HOVER;
-			}
-		}
-		else 
-		{
-			m_currState = BUTTON_STATE_NORMAL;
-		}
-	}
-	else if (_e->type == SDL_MOUSEBUTTONDOWN)
-	{
-		m_buttonDown = true;
-		if (BUTTON_STATE_HOVER == m_currState)
-		{
-			m_currState = BUTTON_STATE_CLICK;
-			ButtonClicked();
-		}
-	}
-	else if (_e->type == SDL_MOUSEBUTTONUP)
-	{
-		m_buttonDown = false;
-		if (BUTTON_STATE_CLICK == m_currState)
-		{
-			if (CheckForHover(VECTOR2(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y))))
-			{
-				m_currState = BUTTON_STATE_HOVER;
-			}
-			else
+			else 
 			{
 				m_currState = BUTTON_STATE_NORMAL;
 			}
 		}
+		else if (_e->type == SDL_MOUSEBUTTONDOWN)
+		{
+			m_buttonDown = true;
+			if (BUTTON_STATE_HOVER == m_currState)
+			{
+				m_currState = BUTTON_STATE_CLICK;
+				ButtonClicked();
+			}
+		}
+		else if (_e->type == SDL_MOUSEBUTTONUP)
+		{
+			m_buttonDown = false;
+			if (BUTTON_STATE_CLICK == m_currState)
+			{
+				if (CheckForHover(VECTOR2(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y))))
+				{
+					m_currState = BUTTON_STATE_HOVER;
+				}
+				else
+				{
+					m_currState = BUTTON_STATE_NORMAL;
+				}
+			}
+		}
 	}
+}
+
+void UI::CUIButton::SetActive(Bool _b)
+{
+	m_currState = BUTTON_STATE_NORMAL;
+	m_buttonDown = false;
+
+	CUIObject::SetActive(_b);
 }
 
 Bool UI::CUIButton::CheckForHover(VECTOR2 _mouse)
 {
 	if (_mouse.x > m_rect.x && _mouse.x < (m_rect.x + m_rect.w) &&
 			_mouse.y > m_rect.y && _mouse.y < (m_rect.y + m_rect.h))
-		{
-			return true;
+	{
+		return true;
 	}
 	else
 	{
