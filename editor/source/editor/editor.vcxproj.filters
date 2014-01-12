@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="papyrus\core\core.cpp">
+      <Filter>papyrus\core</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\core\utility\timer.cpp">
+      <Filter>papyrus\core\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\input\manager.cpp">
+      <Filter>papyrus\input</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\input\input.cpp">
+      <Filter>papyrus\input</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\logging\logconsole.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\logging\logger.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\logging\logtofile.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\logging\logtoscreen.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\parser\parser.cpp">
+      <Filter>papyrus\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\parser\ini\iniparser.cpp">
+      <Filter>papyrus\parser\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\parser\json\jsonparser.cpp">
+      <Filter>papyrus\parser\json</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\parser\xml\xmlparser.cpp">
+      <Filter>papyrus\parser\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\physics\controllable.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\physics\physics.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\physics\static.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\renderer\renderer.cpp">
+      <Filter>papyrus\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\renderer\sdlrenderer.cpp">
+      <Filter>papyrus\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\sprite\animsprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\sprite\sprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\sprite\staticsprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\ui\interactive.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\ui\staticui.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\ui\ui.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="papyrus\ui\objects\uibutton.cpp">
+      <Filter>papyrus\ui\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="level\platform.cpp">
+      <Filter>editor\level</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="papyrus\core\core.h">
+      <Filter>papyrus\core</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vector2.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vector3.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vector4.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\math\vectormath.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\utility\refcount.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\utility\singleton.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\core\utility\timer.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\input\manager.h">
+      <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\input\observer.h">
+      <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\input\input.h">
+      <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\ilogtype.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\logconsole.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\logger.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\logtofile.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\logging\logtoscreen.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\iparser.h">
+      <Filter>papyrus\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\parser.h">
+      <Filter>papyrus\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\ini\iniparser.h">
+      <Filter>papyrus\parser\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\json\jsonparser.h">
+      <Filter>papyrus\parser\json</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\parser\xml\xmlparser.h">
+      <Filter>papyrus\parser\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\controllable.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\iactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\idynamicactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\istaticactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\physics.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\physics\static.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\renderer\irenderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\renderer\renderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\renderer\sdlrenderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\sprite\animsprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\sprite\isprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\sprite\sprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\sprite\staticsprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\interactive.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\interface.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\staticui.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\ui.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\uiobject.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\objects\uibutton.h">
+      <Filter>papyrus\ui\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="level\platform.h">
+      <Filter>editor\level</Filter>
+    </ClInclude>
+    <ClInclude Include="level\tile.h">
+      <Filter>editor\level</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\defines.h">
+      <Filter>papyrus</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="papyrus">
+      <UniqueIdentifier>{78aaa02c-3ba3-4f49-91f3-1cd5a76b0820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\core">
+      <UniqueIdentifier>{ffb36ec7-90b6-481c-a910-e751bde508bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\input">
+      <UniqueIdentifier>{afa8c794-012b-4c18-8c54-0d6e908099fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\logging">
+      <UniqueIdentifier>{43f3b945-ea73-49c1-80b2-8d72ca9c4b07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\ui">
+      <UniqueIdentifier>{755539d9-831d-44f8-85e4-be776fc2fc95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser">
+      <UniqueIdentifier>{0cc04e7d-2d1a-4c7f-a20d-8f9a30c816e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\physics">
+      <UniqueIdentifier>{8dd38e4a-e6f8-4e85-9a73-5d1675ae5386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\renderer">
+      <UniqueIdentifier>{d690d14d-acf5-4efd-b9eb-602e66bc2fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\sprite">
+      <UniqueIdentifier>{44408890-3dfa-4df5-b5f6-0f8229183e1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\core\math">
+      <UniqueIdentifier>{113e4b42-18c8-4c5f-9094-bc8dac8a4d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\core\utility">
+      <UniqueIdentifier>{e3dc991c-0851-4b22-be74-74a7a4a1c6a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser\ini">
+      <UniqueIdentifier>{46486258-12f9-4f90-b057-1f9e09c3271c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser\json">
+      <UniqueIdentifier>{85746625-6842-499c-921e-d614c2b0532b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\parser\xml">
+      <UniqueIdentifier>{f501f157-c1d6-497f-ae7a-af5c8554cadc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\ui\objects">
+      <UniqueIdentifier>{123a8681-54c9-470c-83a0-1de593c3cae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor">
+      <UniqueIdentifier>{d6d4e48f-1761-4088-81dd-f55b1cd564b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor\level">
+      <UniqueIdentifier>{97e4bd7e-a985-4e78-8377-1ad137244e88}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
