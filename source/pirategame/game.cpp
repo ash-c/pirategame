@@ -9,6 +9,7 @@
 
 CGame::CGame()
 	: m_levelMan(0)
+	, m_interface(0)
 	, m_active(true)
 {
 
@@ -34,12 +35,16 @@ Bool CGame::Initialise()
 
 	// Register the quit function called via the debug console
 	lua_register(Logger::luaState, "QuitGame", QuitGame);
+	lua_register(Logger::luaState, "StartGame", StartGame);
 
 	VALIDATE(Input::inputManager->Register(this));
 
 	m_levelMan = &CLevelManager::GetInstance();
-	m_levelMan->Initialise();
-	m_levelMan->LoadLevel(0);
+	VALIDATE(m_levelMan->Initialise());
+	VALIDATE(m_levelMan->LoadLevel("data/levels/title.json"));
+	
+	m_interface = UI::LoadInterface("data/interfaces/main.ini");
+	assert(m_interface);
 
 	// Finish setup logging, open error logging file.
 	PY_WRITETOFILE("Initialistion complete");
@@ -58,8 +63,13 @@ void CGame::Render()
 	Renderer::Clear();
 
 	m_levelMan->Render();
+
+	if (0 != m_interface)
+	{
+		m_interface->Render();
+	}
 	
-	// Render core last, as it renders logging.
+	// Render core last, as it renders logging and physics debug, in that order.
 	Core::Render();
 
 	Renderer::Present();
@@ -97,5 +107,14 @@ Int32 CGame::QuitGame(lua_State* L)
 	// Function is static so can't access m_active normally.
 	// Access member variable through the singleton pointer.
 	sm_pTheInstance->m_active = false;
+	return 0;
+}
+
+Int32 CGame::StartGame(lua_State* L)
+{
+	Logger::WriteToScreen("Start clicked");
+	sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
+	SDL_ShowCursor(false);
+	sm_pTheInstance->m_levelMan->LoadLevel("data/levels/1.json");
 	return 0;
 }

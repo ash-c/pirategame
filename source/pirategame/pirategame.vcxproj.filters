@@ -84,6 +84,9 @@
     <ClCompile Include="papyrus\ui\staticui.cpp">
       <Filter>papyrus\ui</Filter>
     </ClCompile>
+    <ClCompile Include="papyrus\ui\objects\uibutton.cpp">
+      <Filter>papyrus\ui\objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -133,6 +136,9 @@
     </Filter>
     <Filter Include="papyrus\ui">
       <UniqueIdentifier>{42cd077c-2fb9-4f40-b705-b61f52159fef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\ui\objects">
+      <UniqueIdentifier>{1857e74f-d1ce-4573-be12-976e4e9dba12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +277,12 @@
     </ClInclude>
     <ClInclude Include="papyrus\ui\staticui.h">
       <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\uiobject.h">
+      <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="papyrus\ui\objects\uibutton.h">
+      <Filter>papyrus\ui\objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

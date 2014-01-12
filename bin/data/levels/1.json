@@ -1,4 +1,5 @@
 {
+	"tileset":"ship",
 	"levelNumber": 1,
 	"playerStart":[200,980],
 	"tiles":52, 

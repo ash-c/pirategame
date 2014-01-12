@@ -209,13 +209,10 @@ void Logger::StopTracking(const Int8* _tag)
 
 Bool Logger::LogSDLError(const Int32 _code, const Int8* _msg)
 {
-#ifdef _DEBUG
-	assert(!_code && _msg);
-	return true;
-#endif // _DEBUG
 	if (0 != _code)
 	{
 		Logger::WriteToFile("%s failed: %s", _msg, SDL_GetError());
+		assert(!_code && _msg && "See data/papyrus/startup.log");
 		return false;
 	}
 

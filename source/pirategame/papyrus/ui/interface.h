@@ -8,6 +8,7 @@
 // Local Includes
 #include "../defines.h"
 #include "../core/utility/refcount.h"
+#include "uiobject.h"
 
 namespace Papyrus
 {
@@ -19,6 +20,8 @@ namespace Papyrus
 		public:
 			// Default constructor
 			IUIInterface()
+				: m_objects(0)
+				, m_numObjects(0)
 			{
 			}
 
@@ -32,14 +35,23 @@ namespace Papyrus
 			*
 			* @return		Returns true on successfull intialisation, false otherwise.
 			*/
-			virtual	Bool	Initialise() = 0;
+			virtual	Bool	Initialise(Int8* _path) = 0;
 
 			/*
 			* Cleans memory and shuts the interface down.
 			*
 			* @return		Returns true on success, false otherwise.
 			*/
-			virtual Bool	ShutDown() = 0;
+			virtual Bool	ShutDown()
+			{
+				for (UInt16 i = 0; i < m_numObjects; ++i)
+				{
+					PY_DELETE_RELEASE(m_objects[i]);
+				}
+				CLEANARRAY(m_objects);
+
+				return true;
+			}
 
 			/*
 			* Renders this interface to screen.
@@ -50,6 +62,8 @@ namespace Papyrus
 
 			// Member Variables
 		protected:
+			CUIObject**		m_objects;
+			UInt32			m_numObjects;
 		};
 	}
 }

@@ -17,7 +17,7 @@ public:
 	CPlatform();
 	~CPlatform();
 
-	Bool		Initialise(FileParser::IParser* _setup, Int32 _number, Int32 _platNum);
+	Bool		Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _number, Int32 _platNum);
 	Bool		ShutDown();
 
 	void		Process(Float32 _delta);

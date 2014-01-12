@@ -42,11 +42,11 @@ void CLevelManager::Render()
 	}
 }
 
-Bool CLevelManager::LoadLevel(Int32 _lvl)
-{
-	CLEANDELETE(m_currLevel);
+Bool CLevelManager::LoadLevel(Int8* _lvl)
+{	
+	PY_DELETE_RELEASE(m_currLevel);
 	m_currLevel = new CLevel;
-	VALIDATE(m_currLevel->Initialise("data/levels/1.json"));
+	VALIDATE(m_currLevel->Initialise(_lvl));
 	m_currLevel->AddRef();
 
 	return true;

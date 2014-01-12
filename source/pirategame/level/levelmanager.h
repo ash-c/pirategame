@@ -25,7 +25,7 @@ public:
 	void			Process(Float32 _delta);
 	void			Render();
 
-	Bool			LoadLevel(Int32 _lvl);
+	Bool			LoadLevel(Int8* _lvl);
 
 protected:
 	CLevelManager();

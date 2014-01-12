@@ -27,16 +27,6 @@ CLevel::~CLevel()
 
 Bool CLevel::Initialise(Int8* _setup)
 {
-	m_background = Sprite::CreateSprite("data/art/background.png", 0, false);
-	assert(m_background);
-	m_background->AddRef();
-	PY_WRITETOFILE("Background created");
-
-	CREATEPOINTER(m_playable, CPlayable);
-	assert(m_playable);
-	m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml");
-	PY_WRITETOFILE("Player created");
-
 	// Make platforms
 	Int32 width = Renderer::activeRenderer->GetWidth();
 
@@ -46,13 +36,37 @@ Bool CLevel::Initialise(Int8* _setup)
 	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
 
+	Int8* tileset = 0;
+	Int8 path[MAX_BUFFER];
+	VALIDATE(setup->GetValue("tileset", &tileset));
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/background.png", tileset);
+	
+	m_background = Sprite::CreateSprite(path, 0, false);
+	assert(m_background);
+	m_background->AddRef();
+	PY_WRITETOFILE("Background created");
+	
+	VECTOR2 pos;
+
+	if (0 < m_numTiles)
+	{
+		CREATEPOINTER(m_playable, CPlayable);
+		assert(m_playable);
+		m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml");
+		PY_WRITETOFILE("Player created");
+
+		VALIDATE(setup->GetValue("playerStart", pos));
+		m_playable->SetPosition(pos);
+	}
+
 	m_tiles = new CTile*[m_numTiles];
 	assert(m_tiles);
 	SDL_memset(m_tiles, 0, sizeof(CTile*) * m_numTiles);
 	
 	UInt32 type = 0;
-	VECTOR2 pos;
 	Int8 text[MAX_BUFFER];
+	
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", tileset);
 
 	for (Int32 i = 0; i < m_numTiles; ++i)
 	{
@@ -63,7 +77,7 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(setup->GetValue(text, type));
 
 		CREATEPOINTER(m_tiles[i], CTile);
-		VALIDATE(m_tiles[i]->Initialise("data/art/levels/tiles.png", pos, static_cast<ETileType>(type)));
+		VALIDATE(m_tiles[i]->Initialise(path, pos, static_cast<ETileType>(type)));
 		m_tiles[i]->AddRef();
 	}
 
@@ -81,13 +95,12 @@ Bool CLevel::Initialise(Int8* _setup)
 		Int32 number = 0;
 		VALIDATE(setup->GetValue(text, number));
 
-		VALIDATE(m_platforms[i]->Initialise(setup, number, i + 1));
+		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
 	}
 
-	VALIDATE(setup->GetValue("playerStart", pos));
-	m_playable->SetPosition(pos);
-
 	setup->Release();
+
+	CLEANARRAY(tileset);
 	return true;
 }
 
@@ -108,15 +121,21 @@ Bool CLevel::ShutDown()
 
 	PY_SAFE_RELEASE(m_background);
 
-	m_playable->ShutDown();
-	CLEANDELETE(m_playable);
+	if (0 != m_playable)
+	{
+		m_playable->ShutDown();
+		CLEANDELETE(m_playable);
+	}
 
 	return true;
 }
 
 void CLevel::Process(Float32 _delta)
 {
-	m_playable->Process(_delta);
+	if (0 != m_playable)
+	{
+		m_playable->Process(_delta);
+	}
 
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
@@ -138,5 +157,8 @@ void CLevel::Render()
 		m_platforms[i]->Render();
 	}
 
-	m_playable->Render();
+	if (0 != m_playable)
+	{
+		m_playable->Render();
+	}
 }

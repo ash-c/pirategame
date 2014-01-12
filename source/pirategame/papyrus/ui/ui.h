@@ -27,19 +27,12 @@ namespace Papyrus
 		Bool		ShutDown();
 
 		/*
-		* Renders the interface to screen.
-		*
-		* @return	Returns void.
-		*/
-		void		Render();
-
-		/*
 		* Creates an interface of the given type and filepath.
 		*
 		* @param	_path		Path to save the interface on.
 		* @return	Returns a pointer to an IUIInterface object if successfull, 0 otherwise.
 		*/
-		IUIInterface* CreateInterface(Int8* _path, Bool _interactive);
+		IUIInterface* CreateInterface(Int8* _path, Bool _interactive = true);
 
 		/*
 		* Loads a file into a parser.
@@ -47,7 +40,7 @@ namespace Papyrus
 		* @param	_filePath		Interface to load.
 		* @return	Returns a pointer to an IUIInterface object if the file was loaded successfully. Otherwise returns 0.
 		*/
-		IUIInterface* LoadInterface(Int8* _filePath);
+		IUIInterface* LoadInterface(Int8* _filePath, Bool _interactive = true);
 
 		/*
 		* Flushes a parser from memory.

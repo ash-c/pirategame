@@ -71,6 +71,8 @@ public:
 	*/
 	static Int32		QuitGame(lua_State* L);
 
+	static Int32		StartGame(lua_State* L);
+
 protected:
 	// Default Constructor
 	CGame();
@@ -78,6 +80,7 @@ protected:
 	// Member Variables
 protected:
 	CLevelManager*				m_levelMan;
+	UI::IUIInterface*			m_interface;
 
 	Bool						m_active;
 };

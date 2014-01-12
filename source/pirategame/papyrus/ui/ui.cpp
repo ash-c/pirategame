@@ -30,17 +30,6 @@ Bool UI::ShutDown()
 	return true;
 }
 
-void UI::Render()
-{
-	for (UInt16 i = 0; i < numInterfaces; ++i)
-	{
-		if (0 != interfaces[i])
-		{
-			interfaces[i]->Render();
-		}
-	}
-}
-
 UI::IUIInterface* UI::CreateInterface(Int8* _path, Bool _interactive)
 {
 	assert(interfaces && "Can't create interface, array missing");
@@ -74,7 +63,7 @@ UI::IUIInterface* UI::CreateInterface(Int8* _path, Bool _interactive)
 		if (0 == interfaces[i])
 		{
 			interfaces[i] = ui;
-			VALIDATE(ui->Initialise());
+			VALIDATE(ui->Initialise(_path));
 			return ui;
 		}
 	}
@@ -84,7 +73,7 @@ UI::IUIInterface* UI::CreateInterface(Int8* _path, Bool _interactive)
 	return 0;
 }
 
-UI::IUIInterface* UI::LoadInterface(Int8* _filePath)
+UI::IUIInterface* UI::LoadInterface(Int8* _filePath, Bool _interactive)
 {
 	assert(interfaces && "Can't create interface, array missing");
 	assert(0 != _filePath && "Path missing for interface creation");
@@ -101,8 +90,8 @@ UI::IUIInterface* UI::LoadInterface(Int8* _filePath)
 		}
 	}
 
-	IUIInterface* ui = CreateInterface(_filePath);
-	assert(ui);
+	IUIInterface* ui = CreateInterface(_filePath, true);
+	assert(ui && "Inteface creation failed");
 
 	if (ui)
 	{

@@ -19,7 +19,7 @@ CPlatform::~CPlatform()
 {
 }
 
-Bool CPlatform::Initialise(FileParser::IParser* _setup, Int32 _number, Int32 _platNum)
+Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _number, Int32 _platNum)
 {
 	m_numSprites = _number;
 	_setup->AddRef();
@@ -48,7 +48,7 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int32 _number, Int32 _pl
 
 	for (Int16 i = 0; i < m_numSprites; ++i)
 	{
-		m_sprites[i] = Sprite::CreateSprite("data/art/levels/tiles.png", 0, false);
+		m_sprites[i] = Sprite::CreateSprite(_tileset, 0, false);
 		assert(m_sprites[i]);
 		m_sprites[i]->AddRef();
 

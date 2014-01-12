@@ -40,7 +40,7 @@ Bool Core::Initialise()
 	PY_WRITETOFILE("File parsing sub-system initialised");
 
 	VALIDATE(Renderer::Initialise(width, height, title, fullscreen));
-	CLEANDELETE(title); // This is needed as the parser allocates memory on the heap.
+	CLEANARRAY(title); // This is needed as the parser allocates memory on the heap.
 	PY_WRITETOFILE("Rendering sub-system initialised");
 
 	//SDL_ShowCursor(SDL_DISABLE);
@@ -92,6 +92,7 @@ void Core::Render()
 Bool Core::ShutDown()
 {
 	CLEANDELETE(timer);
+	VALIDATE(UI::ShutDown());
 	VALIDATE(Physics::ShutDown());
 	VALIDATE(Input::ShutDown());
 	VALIDATE(Sprite::ShutDown());

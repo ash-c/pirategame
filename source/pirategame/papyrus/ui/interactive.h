@@ -19,7 +19,7 @@ namespace Papyrus
 			CInteractiveUI();
 			virtual ~CInteractiveUI();
 
-			virtual Bool		Initialise();
+			virtual Bool		Initialise(Int8* _path);
 			virtual Bool		ShutDown();
 			virtual void		Render();
 
