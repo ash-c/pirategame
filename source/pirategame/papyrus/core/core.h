@@ -29,6 +29,8 @@ namespace Papyrus
 
 		Bool		ShutDown();
 
+		void		Pause();
+
 		extern Timer::CTimer* timer;
 	}
 }

@@ -72,8 +72,13 @@ Bool Core::Initialise()
 
 Float32 Core::Process()
 {
-	Float32 delta = timer->Restart();
-
+	Float32 delta = 0.0f;
+	
+	if (!timer->Paused())
+	{
+		delta = timer->Restart();
+	}
+	
 	Physics::Process(delta);
 
 	Input::inputManager->Process(delta);
@@ -101,4 +106,16 @@ Bool Core::ShutDown()
 	VALIDATE(Logger::ShutDown());
 	SDL_Quit();
 	return true;
+}
+
+void Core::Pause()
+{
+	if (timer->Paused())
+	{
+		timer->UnPause();
+	}
+	else
+	{
+		timer->Pause();
+	}
 }

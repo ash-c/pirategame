@@ -62,6 +62,8 @@ public:
 	*/
 	Bool		IsActive();
 
+	void		Pause();
+
 	virtual void		Notify(SDL_Event* _e);
 
 	/*
@@ -73,6 +75,8 @@ public:
 
 	static Int32		StartGame(lua_State* L);
 
+	static Int32		PauseGame(lua_State* L);
+
 protected:
 	// Default Constructor
 	CGame();
@@ -83,6 +87,7 @@ protected:
 	UI::IUIInterface*			m_interface;
 
 	Bool						m_active;
+	Bool						m_paused;
 };
 #define GAME CGame::GetInstance();
 
