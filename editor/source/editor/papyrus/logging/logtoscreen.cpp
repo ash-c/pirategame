@@ -15,9 +15,9 @@ Logger::CLogToScreen::CLogToScreen()
 	, m_timer(0.0f)
 	, m_active(true)
 {
-	m_col.r = 255;
-	m_col.g = 255;
-	m_col.b = 255;
+	m_col.r = 0;
+	m_col.g = 0;
+	m_col.b = 0;
 	m_col.a = 0;
 
 	m_pos.w = 0;

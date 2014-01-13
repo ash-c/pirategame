@@ -111,7 +111,7 @@ Bool FileParser::CIniparser::Load(const Int8* _path)
 	else
 	{
 		m_filestream.close();
-		Logger::Write("FileParser:: Unable to open %s for reading", _path);
+		Logger::Write("FileParser:: Unable to open %s for reading", m_filePath);
 		return false;
 	}
 }
@@ -177,7 +177,7 @@ Bool FileParser::CIniparser::Save(const Int8* _path)
 	else
 	{
 		m_filestream.close();
-		Logger::Write("FileParser:: Unable to open %s for writing", _path);
+		Logger::Write("FileParser:: Unable to open %s for writing", m_filePath);
 		return false;
 	}
 }

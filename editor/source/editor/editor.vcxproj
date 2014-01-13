@@ -89,8 +89,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="editor\interfaceedit.cpp" />
+    <ClCompile Include="editor\leveledit.cpp" />
+    <ClCompile Include="editor\level\level.cpp" />
+    <ClCompile Include="editor\level\platform.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="level\platform.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />
@@ -118,9 +121,13 @@
     <ClCompile Include="papyrus\ui\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="editor\editor.h" />
+    <ClInclude Include="editor\interfaceedit.h" />
+    <ClInclude Include="editor\leveledit.h" />
+    <ClInclude Include="editor\level\level.h" />
+    <ClInclude Include="editor\level\platform.h" />
+    <ClInclude Include="editor\level\tile.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="level\platform.h" />
-    <ClInclude Include="level\tile.h" />
     <ClInclude Include="papyrus\core\core.h" />
     <ClInclude Include="papyrus\core\math\vector2.h" />
     <ClInclude Include="papyrus\core\math\vector3.h" />

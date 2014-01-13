@@ -25,7 +25,7 @@ Bool UI::Initialise()
 
 Bool UI::ShutDown()
 {
-	PY_CLEANARRAY(interfaces, numInterfaces);
+	PY_CLEAN_SAFE_RELEASE_ARRAY(interfaces, numInterfaces);
 	CLEANARRAY(interfaces);
 	return true;
 }

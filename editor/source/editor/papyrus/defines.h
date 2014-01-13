@@ -68,4 +68,26 @@ for (Int16 i = 0; i < Length; ++i)\
 	}\
 }\
 
+#define PY_CLEAN_RELEASE_ARRAY(Array, Length)\
+for (Int16 i = 0; i < Length; ++i)\
+{\
+	if (0 != Array[i])\
+	{\
+		Array[i]->Release();\
+		Array[i]->ShutDown();\
+		CLEANDELETE(Array[i]);\
+	}\
+}\
+
+#define PY_CLEAN_SAFE_RELEASE_ARRAY(Array, Length)\
+for (Int16 i = 0; i < Length; ++i)\
+{\
+	if (0 != Array[i])\
+	{\
+		if (Array[i]->IsActive()) Array[i]->Release();\
+		Array[i]->ShutDown();\
+		CLEANDELETE(Array[i]);\
+	}\
+}\
+
 #endif // __DEFINES_H__

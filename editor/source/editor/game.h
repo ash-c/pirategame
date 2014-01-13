@@ -13,7 +13,7 @@
 using namespace Papyrus;
 
 // Prototypes
-class ICharacter;
+class IEditor;
 
 class CGame : public TSingleton<CGame>, Input::IInputObserver
 {
@@ -64,6 +64,10 @@ public:
 
 	virtual void		Notify(SDL_Event* _e);
 
+	static Int32		Quit(lua_State* L);
+	static Int32		StartLevelEditor(lua_State* L);
+	static Int32		StartInterfaceEditor(lua_State* L);
+
 protected:
 	// Default Constructor
 	CGame();
@@ -71,6 +75,8 @@ protected:
 	// Member Variables
 protected:
 	UI::IUIInterface*			m_interface;
+
+	IEditor*					m_editor;
 
 	Bool						m_active;
 	Bool						m_paused;

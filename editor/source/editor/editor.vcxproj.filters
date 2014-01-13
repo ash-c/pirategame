@@ -75,8 +75,17 @@
     <ClCompile Include="papyrus\ui\objects\uibutton.cpp">
       <Filter>papyrus\ui\objects</Filter>
     </ClCompile>
-    <ClCompile Include="level\platform.cpp">
+    <ClCompile Include="editor\level\level.cpp">
       <Filter>editor\level</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\level\platform.cpp">
+      <Filter>editor\level</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\leveledit.cpp">
+      <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="editor\interfaceedit.cpp">
+      <Filter>editor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,14 +210,26 @@
     <ClInclude Include="papyrus\ui\objects\uibutton.h">
       <Filter>papyrus\ui\objects</Filter>
     </ClInclude>
-    <ClInclude Include="level\platform.h">
-      <Filter>editor\level</Filter>
-    </ClInclude>
-    <ClInclude Include="level\tile.h">
-      <Filter>editor\level</Filter>
-    </ClInclude>
     <ClInclude Include="papyrus\defines.h">
       <Filter>papyrus</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\level\level.h">
+      <Filter>editor\level</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\level\platform.h">
+      <Filter>editor\level</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\level\tile.h">
+      <Filter>editor\level</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\editor.h">
+      <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\leveledit.h">
+      <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\interfaceedit.h">
+      <Filter>editor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +283,9 @@
     </Filter>
     <Filter Include="editor\level">
       <UniqueIdentifier>{97e4bd7e-a985-4e78-8377-1ad137244e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor\interface">
+      <UniqueIdentifier>{7f536659-77c4-4ead-ac6c-3cb89d10b74c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
