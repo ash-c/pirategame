@@ -8,7 +8,9 @@
 #include "platform.h"
 
 CLevel::CLevel()
-	: m_background(0)
+	: m_surface(0)
+	, m_grid(0)
+	, m_background(0)
 	, m_tiles(0)
 	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
@@ -87,6 +89,41 @@ Bool CLevel::Initialise(Int8* _setup)
 	setup->Release();
 
 	CLEANARRAY(tileset);
+
+	// Setup grid for level dimensions.
+	Uint32 rmask, gmask, bmask, amask;
+
+    /* SDL interprets each pixel as a 32-bit number, so our masks must depend
+       on the endianness (byte order) of the machine */
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+
+    m_surface = SDL_CreateRGBSurface(0, LEVEL_WIDTH, LEVEL_HEIGHT, 32, rmask, gmask, bmask, amask);
+	assert(m_surface);
+	if (0 == m_surface) Logger::LogSDLError(1, "Create RGB Surface for the level");
+
+	// Fill grid with rectangles.
+	m_numRects = LEVEL_WIDTH/TILE_WIDTH * LEVEL_HEIGHT/TILE_WIDTH;
+	SDL_Rect rectPos;
+	rectPos.x = 0;
+	rectPos.y = 0;
+	rectPos.w = TILE_WIDTH;
+	rectPos.h = TILE_HEIGHT;
+
+	VALIDATE(Renderer::activeRenderer->LoadTexture("data/art/grid.png", &m_grid));
+
+	//VALIDATE(Renderer::activeRenderer->LoadTexture(m_surface, &m_grid));
+	assert(m_grid);
+
 	return true;
 }
 
@@ -106,6 +143,8 @@ Bool CLevel::ShutDown()
 	CLEANARRAY(m_tiles);
 
 	PY_SAFE_RELEASE(m_background);
+
+	SDL_DestroyTexture(m_grid);
 
 	return true;
 }
@@ -130,5 +169,23 @@ void CLevel::Render()
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
 		m_platforms[i]->Render();
+	}
+
+	SDL_Rect rectPos;
+	rectPos.x = 0;
+	rectPos.y = Renderer::activeRenderer->GetHeight() - TILE_HEIGHT;
+	rectPos.w = TILE_WIDTH;
+	rectPos.h = TILE_HEIGHT;
+
+	for (Int32 i = 0; i < m_numRects; ++i)
+	{
+		Renderer::activeRenderer->Render(m_grid, &rectPos, NULL);
+		rectPos.x += TILE_WIDTH;
+
+		if (rectPos.x >= LEVEL_WIDTH) 
+		{
+			rectPos.x = 0; 
+			rectPos.y -= TILE_HEIGHT;
+		}
 	}
 }

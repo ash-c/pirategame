@@ -29,6 +29,11 @@ typedef enum _ETileType
 	MAX_TYPE
 } ETileType;
 
+static const Int32 TILE_WIDTH = 50;
+static const Int32 TILE_HEIGHT = 50;
+static const Int32 TILE_WIDTH_DOUBLE = 100;
+static const Int32 TILE_HEIGHT_DOUBLE = 100;
+
 class CTile : public TRefCount<CTile>
 {
 	// Member Functions
@@ -47,9 +52,9 @@ public:
 		m_sprite = Sprite::CreateSprite(_spritesheet, 0, false);
 		assert(m_sprite);
 		m_sprite->AddRef();
-		m_sprite->SetScale(50, 50);
-		m_clips.w = 50;
-		m_clips.h = 50;
+		m_sprite->SetScale(TILE_WIDTH, TILE_HEIGHT);
+		m_clips.w = TILE_WIDTH;
+		m_clips.h = TILE_HEIGHT;
 		m_pos = _pos;
 
 		switch(_type)
@@ -59,42 +64,42 @@ public:
 			m_clips.y = 0;
 			break;
 		case TYPE_TOP_MID:
-			m_clips.x = 50;
+			m_clips.x = TILE_WIDTH;
 			m_clips.y = 0;
 			break;
 		case TYPE_TOP_RIGHT:
-			m_clips.x = 100;
+			m_clips.x = TILE_WIDTH_DOUBLE;
 			m_clips.y = 0;
 			break;
 		case TYPE_MID_LEFT:
 			m_clips.x = 0;
-			m_clips.y = 50;
+			m_clips.y = TILE_HEIGHT;
 			break;
 		case TYPE_MID_MID:
-			m_clips.x = 50;
-			m_clips.y = 50;
+			m_clips.x = TILE_WIDTH;
+			m_clips.y = TILE_HEIGHT;
 			break;
 		case TYPE_MID_RIGHT:
-			m_clips.x = 100;
-			m_clips.y = 50;
+			m_clips.x = TILE_WIDTH_DOUBLE;
+			m_clips.y = TILE_HEIGHT;
 			break;
 		case TYPE_BOT_LEFT:
 			m_clips.x = 0;
-			m_clips.y = 100;
+			m_clips.y = TILE_HEIGHT_DOUBLE;
 			break;
 		case TYPE_BOT_MID:
-			m_clips.x = 50;
-			m_clips.y = 100;
+			m_clips.x = TILE_WIDTH;
+			m_clips.y = TILE_HEIGHT_DOUBLE;
 			break;
 		case TYPE_BOT_RIGHT:
-			m_clips.x = 100;
-			m_clips.y = 100;
+			m_clips.x = TILE_WIDTH_DOUBLE;
+			m_clips.y = TILE_HEIGHT_DOUBLE;
 			break;
 		default:
 			break;
 		}
 
-		m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(50.0f,50.0f));
+		m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(static_cast<Float32>(TILE_WIDTH),static_cast<Float32>(TILE_HEIGHT)));
 		assert(m_actor);
 
 		return true;

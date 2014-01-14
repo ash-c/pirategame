@@ -30,6 +30,12 @@ public:
 
 	// Member Variables
 protected:
+	static const Int32			LEVEL_WIDTH = 10000;
+	static const Int32			LEVEL_HEIGHT = 2000;
+
+	SDL_Surface*		m_surface;
+	SDL_Texture*		m_grid;
+
 	Sprite::ISprite*	m_background;
 	ICharacter*			m_playable;
 	CTile**				m_tiles;
@@ -38,6 +44,7 @@ protected:
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
 	Int32				m_numPlatforms;
+	Int32				m_numRects;
 };
 
 #endif // __PIRATEGAME_LEVEL_H__
