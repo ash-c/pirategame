@@ -90,39 +90,13 @@ Bool CLevel::Initialise(Int8* _setup)
 
 	CLEANARRAY(tileset);
 
-	// Setup grid for level dimensions.
-	Uint32 rmask, gmask, bmask, amask;
-
-    /* SDL interprets each pixel as a 32-bit number, so our masks must depend
-       on the endianness (byte order) of the machine */
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
-#else
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
-#endif
-
-    m_surface = SDL_CreateRGBSurface(0, LEVEL_WIDTH, LEVEL_HEIGHT, 32, rmask, gmask, bmask, amask);
-	assert(m_surface);
-	if (0 == m_surface) Logger::LogSDLError(1, "Create RGB Surface for the level");
-
 	// Fill grid with rectangles.
 	m_numRects = LEVEL_WIDTH/TILE_WIDTH * LEVEL_HEIGHT/TILE_WIDTH;
-	SDL_Rect rectPos;
-	rectPos.x = 0;
-	rectPos.y = 0;
-	rectPos.w = TILE_WIDTH;
-	rectPos.h = TILE_HEIGHT;
 
 	VALIDATE(Renderer::activeRenderer->LoadTexture("data/art/grid.png", &m_grid));
-
-	//VALIDATE(Renderer::activeRenderer->LoadTexture(m_surface, &m_grid));
 	assert(m_grid);
+
+	Logger::TrackValue(&m_cameraPos, "Camera Position");
 
 	return true;
 }
@@ -172,8 +146,8 @@ void CLevel::Render()
 	}
 
 	SDL_Rect rectPos;
-	rectPos.x = 0;
-	rectPos.y = Renderer::activeRenderer->GetHeight() - TILE_HEIGHT;
+	rectPos.x = static_cast<Int32>(m_cameraPos.x);
+	rectPos.y = static_cast<Int32>(Renderer::activeRenderer->GetHeight() - TILE_HEIGHT + m_cameraPos.y);
 	rectPos.w = TILE_WIDTH;
 	rectPos.h = TILE_HEIGHT;
 
@@ -182,10 +156,19 @@ void CLevel::Render()
 		Renderer::activeRenderer->Render(m_grid, &rectPos, NULL);
 		rectPos.x += TILE_WIDTH;
 
-		if (rectPos.x >= LEVEL_WIDTH) 
+		if (rectPos.x >= (LEVEL_WIDTH + m_cameraPos.x))
 		{
-			rectPos.x = 0; 
+			rectPos.x = static_cast<Int32>(m_cameraPos.x);
 			rectPos.y -= TILE_HEIGHT;
 		}
 	}
+}
+
+void CLevel::CameraPos(VECTOR2 _pos)
+{
+	m_cameraPos = _pos;
+}
+
+void CLevel::AddTile(VECTOR2 _pos)
+{
 }

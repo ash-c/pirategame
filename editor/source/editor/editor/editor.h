@@ -7,6 +7,7 @@
 
 // Local Includes
 #include "../core/utility/refcount.h"
+#include "../input/input.h"
 #include "../input/observer.h"
 
 class IEditor : public TRefCount<IEditor>, Papyrus::Input::IInputObserver
@@ -16,7 +17,11 @@ public:
 	IEditor() {}
 	virtual ~IEditor() {}
 
-	virtual Bool		Initialise() = 0;
+	virtual Bool		Initialise()
+	{
+		Papyrus::Input::inputManager->Register(this);
+		return true;
+	}
 	virtual Bool		ShutDown() = 0;
 
 	virtual void		Process(Float32 _delta) = 0;

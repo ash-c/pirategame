@@ -87,6 +87,9 @@
     <ClCompile Include="editor\interfaceedit.cpp">
       <Filter>editor</Filter>
     </ClCompile>
+    <ClCompile Include="editor\tools\tiletool.cpp">
+      <Filter>editor\tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -231,6 +234,12 @@
     <ClInclude Include="editor\interfaceedit.h">
       <Filter>editor</Filter>
     </ClInclude>
+    <ClInclude Include="editor\tool.h">
+      <Filter>editor</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\tools\tiletool.h">
+      <Filter>editor\tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -286,6 +295,9 @@
     </Filter>
     <Filter Include="editor\interface">
       <UniqueIdentifier>{7f536659-77c4-4ead-ac6c-3cb89d10b74c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor\tools">
+      <UniqueIdentifier>{b53fed25-0af7-4818-b3f5-5d8c408f7fbc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

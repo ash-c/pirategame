@@ -7,6 +7,7 @@
 
 // Local Includes
 #include "editor.h"
+#include "tool.h"
 
 class CLevel;
 
@@ -28,6 +29,12 @@ public:
 	// Member Variables
 protected:
 	CLevel*				m_level;
+	ITool*				m_tools[MAX_TOOL];
+	VECTOR2				cameraPos;
+	EToolType			m_activeTool;
+	Int32				m_screenHeight;
+	Int32				m_screenWidth;
+	Bool				m_rightMouseDown;
 };
 
 #endif // __EDITOR_LEVELEDIT_H__

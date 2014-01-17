@@ -93,6 +93,7 @@
     <ClCompile Include="editor\leveledit.cpp" />
     <ClCompile Include="editor\level\level.cpp" />
     <ClCompile Include="editor\level\platform.cpp" />
+    <ClCompile Include="editor\tools\tiletool.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
@@ -127,6 +128,8 @@
     <ClInclude Include="editor\level\level.h" />
     <ClInclude Include="editor\level\platform.h" />
     <ClInclude Include="editor\level\tile.h" />
+    <ClInclude Include="editor\tool.h" />
+    <ClInclude Include="editor\tools\tiletool.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="papyrus\core\core.h" />
     <ClInclude Include="papyrus\core\math\vector2.h" />
