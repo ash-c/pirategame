@@ -18,7 +18,7 @@ public:
 	virtual Bool		Initialise();
 	virtual Bool		ShutDown();
 
-	virtual Bool		AddToLevel(CLevel* _level);
+	virtual Bool		AddToLevel(CLevel* _level, VECTOR2 _pos);
 
 	// Member Variables
 protected:

@@ -22,9 +22,7 @@ Bool CToolTile::ShutDown()
 	return true;
 }
 
-Bool CToolTile::AddToLevel(CLevel* _level)
+Bool CToolTile::AddToLevel(CLevel* _level, VECTOR2 _pos)
 {
-	
-
-	return true;
+	return _level->AddTile(_pos);
 }

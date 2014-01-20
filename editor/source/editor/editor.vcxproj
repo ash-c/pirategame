@@ -93,6 +93,7 @@
     <ClCompile Include="editor\leveledit.cpp" />
     <ClCompile Include="editor\level\level.cpp" />
     <ClCompile Include="editor\level\platform.cpp" />
+    <ClCompile Include="editor\level\tile.cpp" />
     <ClCompile Include="editor\tools\tiletool.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />

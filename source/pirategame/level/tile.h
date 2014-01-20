@@ -90,6 +90,17 @@ public:
 			m_clips.x = 100;
 			m_clips.y = 100;
 			break;
+		case TYPE_LEFT:
+			m_clips.x = 0;
+			m_clips.y = 150;
+			break;
+		case TYPE_MID:
+			m_clips.x = 50;
+			m_clips.y = 150;
+			break;
+		case TYPE_RIGHT:
+			m_clips.x = 100;
+			m_clips.y = 150;
 		default:
 			break;
 		}

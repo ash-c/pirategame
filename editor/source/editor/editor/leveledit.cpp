@@ -4,6 +4,7 @@
 // Local Includes
 #include "leveledit.h"
 #include "level\level.h"
+#include "level\tile.h"
 
 #include "tool.h"
 #include "tools\tiletool.h"
@@ -14,6 +15,7 @@ CLevelEdit::CLevelEdit()
 	, m_screenHeight(0)
 	, m_screenWidth(0)
 	, m_rightMouseDown(false)
+	, m_leftMouseDown(false)
 {
 }
 
@@ -63,7 +65,9 @@ Bool CLevelEdit::ShutDown()
 
 void CLevelEdit::Process(Float32 _delta)
 {
-	if (0 != m_level) m_level->CameraPos(cameraPos);
+	if (0 != m_level) m_level->CameraPos(m_cameraPos);
+
+	if (0.0f < m_tileDelay) m_tileDelay -= _delta;
 }
 
 void CLevelEdit::Render()
@@ -81,16 +85,19 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		}
 		else if (SDL_BUTTON_LEFT == _e->button.button)
 		{
+			m_leftMouseDown = true;
 			if (INVALID_TOOL != m_activeTool && MAX_TOOL > m_activeTool)
 			{
+				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
+
 				// Place tool.
-				if (m_tools[m_activeTool]->AddToLevel(m_level))
+				if (m_tools[m_activeTool]->AddToLevel(m_level, tilePos - m_cameraPos))
 				{
-					Logger::Write("Tool placed.");
+					//Logger::Write("Tool placed at (%.2f, %.2f)", tilePos.x, tilePos.y);
 				}
 				else
 				{
-					Logger::Write("Error, failed to place tool %i", m_activeTool);
+					//Logger::Write("Error, failed to place tool %i", m_activeTool);
 				}
 			}
 		}
@@ -101,19 +108,41 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		{
 			m_rightMouseDown = false;
 		}
+		if (SDL_BUTTON_LEFT == _e->button.button)
+		{
+			m_leftMouseDown = false;
+		}
 	}
 	else if (SDL_MOUSEMOTION == _e->type)
 	{
 		if (m_rightMouseDown)
 		{
-			cameraPos.x += _e->motion.xrel;
-			cameraPos.y += _e->motion.yrel;
+			m_cameraPos.x += _e->motion.xrel;
+			m_cameraPos.y += _e->motion.yrel;
 
-			if (cameraPos.y < 0.0f) cameraPos.y = 0.0f;
-			if (cameraPos.y > (LEVEL_HEIGHT - m_screenHeight)) cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenHeight);
+			if (m_cameraPos.y < 0.0f) m_cameraPos.y = 0.0f;
+			if (m_cameraPos.y > (LEVEL_HEIGHT - m_screenHeight)) m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenHeight);
 
-			if (cameraPos.x > 0.0f) cameraPos.x = 0.0f; 
-			if (cameraPos.x < -(LEVEL_WIDTH - m_screenWidth)) cameraPos.x = -static_cast<Float32>(LEVEL_WIDTH - m_screenWidth);
+			if (m_cameraPos.x > 0.0f) m_cameraPos.x = 0.0f; 
+			if (m_cameraPos.x < -(LEVEL_WIDTH - m_screenWidth)) m_cameraPos.x = -static_cast<Float32>(LEVEL_WIDTH - m_screenWidth);
+		}
+		if (m_leftMouseDown)
+		{
+			if (INVALID_TOOL != m_activeTool && MAX_TOOL > m_activeTool && 0.0f >= m_tileDelay)
+			{
+				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
+
+				// Place tool.
+				if (m_tools[m_activeTool]->AddToLevel(m_level, tilePos - m_cameraPos))
+				{
+					m_tileDelay = 0.2f;
+					//Logger::Write("Tool placed at (%.2f, %.2f)", tilePos.x, tilePos.y);
+				}
+				else
+				{
+					//Logger::Write("Error, failed to place tool %i", m_activeTool);
+				}
+			}
 		}
 	}
 }
