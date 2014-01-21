@@ -149,7 +149,7 @@ void CLevel::Render()
 
 	for (Int16 i = 0; i < m_numTiles; ++i)
 	{
-		m_tiles[i]->Render();
+		m_tiles[i]->Render(m_cameraPos);
 	}
 
 	for (Int16 i = 0; i < m_numPlatforms; ++i)

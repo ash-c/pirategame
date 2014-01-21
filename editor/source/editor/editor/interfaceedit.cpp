@@ -30,6 +30,11 @@ void CIntEdit::Render()
 {
 }
 
+Bool CIntEdit::Save()
+{
+	return true;
+}
+
 void CIntEdit::Notify(SDL_Event* _e)
 {
 }

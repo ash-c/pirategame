@@ -36,6 +36,8 @@ public:
 	CTile() 
 		: m_actor(0)
 		, m_sprite(0)
+		, m_screenW(0)
+		, m_screenH(0)
 	{
 		SDL_memset(&m_clips, 0, sizeof(Int32) * 4);
 	}
@@ -107,6 +109,9 @@ public:
 
 		m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(50.0f,50.0f));
 		assert(m_actor);
+	
+		m_screenW = Renderer::activeRenderer->GetWidth();
+		m_screenH = Renderer::activeRenderer->GetHeight();
 
 		return true;
 	}
@@ -117,11 +122,20 @@ public:
 		return true;
 	}
 
-	void		Render()
+	void		Render(VECTOR2 _camPos)
 	{
-		m_sprite->SetClip(&m_clips);
-		m_sprite->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
-		m_sprite->Render();
+		if ((m_pos.x + _camPos.x) > 0.0f && (m_pos.y + _camPos.y) > 0.0f &&
+			(m_pos.x + _camPos.x) < m_screenW && (m_pos.y + _camPos.y) < m_screenH)
+		{
+			m_actor->SetActive(true);
+			m_sprite->SetClip(&m_clips);
+			m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));
+			m_sprite->Render();
+		}
+		else if (m_actor->IsActive())
+		{
+			m_actor->SetActive(false);
+		}
 	}
 
 	// Member Variables
@@ -130,6 +144,8 @@ protected:
 	Sprite::ISprite*	m_sprite;
 	SDL_Rect			m_clips;
 	VECTOR2				m_pos;
+	Int32				m_screenW;
+	Int32				m_screenH;
 };
 
 #endif // __PIRATEGAME_LEVEL_TILE_H__

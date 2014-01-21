@@ -65,7 +65,7 @@ void CPlayable::Process(Float32 _delta)
 	switch (m_currAnim)
 	{
 	case ANIM_SLIDE_LEFT:
-		if (!m_actor->IsActive())
+		if (m_actor->IsStationary())
 		{
 			m_currAnim = ANIM_IDLE_LEFT;
 			m_sprite->SetAnim(m_currAnim);
@@ -76,7 +76,7 @@ void CPlayable::Process(Float32 _delta)
 		}
 		break;
 	case ANIM_SLIDE_RIGHT:
-		if (!m_actor->IsActive())
+		if (m_actor->IsStationary())
 		{
 			m_currAnim = ANIM_IDLE_RIGHT;
 			m_sprite->SetAnim(m_currAnim);
@@ -95,7 +95,6 @@ void CPlayable::Process(Float32 _delta)
 	case ANIM_IDLE_LEFT:
 	case ANIM_IDLE_RIGHT:
 		m_moveDir = MOVE_IDLE;
-		m_actor->SetActive(false);
 		break;
 	case ANIM_JUMP_LEFT:
 		{
@@ -193,7 +192,7 @@ void CPlayable::Notify(SDL_Event* _e)
 		{
 		case SDLK_LEFT: // Run left
 			{
-				if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+				if (ANIM_SLIDE_RIGHT != m_currAnim)// && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
 				{
 					m_currAnim = ANIM_RUN_LEFT;
 					if (vel.x > -m_moveForce.x)
@@ -207,7 +206,7 @@ void CPlayable::Notify(SDL_Event* _e)
 			break;
 		case SDLK_RIGHT: // Run right
 			{
-				if (ANIM_SLIDE_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim)
+				if (ANIM_SLIDE_LEFT != m_currAnim)// && ANIM_JUMP_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim)
 				{
 					m_currAnim = ANIM_RUN_RIGHT;
 					if (vel.x < m_moveForce.x)

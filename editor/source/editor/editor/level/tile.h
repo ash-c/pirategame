@@ -54,6 +54,7 @@ public:
 	void		SetType(ETileType _type);
 
 	VECTOR2		GetPos();
+	ETileType	GetType();
 
 	void		AddLinked(CTile* _link);
 	void		UpdateType();
@@ -68,6 +69,9 @@ protected:
 	SDL_Rect			m_clips;
 	VECTOR2				m_pos;
 	VECTOR2				m_cameraPos;
+	Int32				m_screenW;
+	Int32				m_screenH;
+	ETileType			m_type;
 };
 
 #endif // __PIRATEGAME_LEVEL_TILE_H__

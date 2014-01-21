@@ -7,6 +7,10 @@
 #include "tile.h"
 #include "platform.h"
 
+#include "../parser/parser.h"
+
+using namespace Papyrus;
+
 CLevel::CLevel()
 	: m_surface(0)
 	, m_grid(0)
@@ -190,6 +194,33 @@ void CLevel::Render()
 	{
 		m_platforms[i]->Render();
 	}
+}
+
+Bool CLevel::Save()
+{
+	FileParser::IParser* save = FileParser::CreateParser("test.json");
+	assert(save);
+	save->AddRef();
+	
+	VALIDATE(save->AddValue("playerStart", VECTOR2(200.0f, 930.0f)));
+	VALIDATE(save->AddValue("tileset", m_tileset));
+	VALIDATE(save->AddValue("tiles", m_numTiles));
+	VALIDATE(save->AddValue("platforms", m_numPlatforms));
+	VALIDATE(save->AddValue("levelNumber", 1));
+
+	Int8 text[MAX_BUFFER];
+	for (UInt16 i = 0; i < m_numTiles; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "%i-pos", i + 1);
+		VALIDATE(save->AddValue(text, m_tiles[i]->GetPos()));
+		SDL_snprintf(text, MAX_BUFFER, "%i-type", i + 1);
+		VALIDATE(save->AddValue(text, m_tiles[i]->GetType()));
+	}
+
+	VALIDATE(save->Save());
+	save->Release();
+
+	return true;
 }
 
 void CLevel::CameraPos(VECTOR2 _pos)

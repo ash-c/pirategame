@@ -24,6 +24,8 @@ public:
 	virtual void		Process(Float32 _delta);
 	virtual void		Render();
 
+	virtual Bool		Save();
+
 	virtual void		Notify(SDL_Event* _e);
 
 	// Member Variables

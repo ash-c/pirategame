@@ -41,6 +41,7 @@ namespace Papyrus
 			virtual Bool AddValue(const Int8* _key, Int32 _value, const Int8* _section = 0);
 			virtual Bool AddValue(const Int8* _key, UInt32 _value, const Int8* _section = 0);
 			virtual Bool AddValue(const Int8* _key, Float32 _value, const Int8* _section = 0);
+			virtual Bool AddValue(const Int8* _key, const VECTOR2& _value, const Int8* _section = 0);
 			virtual Bool AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section = 0);
 			virtual Bool AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section = 0);
 

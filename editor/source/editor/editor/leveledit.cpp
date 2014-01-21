@@ -11,7 +11,7 @@
 
 CLevelEdit::CLevelEdit()
 	: m_level(0)
-	, m_activeTool(TOOL_TILE)
+	, m_activeTool(INVALID_TOOL)
 	, m_screenHeight(0)
 	, m_screenWidth(0)
 	, m_rightMouseDown(false)
@@ -27,7 +27,7 @@ Bool CLevelEdit::Initialise()
 {
 	CREATEPOINTER(m_level, CLevel);
 	assert(m_level);
-	VALIDATE(m_level->Initialise("data/levels/newlevel.json"));
+	VALIDATE(m_level->Initialise("test.json"));
 	m_level->AddRef();
 
 	m_screenHeight = Renderer::activeRenderer->GetHeight();
@@ -39,9 +39,6 @@ Bool CLevelEdit::Initialise()
 	CREATEPOINTER(m_tools[TOOL_TILE], CToolTile);
 	assert(m_tools[TOOL_TILE]);
 	VALIDATE(m_tools[TOOL_TILE]->Initialise());
-	
-	// Currently used tool
-	m_tools[m_activeTool]->AddRef();
 
 	IEditor::Initialise();
 
@@ -75,6 +72,20 @@ void CLevelEdit::Render()
 	if (0 != m_level) m_level->Render();
 }
 
+Bool CLevelEdit::Save()
+{
+	if (m_level->Save())
+	{
+		Logger::Write("Saved level");
+		return true;
+	}
+	else
+	{
+		Logger::Write("Save failed");
+		return false;
+	}
+}
+
 void CLevelEdit::Notify(SDL_Event* _e)
 {
 	if (SDL_MOUSEBUTTONDOWN == _e->type)
@@ -99,6 +110,11 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				{
 					//Logger::Write("Error, failed to place tool %i", m_activeTool);
 				}
+			}
+			else 
+			{
+				m_activeTool = TOOL_TILE;
+				m_tools[m_activeTool]->AddRef();
 			}
 		}
 	}
@@ -128,14 +144,13 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		}
 		if (m_leftMouseDown)
 		{
-			if (INVALID_TOOL != m_activeTool && MAX_TOOL > m_activeTool && 0.0f >= m_tileDelay)
+			if (INVALID_TOOL != m_activeTool && MAX_TOOL > m_activeTool)
 			{
 				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
 
 				// Place tool.
 				if (m_tools[m_activeTool]->AddToLevel(m_level, tilePos - m_cameraPos))
 				{
-					m_tileDelay = 0.2f;
 					//Logger::Write("Tool placed at (%.2f, %.2f)", tilePos.x, tilePos.y);
 				}
 				else

@@ -87,6 +87,9 @@ void CGame::Notify(SDL_Event* _e)
 		case SDLK_ESCAPE:
 			m_active = false;
 			break;
+		case SDLK_F1:
+			m_editor->Save();
+			break;
 		case SDLK_BACKQUOTE: // `
 			Logger::ToggleConsole(nullptr);
 			break;

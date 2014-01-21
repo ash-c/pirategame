@@ -32,6 +32,8 @@ public:
 	void			Process(Float32 _delta);
 	void			Render();
 
+	Bool			Save();
+
 	void			CameraPos(VECTOR2 _pos);
 
 	Bool			AddTile(VECTOR2 _pos);

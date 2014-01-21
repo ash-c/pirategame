@@ -234,6 +234,17 @@ Bool FileParser::CIniparser::AddValue(const Int8* _key, Float32 _value, const In
 	return true;
 }
 
+Bool FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR2& _value, const Int8* _section)
+{
+	assert(_section != 0 && "_section cannot be 0 for an INI parser.");
+	Int8* vector = new Int8[MAX_BUFFER];
+	sprintf_s(vector, MAX_BUFFER, "%f, %f", _value.x, _value.y);
+	m_mapPairs[CreateMapKey(string(_section), string(_key))] = string(vector);
+	CLEANARRAY(vector);
+
+	return true;
+}
+
 Bool FileParser::CIniparser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
 {
 	assert(_section != 0 && "_section cannot be 0 for an INI parser.");

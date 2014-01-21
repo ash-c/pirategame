@@ -35,6 +35,8 @@ protected:
 	CTile**				m_tiles;
 	CPlatform**			m_platforms;
 
+	VECTOR2				m_cameraPos;
+
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
 	Int32				m_numPlatforms;

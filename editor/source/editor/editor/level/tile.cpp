@@ -7,6 +7,9 @@
 CTile::CTile() 
 	: m_actor(0)
 	, m_sprite(0)
+	, m_screenW(0)
+	, m_screenH(0)
+	, m_type(TYPE_ALONE)
 {
 	SDL_memset(&m_clips, 0, sizeof(Int32) * 4);
 	m_linked.clear();
@@ -45,6 +48,9 @@ Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 	m_around[6].y += TILE_HEIGHT; // bottom
 	m_around[7].x -= TILE_WIDTH; // bottom left
 	m_around[7].y += TILE_HEIGHT; 
+	
+	m_screenW = Renderer::activeRenderer->GetWidth();
+	m_screenH = Renderer::activeRenderer->GetHeight();
 
 	return true;
 }
@@ -65,14 +71,24 @@ Bool CTile::ShutDown()
 
 void CTile::Render(VECTOR2 _camPos)
 {
-	m_sprite->SetClip(&m_clips);
-	m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));
-	m_sprite->Render();
+	if ((m_pos.x + _camPos.x) > 0.0f && (m_pos.y + _camPos.y) > 0.0f &&
+		(m_pos.x + _camPos.x) < m_screenW && (m_pos.y + _camPos.y) < m_screenH)
+	{
+		m_actor->SetActive(true);
+		m_sprite->SetClip(&m_clips);
+		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));
+		m_sprite->Render();
+	}
+	else if (m_actor->IsActive())
+	{
+		m_actor->SetActive(false);
+	}
 }
 
 void CTile::SetType(ETileType _type)
 {
-	switch(_type)
+	m_type = _type;
+	switch(m_type)
 	{
 	case TYPE_TOP_LEFT:
 		m_clips.x = 0;
@@ -146,6 +162,11 @@ void CTile::SetType(ETileType _type)
 VECTOR2 CTile::GetPos() 
 { 
 	return m_pos; 
+}
+
+ETileType CTile::GetType()
+{
+	return m_type;
 }
 
 void CTile::AddLinked(CTile* _link)

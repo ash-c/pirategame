@@ -122,6 +122,16 @@ namespace Papyrus
 			virtual Bool AddValue(const Int8* _key, Float32 _value, const Int8* _section = 0) = 0;
 
 			/*
+			* Adds a vector2 to the parser.
+			*
+			* @param	_section		Section of the parser to store the key/value under.
+			* @param	_key			Key attribute.
+			* @param	_value			The value to be stored.
+			* @return	Returns true if successfully updated.
+			*/
+			virtual Bool AddValue(const Int8* _key, const VECTOR2& _value, const Int8* _section = 0) = 0;
+
+			/*
 			* Adds a vector3 to the parser.
 			*
 			* @param	_section		Section of the parser to store the key/value under.

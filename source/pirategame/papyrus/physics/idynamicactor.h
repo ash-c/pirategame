@@ -18,10 +18,11 @@ namespace Papyrus
 			// Member Functions
 		public:
 			IDynamicActor() 
-				: m_zero(0.01f)
+				: m_zero(10.0f)
 				, m_mass(0.0f)
+				, m_stationary(true)
 			{
-				m_currState.acc.y = 500.0f;
+				m_currState.acc.y = 500.0f; // Gravity
 			}
 
 			virtual ~IDynamicActor() {}
@@ -35,11 +36,19 @@ namespace Papyrus
 			virtual void	SetVelocity(VECTOR2 _v) { m_currState.vel = _v; m_currState.preV = _v; }
 			virtual VECTOR2	GetVelocity() { return m_currState.vel; }
 
-			virtual void	SetPosition(VECTOR2 _v) { m_currState.pos = _v; m_currState.preP = _v; UpdateBounds(); } 
+			virtual void	SetPosition(VECTOR2 _v) 
+			{ 
+				m_currState.pos = _v; 
+				m_currState.preP = _v; 
+				UpdateBounds(); 
+			} 
+
 			virtual VECTOR2	GetPosition() 
 			{ 
 				return m_currState.pos; 
 			}
+
+			virtual Bool IsStationary() { return m_stationary; }
 
 			virtual void	ApplyForce(VECTOR2 _force)
 			{
@@ -59,6 +68,7 @@ namespace Papyrus
 				{
 					m_currState.acc.y = -m_maxState.acc.y;
 				}
+				m_stationary = false;
 			}
 
 			virtual void	Process(Float32 _delta)
@@ -69,7 +79,7 @@ namespace Papyrus
 					if ((m_currState.vel.x >= 250) || (m_currState.vel.x <= -250))
 					{
 						m_currState.vel.x = 0.0f;
-						m_active = false;
+						//m_active = false;
 					}
 				}
 
@@ -99,48 +109,40 @@ namespace Papyrus
 					m_currState.acc.y += 500.0f * _delta;
 				}
 				
-				if (m_active)
-				{
-					// come to a stop
-					if ((m_currState.vel.x > 0 && m_currState.preV.x < 0) || (m_currState.vel.x < 0 && m_currState.preV.x > 0))
-					{
-						m_currState.acc.x = 0.0f;
-						m_currState.vel.x = 0.0f;
-						m_active = false;
-					}
-
-					// change position				
-					m_currState.preP = m_currState.pos;
-					m_currState.pos += m_currState.vel * _delta; 
+				// come to a stop
+				//if ((m_currState.vel.x > 0 && m_currState.preV.x < 0) || (m_currState.vel.x < 0 && m_currState.preV.x > 0))
+				//{
+				//	m_currState.acc.x = 0.0f;
+				//	m_currState.vel.x = 0.0f;
+				//	//m_active = false;
+				//}
 					
-					// Check if at rest
-					if (m_currState.vel.x < m_zero && m_currState.vel.x > -m_zero)
-					{
-						m_currState.acc.x = 0.0f;
-						m_currState.vel.x = 0.0f;
-						m_active = false;
-					}
-
-					// Player on the platform, update their positions
-					if (m_ppCollision && 0 != m_player)
-					{
-						/*VECTOR2 pos = m_currState.pos - m_currState.preP;
-						VECTOR2 player = m_player->GetPosition();
-						player.x += pos.x;
-						m_player->SetPosition(player);*/
-						IDynamicActor* player = reinterpret_cast<IDynamicActor*>(m_player);
-						assert(player);
-						VECTOR2 vel = player->GetVelocity();
-						vel.x = m_currState.vel.x;
-						player->SetVelocity(vel);
-					}
-				}
-				else 
+				// Check if at rest
+				if (m_currState.vel.x < m_zero && m_currState.vel.x > -m_zero)
 				{
-					// change position				
-					m_currState.preP = m_currState.pos;
-					m_currState.pos += m_currState.vel * _delta; 
+					m_currState.acc.x = 0.0f;
+					m_currState.vel.x = 0.0f;
+					m_stationary = true;
+					//m_active = false;
 				}
+
+				// change position				
+				m_currState.preP = m_currState.pos;
+				m_currState.pos += m_currState.vel * _delta; 
+
+				// Player on the platform, update their positions
+				if (m_ppCollision && 0 != m_player)
+				{
+					/*VECTOR2 pos = m_currState.pos - m_currState.preP;
+					VECTOR2 player = m_player->GetPosition();
+					player.x += pos.x;
+					m_player->SetPosition(player);*/
+					IDynamicActor* player = reinterpret_cast<IDynamicActor*>(m_player);
+					assert(player);
+					VECTOR2 vel = player->GetVelocity();
+					vel.x = m_currState.vel.x;
+					player->SetVelocity(vel);
+					}
 
 				// Update bounds
 				UpdateBounds();
@@ -178,6 +180,8 @@ namespace Papyrus
 
 			Float32			m_zero;
 			Float32			m_mass;
+
+			Bool			m_stationary;
 		};
 	}
 }

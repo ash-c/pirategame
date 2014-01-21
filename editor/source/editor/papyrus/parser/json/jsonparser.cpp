@@ -172,20 +172,32 @@ Bool FileParser::CJSONParser::AddValue(const Int8* _key, Float32 _value, const I
 	return true;
 }
 
+Bool FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR2& _value, const Int8* _section)
+{
+	rapidjson::Document::AllocatorType& allocator = m_json.GetAllocator();
+	rapidjson::Value arr(rapidjson::Type::kArrayType);
+	arr.PushBack(_value.x, allocator).PushBack(_value.y, allocator);
+	m_json.AddMember(_key, allocator, arr, allocator);
+
+	return true;
+}
+
 Bool FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
 {
-	rapidjson::Value& arr = m_json[_key].SetArray();
 	rapidjson::Document::AllocatorType& allocator = m_json.GetAllocator();
+	rapidjson::Value arr(rapidjson::Type::kArrayType);
 	arr.PushBack(_value.x, allocator).PushBack(_value.y, allocator).PushBack(_value.z, allocator);
+	m_json.AddMember(_key, allocator, arr, allocator);
 
 	return true;
 }
 
 Bool FileParser::CJSONParser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
 {
-	rapidjson::Value& arr = m_json[_key].SetArray();
 	rapidjson::Document::AllocatorType& allocator = m_json.GetAllocator();
+	rapidjson::Value arr(rapidjson::Type::kArrayType);
 	arr.PushBack(_value.x, allocator).PushBack(_value.y, allocator).PushBack(_value.z, allocator).PushBack(_value.w, allocator);
+	m_json.AddMember(_key, allocator, arr, allocator);
 
 	return true;
 }

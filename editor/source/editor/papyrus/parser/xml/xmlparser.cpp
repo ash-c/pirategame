@@ -143,6 +143,18 @@ Bool FileParser::CXMLParser::AddValue(const Int8* _key, Float32 _value, const In
 	return true;
 }
 
+Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR2& _value, const Int8* _section)
+{
+	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_key));
+	m_xml.append_node(node);
+	Int8 buffer[MAX_BUFFER];
+	sprintf_s(buffer, MAX_BUFFER, "%f", _value.x);
+	node->append_attribute(m_xml.allocate_attribute(m_xml.allocate_string("x"), m_xml.allocate_string(buffer)));
+	sprintf_s(buffer, MAX_BUFFER, "%f", _value.y);
+	node->append_attribute(m_xml.allocate_attribute(m_xml.allocate_string("y"), m_xml.allocate_string(buffer)));
+	return true;
+}
+
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
 {
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_key));

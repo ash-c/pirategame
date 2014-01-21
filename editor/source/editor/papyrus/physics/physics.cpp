@@ -13,6 +13,7 @@ using namespace Papyrus;
 Physics::IActor**	Physics::actors = 0;
 Float32 Physics::m_accumulator = 0.0f;
 Int32 Physics::maxActors = 10;
+Int32 Physics::numActors = 0;
 
 Bool Physics::Initialise()
 {
@@ -39,14 +40,14 @@ void Physics::Process(Float32 _frameTime)
 
 	while (m_accumulator >= dt)
 	{		
-		for (Int16 i = 0; i < maxActors; ++i)
+		for (Int16 i = 0; i < numActors; ++i)
 		{
 			if (0 != actors[i])
 			{
-				//if (actors[i]->IsActive())
-				//{
+				if (actors[i]->IsActive())
+				{
 					actors[i]->Process(dt);
-				//}
+				}
 
 				actors[i]->SetCollided(false);
 				actors[i]->SetPPCollided(0, false);
@@ -54,15 +55,15 @@ void Physics::Process(Float32 _frameTime)
 		}
 
 		// collision detection
-		for (Int16 i = 0; i < maxActors; ++i)
+		for (Int16 i = 0; i < numActors; ++i)
 		{
 			if (0 != actors[i])
 			{
-				for (Int16 j = i + 1; j < maxActors; ++j)
+				for (Int16 j = i + 1; j < numActors; ++j)
 				{			
 					if (0 != actors[j])
 					{			
-						if (actors[i] != actors[j])
+						if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
 						{
 							Physics::EType type1 = actors[i]->GetType();
 							Physics::EType type2 = actors[j]->GetType();
@@ -103,7 +104,7 @@ void Physics::Process(Float32 _frameTime)
 
 void Physics::RenderDebug()
 {
-	for (Int16 i = 0; i < maxActors; ++i)
+	for (Int16 i = 0; i < numActors; ++i)
 	{
 		if (0 != actors[i])
 		{
@@ -124,6 +125,7 @@ Physics::IStaticActor* Physics::CreateStaticActor(VECTOR2 _pos, VECTOR2 _scale)
 			assert(actor);
 			VALIDATE(actor->Initialise(_pos, _scale));
 			actors[i] = actor;
+			++numActors;
 			return actor;
 		}
 	}
@@ -144,6 +146,7 @@ Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _ma
 			assert(actor);
 			VALIDATE(actor->Initialise(_maxVel, _maxAcc, _pos, _scale, _mass, _type));
 			actors[i] = actor;
+			++numActors;
 			return actor;
 		}
 	}
