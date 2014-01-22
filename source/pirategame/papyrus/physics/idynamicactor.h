@@ -20,6 +20,8 @@ namespace Papyrus
 			IDynamicActor() 
 				: m_zero(10.0f)
 				, m_mass(0.0f)
+				, m_tileW(25)
+				, m_levelW(10000)
 				, m_stationary(true)
 			{
 				m_currState.acc.y = 500.0f; // Gravity
@@ -108,15 +110,7 @@ namespace Papyrus
 				{
 					m_currState.acc.y += 500.0f * _delta;
 				}
-				
-				// come to a stop
-				//if ((m_currState.vel.x > 0 && m_currState.preV.x < 0) || (m_currState.vel.x < 0 && m_currState.preV.x > 0))
-				//{
-				//	m_currState.acc.x = 0.0f;
-				//	m_currState.vel.x = 0.0f;
-				//	//m_active = false;
-				//}
-					
+
 				// Check if at rest
 				if (m_currState.vel.x < m_zero && m_currState.vel.x > -m_zero)
 				{
@@ -129,6 +123,22 @@ namespace Papyrus
 				// change position				
 				m_currState.preP = m_currState.pos;
 				m_currState.pos += m_currState.vel * _delta; 
+
+				// Prevent going off the sides of the screen
+				if (m_currState.pos.x <= m_tileW)
+				{
+					m_currState.pos.x = static_cast<Float32>(m_tileW);
+					m_currState.vel.x = 0.0f;
+				}
+				if (m_currState.pos.x >= (m_levelW - m_tileW))
+				{
+					m_currState.pos.x = m_currState.preP.x;
+					m_currState.vel.x = 0.0f;
+				}
+				if (m_currState.pos.y < m_tileW) // Need to adjust this based on screen height? or something
+				{
+					m_currState.pos.y = static_cast<Float32>(m_tileW);
+				}
 
 				// Player on the platform, update their positions
 				if (m_ppCollision && 0 != m_player)
@@ -148,10 +158,15 @@ namespace Papyrus
 				UpdateBounds();
 			}
 
-			virtual void	RenderDebug()
+			virtual void	RenderDebug(VECTOR2 _camPos)
 			{
-				Renderer::activeRenderer->DrawRect(&m_bounds.rect, m_collided);
+				SDL_Rect rect = m_bounds.rect;
+				rect.x += static_cast<Int32>(_camPos.x);
+				rect.y += static_cast<Int32>(_camPos.y);
+				Renderer::activeRenderer->DrawRect(&rect, m_collided);
 			}
+
+			virtual void	SetTileWidth(Int32 _w) { m_tileW = static_cast<Int32>(_w * 0.5f); }
 
 		protected:
 			typedef struct _TState
@@ -180,6 +195,9 @@ namespace Papyrus
 
 			Float32			m_zero;
 			Float32			m_mass;
+
+			Int32			m_tileW;
+			Int32			m_levelW;
 
 			Bool			m_stationary;
 		};

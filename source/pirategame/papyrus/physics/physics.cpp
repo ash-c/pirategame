@@ -11,6 +11,7 @@
 using namespace Papyrus;
 
 Physics::IActor**	Physics::actors = 0;
+VECTOR2 Physics::camPosition;
 Float32 Physics::m_accumulator = 0.0f;
 Int32 Physics::maxActors = 10;
 Int32 Physics::numActors = 0;
@@ -108,7 +109,7 @@ void Physics::RenderDebug()
 	{
 		if (0 != actors[i])
 		{
-			if (actors[i]->IsActive()) actors[i]->RenderDebug();
+			if (actors[i]->IsActive()) actors[i]->RenderDebug(camPosition);
 		}
 	}
 }

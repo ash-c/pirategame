@@ -94,6 +94,7 @@
     <ClCompile Include="level\level.cpp" />
     <ClCompile Include="level\levelmanager.cpp" />
     <ClCompile Include="level\platform.cpp" />
+    <ClCompile Include="level\tile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="papyrus\core\core.cpp" />
     <ClCompile Include="papyrus\core\utility\timer.cpp" />

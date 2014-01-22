@@ -19,7 +19,7 @@ public:
 	virtual Bool		ShutDown();
 
 	virtual void		Process(Float32 _delta);
-	virtual void		Render();
+	virtual void		Render(VECTOR2 _camPos);
 
 	virtual void		SetPosition(VECTOR2 _v);
 

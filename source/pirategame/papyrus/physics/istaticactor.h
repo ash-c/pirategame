@@ -26,9 +26,12 @@ namespace Papyrus
 
 			virtual void	Process(Float32 _frameTime) {}
 
-			virtual void	RenderDebug()
+			virtual void	RenderDebug(VECTOR2 _camPos)
 			{
-				Renderer::activeRenderer->DrawRect(&m_bounds.rect, m_collided);
+				SDL_Rect rect = m_bounds.rect;
+				rect.x += static_cast<Int32>(_camPos.x);
+				rect.y += static_cast<Int32>(_camPos.y);
+				Renderer::activeRenderer->DrawRect(&rect, m_collided);
 			}
 
 			virtual void	SetPosition(VECTOR2 _v) { m_pos = _v; } 

@@ -16,6 +16,7 @@ CLevel::CLevel()
 	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
 	, m_numPlatforms(0)
+	, m_screenW(0)
 {
 
 }
@@ -28,7 +29,8 @@ CLevel::~CLevel()
 Bool CLevel::Initialise(Int8* _setup)
 {
 	// Make platforms
-	Int32 width = Renderer::activeRenderer->GetWidth();
+	m_screenW = Renderer::activeRenderer->GetWidth();
+	m_screenH = Renderer::activeRenderer->GetHeight();
 
 	FileParser::IParser* setup = FileParser::LoadFile(_setup);
 	setup->AddRef();
@@ -101,6 +103,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	setup->Release();
 
 	CLEANARRAY(tileset);
+
 	return true;
 }
 
@@ -127,6 +130,8 @@ Bool CLevel::ShutDown()
 		CLEANDELETE(m_playable);
 	}
 
+	Logger::TrackValue(&m_cameraPos, "Camera Position");
+
 	return true;
 }
 
@@ -135,6 +140,26 @@ void CLevel::Process(Float32 _delta)
 	if (0 != m_playable)
 	{
 		m_playable->Process(_delta);
+
+		VECTOR2 pos = m_playable->GetPosition();
+
+		Float32 scrollLeft = m_screenW * 0.5f;
+		Float32 scrollUp = m_screenH * 0.5f;
+
+		if (pos.x >= scrollLeft && pos.x + scrollLeft < LEVEL_WIDTH)
+		{
+			m_cameraPos.x = -(pos.x - scrollLeft); 
+		}
+		if (pos.y < scrollUp)
+		{
+			m_cameraPos.y = -(pos.y - scrollUp);
+		}
+		else
+		{
+			m_cameraPos.y = 0.0f;
+		}
+
+		Physics::camPosition = m_cameraPos;
 	}
 
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
@@ -159,6 +184,6 @@ void CLevel::Render()
 
 	if (0 != m_playable)
 	{
-		m_playable->Render();
+		m_playable->Render(m_cameraPos);
 	}
 }

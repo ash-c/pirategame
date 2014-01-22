@@ -87,6 +87,9 @@
     <ClCompile Include="papyrus\ui\objects\uibutton.cpp">
       <Filter>papyrus\ui\objects</Filter>
     </ClCompile>
+    <ClCompile Include="level\tile.cpp">
+      <Filter>level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">

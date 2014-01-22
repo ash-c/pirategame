@@ -5,6 +5,8 @@
 #include "playable.h"
 #include "../parser/parser.h"
 
+#include "../level/level.h"
+
 using namespace Papyrus;
 
 CPlayable::CPlayable()
@@ -112,7 +114,7 @@ void CPlayable::Process(Float32 _delta)
 				{
 					m_currAnim = ANIM_SLIDE_LEFT;
 				}
-				m_moveDir = MOVE_IDLE;
+				//m_moveDir = MOVE_IDLE;
 				m_sprite->SetAnim(m_currAnim);
 			}
 			if (m_actor->GetVelocity().x > 0.0f) // Switch animation for direction change
@@ -146,7 +148,7 @@ void CPlayable::Process(Float32 _delta)
 				{
 					m_currAnim = ANIM_SLIDE_RIGHT;
 				}
-				m_moveDir = MOVE_IDLE;
+				//m_moveDir = MOVE_IDLE;
 				m_sprite->SetAnim(m_currAnim);
 			}
 			if (m_actor->GetVelocity().x < 0.0f) // Switch animation for direction change
@@ -173,8 +175,9 @@ void CPlayable::Process(Float32 _delta)
 	m_sprite->Process(_delta);
 }
 
-void CPlayable::Render()
+void CPlayable::Render(VECTOR2 _camPos)
 {
+	m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));
 	m_sprite->Render();
 }
 

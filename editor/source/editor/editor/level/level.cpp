@@ -198,7 +198,7 @@ void CLevel::Render()
 
 Bool CLevel::Save()
 {
-	FileParser::IParser* save = FileParser::CreateParser("test.json");
+	FileParser::IParser* save = FileParser::CreateParser("1.json");
 	assert(save);
 	save->AddRef();
 	

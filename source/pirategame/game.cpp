@@ -141,7 +141,7 @@ Int32 CGame::StartGame(lua_State* L)
 	sm_pTheInstance->m_interface->Toggle();
 	sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
 	SDL_ShowCursor(false);
-	sm_pTheInstance->m_levelMan->LoadLevel("data/levels/test.json");
+	sm_pTheInstance->m_levelMan->LoadLevel("data/levels/1.json");
 	return 0;
 }
 

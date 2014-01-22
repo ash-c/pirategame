@@ -39,7 +39,7 @@ namespace Papyrus
 			virtual Bool	ShutDown() = 0;
 
 			virtual void	Process(Float32 _frameTime) = 0;
-			virtual void	RenderDebug() = 0;
+			virtual void	RenderDebug(VECTOR2 _camPos) = 0;
 
 			virtual void	SetPosition(VECTOR2 _v) = 0;
 			virtual VECTOR2	GetPosition() = 0;

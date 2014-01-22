@@ -15,6 +15,9 @@ class ICharacter;
 class CTile;
 class CPlatform;
 
+static const Int32			LEVEL_WIDTH = 10000;
+static const Int32			LEVEL_HEIGHT = 2000;
+
 class CLevel : public TRefCount<CLevel>
 {
 	// Member Functions
@@ -40,6 +43,8 @@ protected:
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
 	Int32				m_numPlatforms;
+	Int32				m_screenW;
+	Int32				m_screenH;
 };
 
 #endif // __PIRATEGAME_LEVEL_H__

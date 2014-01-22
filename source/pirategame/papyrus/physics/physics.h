@@ -32,6 +32,8 @@ namespace Papyrus
 
 		extern IActor**	actors;
 
+		extern VECTOR2	camPosition;
+
 		extern Float32	m_accumulator;
 		extern Int32	maxActors;
 		extern Int32	numActors;

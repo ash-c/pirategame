@@ -21,9 +21,10 @@ public:
 	virtual Bool		ShutDown() = 0;
 
 	virtual void		Process(Float32 _delta) = 0;
-	virtual void		Render() = 0;
+	virtual void		Render(VECTOR2 _camPos) = 0;
 
 	virtual void		SetPosition(VECTOR2 _v) = 0;
+	virtual VECTOR2		GetPosition() { return m_pos; }
 
 	// Member Variables
 protected:

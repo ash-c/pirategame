@@ -71,8 +71,8 @@ Bool CTile::ShutDown()
 
 void CTile::Render(VECTOR2 _camPos)
 {
-	if ((m_pos.x + _camPos.x) > 0.0f && (m_pos.y + _camPos.y) > 0.0f &&
-		(m_pos.x + _camPos.x) < m_screenW && (m_pos.y + _camPos.y) < m_screenH)
+	if ((m_pos.x + _camPos.x) > -TILE_WIDTH && (m_pos.y + _camPos.y) > -TILE_HEIGHT &&
+		(m_pos.x + _camPos.x) < (m_screenW + TILE_WIDTH) && (m_pos.y + _camPos.y) < (m_screenH + TILE_HEIGHT))
 	{
 		m_actor->SetActive(true);
 		m_sprite->SetClip(&m_clips);
@@ -128,31 +128,31 @@ void CTile::SetType(ETileType _type)
 		break;
 	case TYPE_LEFT:
 		m_clips.x = 0;
-		m_clips.y = 150;
+		m_clips.y = TILE_HEIGHT_TRIPLE;
 		break;
 	case TYPE_MID:
-		m_clips.x = 50;
-		m_clips.y = 150;
+		m_clips.x = TILE_WIDTH;
+		m_clips.y = TILE_HEIGHT_TRIPLE;
 		break;
 	case TYPE_RIGHT:
-		m_clips.x = 100;
-		m_clips.y = 150;
+		m_clips.x = TILE_WIDTH_DOUBLE;
+		m_clips.y = TILE_HEIGHT_TRIPLE;
 		break;
 	case TYPE_TOP_VERT:
 		m_clips.x = 0;
-		m_clips.y = 200;
+		m_clips.y = TILE_HEIGHT_QUAD;
 		break;
 	case TYPE_MID_VERT:
-		m_clips.x = 50;
-		m_clips.y = 200;
+		m_clips.x = TILE_WIDTH;
+		m_clips.y = TILE_HEIGHT_QUAD;
 		break;
 	case TYPE_BOT_VERT:
-		m_clips.x = 100;
-		m_clips.y = 200;
+		m_clips.x = TILE_WIDTH_DOUBLE;
+		m_clips.y = TILE_HEIGHT_QUAD;
 		break;
 	case TYPE_ALONE:
 		m_clips.x = 0;
-		m_clips.y = 250;
+		m_clips.y = TILE_HEIGHT_QUAD + TILE_HEIGHT;
 		break;
 	default:
 		break;

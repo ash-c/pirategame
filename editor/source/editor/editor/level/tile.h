@@ -36,8 +36,10 @@ typedef enum _ETileType
 
 static const Int32 TILE_WIDTH = 50;
 static const Int32 TILE_HEIGHT = 50;
-static const Int32 TILE_WIDTH_DOUBLE = 100;
-static const Int32 TILE_HEIGHT_DOUBLE = 100;
+static const Int32 TILE_WIDTH_DOUBLE = TILE_WIDTH * 2;
+static const Int32 TILE_HEIGHT_DOUBLE = TILE_HEIGHT * 2;
+static const Int32 TILE_HEIGHT_TRIPLE = TILE_HEIGHT * 3;
+static const Int32 TILE_HEIGHT_QUAD = TILE_HEIGHT * 4;
 
 class CTile : public TRefCount<CTile>
 {
