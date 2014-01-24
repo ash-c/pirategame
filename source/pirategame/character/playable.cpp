@@ -227,13 +227,13 @@ void CPlayable::Notify(SDL_Event* _e)
 				if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_SLIDE_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
 				{
 					m_currAnim = ANIM_JUMP_LEFT;
-					m_actor->ApplyForce(VECTOR2(0.0f, -47000.0f));
+					m_actor->ApplyForce(VECTOR2(0.0f, -27000.0f));
 					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y * 2.0f));
 				} 
 				else 
 				{
 					m_currAnim = ANIM_JUMP_RIGHT;
-					m_actor->ApplyForce(VECTOR2(0.0f, -47000.0f));
+					m_actor->ApplyForce(VECTOR2(0.0f, -27000.0f));
 					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y * 2.0f));
 				}
 			}

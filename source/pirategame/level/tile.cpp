@@ -32,6 +32,7 @@ Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 
 	m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(static_cast<Float32>(TILE_WIDTH),static_cast<Float32>(TILE_HEIGHT)));
 	assert(m_actor);
+	m_actor->SetActive(false);
 	
 	m_screenW = Renderer::activeRenderer->GetWidth();
 	m_screenH = Renderer::activeRenderer->GetHeight();

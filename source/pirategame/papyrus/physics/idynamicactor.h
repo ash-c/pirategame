@@ -135,9 +135,12 @@ namespace Papyrus
 					m_currState.pos.x = m_currState.preP.x;
 					m_currState.vel.x = 0.0f;
 				}
-				if (m_currState.pos.y < m_tileW) // Need to adjust this based on screen height? or something
+				Int32 screenH = Renderer::activeRenderer->GetHeight();
+				Int32 top = screenH - 2000;
+				if (m_currState.pos.y < top + 50)
 				{
-					m_currState.pos.y = static_cast<Float32>(m_tileW);
+					m_currState.pos.y = static_cast<Float32>(top + 50);
+					m_currState.vel.y = 0.0f;
 				}
 
 				// Player on the platform, update their positions

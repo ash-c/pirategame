@@ -153,6 +153,10 @@ void CLevel::Process(Float32 _delta)
 		if (pos.y < scrollUp)
 		{
 			m_cameraPos.y = -(pos.y - scrollUp);
+			if (m_cameraPos.y > LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight())
+			{
+				m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight());
+			}
 		}
 		else
 		{
