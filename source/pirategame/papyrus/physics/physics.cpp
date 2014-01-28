@@ -43,63 +43,64 @@ void Physics::Process(Float32 _frameTime)
 	{		
 		for (Int16 i = 0; i < numActors; ++i)
 		{
-			if (0 != actors[i])
+			if (actors[i]->IsActive())
 			{
-				if (actors[i]->IsActive())
-				{
-					actors[i]->Process(dt);
-				}
-
-				actors[i]->SetCollided(false);
-				actors[i]->SetPPCollided(0, false);
+				actors[i]->Process(dt);
 			}
-		}
 
-		// collision detection
-		for (Int16 i = 0; i < numActors; ++i)
-		{
-			if (0 != actors[i])
-			{
-				for (Int16 j = i + 1; j < numActors; ++j)
-				{			
-					if (0 != actors[j])
-					{			
-						if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
-						{
-							Physics::EType type1 = actors[i]->GetType();
-							Physics::EType type2 = actors[j]->GetType();
-
-							if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
-							{
-								PlayerStaticCollision(actors[i], actors[j]);
-							}
-							else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
-							{
-								PlayerStaticCollision(actors[j], actors[i]);
-							}
-							else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
-							{
-								StaticPlatformCollision(actors[i], actors[j]);
-							}
-							else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
-							{
-								StaticPlatformCollision(actors[j], actors[i]);
-							}
-							else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
-							{
-								PlayerPlatformCollision(actors[i], actors[j]);
-							}
-							else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
-							{
-								PlayerPlatformCollision(actors[j], actors[i]);
-							}
-						}
-					}
-				}
-			}
+			actors[i]->SetCollided(false);
+			actors[i]->SetPPCollided(0, false);
 		}
 
 		m_accumulator -= dt;
+	}
+
+	Float32 alpha = m_accumulator / dt;
+
+	for (UInt16 i = 0; i < numActors; ++i)
+	{
+		if (actors[i]->IsActive())
+		{
+			actors[i]->Interpolate(alpha);
+		}
+	}
+
+	// collision detection
+	for (Int16 i = 0; i < numActors; ++i)
+	{
+		for (Int16 j = i + 1; j < numActors; ++j)
+		{					
+			if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
+			{
+				Physics::EType type1 = actors[i]->GetType();
+				Physics::EType type2 = actors[j]->GetType();
+
+				if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[i], actors[j]);
+				}
+				else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[j], actors[i]);
+				}
+				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
+				{
+					StaticPlatformCollision(actors[i], actors[j]);
+				}
+				else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
+				{
+					StaticPlatformCollision(actors[j], actors[i]);
+				}
+				else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
+				{
+					PlayerPlatformCollision(actors[i], actors[j]);
+				}
+				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
+				{
+					PlayerPlatformCollision(actors[j], actors[i]);
+				}
+			}
+		}
 	}
 }
 

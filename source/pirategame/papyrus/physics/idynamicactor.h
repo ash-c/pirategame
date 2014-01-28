@@ -40,6 +40,7 @@ namespace Papyrus
 
 			virtual void	SetPosition(VECTOR2 _v) 
 			{ 
+				m_renderPos = _v;
 				m_currState.pos = _v; 
 				m_currState.preP = _v; 
 				UpdateBounds(); 
@@ -47,7 +48,8 @@ namespace Papyrus
 
 			virtual VECTOR2	GetPosition() 
 			{ 
-				return m_currState.pos; 
+				return m_renderPos;
+				//return m_currState.pos; 
 			}
 
 			virtual Bool IsStationary() { return m_stationary; }
@@ -169,6 +171,11 @@ namespace Papyrus
 				Renderer::activeRenderer->DrawRect(&rect, m_collided);
 			}
 
+			virtual void	Interpolate(Float32 _alpha)
+			{
+				m_renderPos = m_currState.pos * _alpha + m_currState.preP * (1.0f - _alpha);
+			}
+
 			virtual void	SetTileWidth(Int32 _w) { m_tileW = static_cast<Int32>(_w * 0.5f); }
 
 		protected:
@@ -195,6 +202,8 @@ namespace Papyrus
 		protected:
 			State			m_currState;
 			State			m_maxState;
+
+			VECTOR2			m_renderPos;
 
 			Float32			m_zero;
 			Float32			m_mass;

@@ -34,6 +34,10 @@ namespace Papyrus
 				Renderer::activeRenderer->DrawRect(&rect, m_collided);
 			}
 
+			virtual void	Interpolate(Float32 _alpha)
+			{
+			}
+
 			virtual void	SetPosition(VECTOR2 _v) { m_pos = _v; } 
 			virtual VECTOR2	GetPosition() { return m_pos; }
 
