@@ -24,7 +24,7 @@ namespace Papyrus
 				, m_levelW(10000)
 				, m_stationary(true)
 			{
-				m_currState.acc.y = 500.0f; // Gravity
+				m_currState.acc.y = 800.0f; // Gravity
 			}
 
 			virtual ~IDynamicActor() {}
@@ -49,7 +49,6 @@ namespace Papyrus
 			virtual VECTOR2	GetPosition() 
 			{ 
 				return m_renderPos;
-				//return m_currState.pos; 
 			}
 
 			virtual Bool IsStationary() { return m_stationary; }
@@ -83,7 +82,6 @@ namespace Papyrus
 					if ((m_currState.vel.x >= 250) || (m_currState.vel.x <= -250))
 					{
 						m_currState.vel.x = 0.0f;
-						//m_active = false;
 					}
 				}
 
@@ -93,7 +91,7 @@ namespace Papyrus
 					m_currState.vel += m_currState.acc * _delta;
 				}
 					
-				// cap velocity
+				// cap x velocity
 				if (m_currState.vel.x > m_maxState.vel.x)
 				{
 					m_currState.vel.x = m_maxState.vel.x;
@@ -108,9 +106,9 @@ namespace Papyrus
 					m_currState.vel.y = 0.0f;
 				}
 
-				if (m_currState.acc.y <= 0.0f || m_currState.acc.y < 500.0f)
+				if (m_currState.acc.y <= 0.0f || m_currState.acc.y < m_maxState.acc.y)
 				{
-					m_currState.acc.y += 500.0f * _delta;
+					m_currState.acc.y += 1000.0f * _delta;
 				}
 
 				// Check if at rest
@@ -119,7 +117,6 @@ namespace Papyrus
 					m_currState.acc.x = 0.0f;
 					m_currState.vel.x = 0.0f;
 					m_stationary = true;
-					//m_active = false;
 				}
 
 				// change position				
@@ -163,17 +160,17 @@ namespace Papyrus
 				UpdateBounds();
 			}
 
+			virtual void	Interpolate(Float32 _alpha)
+			{
+				m_renderPos = m_currState.pos * _alpha + m_currState.preP * (1.0f - _alpha);
+			}
+
 			virtual void	RenderDebug(VECTOR2 _camPos)
 			{
 				SDL_Rect rect = m_bounds.rect;
 				rect.x += static_cast<Int32>(_camPos.x);
 				rect.y += static_cast<Int32>(_camPos.y);
 				Renderer::activeRenderer->DrawRect(&rect, m_collided);
-			}
-
-			virtual void	Interpolate(Float32 _alpha)
-			{
-				m_renderPos = m_currState.pos * _alpha + m_currState.preP * (1.0f - _alpha);
 			}
 
 			virtual void	SetTileWidth(Int32 _w) { m_tileW = static_cast<Int32>(_w * 0.5f); }

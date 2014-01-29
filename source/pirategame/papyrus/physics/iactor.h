@@ -39,6 +39,7 @@ namespace Papyrus
 			virtual Bool	ShutDown() = 0;
 
 			virtual void	Process(Float32 _frameTime) = 0;
+			virtual void	Interpolate(Float32 _alpha) = 0;
 			virtual void	RenderDebug(VECTOR2 _camPos) = 0;
 
 			virtual void	SetPosition(VECTOR2 _v) = 0;
@@ -54,8 +55,6 @@ namespace Papyrus
 
 			virtual Bool	IsPPCollided() { return m_ppCollision; }
 			virtual void	SetPPCollided(IActor* _player, Bool _b) { m_ppCollision = _b; m_player = _player; }
-
-			virtual void	Interpolate(Float32 _alpha) = 0;
 
 			virtual void	UpdatePlayer(VECTOR2 _pos) 
 			{ 

@@ -28,10 +28,11 @@ public:
 
 	// Member Variables
 protected:
-	static const Int32	SPEED = 400;
-
 	Sprite::ISprite*	m_sprite;
 	VECTOR2				m_pos;
+
+	VECTOR2				m_moveForce;
+	VECTOR2				m_slowDownForce;
 };
 
 #endif // __PIRATEGAME_CHARACTER_H__

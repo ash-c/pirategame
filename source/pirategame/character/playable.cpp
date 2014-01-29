@@ -41,15 +41,16 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 	VECTOR2 maxA;
 	Float32 mass;
 	
-	settings->GetValue("maxVel", max);
-	settings->GetValue("maxAcc", maxA);
-	settings->GetValue("mass", mass);
-	settings->GetValue("moveForce", m_moveForce);
-	settings->GetValue("slowDownForce", m_slowDownForce);
+	VALIDATE(settings->GetValue("maxVel", max));
+	VALIDATE(settings->GetValue("maxAcc", maxA));
+	VALIDATE(settings->GetValue("mass", mass));
+	VALIDATE(settings->GetValue("moveForce", m_moveForce));
+	VALIDATE(settings->GetValue("slowDownForce", m_slowDownForce));
 
 	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass, Physics::EType::TYPE_PLAYER);
 	assert(m_actor);
 	m_actor->AddRef();
+	m_actor->SetActive(true);
 	settings->Release();
 
 	return true;
@@ -100,7 +101,7 @@ void CPlayable::Process(Float32 _delta)
 		break;
 	case ANIM_JUMP_LEFT:
 		{
-			if (m_actor->IsCollided() && m_actor->GetVelocity().y >= 0.0f)
+			if (m_actor->IsCollided() && m_actor->GetVelocity().y <= 0.0f)
 			{
 				if (MOVE_RIGHT == m_moveDir)
 				{
@@ -114,7 +115,6 @@ void CPlayable::Process(Float32 _delta)
 				{
 					m_currAnim = ANIM_SLIDE_LEFT;
 				}
-				//m_moveDir = MOVE_IDLE;
 				m_sprite->SetAnim(m_currAnim);
 			}
 			if (m_actor->GetVelocity().x > 0.0f) // Switch animation for direction change
@@ -134,7 +134,7 @@ void CPlayable::Process(Float32 _delta)
 		break;
 	case ANIM_JUMP_RIGHT:
 		{
-			if (m_actor->IsCollided() && m_actor->GetVelocity().y >= 0.0f)
+			if (m_actor->IsCollided() && m_actor->GetVelocity().y <= 0.0f)
 			{
 				if (MOVE_RIGHT == m_moveDir)
 				{
@@ -148,7 +148,6 @@ void CPlayable::Process(Float32 _delta)
 				{
 					m_currAnim = ANIM_SLIDE_RIGHT;
 				}
-				//m_moveDir = MOVE_IDLE;
 				m_sprite->SetAnim(m_currAnim);
 			}
 			if (m_actor->GetVelocity().x < 0.0f) // Switch animation for direction change
@@ -171,7 +170,6 @@ void CPlayable::Process(Float32 _delta)
 	}
 
 	m_pos = m_actor->GetPosition();
-	m_sprite->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
 	m_sprite->Process(_delta);
 }
 
@@ -195,30 +193,38 @@ void CPlayable::Notify(SDL_Event* _e)
 		{
 		case SDLK_LEFT: // Run left
 			{
-				if (ANIM_SLIDE_RIGHT != m_currAnim)// && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+				if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim)
 				{
-					m_currAnim = ANIM_RUN_LEFT;
-					if (vel.x > -m_moveForce.x)
+					if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
 					{
-						m_actor->SetVelocity(VECTOR2(-m_moveForce.x, vel.y));
+						m_currAnim = ANIM_RUN_LEFT;
 					}
+						if (vel.x > -m_moveForce.x)
+						{
+							m_actor->SetVelocity(VECTOR2(-m_moveForce.x, vel.y));
+						}
+				
+					m_actor->SetActive(true);
+					m_moveDir = MOVE_LEFT;
 				}
-				m_actor->SetActive(true);
-				m_moveDir = MOVE_LEFT;
 			}
 			break;
 		case SDLK_RIGHT: // Run right
 			{
-				if (ANIM_SLIDE_LEFT != m_currAnim)// && ANIM_JUMP_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim)
+				if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim)
 				{
-					m_currAnim = ANIM_RUN_RIGHT;
-					if (vel.x < m_moveForce.x)
+					if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
 					{
-						m_actor->SetVelocity(VECTOR2(m_moveForce.x, vel.y));
+						m_currAnim = ANIM_RUN_RIGHT;
 					}
+						if (vel.x < m_moveForce.x)
+						{
+							m_actor->SetVelocity(VECTOR2(m_moveForce.x, vel.y));
+						}
+				
+					m_actor->SetActive(true);
+					m_moveDir = MOVE_RIGHT;
 				}
-				m_actor->SetActive(true);
-				m_moveDir = MOVE_RIGHT;
 			}
 			break; 
 		case SDLK_UP: // Jump or climb a ladder
@@ -226,15 +232,17 @@ void CPlayable::Notify(SDL_Event* _e)
 			{
 				if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_SLIDE_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
 				{
+					Logger::Write("jumping left");
 					m_currAnim = ANIM_JUMP_LEFT;
-					m_actor->ApplyForce(VECTOR2(0.0f, -27000.0f));
-					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y * 2.0f));
+					//m_actor->ApplyForce(VECTOR2(0.0f, -m_jumpForce));
+					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
 				} 
-				else 
+				else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_SLIDE_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
 				{
+					Logger::Write("jumping right");
 					m_currAnim = ANIM_JUMP_RIGHT;
-					m_actor->ApplyForce(VECTOR2(0.0f, -27000.0f));
-					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y * 2.0f));
+					//m_actor->ApplyForce(VECTOR2(0.0f, -m_jumpForce));
+					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
 				}
 			}
 			break;
