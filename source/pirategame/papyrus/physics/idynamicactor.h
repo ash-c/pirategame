@@ -86,7 +86,7 @@ namespace Papyrus
 				}
 
 				m_currState.preV = m_currState.vel;
-				if (m_type != Physics::EType::TYPE_PLATFORM)
+				if (!m_collided && m_type != Physics::EType::TYPE_PLATFORM)
 				{
 					m_currState.vel += m_currState.acc * _delta;
 				}
@@ -103,6 +103,7 @@ namespace Papyrus
 
 				if (m_collided && m_currState.acc.y > 0.0f)
 				{
+					m_currState.acc.y = 0.0f;
 					m_currState.vel.y = 0.0f;
 				}
 
@@ -127,12 +128,16 @@ namespace Papyrus
 				if (m_currState.pos.x <= m_tileW)
 				{
 					m_currState.pos.x = static_cast<Float32>(m_tileW);
+					m_currState.acc.x = 0.0f;
 					m_currState.vel.x = 0.0f;
+					m_stationary = true;
 				}
 				if (m_currState.pos.x >= (m_levelW - m_tileW))
 				{
 					m_currState.pos.x = m_currState.preP.x;
+					m_currState.acc.x = 0.0f;
 					m_currState.vel.x = 0.0f;
+					m_stationary = true;
 				}
 				Int32 screenH = Renderer::activeRenderer->GetHeight();
 				Int32 top = screenH - 2000;

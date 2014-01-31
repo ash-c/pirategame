@@ -34,6 +34,12 @@ Bool Physics::ShutDown()
 
 void Physics::Process(Float32 _frameTime)
 {
+	for (UInt16 i = 0; i < numActors; ++i)
+	{
+		actors[i]->SetCollided(false);
+		actors[i]->SetPPCollided(0, false);
+	}
+
 	// process physics objects
 	// fix the framerate that the physics is calculated at.
 	const Float32 dt = 1.0f / 60.0f; // 60FPS
@@ -41,15 +47,50 @@ void Physics::Process(Float32 _frameTime)
 
 	while (m_accumulator >= dt)
 	{		
+		// collision detection
+		for (Int16 i = 0; i < numActors; ++i)
+		{
+			for (Int16 j = i + 1; j < numActors; ++j)
+			{					
+				if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
+				{
+					Physics::EType type1 = actors[i]->GetType();
+					Physics::EType type2 = actors[j]->GetType();
+
+					if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
+					{
+						PlayerStaticCollision(actors[i], actors[j]);
+					}
+					else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
+					{
+						PlayerStaticCollision(actors[j], actors[i]);
+					}
+					else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
+					{
+						StaticPlatformCollision(actors[i], actors[j]);
+					}
+					else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
+					{
+						StaticPlatformCollision(actors[j], actors[i]);
+					}
+					else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
+					{
+						PlayerPlatformCollision(actors[i], actors[j]);
+					}
+					else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
+					{
+						PlayerPlatformCollision(actors[j], actors[i]);
+					}
+				}
+			}
+		}
+
 		for (Int16 i = 0; i < numActors; ++i)
 		{
 			if (actors[i]->IsActive())
 			{
 				actors[i]->Process(dt);
 			}
-
-			actors[i]->SetCollided(false);
-			actors[i]->SetPPCollided(0, false);
 		}
 
 		m_accumulator -= dt;
@@ -62,44 +103,6 @@ void Physics::Process(Float32 _frameTime)
 		if (actors[i]->IsActive())
 		{
 			actors[i]->Interpolate(alpha);
-		}
-	}
-
-	// collision detection
-	for (Int16 i = 0; i < numActors; ++i)
-	{
-		for (Int16 j = i + 1; j < numActors; ++j)
-		{					
-			if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
-			{
-				Physics::EType type1 = actors[i]->GetType();
-				Physics::EType type2 = actors[j]->GetType();
-
-				if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
-				{
-					PlayerStaticCollision(actors[i], actors[j]);
-				}
-				else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
-				{
-					PlayerStaticCollision(actors[j], actors[i]);
-				}
-				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
-				{
-					StaticPlatformCollision(actors[i], actors[j]);
-				}
-				else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
-				{
-					StaticPlatformCollision(actors[j], actors[i]);
-				}
-				else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
-				{
-					PlayerPlatformCollision(actors[i], actors[j]);
-				}
-				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
-				{
-					PlayerPlatformCollision(actors[j], actors[i]);
-				}
-			}
 		}
 	}
 }
@@ -163,7 +166,7 @@ void Physics::PlayerStaticCollision(IActor* _actor1, IActor* _actor2)
 	if (SDL_IntersectRect(&_actor1->GetRect(), &_actor2->GetRect(), &result))
 	{
 		VECTOR2 pos = _actor1->GetPosition();
-		// clamp values
+		// clamp values to match rendered positions
 		pos.x = static_cast<Float32>(static_cast<Int32>(pos.x));
 		pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
 
