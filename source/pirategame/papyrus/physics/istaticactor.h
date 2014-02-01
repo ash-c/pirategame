@@ -26,6 +26,8 @@ namespace Papyrus
 
 			virtual void	Process(Float32 _frameTime) {}
 
+			virtual void	Interpolate(Float32 _alpha) {}
+
 			virtual void	RenderDebug(VECTOR2 _camPos)
 			{
 				SDL_Rect rect = m_bounds.rect;

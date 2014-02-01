@@ -59,9 +59,6 @@ protected:
 
 	Physics::IDynamicActor*	m_actor;
 
-	VECTOR2					m_moveForce;
-	VECTOR2					m_slowDownForce;
-
 	EAnims					m_currAnim;
 	EMovement				m_moveDir;
 };
