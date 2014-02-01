@@ -76,6 +76,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)\pirategame\papyrus\sdl\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_image\include;$(SolutionDir)\pirategame\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\pirategame\papyrus\vld;$(SolutionDir)\pirategame\papyrus\lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -86,6 +87,8 @@
       <SubSystem>Windows</SubSystem>
       <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

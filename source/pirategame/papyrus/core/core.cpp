@@ -90,7 +90,7 @@ Float32 Core::Process()
 
 void Core::Render()
 {
-	Logger::Render();
+	//Logger::Render();
 	//Physics::RenderDebug();
 }
 
