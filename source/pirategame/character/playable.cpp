@@ -194,57 +194,13 @@ void CPlayable::Notify(SDL_Event* _e)
 		switch (_e->key.keysym.sym)
 		{
 		case SDLK_LEFT: // Run left
-			{
-				//if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim)
-				//{
-					if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
-					{
-						m_currAnim = ANIM_RUN_LEFT;
-					}
-					if (vel.x > -m_moveForce.x)
-					{
-						m_actor->SetVelocity(VECTOR2(-m_moveForce.x, vel.y));
-					}
-				
-					m_actor->SetActive(true);
-					m_moveDir = MOVE_LEFT;
-				//}
-			}
+			Move(&vel, true);
 			break;
 		case SDLK_RIGHT: // Run right
-			{
-				//if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim)
-				//{
-					if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
-					{
-						m_currAnim = ANIM_RUN_RIGHT;
-					}
-					if (vel.x < m_moveForce.x)
-					{
-						m_actor->SetVelocity(VECTOR2(m_moveForce.x, vel.y));
-					}
-				
-					m_actor->SetActive(true);
-					m_moveDir = MOVE_RIGHT;
-				//}
-			}
+			Move(&vel, false);
 			break; 
 		case SDLK_UP: // Jump or climb a ladder
-			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
-			{
-				if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_SLIDE_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
-				{
-					//Logger::Write("jumping left");
-					m_currAnim = ANIM_JUMP_LEFT;
-					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
-				} 
-				else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_SLIDE_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
-				{
-					//Logger::Write("jumping right");
-					m_currAnim = ANIM_JUMP_RIGHT;
-					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
-				}
-			}
+			Jump(&vel);
 			break;
 		default:
 			break;
@@ -255,24 +211,10 @@ void CPlayable::Notify(SDL_Event* _e)
 		switch(_e->key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			if (ANIM_SLIDE_RIGHT != m_currAnim)
-			{
-				if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
-				{
-					m_currAnim = ANIM_SLIDE_LEFT;
-				}
-				m_moveDir = MOVE_IDLE;
-			}
+			StopMove(true);
 			break;
 		case SDLK_RIGHT:
-			if (ANIM_SLIDE_LEFT != m_currAnim)
-			{
-				if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
-				{
-					m_currAnim = ANIM_SLIDE_RIGHT;
-				}
-				m_moveDir = MOVE_IDLE;
-			}
+			StopMove(false);
 			break;
 		default:
 			break;
@@ -282,29 +224,23 @@ void CPlayable::Notify(SDL_Event* _e)
 	{
 		if (_e->caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) // x axis on the left stick
 		{
-			if(_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE && ANIM_SLIDE_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim) // left.
+			if(_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE) // left.
 			{
-				m_currAnim = ANIM_RUN_LEFT;
-				m_moveDir = MOVE_LEFT;
-				m_actor->SetActive(true);
+				Move(&vel, true);
 			}
-			else if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE && ANIM_SLIDE_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim) // right.
+			else if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE) // right.
 			{
-				m_currAnim = ANIM_RUN_RIGHT;
-				m_moveDir = MOVE_RIGHT;
-				m_actor->SetActive(true);
+				Move(&vel, false);
 			}
 			else if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim) // Idle
 			{
 				if (ANIM_RUN_LEFT == m_currAnim)
 				{
-					m_currAnim = ANIM_SLIDE_LEFT;
-					m_moveDir = MOVE_IDLE;
+					StopMove(true);
 				}
 				else if (ANIM_RUN_RIGHT == m_currAnim)
 				{
-					m_currAnim = ANIM_SLIDE_RIGHT;
-					m_moveDir = MOVE_IDLE;
+					StopMove(false);
 				}
 			}
 		}
@@ -313,22 +249,91 @@ void CPlayable::Notify(SDL_Event* _e)
 	{
 		if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_A) // Jump or climb a ladder
 		{ 
-			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
-			{
-				if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_SLIDE_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
-				{
-					m_currAnim = ANIM_JUMP_LEFT;
-					m_actor->ApplyForce(VECTOR2(0.0f, -50000.0f));
-					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
-				} 
-				else 
-				{
-					m_currAnim = ANIM_JUMP_RIGHT;
-					m_actor->ApplyForce(VECTOR2(0.0f, -50000.0f));
-					m_actor->SetVelocity(VECTOR2(vel.x, -m_moveForce.y));
-				}
-			}
+			Jump(&vel);
 		}
 	}
 	m_sprite->SetAnim(m_currAnim);
+}
+
+void CPlayable::Move(VECTOR2* _vel, Bool _left)
+{
+	if (_left)
+	{
+		//if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim)
+		//{
+			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+			{
+				m_currAnim = ANIM_RUN_LEFT;
+			}
+			if (_vel->x > -m_moveForce.x)
+			{
+				m_actor->SetVelocity(VECTOR2(-m_moveForce.x, _vel->y));
+			}
+				
+			m_actor->SetActive(true);
+			m_moveDir = MOVE_LEFT;
+		//}
+	} 
+	else
+	{
+		//if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim)
+		//{
+			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+			{
+				m_currAnim = ANIM_RUN_RIGHT;
+			}
+			if (_vel->x < m_moveForce.x)
+			{
+				m_actor->SetVelocity(VECTOR2(m_moveForce.x, _vel->y));
+			}
+				
+			m_actor->SetActive(true);
+			m_moveDir = MOVE_RIGHT;
+		//}
+	}
+}
+
+void CPlayable::StopMove(Bool _left)
+{
+	if (_left)
+	{
+		if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+		{
+			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+			{
+				m_currAnim = ANIM_SLIDE_LEFT;
+			}
+			m_moveDir = MOVE_IDLE;
+		}
+	}
+	else
+	{
+		if (ANIM_SLIDE_LEFT != m_currAnim && ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+		{
+			if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+			{
+				m_currAnim = ANIM_SLIDE_RIGHT;
+			}
+			m_moveDir = MOVE_IDLE;
+		}
+	}
+}
+
+void CPlayable::Jump(VECTOR2* _vel)
+{
+	if (ANIM_JUMP_LEFT != m_currAnim && ANIM_JUMP_RIGHT != m_currAnim)
+	{
+		if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_SLIDE_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
+		{
+			//Logger::Write("jumping left");
+			m_currAnim = ANIM_JUMP_LEFT;
+			m_actor->SetVelocity(VECTOR2(_vel->x, -m_moveForce.y));
+		} 
+		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_SLIDE_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
+		{
+			//Logger::Write("jumping right");
+			m_currAnim = ANIM_JUMP_RIGHT;
+			m_actor->SetVelocity(VECTOR2(_vel->x, -m_moveForce.y));
+		}
+	}
 }

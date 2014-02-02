@@ -25,6 +25,11 @@ public:
 
 	virtual void		Notify(SDL_Event* _e);
 
+protected:
+	virtual void		Move(VECTOR2* _vel, Bool _left);
+	virtual void		StopMove(Bool _left);
+	virtual void		Jump(VECTOR2* _vel);
+
 	// Member Variables
 protected:
 	typedef enum _EAnims
