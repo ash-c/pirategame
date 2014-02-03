@@ -8,6 +8,7 @@
 // Local Includes
 #include "iactor.h"
 #include "../renderer/renderer.h"
+#include "../logging/logger.h"
 
 namespace Papyrus
 {
@@ -35,7 +36,12 @@ namespace Papyrus
 			virtual void	SetMass(Float32 _f) { m_mass = _f; }
 			virtual Float32	GetMass() { return m_mass; }
 
-			virtual void	SetVelocity(VECTOR2 _v) { m_currState.vel = _v; m_currState.preV = _v; }
+			virtual void	SetVelocity(VECTOR2 _v) 
+			{
+				m_currState.vel = _v; 
+				m_currState.preV = _v; 
+				m_currState.acc.y = 0.0f; 
+			}
 			virtual VECTOR2	GetVelocity() { return m_currState.vel; }
 
 			virtual void	SetPosition(VECTOR2 _v) 
@@ -85,11 +91,9 @@ namespace Papyrus
 					}
 				}
 
+				// save previous states
 				m_currState.preV = m_currState.vel;
-				if (!m_collided && m_type != Physics::EType::TYPE_PLATFORM)
-				{
-					m_currState.vel += m_currState.acc * _delta;
-				}
+				m_currState.preP = m_currState.pos;
 					
 				// cap x velocity
 				if (m_currState.vel.x > m_maxState.vel.x)
@@ -103,11 +107,11 @@ namespace Papyrus
 
 				if (m_collided && m_currState.acc.y > 0.0f)
 				{
-					m_currState.acc.y = 0.0f;
+					//m_currState.acc.y = 0.0f;
 					m_currState.vel.y = 0.0f;
 				}
 
-				if (m_currState.acc.y <= 0.0f || m_currState.acc.y < m_maxState.acc.y)
+				if (m_currState.acc.y >= 0.0f && m_currState.acc.y < m_maxState.acc.y)
 				{
 					m_currState.acc.y += 1000.0f * _delta;
 				}
@@ -120,9 +124,33 @@ namespace Papyrus
 					m_stationary = true;
 				}
 
+				// Player on the platform, update position
+				if (m_ppCollision && 0 != m_player)
+				{
+					/*VECTOR2 pos = m_currState.pos - m_currState.preP;
+					VECTOR2 player = m_player->GetPosition();
+					player.x += pos.x;
+					m_player->SetPosition(player);*/
+					IDynamicActor* player = reinterpret_cast<IDynamicActor*>(m_player);
+					assert(player);
+					VECTOR2 vel = player->GetVelocity();
+					vel.x = m_currState.vel.x;
+					player->SetVelocity(vel);
+				}
+
+				// accelerate
+				if (!m_collided && m_type != Physics::EType::TYPE_PLATFORM)
+				{
+					m_currState.vel += m_currState.acc * _delta;
+				}
+
 				// change position				
-				m_currState.preP = m_currState.pos;
-				m_currState.pos += m_currState.vel * _delta; 
+				m_currState.pos.x += m_currState.vel.x * _delta; 
+
+				if (!m_collided)
+				{
+					m_currState.pos.y += m_currState.vel.y * _delta; 
+				}
 
 				// Prevent going off the sides of the screen
 				if (m_currState.pos.x <= m_tileW)
@@ -147,20 +175,6 @@ namespace Papyrus
 					m_currState.vel.y = 0.0f;
 				}
 
-				// Player on the platform, update their positions
-				if (m_ppCollision && 0 != m_player)
-				{
-					/*VECTOR2 pos = m_currState.pos - m_currState.preP;
-					VECTOR2 player = m_player->GetPosition();
-					player.x += pos.x;
-					m_player->SetPosition(player);*/
-					IDynamicActor* player = reinterpret_cast<IDynamicActor*>(m_player);
-					assert(player);
-					VECTOR2 vel = player->GetVelocity();
-					vel.x = m_currState.vel.x;
-					player->SetVelocity(vel);
-					}
-
 				// Update bounds
 				UpdateBounds();
 			}
@@ -168,6 +182,7 @@ namespace Papyrus
 			virtual void	Interpolate(Float32 _alpha)
 			{
 				m_renderPos = m_currState.pos * _alpha + m_currState.preP * (1.0f - _alpha);
+				m_renderPos.y = static_cast<Float32>(static_cast<Int32>(m_renderPos.y));
 			}
 
 			virtual void	RenderDebug(VECTOR2 _camPos)

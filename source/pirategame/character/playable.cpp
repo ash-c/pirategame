@@ -58,8 +58,8 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 
 Bool CPlayable::ShutDown()
 {
-	m_sprite->Release();
-	m_actor->Release();
+	PY_SAFE_RELEASE(m_sprite);
+	PY_SAFE_RELEASE(m_actor);
 	return true;
 }
 
@@ -117,7 +117,7 @@ void CPlayable::Process(Float32 _delta)
 				}
 				m_sprite->SetAnim(m_currAnim);
 			}
-			if (m_actor->GetVelocity().x > 0.0f) // Switch animation for direction change
+			else if (m_actor->GetVelocity().x > 0.0f) // Switch animation for direction change
 			{
 				m_currAnim = ANIM_JUMP_RIGHT;
 				m_sprite->SetAnim(m_currAnim);
@@ -151,7 +151,7 @@ void CPlayable::Process(Float32 _delta)
 				}
 				m_sprite->SetAnim(m_currAnim);
 			}
-			if (m_actor->GetVelocity().x < 0.0f) // Switch animation for direction change
+			else if (m_actor->GetVelocity().x < 0.0f) // Switch animation for direction change
 			{
 				m_currAnim = ANIM_JUMP_LEFT;
 				m_sprite->SetAnim(m_currAnim);
@@ -270,7 +270,6 @@ void CPlayable::Move(VECTOR2* _vel, Bool _left)
 				m_actor->SetVelocity(VECTOR2(-m_moveForce.x, _vel->y));
 			}
 				
-			m_actor->SetActive(true);
 			m_moveDir = MOVE_LEFT;
 		//}
 	} 
@@ -287,7 +286,6 @@ void CPlayable::Move(VECTOR2* _vel, Bool _left)
 				m_actor->SetVelocity(VECTOR2(m_moveForce.x, _vel->y));
 			}
 				
-			m_actor->SetActive(true);
 			m_moveDir = MOVE_RIGHT;
 		//}
 	}
@@ -305,6 +303,10 @@ void CPlayable::StopMove(Bool _left)
 			}
 			m_moveDir = MOVE_IDLE;
 		}
+		else if (ANIM_JUMP_LEFT == m_currAnim)
+		{
+			m_moveDir = MOVE_IDLE;
+		}
 	}
 	else
 	{
@@ -314,6 +316,10 @@ void CPlayable::StopMove(Bool _left)
 			{
 				m_currAnim = ANIM_SLIDE_RIGHT;
 			}
+			m_moveDir = MOVE_IDLE;
+		}
+		else if (ANIM_JUMP_RIGHT == m_currAnim)
+		{
 			m_moveDir = MOVE_IDLE;
 		}
 	}
@@ -328,12 +334,14 @@ void CPlayable::Jump(VECTOR2* _vel)
 			//Logger::Write("jumping left");
 			m_currAnim = ANIM_JUMP_LEFT;
 			m_actor->SetVelocity(VECTOR2(_vel->x, -m_moveForce.y));
+			m_actor->SetPosition(VECTOR2(m_pos.x, m_pos.y - 10.0f));
 		} 
 		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_SLIDE_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
 		{
 			//Logger::Write("jumping right");
 			m_currAnim = ANIM_JUMP_RIGHT;
 			m_actor->SetVelocity(VECTOR2(_vel->x, -m_moveForce.y));
+			m_actor->SetPosition(VECTOR2(m_pos.x, m_pos.y - 10.0f));
 		}
 	}
 }

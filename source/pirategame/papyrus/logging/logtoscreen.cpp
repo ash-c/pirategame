@@ -171,6 +171,12 @@ void Logger::CLogToScreen::Process(Float32 _fDelta)
 				}
 			}
 		}
+
+		if (!m_active && 0 != m_texture)
+		{
+			SDL_DestroyTexture(m_texture);
+			m_texture = 0;
+		}
 	}
 }
 
@@ -180,7 +186,7 @@ void Logger::CLogToScreen::Render()
 	{
 		m_pos.x = SM_DEFAULT_X;
 		m_pos.y = SM_DEFAULT_Y;
-		if (m_texture)
+		if (0 != m_texture)
 		{
 			Renderer::activeRenderer->Render(m_texture, &m_pos, NULL);
 			SDL_DestroyTexture(m_texture);

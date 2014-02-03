@@ -141,6 +141,7 @@ void CLevel::Process(Float32 _delta)
 	{
 		m_playable->Process(_delta);
 
+		// camera scrolling
 		VECTOR2 pos = m_playable->GetPosition();
 
 		Float32 scrollLeft = m_screenW * 0.5f;

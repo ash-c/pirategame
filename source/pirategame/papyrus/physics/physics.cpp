@@ -162,53 +162,60 @@ Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _ma
 
 void Physics::PlayerStaticCollision(IActor* _actor1, IActor* _actor2)
 {
+	// actor1 is always the player
+	// actor2 is always the static physics object
 	SDL_Rect result;
-	if (SDL_IntersectRect(&_actor1->GetRect(), &_actor2->GetRect(), &result))
+	SDL_Rect rect1 = _actor1->GetRect();
+	SDL_Rect rect2 = _actor2->GetRect();
+	if (SDL_IntersectRect(&rect1, &rect2, &result))
 	{
 		VECTOR2 pos = _actor1->GetPosition();
-		// clamp values to match rendered positions
-		pos.x = static_cast<Float32>(static_cast<Int32>(pos.x));
-		pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
+		VECTOR2 pos2 = _actor2->GetPosition();
 
 		// collision!
 		_actor1->SetCollided(true);
 		_actor2->SetCollided(true);
-		Bool bYCollision = false;
 
-		if (result.y < pos.y) // below
+		// vertical collision
+		if (pos.x > rect2.x && pos.x < rect2.x + rect2.w) 
 		{
-			if ((result.y + 50 + result.h) > pos.y)
+			if (pos2.y < pos.y) // below
 			{
-				if ((pos.y + result.h) > result.y)
+				if ((result.y + rect2.h + result.h) > pos.y)
 				{
-					pos.y += result.h;
+					if ((pos.y + result.h) > result.y)
+					{
+						pos.y = pos2.y + rect2.h + rect1.h * 0.5f;
+					}
+					_actor1->SetPosition(VECTOR2(pos.x, pos.y));
 				}
+			}
+			else if (pos2.y > pos.y) // above
+			{
+				if (result.y - rect2.h < pos.y)
+				{
+					if ((pos.y - result.h) < result.y)
+					{
+						pos.y = pos2.y - rect2.h * 0.5f - rect1.h * 0.5f;
+					}
+					_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+				}
+			}
+		}
+
+		// horizontal collision
+		if (pos.y > rect2.y && pos.y < rect2.y + rect2.h)
+		{
+			if (pos2.x > pos.x) // left
+			{
+				pos.x = rect2.x - rect1.w * 0.5f;
 				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
 			}
-			bYCollision = true;
-		}
-		else if (result.y > pos.y) // above
-		{
-			if (result.y - 50 < pos.y)
+			else if (pos2.x < pos.x) // right
 			{
-				if ((pos.y - result.h) < result.y)
-				{
-					pos.y -= result.h;
-				}
+				pos.x = rect2.x + rect2.w + rect1.w * 0.5f;
 				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
 			}
-			bYCollision = true;
-		}
-
-		if (result.x > pos.x && !bYCollision) // left
-		{
-			pos.x -= result.w;
-			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
-		}
-		else if (result.x < pos.x && !bYCollision) // right
-		{
-			pos.x += result.w;
-			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
 		}
 	}
 }
