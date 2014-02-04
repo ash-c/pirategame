@@ -234,11 +234,11 @@ void CPlayable::Notify(SDL_Event* _e)
 			}
 			else if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim) // Idle
 			{
-				if (ANIM_RUN_LEFT == m_currAnim)
+				if (ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim)
 				{
 					StopMove(true);
 				}
-				else if (ANIM_RUN_RIGHT == m_currAnim)
+				else if (ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim)
 				{
 					StopMove(false);
 				}
