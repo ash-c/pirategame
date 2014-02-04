@@ -101,7 +101,7 @@ void CPlayable::Process(Float32 _delta)
 		break;
 	case ANIM_JUMP_LEFT:
 		{
-			if (m_actor->IsCollided() && m_actor->GetVelocity().y <= 0.0f)
+			if (m_actor->IsVCollided() && m_actor->GetVelocity().y >= 0.0f)
 			{
 				if (MOVE_RIGHT == m_moveDir)
 				{
@@ -135,7 +135,7 @@ void CPlayable::Process(Float32 _delta)
 		break;
 	case ANIM_JUMP_RIGHT:
 		{
-			if (m_actor->IsCollided() && m_actor->GetVelocity().y <= 0.0f)
+			if (m_actor->IsVCollided() && m_actor->GetVelocity().y >= 0.0f)
 			{
 				if (MOVE_RIGHT == m_moveDir)
 				{

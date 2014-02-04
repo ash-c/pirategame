@@ -23,7 +23,8 @@ Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, V
 		Logger::TrackValue(&m_currState.pos, "position");
 		Logger::TrackValue(&m_currState.vel, "velocity");
 		Logger::TrackValue(&m_currState.acc, "acceleration");
-		Logger::TrackValue(&m_collided, "collided");
+		Logger::TrackValue(&m_vCollision, "vCollided");
+		Logger::TrackValue(&m_hCollision, "hCollided");
 	}
 
 	m_currState.pos = _pos;

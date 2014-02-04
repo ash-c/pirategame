@@ -99,7 +99,7 @@ Bool CPlatform::ShutDown()
 
 void CPlatform::Process(Float32 _delta)
 {
-	if (m_actor->IsCollided())
+	if (m_actor->IsHCollided())
 	{
 		if (m_moveLeft)
 		{

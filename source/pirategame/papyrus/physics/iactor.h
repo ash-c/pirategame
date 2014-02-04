@@ -30,7 +30,8 @@ namespace Papyrus
 				: m_player(0)
 				, m_type(INVALID_TYPE)
 				, m_active(false)
-				, m_collided(false)
+				, m_hCollision(false)
+				, m_vCollision(false)
 				, m_ppCollision(false)
 			{}
 
@@ -42,6 +43,9 @@ namespace Papyrus
 			virtual void	Interpolate(Float32 _alpha) = 0;
 			virtual void	RenderDebug(VECTOR2 _camPos) = 0;
 
+			virtual void	SetYPos(Float32 _y) = 0;
+			virtual void	SetXPos(Float32 _x) = 0;
+
 			virtual void	SetPosition(VECTOR2 _v) = 0;
 			virtual VECTOR2	GetPosition() = 0;
 
@@ -50,8 +54,11 @@ namespace Papyrus
 			virtual Bool	IsActive() { return m_active; }
 			virtual void	SetActive(Bool _b) { m_active = _b; } 
 
-			virtual Bool	IsCollided() { return m_collided; }
-			virtual void	SetCollided(Bool _b) { m_collided = _b; }
+			virtual Bool	IsHCollided() { return m_hCollision; }
+			virtual void	SetHCollided(Bool _b) { m_hCollision = _b; }
+
+			virtual Bool	IsVCollided() { return m_vCollision; }
+			virtual void	SetVCollided(Bool _b) { m_vCollision = _b; }
 
 			virtual Bool	IsPPCollided() { return m_ppCollision; }
 			virtual void	SetPPCollided(IActor* _player, Bool _b) { m_ppCollision = _b; m_player = _player; }
@@ -84,7 +91,8 @@ namespace Papyrus
 			AABB			m_bounds;
 			EType			m_type;
 			Bool			m_active;
-			Bool			m_collided;
+			Bool			m_hCollision;
+			Bool			m_vCollision;
 			Bool			m_ppCollision; // player on platform
 		};
 	}

@@ -34,10 +34,50 @@ Bool Physics::ShutDown()
 
 void Physics::Process(Float32 _frameTime)
 {
+
 	for (UInt16 i = 0; i < numActors; ++i)
 	{
-		actors[i]->SetCollided(false);
+		actors[i]->SetHCollided(false);
+		actors[i]->SetVCollided(false);
 		actors[i]->SetPPCollided(0, false);
+	}
+
+	// collision detection
+	for (Int16 i = 0; i < numActors; ++i)
+	{
+		for (Int16 j = i + 1; j < numActors; ++j)
+		{					
+			if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
+			{
+				Physics::EType type1 = actors[i]->GetType();
+				Physics::EType type2 = actors[j]->GetType();
+
+				if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[i], actors[j]);
+				}
+				else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[j], actors[i]);
+				}
+				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
+				{
+					StaticPlatformCollision(actors[i], actors[j]);
+				}
+				else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
+				{
+					StaticPlatformCollision(actors[j], actors[i]);
+				}
+				else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
+				{
+					PlayerPlatformCollision(actors[i], actors[j]);
+				}
+				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
+				{
+					PlayerPlatformCollision(actors[j], actors[i]);
+				}
+			}
+		}
 	}
 
 	// process physics objects
@@ -46,45 +86,7 @@ void Physics::Process(Float32 _frameTime)
 	m_accumulator += _frameTime;
 
 	while (m_accumulator >= dt)
-	{		
-		// collision detection
-		for (Int16 i = 0; i < numActors; ++i)
-		{
-			for (Int16 j = i + 1; j < numActors; ++j)
-			{					
-				if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
-				{
-					Physics::EType type1 = actors[i]->GetType();
-					Physics::EType type2 = actors[j]->GetType();
-
-					if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
-					{
-						PlayerStaticCollision(actors[i], actors[j]);
-					}
-					else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
-					{
-						PlayerStaticCollision(actors[j], actors[i]);
-					}
-					else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
-					{
-						StaticPlatformCollision(actors[i], actors[j]);
-					}
-					else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
-					{
-						StaticPlatformCollision(actors[j], actors[i]);
-					}
-					else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
-					{
-						PlayerPlatformCollision(actors[i], actors[j]);
-					}
-					else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
-					{
-						PlayerPlatformCollision(actors[j], actors[i]);
-					}
-				}
-			}
-		}
-
+	{	
 		for (Int16 i = 0; i < numActors; ++i)
 		{
 			if (actors[i]->IsActive())
@@ -171,35 +173,23 @@ void Physics::PlayerStaticCollision(IActor* _actor1, IActor* _actor2)
 	{
 		VECTOR2 pos = _actor1->GetPosition();
 		VECTOR2 pos2 = _actor2->GetPosition();
-
-		// collision!
-		_actor1->SetCollided(true);
-		_actor2->SetCollided(true);
-
+		
 		// vertical collision
 		if (pos.x > rect2.x && pos.x < rect2.x + rect2.w) 
 		{
 			if (pos2.y < pos.y) // below
 			{
-				if ((result.y + rect2.h + result.h) > pos.y)
-				{
-					if ((pos.y + result.h) > result.y)
-					{
-						pos.y = pos2.y + rect2.h + rect1.h * 0.5f;
-					}
-					_actor1->SetPosition(VECTOR2(pos.x, pos.y));
-				}
+				pos.y = pos2.y + rect2.h * 0.5f + rect1.h * 0.5f;
+				_actor1->SetYPos(pos.y);
+				_actor1->SetVCollided(true);
+				_actor2->SetVCollided(true);
 			}
 			else if (pos2.y > pos.y) // above
 			{
-				if (result.y - rect2.h < pos.y)
-				{
-					if ((pos.y - result.h) < result.y)
-					{
-						pos.y = pos2.y - rect2.h * 0.5f - rect1.h * 0.5f;
-					}
-					_actor1->SetPosition(VECTOR2(pos.x, pos.y));
-				}
+				pos.y = pos2.y - rect2.h * 0.5f - rect1.h * 0.5f + 1.0f;
+				_actor1->SetYPos(pos.y);
+				_actor1->SetVCollided(true);
+				_actor2->SetVCollided(true);
 			}
 		}
 
@@ -209,12 +199,16 @@ void Physics::PlayerStaticCollision(IActor* _actor1, IActor* _actor2)
 			if (pos2.x > pos.x) // left
 			{
 				pos.x = rect2.x - rect1.w * 0.5f;
-				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+				_actor1->SetXPos(pos.x);
+				_actor1->SetHCollided(true);
+				_actor2->SetHCollided(true);
 			}
 			else if (pos2.x < pos.x) // right
 			{
 				pos.x = rect2.x + rect2.w + rect1.w * 0.5f;
-				_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+				_actor1->SetXPos(pos.x);
+				_actor1->SetHCollided(true);
+				_actor2->SetHCollided(true);
 			}
 		}
 	}
@@ -231,7 +225,7 @@ void Physics::PlayerPlatformCollision(IActor* _actor1, IActor* _actor2)
 		pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
 
 		// collision!
-		_actor1->SetCollided(true);
+		_actor1->SetVCollided(true);
 		Bool bYCollision = false;
 
 		if (result.y < pos.y) // below
@@ -285,8 +279,8 @@ void Physics::StaticPlatformCollision(IActor* _actor1, IActor* _actor2)
 		pos.y = static_cast<Float32>(static_cast<Int32>(pos.y));
 
 		// collision!
-		_actor1->SetCollided(true);
-		_actor2->SetCollided(true);
+		_actor1->SetHCollided(true);
+		_actor2->SetHCollided(true);
 		Bool bYCollision = false;
 
 		if (result.x > pos.x && !bYCollision) // left

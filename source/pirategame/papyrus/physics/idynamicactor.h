@@ -40,15 +40,26 @@ namespace Papyrus
 			{
 				m_currState.vel = _v; 
 				m_currState.preV = _v; 
-				m_currState.acc.y = 0.0f; 
+				//m_currState.acc.y = 0.0f; 
 			}
 			virtual VECTOR2	GetVelocity() { return m_currState.vel; }
+
+			virtual void	SetYPos(Float32 _y)
+			{
+				m_renderPos.y = _y;
+				m_currState.pos.y = _y;
+			}
+
+			virtual void	SetXPos(Float32 _x) 
+			{
+				m_renderPos.x = _x;
+				m_currState.pos.x = _x;
+			}
 
 			virtual void	SetPosition(VECTOR2 _v) 
 			{ 
 				m_renderPos = _v;
 				m_currState.pos = _v; 
-				m_currState.preP = _v; 
 				UpdateBounds(); 
 			} 
 
@@ -105,10 +116,17 @@ namespace Papyrus
 					m_currState.vel.x = -m_maxState.vel.x;
 				}
 
-				if (m_collided && m_currState.acc.y > 0.0f)
+				// Drop velocity if collisions
+				if (m_vCollision && m_currState.acc.y > 0.0f)
 				{
 					//m_currState.acc.y = 0.0f;
 					m_currState.vel.y = 0.0f;
+				}
+
+				if (m_hCollision)
+				{
+					m_currState.acc.x = 0.0f;
+					m_currState.vel.x = 0.0f;
 				}
 
 				if (m_currState.acc.y >= 0.0f && m_currState.acc.y < m_maxState.acc.y)
@@ -139,15 +157,22 @@ namespace Papyrus
 				}
 
 				// accelerate
-				if (!m_collided && m_type != Physics::EType::TYPE_PLATFORM)
+				if (!m_vCollision && m_type != Physics::EType::TYPE_PLATFORM)
 				{
-					m_currState.vel += m_currState.acc * _delta;
+					m_currState.vel.y += m_currState.acc.y * _delta;
 				}
+				//if (!m_hCollision && m_type != Physics::EType::TYPE_PLATFORM)
+				//{
+					m_currState.vel.x += m_currState.acc.x * _delta;
+				//}
 
-				// change position				
-				m_currState.pos.x += m_currState.vel.x * _delta; 
+				// change position	
+				//if (!m_hCollision)
+				//{
+					m_currState.pos.x += m_currState.vel.x * _delta; 
+				//}
 
-				if (!m_collided)
+				if (!m_vCollision)
 				{
 					m_currState.pos.y += m_currState.vel.y * _delta; 
 				}
@@ -182,7 +207,10 @@ namespace Papyrus
 			virtual void	Interpolate(Float32 _alpha)
 			{
 				m_renderPos = m_currState.pos * _alpha + m_currState.preP * (1.0f - _alpha);
-				m_renderPos.y = static_cast<Float32>(static_cast<Int32>(m_renderPos.y));
+				if (m_vCollision)
+				{
+					m_renderPos.y = m_currState.pos.y;
+				}
 			}
 
 			virtual void	RenderDebug(VECTOR2 _camPos)
@@ -190,7 +218,7 @@ namespace Papyrus
 				SDL_Rect rect = m_bounds.rect;
 				rect.x += static_cast<Int32>(_camPos.x);
 				rect.y += static_cast<Int32>(_camPos.y);
-				Renderer::activeRenderer->DrawRect(&rect, m_collided);
+				Renderer::activeRenderer->DrawRect(&rect, m_vCollision || m_hCollision);
 			}
 
 			virtual void	SetTileWidth(Int32 _w) { m_tileW = static_cast<Int32>(_w * 0.5f); }

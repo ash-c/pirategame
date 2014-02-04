@@ -33,8 +33,11 @@ namespace Papyrus
 				SDL_Rect rect = m_bounds.rect;
 				rect.x += static_cast<Int32>(_camPos.x);
 				rect.y += static_cast<Int32>(_camPos.y);
-				Renderer::activeRenderer->DrawRect(&rect, m_collided);
+				Renderer::activeRenderer->DrawRect(&rect, m_vCollision || m_hCollision);
 			}
+
+			virtual void	SetYPos(Float32 _y) {}
+			virtual void	SetXPos(Float32 _x) {}
 
 			virtual void	SetPosition(VECTOR2 _v) { m_pos = _v; } 
 			virtual VECTOR2	GetPosition() { return m_pos; }

@@ -144,8 +144,8 @@ void CLevel::Process(Float32 _delta)
 		// camera scrolling
 		VECTOR2 pos = m_playable->GetPosition();
 
-		Float32 scrollLeft = m_screenW * 0.5f;
-		Float32 scrollUp = m_screenH * 0.5f;
+		Int32 scrollLeft = static_cast<Int32>(m_screenW * 0.5f);
+		Int32 scrollUp = static_cast<Int32>(m_screenH * 0.5f);
 
 		if (pos.x >= scrollLeft && pos.x + scrollLeft < LEVEL_WIDTH)
 		{
