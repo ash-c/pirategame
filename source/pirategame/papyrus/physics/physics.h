@@ -30,6 +30,8 @@ namespace Papyrus
 		void			PlayerPlatformCollision(IActor* _actor1, IActor* _actor2);
 		void			StaticPlatformCollision(IActor* _actor1, IActor* _actor2);
 
+		static Int32	ToggleRenderDebug(lua_State* L);
+
 		extern IActor**	actors;
 
 		extern VECTOR2	camPosition;
@@ -37,6 +39,8 @@ namespace Papyrus
 		extern Float32	m_accumulator;
 		extern Int32	maxActors;
 		extern Int32	numActors;
+
+		extern Bool		m_renderDebug;
 	}
 }
 

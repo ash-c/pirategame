@@ -8,6 +8,16 @@ function toggleconsole()
 	return 'Console toggled'
 end
 
+function togglephysics()
+	ToggleRenderDebug()
+	return 'Physics debuging toggled'
+end
+
+function togglecursor()
+	ToggleCursor()
+	return 'Cursor toggled'
+end
+
 function test(i,s,b)
 	TestFunction(i,s,b)
 	return 'Test function run'

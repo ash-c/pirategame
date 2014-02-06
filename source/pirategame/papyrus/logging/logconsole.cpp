@@ -297,6 +297,9 @@ void Logger::CLogConsole::Notify(SDL_Event* _e)
 			case SDLK_KP_PERIOD:
 				m_input.push('.');
 				break;
+			case SDLK_SLASH:
+				m_input.push('/');
+				break;
 			case SDLK_MINUS:
 			case SDLK_KP_MINUS:
 				m_input.push('-');

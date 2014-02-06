@@ -15,12 +15,15 @@ VECTOR2 Physics::camPosition;
 Float32 Physics::m_accumulator = 0.0f;
 Int32 Physics::maxActors = 10;
 Int32 Physics::numActors = 0;
+Bool Physics::m_renderDebug = false;
 
 Bool Physics::Initialise()
 {
 	actors = new IActor*[maxActors];
 	assert(actors);
 	SDL_memset(actors, 0, sizeof(IActor*) * maxActors);
+
+	lua_register(Logger::luaState, "ToggleRenderDebug", ToggleRenderDebug);
 	
 	return true;
 }
@@ -111,11 +114,14 @@ void Physics::Process(Float32 _frameTime)
 
 void Physics::RenderDebug()
 {
-	for (Int16 i = 0; i < numActors; ++i)
+	if (m_renderDebug)
 	{
-		if (0 != actors[i])
+		for (Int16 i = 0; i < numActors; ++i)
 		{
-			if (actors[i]->IsActive()) actors[i]->RenderDebug(camPosition);
+			if (0 != actors[i])
+			{
+				if (actors[i]->IsActive()) actors[i]->RenderDebug(camPosition);
+			}
 		}
 	}
 }
@@ -294,4 +300,10 @@ void Physics::StaticPlatformCollision(IActor* _actor1, IActor* _actor2)
 			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
 		}
 	}
+}
+
+Int32 Physics::ToggleRenderDebug(lua_State* L)
+{
+	m_renderDebug = !m_renderDebug;
+	return 0;
 }

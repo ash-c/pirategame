@@ -38,6 +38,8 @@ Bool CGame::Initialise()
 	lua_register(Logger::luaState, "QuitGame", QuitGame);
 	lua_register(Logger::luaState, "StartGame", StartGame);
 	lua_register(Logger::luaState, "PauseGame", PauseGame);
+	lua_register(Logger::luaState, "LoadLevel", LoadLevel);
+	lua_register(Logger::luaState, "ToggleCursor", ToggleCursor);
 
 	VALIDATE(Input::inputManager->Register(this));
 
@@ -148,5 +150,31 @@ Int32 CGame::StartGame(lua_State* L)
 Int32 CGame::PauseGame(lua_State* L)
 {
 	sm_pTheInstance->Pause();
+	return 0;
+}
+
+Int32 CGame::LoadLevel(lua_State* L)
+{
+	const Int8* path = luaL_checkstring(L, 1);
+
+	if (sm_pTheInstance->m_levelMan->LoadLevel((Int8*)path))
+	{
+		sm_pTheInstance->m_interface->Toggle();
+		sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
+	}
+	else 
+	{
+		Logger::WriteToConsole("Failed to load level %s", path);
+	}
+
+	return 0;
+}
+
+Int32 CGame::ToggleCursor(lua_State* L)
+{
+	Int32 state = SDL_ShowCursor(-1);
+
+	SDL_ShowCursor(!state);
+
 	return 0;
 }

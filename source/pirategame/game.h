@@ -72,10 +72,10 @@ public:
 	* @return	Returns the number of variables on the lua stack.
 	*/
 	static Int32		QuitGame(lua_State* L);
-
 	static Int32		StartGame(lua_State* L);
-
 	static Int32		PauseGame(lua_State* L);
+	static Int32		LoadLevel(lua_State* L);
+	static Int32		ToggleCursor(lua_State* L);
 
 protected:
 	// Default Constructor

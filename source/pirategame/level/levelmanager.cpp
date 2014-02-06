@@ -44,9 +44,16 @@ void CLevelManager::Render()
 
 Bool CLevelManager::LoadLevel(Int8* _lvl)
 {	
+	CLevel* temp = new CLevel;
+	if (!temp->Initialise(_lvl))
+	{
+		Logger::Write("Failed to load level %s", _lvl);
+		CLEANDELETE(temp);
+		return false;
+	}
+
 	PY_DELETE_RELEASE(m_currLevel);
-	m_currLevel = new CLevel;
-	VALIDATE(m_currLevel->Initialise(_lvl));
+	m_currLevel = temp;
 	m_currLevel->AddRef();
 
 	return true;
