@@ -7,8 +7,8 @@
 // Library Includes
 
 // Local Includes
-#include "papyrus\core\utility\singleton.h"
-#include "papyrus\core\core.h"
+#include "..\papyrus\core\utility\singleton.h"
+#include "..\papyrus\core\core.h"
 
 using namespace Papyrus;
 

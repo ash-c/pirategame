@@ -6,7 +6,7 @@
 // Library Includes
 
 // Local Includes
-#include "../core/core.h"
+#include "../../core/core.h"
 
 using namespace Papyrus;
 

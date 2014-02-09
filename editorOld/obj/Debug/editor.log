@@ -1,0 +1,44 @@
+﻿Build started 7/02/2014 2:08:08 p.m..
+     1>Project "D:\Users\ashley.crockett\Desktop\pirategame\editor\source\editor\editor.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ID:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\sdl\include /ID:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\sdl\sdl_image\include /ID:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\sdl\sdl_ttf\include /ID:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\vld /ID:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\lua\include /ZI /nologo /W3 /WX- /Od /Ob0 /Oy- /D _MBCS /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\\" /Fd"D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt editor\leveledit.cpp
+         leveledit.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\test\editor_D.exe" /INCREMENTAL /NOLOGO /LIBPATH:D:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\sdl\lib\x86 /LIBPATH:D:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\sdl\sdl_image\lib\x86 /LIBPATH:D:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\sdl\sdl_ttf\lib\x86 /LIBPATH:D:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\vld /LIBPATH:D:\Users\ashley.crockett\Desktop\pirategame\editor\source\\editor\papyrus\lua\lib SDL2.lib SDL2main.lib SDL2_image.lib SDL2_ttf.lib lua5.1.lib lua51.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /NODEFAULTLIB:msvcrt.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\editor_D.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\test\editor_D.lib" /MACHINE:X86 D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\interfaceedit.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\leveledit.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\level.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\platform.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\tile.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\tiletool.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\game.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\main.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\core.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\timer.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\input.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\manager.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\logconsole.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\logger.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\logtofile.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\logtoscreen.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\iniparser.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\jsonparser.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\parser.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\xmlparser.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\controllable.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\physics.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\static.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\renderer.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\sdlrenderer.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\animsprite.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\sprite.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\staticsprite.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\interactive.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\uibutton.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\staticui.obj
+         D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\obj\Debug\ui.obj
+         editor.vcxproj -> D:\Users\ashley.crockett\Desktop\pirategame\editor\source\..\test\editor_D.exe
+     1>Done Building Project "D:\Users\ashley.crockett\Desktop\pirategame\editor\source\editor\editor.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.81

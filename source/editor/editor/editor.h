@@ -6,9 +6,9 @@
 // Library Includes
 
 // Local Includes
-#include "../core/utility/refcount.h"
-#include "../input/input.h"
-#include "../input/observer.h"
+#include "../../core/utility/refcount.h"
+#include "../../input/input.h"
+#include "../../input/observer.h"
 
 class IEditor : public TRefCount<IEditor>, Papyrus::Input::IInputObserver
 {

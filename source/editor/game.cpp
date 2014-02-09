@@ -19,6 +19,7 @@ CGame::CGame()
 
 CGame::~CGame()
 {
+	m_interface->Release();
 	PY_DELETE_RELEASE(m_editor);
 	Core::ShutDown();
 }

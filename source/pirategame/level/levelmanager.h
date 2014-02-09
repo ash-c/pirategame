@@ -6,8 +6,8 @@
 // Library Includes
 
 // Local Includes
-#include "../core/core.h"
-#include "../core/utility/singleton.h"
+#include "../../core/core.h"
+#include "../../core/utility/singleton.h"
 
 class CLevel;
 

@@ -2,66 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="papyrus\parser\ini\iniparser.cpp">
-      <Filter>papyrus\parser\ini</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\parser\json\jsonparser.cpp">
-      <Filter>papyrus\parser\json</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\parser\xml\xmlparser.cpp">
-      <Filter>papyrus\parser\xml</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\parser\parser.cpp">
-      <Filter>papyrus\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\core\utility\timer.cpp">
-      <Filter>papyrus\core\utility</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="papyrus\renderer\sdlrenderer.cpp">
-      <Filter>papyrus\renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\renderer\renderer.cpp">
-      <Filter>papyrus\renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\sprite\sprite.cpp">
-      <Filter>papyrus\sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\sprite\staticsprite.cpp">
-      <Filter>papyrus\sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\core\core.cpp">
-      <Filter>papyrus\core</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\logging\logger.cpp">
-      <Filter>papyrus\logging</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\logging\logtoscreen.cpp">
-      <Filter>papyrus\logging</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\logging\logtofile.cpp">
-      <Filter>papyrus\logging</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\logging\logconsole.cpp">
-      <Filter>papyrus\logging</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\sprite\animsprite.cpp">
-      <Filter>papyrus\sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\input\manager.cpp">
-      <Filter>papyrus\input</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\input\input.cpp">
-      <Filter>papyrus\input</Filter>
-    </ClCompile>
     <ClCompile Include="character\playable.cpp">
       <Filter>character</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\physics\physics.cpp">
-      <Filter>papyrus\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\physics\controllable.cpp">
-      <Filter>papyrus\physics</Filter>
     </ClCompile>
     <ClCompile Include="level\levelmanager.cpp">
       <Filter>level</Filter>
@@ -72,23 +15,80 @@
     <ClCompile Include="level\platform.cpp">
       <Filter>level</Filter>
     </ClCompile>
-    <ClCompile Include="papyrus\physics\static.cpp">
-      <Filter>papyrus\physics</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\ui\ui.cpp">
-      <Filter>papyrus\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\ui\interactive.cpp">
-      <Filter>papyrus\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\ui\staticui.cpp">
-      <Filter>papyrus\ui</Filter>
-    </ClCompile>
-    <ClCompile Include="papyrus\ui\objects\uibutton.cpp">
-      <Filter>papyrus\ui\objects</Filter>
-    </ClCompile>
     <ClCompile Include="level\tile.cpp">
       <Filter>level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\core\core.cpp">
+      <Filter>papyrus\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\core\utility\timer.cpp">
+      <Filter>papyrus\core\utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\input\input.cpp">
+      <Filter>papyrus\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\input\manager.cpp">
+      <Filter>papyrus\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\logging\logconsole.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\logging\logger.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\logging\logtofile.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\logging\logtoscreen.cpp">
+      <Filter>papyrus\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\parser\parser.cpp">
+      <Filter>papyrus\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\parser\ini\iniparser.cpp">
+      <Filter>papyrus\parser\ini</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\parser\json\jsonparser.cpp">
+      <Filter>papyrus\parser\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\parser\xml\xmlparser.cpp">
+      <Filter>papyrus\parser\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\physics\controllable.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\physics\physics.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\physics\static.cpp">
+      <Filter>papyrus\physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\renderer\renderer.cpp">
+      <Filter>papyrus\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\renderer\sdlrenderer.cpp">
+      <Filter>papyrus\renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\sprite\animsprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\sprite\sprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\sprite\staticsprite.cpp">
+      <Filter>papyrus\sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\ui\interactive.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\ui\staticui.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\ui\ui.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\papyrus\ui\objects\uibutton.cpp">
+      <Filter>papyrus\ui\objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,114 +145,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="papyrus\parser\ini\iniparser.h">
-      <Filter>papyrus\parser\ini</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\parser\json\jsonparser.h">
-      <Filter>papyrus\parser\json</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\parser\xml\xmlparser.h">
-      <Filter>papyrus\parser\xml</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\parser\iparser.h">
-      <Filter>papyrus\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\parser\parser.h">
-      <Filter>papyrus\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\defines.h">
-      <Filter>papyrus</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\core\utility\timer.h">
-      <Filter>papyrus\core\utility</Filter>
-    </ClInclude>
     <ClInclude Include="game.h" />
-    <ClInclude Include="papyrus\core\core.h">
-      <Filter>papyrus\core</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\core\utility\singleton.h">
-      <Filter>papyrus\core\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\renderer\sdlrenderer.h">
-      <Filter>papyrus\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\renderer\renderer.h">
-      <Filter>papyrus\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\renderer\irenderer.h">
-      <Filter>papyrus\renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\core\utility\refcount.h">
-      <Filter>papyrus\core\utility</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\sprite\sprite.h">
-      <Filter>papyrus\sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\sprite\isprite.h">
-      <Filter>papyrus\sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\sprite\staticsprite.h">
-      <Filter>papyrus\sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\logging\logger.h">
-      <Filter>papyrus\logging</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\logging\ilogtype.h">
-      <Filter>papyrus\logging</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\logging\logtoscreen.h">
-      <Filter>papyrus\logging</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\logging\logtofile.h">
-      <Filter>papyrus\logging</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\logging\logconsole.h">
-      <Filter>papyrus\logging</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\sprite\animsprite.h">
-      <Filter>papyrus\sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\input\manager.h">
-      <Filter>papyrus\input</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\input\observer.h">
-      <Filter>papyrus\input</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\input\input.h">
-      <Filter>papyrus\input</Filter>
-    </ClInclude>
     <ClInclude Include="character\character.h">
       <Filter>character</Filter>
     </ClInclude>
     <ClInclude Include="character\playable.h">
       <Filter>character</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\physics\physics.h">
-      <Filter>papyrus\physics</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\physics\idynamicactor.h">
-      <Filter>papyrus\physics</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\physics\istaticactor.h">
-      <Filter>papyrus\physics</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\core\math\vector2.h">
-      <Filter>papyrus\core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\core\math\vector3.h">
-      <Filter>papyrus\core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\core\math\vector4.h">
-      <Filter>papyrus\core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\core\math\vectormath.h">
-      <Filter>papyrus\core\math</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\physics\iactor.h">
-      <Filter>papyrus\physics</Filter>
-    </ClInclude>
-    <ClInclude Include="papyrus\physics\controllable.h">
-      <Filter>papyrus\physics</Filter>
     </ClInclude>
     <ClInclude Include="level\levelmanager.h">
       <Filter>level</Filter>
@@ -266,26 +164,128 @@
     <ClInclude Include="level\platform.h">
       <Filter>level</Filter>
     </ClInclude>
-    <ClInclude Include="papyrus\physics\static.h">
+    <ClInclude Include="..\papyrus\core\core.h">
+      <Filter>papyrus\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\core\math\vector2.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\core\math\vector3.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\core\math\vector4.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\core\math\vectormath.h">
+      <Filter>papyrus\core\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\core\utility\refcount.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\core\utility\singleton.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\core\utility\timer.h">
+      <Filter>papyrus\core\utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\input\input.h">
+      <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\input\manager.h">
+      <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\input\observer.h">
+      <Filter>papyrus\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\logging\ilogtype.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\logging\logconsole.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\logging\logger.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\logging\logtofile.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\logging\logtoscreen.h">
+      <Filter>papyrus\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\parser\iparser.h">
+      <Filter>papyrus\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\parser\parser.h">
+      <Filter>papyrus\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\parser\ini\iniparser.h">
+      <Filter>papyrus\parser\ini</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\parser\json\jsonparser.h">
+      <Filter>papyrus\parser\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\parser\xml\xmlparser.h">
+      <Filter>papyrus\parser\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\physics\controllable.h">
       <Filter>papyrus\physics</Filter>
     </ClInclude>
-    <ClInclude Include="papyrus\ui\ui.h">
+    <ClInclude Include="..\papyrus\physics\iactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\physics\idynamicactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\physics\istaticactor.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\physics\physics.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\physics\static.h">
+      <Filter>papyrus\physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\renderer\irenderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\renderer\renderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\renderer\sdlrenderer.h">
+      <Filter>papyrus\renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\sprite\animsprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\sprite\isprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\sprite\sprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\sprite\staticsprite.h">
+      <Filter>papyrus\sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\ui\interactive.h">
       <Filter>papyrus\ui</Filter>
     </ClInclude>
-    <ClInclude Include="papyrus\ui\interface.h">
+    <ClInclude Include="..\papyrus\ui\interface.h">
       <Filter>papyrus\ui</Filter>
     </ClInclude>
-    <ClInclude Include="papyrus\ui\interactive.h">
+    <ClInclude Include="..\papyrus\ui\staticui.h">
       <Filter>papyrus\ui</Filter>
     </ClInclude>
-    <ClInclude Include="papyrus\ui\staticui.h">
+    <ClInclude Include="..\papyrus\ui\ui.h">
       <Filter>papyrus\ui</Filter>
     </ClInclude>
-    <ClInclude Include="papyrus\ui\uiobject.h">
+    <ClInclude Include="..\papyrus\ui\uiobject.h">
       <Filter>papyrus\ui</Filter>
     </ClInclude>
-    <ClInclude Include="papyrus\ui\objects\uibutton.h">
+    <ClInclude Include="..\papyrus\ui\objects\uibutton.h">
       <Filter>papyrus\ui\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\defines.h">
+      <Filter>papyrus</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

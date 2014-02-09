@@ -7,8 +7,8 @@
 #include <vector>
 
 // Local Includes
-#include "../core/core.h"
-#include "../core/utility/refcount.h"
+#include "../../core/core.h"
+#include "../../core/utility/refcount.h"
 
 using namespace Papyrus;
 
