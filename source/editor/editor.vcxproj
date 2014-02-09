@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{62226453-8373-438F-9E3A-6D63095C8DD0}</ProjectGuid>
+    <RootNamespace>pirategame</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)..\test\</OutDir>
+    <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_D</TargetName>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(SolutionDir)..\obj\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)..\bin\</OutDir>
+    <IncludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)\editor\papyrus\sdl\include;$(SolutionDir)\editor\papyrus\sdl\sdl_image\include;$(SolutionDir)\editor\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\editor\papyrus\vld;$(SolutionDir)\editor\papyrus\lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)\editor\papyrus\sdl\lib\x86;$(SolutionDir)\editor\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\editor\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\editor\papyrus\vld;$(SolutionDir)\editor\papyrus\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+      <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\editor\papyrus\sdl\include;$(SolutionDir)\editor\papyrus\sdl\sdl_image\include;$(SolutionDir)\editor\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\editor\papyrus\vld;$(SolutionDir)\editor\papyrus\lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)\editor\papyrus\sdl\lib\x86;$(SolutionDir)\editor\papyrus\sdl\sdl_image\lib\x86;$(SolutionDir)\editor\papyrus\sdl\sdl_ttf\lib\x86;$(SolutionDir)\editor\papyrus\vld;$(SolutionDir)\editor\papyrus\lua\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;lua5.1.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Windows</SubSystem>
+      <ProfileGuidedDatabase>$(IntDir)$(TargetName).pgd</ProfileGuidedDatabase>
+      <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="editor\interfaceedit.cpp" />
+    <ClCompile Include="editor\leveledit.cpp" />
+    <ClCompile Include="editor\level\level.cpp" />
+    <ClCompile Include="editor\level\platform.cpp" />
+    <ClCompile Include="editor\level\tile.cpp" />
+    <ClCompile Include="editor\tools\tiletool.cpp" />
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="papyrus\core\core.cpp" />
+    <ClCompile Include="papyrus\core\utility\timer.cpp" />
+    <ClCompile Include="papyrus\input\input.cpp" />
+    <ClCompile Include="papyrus\input\manager.cpp" />
+    <ClCompile Include="papyrus\logging\logconsole.cpp" />
+    <ClCompile Include="papyrus\logging\logger.cpp" />
+    <ClCompile Include="papyrus\logging\logtofile.cpp" />
+    <ClCompile Include="papyrus\logging\logtoscreen.cpp" />
+    <ClCompile Include="papyrus\parser\ini\iniparser.cpp" />
+    <ClCompile Include="papyrus\parser\json\jsonparser.cpp" />
+    <ClCompile Include="papyrus\parser\parser.cpp" />
+    <ClCompile Include="papyrus\parser\xml\xmlparser.cpp" />
+    <ClCompile Include="papyrus\physics\controllable.cpp" />
+    <ClCompile Include="papyrus\physics\physics.cpp" />
+    <ClCompile Include="papyrus\physics\static.cpp" />
+    <ClCompile Include="papyrus\renderer\renderer.cpp" />
+    <ClCompile Include="papyrus\renderer\sdlrenderer.cpp" />
+    <ClCompile Include="papyrus\sprite\animsprite.cpp" />
+    <ClCompile Include="papyrus\sprite\sprite.cpp" />
+    <ClCompile Include="papyrus\sprite\staticsprite.cpp" />
+    <ClCompile Include="papyrus\ui\interactive.cpp" />
+    <ClCompile Include="papyrus\ui\objects\uibutton.cpp" />
+    <ClCompile Include="papyrus\ui\staticui.cpp" />
+    <ClCompile Include="papyrus\ui\ui.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="editor\editor.h" />
+    <ClInclude Include="editor\interfaceedit.h" />
+    <ClInclude Include="editor\leveledit.h" />
+    <ClInclude Include="editor\level\level.h" />
+    <ClInclude Include="editor\level\platform.h" />
+    <ClInclude Include="editor\level\tile.h" />
+    <ClInclude Include="editor\tool.h" />
+    <ClInclude Include="editor\tools\tiletool.h" />
+    <ClInclude Include="game.h" />
+    <ClInclude Include="papyrus\core\core.h" />
+    <ClInclude Include="papyrus\core\math\vector2.h" />
+    <ClInclude Include="papyrus\core\math\vector3.h" />
+    <ClInclude Include="papyrus\core\math\vector4.h" />
+    <ClInclude Include="papyrus\core\math\vectormath.h" />
+    <ClInclude Include="papyrus\core\utility\refcount.h" />
+    <ClInclude Include="papyrus\core\utility\singleton.h" />
+    <ClInclude Include="papyrus\core\utility\timer.h" />
+    <ClInclude Include="papyrus\defines.h" />
+    <ClInclude Include="papyrus\input\input.h" />
+    <ClInclude Include="papyrus\input\manager.h" />
+    <ClInclude Include="papyrus\input\observer.h" />
+    <ClInclude Include="papyrus\logging\ilogtype.h" />
+    <ClInclude Include="papyrus\logging\logconsole.h" />
+    <ClInclude Include="papyrus\logging\logger.h" />
+    <ClInclude Include="papyrus\logging\logtofile.h" />
+    <ClInclude Include="papyrus\logging\logtoscreen.h" />
+    <ClInclude Include="papyrus\parser\ini\iniparser.h" />
+    <ClInclude Include="papyrus\parser\iparser.h" />
+    <ClInclude Include="papyrus\parser\json\jsonparser.h" />
+    <ClInclude Include="papyrus\parser\parser.h" />
+    <ClInclude Include="papyrus\parser\xml\xmlparser.h" />
+    <ClInclude Include="papyrus\physics\controllable.h" />
+    <ClInclude Include="papyrus\physics\iactor.h" />
+    <ClInclude Include="papyrus\physics\idynamicactor.h" />
+    <ClInclude Include="papyrus\physics\istaticactor.h" />
+    <ClInclude Include="papyrus\physics\physics.h" />
+    <ClInclude Include="papyrus\physics\static.h" />
+    <ClInclude Include="papyrus\renderer\irenderer.h" />
+    <ClInclude Include="papyrus\renderer\renderer.h" />
+    <ClInclude Include="papyrus\renderer\sdlrenderer.h" />
+    <ClInclude Include="papyrus\sprite\animsprite.h" />
+    <ClInclude Include="papyrus\sprite\isprite.h" />
+    <ClInclude Include="papyrus\sprite\sprite.h" />
+    <ClInclude Include="papyrus\sprite\staticsprite.h" />
+    <ClInclude Include="papyrus\ui\interactive.h" />
+    <ClInclude Include="papyrus\ui\interface.h" />
+    <ClInclude Include="papyrus\ui\objects\uibutton.h" />
+    <ClInclude Include="papyrus\ui\staticui.h" />
+    <ClInclude Include="papyrus\ui\ui.h" />
+    <ClInclude Include="papyrus\ui\uiobject.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
