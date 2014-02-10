@@ -51,7 +51,7 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 	assert(m_actor);
 	m_actor->AddRef();
 	m_actor->SetActive(true);
-	m_actor->SetHCollided(true);
+	m_actor->SetVCollided(true);
 	settings->Release();
 
 	return true;

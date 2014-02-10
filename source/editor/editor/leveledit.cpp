@@ -91,11 +91,11 @@ void CLevelEdit::Notify(SDL_Event* _e)
 {
 	if (SDL_MOUSEBUTTONDOWN == _e->type)
 	{
-		if (SDL_BUTTON_RIGHT == _e->button.button)
+		if (SDL_BUTTON_RIGHT == _e->button.button && !m_leftMouseDown)
 		{
 			m_rightMouseDown = true;
 		}
-		else if (SDL_BUTTON_LEFT == _e->button.button)
+		else if (SDL_BUTTON_LEFT == _e->button.button && !m_rightMouseDown)
 		{
 			m_leftMouseDown = true;
 			if (INVALID_TOOL != m_activeTool && MAX_TOOL > m_activeTool)

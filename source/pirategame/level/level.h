@@ -38,6 +38,8 @@ protected:
 	CTile**				m_tiles;
 	CPlatform**			m_platforms;
 
+	SDL_Texture*		m_static;
+
 	VECTOR2				m_cameraPos;
 
 	Int32				m_levelNumber;

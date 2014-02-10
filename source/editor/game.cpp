@@ -19,7 +19,7 @@ CGame::CGame()
 
 CGame::~CGame()
 {
-	m_interface->Release();
+	PY_SAFE_RELEASE(m_interface);
 	PY_DELETE_RELEASE(m_editor);
 	Core::ShutDown();
 }
@@ -121,6 +121,7 @@ Int32 CGame::StartLevelEditor(lua_State* L)
 	{
 		sm_pTheInstance->m_interface->Toggle();
 		sm_pTheInstance->m_interface->Release();
+		sm_pTheInstance->m_interface = 0;
 		sm_pTheInstance->m_editor->AddRef();
 	}
 
@@ -142,6 +143,7 @@ Int32 CGame::StartInterfaceEditor(lua_State* L)
 	{
 		sm_pTheInstance->m_interface->Toggle();
 		sm_pTheInstance->m_interface->Release();
+		sm_pTheInstance->m_interface = 0;
 		sm_pTheInstance->m_editor->AddRef();
 	}
 

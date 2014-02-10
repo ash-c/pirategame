@@ -15,6 +15,7 @@ CLevel::CLevel()
 	, m_tiles(0)
 	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
+	, m_static(0)
 	, m_numPlatforms(0)
 	, m_screenW(0)
 {
@@ -99,7 +100,19 @@ Bool CLevel::Initialise(Int8* _setup)
 
 		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
 	}
+	
+	/*Renderer::activeRenderer->CreateTexture(SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, LEVEL_WIDTH, LEVEL_HEIGHT, &m_static);
+	assert(m_static);
 
+	VALIDATE(Renderer::activeRenderer->SetRenderTarget(m_static));
+
+	for (Int16 i = 0; i < m_numTiles; ++i)
+	{
+		m_tiles[i]->Render(m_cameraPos);
+	}
+
+	VALIDATE(Renderer::activeRenderer->SetRenderTarget(NULL));*/
+	
 	setup->Release();
 
 	CLEANARRAY(tileset);
@@ -119,6 +132,7 @@ Bool CLevel::ShutDown()
 	{
 		PY_DELETE_RELEASE(m_tiles[i]);
 	}
+	SDL_DestroyTexture(m_static);
 
 	CLEANARRAY(m_tiles);
 
@@ -181,6 +195,18 @@ void CLevel::Render()
 	{
 		m_tiles[i]->Render(m_cameraPos);
 	}
+
+	/*SDL_Rect dst;
+	dst.w = LEVEL_WIDTH;
+	dst.h = LEVEL_HEIGHT;
+	dst.x = m_cameraPos.x;
+	dst.y = m_cameraPos.y;
+	Renderer::activeRenderer->Render(m_static, &dst, NULL);
+
+	for (Int16 i = 0; i < m_numTiles; ++i)
+	{
+		m_tiles[i]->Render(m_cameraPos);
+	}*/
 
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{

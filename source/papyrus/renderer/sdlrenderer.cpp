@@ -64,6 +64,12 @@ void Renderer::CSDLRenderer::Render(SDL_Texture* _tex, SDL_Rect* _dst, SDL_Rect*
 	PY_SDLASSERT(SDL_RenderCopy(m_Renderer, _tex, _clip, _dst), "SDL_RenderCopy");
 }
 
+Bool Renderer::CSDLRenderer::SetRenderTarget(SDL_Texture* _tex)
+{
+	VALIDATE(PY_SDLASSERT(SDL_SetRenderTarget(m_Renderer, _tex), "SDL_SetRenderTarget"));
+	return true;
+}
+
 void Renderer::CSDLRenderer::Present()
 {
 	SDL_RenderPresent(m_Renderer);
@@ -80,6 +86,13 @@ Bool Renderer::CSDLRenderer::LoadTexture(SDL_Surface* _surface, SDL_Texture** _r
 {
 	*_result = SDL_CreateTextureFromSurface(m_Renderer, _surface);
 	VALIDATE(PY_SDLASSERT(0 == *_result, "SDL_CreateTextureFromSurface"));
+	return true;
+}
+
+Bool Renderer::CSDLRenderer::CreateTexture(UInt32 _format, Int32 _access, Int32 _w, Int32 _h, SDL_Texture** _result)
+{	
+	*_result = SDL_CreateTexture(m_Renderer, _format, _access, _w, _h);
+	VALIDATE(PY_SDLASSERT(0 == *_result, "SDL_CreateTexture"));
 	return true;
 }
 
