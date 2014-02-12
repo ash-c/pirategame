@@ -93,6 +93,9 @@
     <ClCompile Include="..\papyrus\ui\ui.cpp">
       <Filter>papyrus\ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\papyrus\ui\context.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -242,6 +245,9 @@
     </ClInclude>
     <ClInclude Include="..\papyrus\defines.h">
       <Filter>papyrus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\ui\context.h">
+      <Filter>papyrus\ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

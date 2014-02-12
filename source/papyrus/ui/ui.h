@@ -32,15 +32,17 @@ namespace Papyrus
 		* @param	_path		Path to save the interface on.
 		* @return	Returns a pointer to an IUIInterface object if successfull, 0 otherwise.
 		*/
-		IUIInterface* CreateInterface(Int8* _path, Bool _interactive = true);
+		IUIInterface* CreateInterface(Int8* _path, Bool _interactive = true, Bool _context = false);
 
 		/*
 		* Loads a file into a parser.
 		*
 		* @param	_filePath		Interface to load.
+		* @param	_interactive	Create an interactive or static interface.
+		* @param	_context		Create a context interface.
 		* @return	Returns a pointer to an IUIInterface object if the file was loaded successfully. Otherwise returns 0.
 		*/
-		IUIInterface* LoadInterface(Int8* _filePath, Bool _interactive = true);
+		IUIInterface* LoadInterface(Int8* _filePath, Bool _interactive = true, Bool _context = false);
 
 		/*
 		* Flushes a parser from memory.

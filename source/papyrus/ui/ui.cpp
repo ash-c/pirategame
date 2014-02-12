@@ -6,6 +6,7 @@
 #include "ui.h"
 #include "staticui.h"
 #include "interactive.h"
+#include "context.h"
 
 using namespace Papyrus;
 
@@ -30,7 +31,7 @@ Bool UI::ShutDown()
 	return true;
 }
 
-UI::IUIInterface* UI::CreateInterface(Int8* _path, Bool _interactive)
+UI::IUIInterface* UI::CreateInterface(Int8* _path, Bool _interactive, Bool _context)
 {
 	assert(interfaces && "Can't create interface, array missing");
 	assert(0 != _path && "Path missing for interface creation");
@@ -48,6 +49,10 @@ UI::IUIInterface* UI::CreateInterface(Int8* _path, Bool _interactive)
 	}
 
 	IUIInterface* ui = 0;
+	if (_context)
+	{
+		CREATEPOINTER(ui, CContextMenu);
+	}
 	if (_interactive)
 	{
 		CREATEPOINTER(ui, CInteractiveUI);
@@ -73,7 +78,7 @@ UI::IUIInterface* UI::CreateInterface(Int8* _path, Bool _interactive)
 	return 0;
 }
 
-UI::IUIInterface* UI::LoadInterface(Int8* _filePath, Bool _interactive)
+UI::IUIInterface* UI::LoadInterface(Int8* _filePath, Bool _interactive, Bool _context)
 {
 	assert(interfaces && "Can't create interface, array missing");
 	assert(0 != _filePath && "Path missing for interface creation");
@@ -94,7 +99,7 @@ UI::IUIInterface* UI::LoadInterface(Int8* _filePath, Bool _interactive)
 		}
 	}
 
-	IUIInterface* ui = CreateInterface(_filePath, true);
+	IUIInterface* ui = CreateInterface(_filePath, _interactive, _context);
 	assert(ui && "Inteface creation failed");
 
 	if (ui)

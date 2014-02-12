@@ -58,12 +58,29 @@ namespace Papyrus
 			{
 				m_active = !m_active;
 
+				ToggleObjects();
+
+				return m_active;
+			}
+
+			virtual void	Show(VECTOR2* _pos = 0)
+			{
+				m_active = true;
+				ToggleObjects();
+			}
+
+			virtual void	Hide()
+			{
+				m_active = false;
+				ToggleObjects();
+			}
+
+			virtual void	ToggleObjects()
+			{
 				for (UInt16 i = 0; i < m_numObjects; ++i)
 				{
 					m_objects[i]->SetActive(m_active);
 				}
-
-				return m_active;
 			}
 
 			virtual Bool	IsActive()
