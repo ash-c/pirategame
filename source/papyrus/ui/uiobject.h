@@ -69,6 +69,17 @@ namespace Papyrus
 			*/
 			virtual void	SetActive(Bool _b) { m_active = _b; }
 
+			/*
+			* Set the position of the UI object.
+			*
+			* @param	_pos		The position to set.
+			* @return	Returns void.
+			*/
+			virtual void	SetPosition(VECTOR2 _pos) = 0;
+
+			virtual Int32	GetHeight() = 0;
+			virtual Int32	GetWidth() = 0;
+
 			// Member Variables
 		protected:
 			Sprite::ISprite*	m_sprite;

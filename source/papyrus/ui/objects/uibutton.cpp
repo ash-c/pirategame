@@ -119,6 +119,23 @@ void UI::CUIButton::SetActive(Bool _b)
 	CUIObject::SetActive(_b);
 }
 
+void UI::CUIButton::SetPosition(VECTOR2 _pos)
+{
+	m_rect.x = static_cast<Int32>(_pos.x - m_rect.w * 0.5f);
+	m_rect.y = static_cast<Int32>(_pos.y - m_rect.h * 0.25f);
+	m_sprite->SetPosition(static_cast<Int32>(_pos.x), static_cast<Int32>(_pos.y + m_rect.h * 0.5f));
+}
+
+Int32 UI::CUIButton::GetHeight()
+{
+	return m_rect.h;
+}
+
+Int32 UI::CUIButton::GetWidth()
+{
+	return m_rect.w;
+}
+
 Bool UI::CUIButton::CheckForHover(VECTOR2 _mouse)
 {
 	if (_mouse.x > m_rect.x && _mouse.x < (m_rect.x + m_rect.w) &&

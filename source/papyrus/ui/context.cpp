@@ -37,7 +37,7 @@ Bool UI::CContextMenu::Initialise(Int8* _path)
 	VALIDATE(setup->GetValue("width", m_width, "info"));
 
 	// Calculate actual height from number of objects in menu.
-	m_height = 200;
+	m_height = 0;
 
 	// Will be other types of objects.
 	m_numObjects = numButtons + numStatic;
@@ -46,7 +46,7 @@ Bool UI::CContextMenu::Initialise(Int8* _path)
 	assert(m_objects);
 	SDL_memset(m_objects, 0, sizeof(CUIObject*) * m_numObjects);
 	
-	UInt32 w = 0, h = 0;
+	UInt32 h = 0;
 	VECTOR2 pos;
 	Int8* spritePath = 0;
 	Int8* luaFunc = 0;
@@ -74,7 +74,7 @@ Bool UI::CContextMenu::Initialise(Int8* _path)
 		m_height += h;
 		pos.y += h;
 
-		m_objects[count]->Initialise(luaFile, luaFunc, spritePath, pos, w, h);
+		m_objects[count]->Initialise(luaFile, luaFunc, spritePath, pos, m_width, h);
 		m_objects[count]->AddRef();
 		CLEANARRAY(spritePath);
 		CLEANARRAY(luaFunc);
@@ -110,7 +110,7 @@ void UI::CContextMenu::Render()
 	{
 		if (0 != m_background) 
 		{
-			m_background->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
+			m_background->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y + m_height * 0.5f));
 			m_background->Render();
 		}
 
@@ -118,6 +118,7 @@ void UI::CContextMenu::Render()
 		{
 			if (m_objects[i]->IsActive())
 			{
+				m_objects[i]->SetPosition(VECTOR2(m_pos.x, m_pos.y + m_objects[i]->GetHeight() * i));
 				m_objects[i]->Render();
 			}
 		}
@@ -130,7 +131,7 @@ void UI::CContextMenu::Show(VECTOR2* _pos)
 	{
 		m_pos = *_pos;
 		m_pos.x += m_width * 0.5f;
-		m_pos.y += m_height * 0.5f;
+		//m_pos.y += m_height * 0.5f;
 	}
 
 	IUIInterface::Show();

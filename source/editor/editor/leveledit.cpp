@@ -29,6 +29,8 @@ CLevelEdit::~CLevelEdit()
 
 Bool CLevelEdit::Initialise()
 {
+	lua_register(Logger::luaState, "ChangeTool", ChangeTool);
+
 	CREATEPOINTER(m_level, CLevel);
 	assert(m_level);
 	VALIDATE(m_level->Initialise("data/levels/editorNew.json"));
@@ -49,7 +51,7 @@ Bool CLevelEdit::Initialise()
 	assert(m_toolContext);
 	m_toolContext->AddRef();
 
-	IEditor::Initialise();
+	VALIDATE(IEditor::Initialise());
 
 	return true;
 }
@@ -148,7 +150,7 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		}
 		if (SDL_BUTTON_LEFT == _e->button.button)
 		{
-			m_toolContext->Hide();
+			//m_toolContext->Hide();
 			m_leftMouseDown = false;
 		}
 	}
@@ -184,4 +186,11 @@ void CLevelEdit::Notify(SDL_Event* _e)
 			}
 		}
 	}
+}
+
+Int32 CLevelEdit::ChangeTool(lua_State* L)
+{
+	Logger::Write("Changing tool...");
+
+	return 0;
 }

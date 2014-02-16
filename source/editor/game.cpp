@@ -34,7 +34,7 @@ Bool CGame::Initialise()
 {
 	VALIDATE(Core::Initialise());
 
-	// Register the quit function called via the debug console
+	// Register functions called by lua
 	lua_register(Logger::luaState, "Quit", Quit);
 	lua_register(Logger::luaState, "StartLevelEditor", StartLevelEditor);
 	lua_register(Logger::luaState, "StartInterfaceEditor", StartInterfaceEditor);

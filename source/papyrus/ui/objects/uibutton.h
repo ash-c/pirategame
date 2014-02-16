@@ -39,6 +39,10 @@ namespace Papyrus
 			virtual void	Notify(SDL_Event* _e);
 
 			virtual void	SetActive(Bool _b);
+			virtual void	SetPosition(VECTOR2 _pos);
+
+			virtual Int32	GetHeight();
+			virtual Int32	GetWidth();
 
 		private:
 			Bool			CheckForHover(VECTOR2 _mouse);

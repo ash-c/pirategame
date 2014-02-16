@@ -29,6 +29,8 @@ public:
 
 	virtual void		Notify(SDL_Event* _e);
 
+	static Int32		ChangeTool(lua_State* L);
+
 	// Member Variables
 protected:
 	CLevel*				m_level;

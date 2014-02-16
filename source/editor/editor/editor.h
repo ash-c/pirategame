@@ -4,6 +4,7 @@
 #define __EDITOR_H__
 
 // Library Includes
+#include <lua.h>
 
 // Local Includes
 #include "../../core/utility/refcount.h"
