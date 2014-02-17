@@ -59,6 +59,7 @@ public:
 	ETileType	GetType();
 
 	void		AddLinked(CTile* _link);
+	void		RemoveLink(CTile* _link);
 	void		UpdateType();
 
 	// Member Variables

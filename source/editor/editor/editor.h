@@ -7,12 +7,16 @@
 #include <lua.h>
 
 // Local Includes
+#include "../../core/utility/singleton.h"
 #include "../../core/utility/refcount.h"
 #include "../../input/input.h"
 #include "../../input/observer.h"
+#include "../../logging/logger.h"
 
-class IEditor : public TRefCount<IEditor>, Papyrus::Input::IInputObserver
+class IEditor : public TRefCount<IEditor>, Papyrus::Input::IInputObserver, public TSingleton<IEditor>
 {
+	friend class TSingleton<IEditor>;
+
 	// Member Functions
 public:
 	IEditor() {}
@@ -31,6 +35,19 @@ public:
 	virtual Bool		Save() = 0;
 
 	virtual void		Notify(SDL_Event* _e) = 0;
+
+	virtual void		SetTool(Int32 _new) = 0;
+
+	static Int32		ChangeTool(lua_State* L)
+	{
+		Int32 i = static_cast<Int32>(lua_tonumber(L, 1));
+
+		sm_pTheInstance->SetTool(i);
+
+		Papyrus::Logger::Write("Tool changed to %i", i);
+
+		return 0;
+	}
 
 	// Member Variables
 protected:

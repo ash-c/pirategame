@@ -4,7 +4,6 @@
 #define __PIRATEGAME_LEVEL_TILE_H__
 
 // Library Includes
-#include <vector>
 
 // Local Includes
 #include "../core/core.h"
@@ -27,10 +26,6 @@ typedef enum _ETileType
 	TYPE_LEFT,
 	TYPE_MID,
 	TYPE_RIGHT,
-	TYPE_TOP_VERT,
-	TYPE_MID_VERT,
-	TYPE_BOT_VERT,
-	TYPE_ALONE,
 	MAX_TYPE
 } ETileType;
 
@@ -45,35 +40,104 @@ class CTile : public TRefCount<CTile>
 {
 	// Member Functions
 public:
-	CTile();
-	~CTile();
+	CTile() 
+		: m_actor(0)
+		, m_sprite(0)
+	{
+		SDL_memset(&m_clips, 0, sizeof(Int32) * 4);
+	}
 
-	Bool		Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type);
-	Bool		ShutDown();
+	~CTile() {}
 
-	void		Render(VECTOR2 _camPos);
+	Bool		Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
+	{
+		m_sprite = Sprite::CreateSprite(_spritesheet, 0, false);
+		assert(m_sprite);
+		m_sprite->AddRef();
+		m_sprite->SetScale(TILE_WIDTH, TILE_HEIGHT);
+		m_clips.w = TILE_WIDTH;
+		m_clips.h = TILE_HEIGHT;
+		m_pos = _pos;
 
-	void		SetType(ETileType _type);
+		switch(_type)
+		{
+		case TYPE_TOP_LEFT:
+			m_clips.x = 0;
+			m_clips.y = 0;
+			break;
+		case TYPE_TOP_MID:
+			m_clips.x = TILE_WIDTH;
+			m_clips.y = 0;
+			break;
+		case TYPE_TOP_RIGHT:
+			m_clips.x = TILE_WIDTH_DOUBLE;
+			m_clips.y = 0;
+			break;
+		case TYPE_MID_LEFT:
+			m_clips.x = 0;
+			m_clips.y = TILE_HEIGHT;
+			break;
+		case TYPE_MID_MID:
+			m_clips.x = TILE_WIDTH;
+			m_clips.y = TILE_HEIGHT;
+			break;
+		case TYPE_MID_RIGHT:
+			m_clips.x = TILE_WIDTH_DOUBLE;
+			m_clips.y = TILE_HEIGHT;
+			break;
+		case TYPE_BOT_LEFT:
+			m_clips.x = 0;
+			m_clips.y = TILE_HEIGHT_DOUBLE;
+			break;
+		case TYPE_BOT_MID:
+			m_clips.x = TILE_WIDTH;
+			m_clips.y = TILE_HEIGHT_DOUBLE;
+			break;
+		case TYPE_BOT_RIGHT:
+			m_clips.x = TILE_WIDTH_DOUBLE;
+			m_clips.y = TILE_HEIGHT_DOUBLE;
+			break;
+		default:
+			break;
+		}
 
+<<<<<<< HEAD:editorOld/editorSource/editor/editor/level/tile.h
 	VECTOR2		GetPos();
 	ETileType	GetType();
+=======
+		m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(static_cast<Float32>(TILE_WIDTH),static_cast<Float32>(TILE_HEIGHT)));
+		assert(m_actor);
+>>>>>>> parent of e8b7430... Tile placement working in level editor.:editor/source/editor/editor/level/tile.h
 
-	void		AddLinked(CTile* _link);
-	void		UpdateType();
+		return true;
+	}
+
+	Bool		ShutDown()
+	{
+		PY_SAFE_RELEASE(m_sprite);
+		return true;
+	}
+
+	void		Render()
+	{
+		m_sprite->SetClip(&m_clips);
+		m_sprite->SetPosition(static_cast<Int32>(m_pos.x), static_cast<Int32>(m_pos.y));
+		m_sprite->Render();
+	}
 
 	// Member Variables
 protected:
-	std::vector<CTile*>	m_linked;
-	VECTOR2				m_around[8];
-
 	Physics::IActor*	m_actor;
 	Sprite::ISprite*	m_sprite;
 	SDL_Rect			m_clips;
 	VECTOR2				m_pos;
+<<<<<<< HEAD:editorOld/editorSource/editor/editor/level/tile.h
 	VECTOR2				m_cameraPos;
 	Int32				m_screenW;
 	Int32				m_screenH;
 	ETileType			m_type;
+=======
+>>>>>>> parent of e8b7430... Tile placement working in level editor.:editor/source/editor/editor/level/tile.h
 };
 
 #endif // __PIRATEGAME_LEVEL_TILE_H__

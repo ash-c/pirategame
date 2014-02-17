@@ -29,7 +29,7 @@ public:
 	virtual Bool		Initialise() = 0;
 	virtual Bool		ShutDown() = 0;
 
-	virtual Bool		AddToLevel(CLevel* _level, VECTOR2 _pos) = 0;
+	virtual Bool		AddToLevel(CLevel* _level) = 0;
 
 	// Member Variables
 protected:

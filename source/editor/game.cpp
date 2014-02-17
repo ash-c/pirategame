@@ -38,6 +38,7 @@ Bool CGame::Initialise()
 	lua_register(Logger::luaState, "Quit", Quit);
 	lua_register(Logger::luaState, "StartLevelEditor", StartLevelEditor);
 	lua_register(Logger::luaState, "StartInterfaceEditor", StartInterfaceEditor);
+	lua_register(Logger::luaState, "ChangeTool", IEditor::ChangeTool);
 
 	VALIDATE(Input::inputManager->Register(this));
 
@@ -115,6 +116,7 @@ Int32 CGame::StartLevelEditor(lua_State* L)
 	}
 
 	CREATEPOINTER(sm_pTheInstance->m_editor, CLevelEdit);
+	//sm_pTheInstance->m_editor = &CLevelEdit::GetInstance();
 	assert(sm_pTheInstance->m_editor);
 
 	if (sm_pTheInstance->m_editor->Initialise()) 

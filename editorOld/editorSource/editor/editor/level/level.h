@@ -4,7 +4,6 @@
 #define __PIRATEGAME_LEVEL_H__
 
 // Library Includes
-#include <vector>
 
 // Local Includes
 #include "../core/core.h"
@@ -36,7 +35,7 @@ public:
 
 	void			CameraPos(VECTOR2 _pos);
 
-	Bool			AddTile(VECTOR2 _pos);
+	void			AddTile(VECTOR2 _pos);
 
 	// Member Variables
 protected:
@@ -46,18 +45,14 @@ protected:
 
 	Sprite::ISprite*	m_background;
 	ICharacter*			m_playable;
-	std::vector<CTile*>	m_tiles;
+	CTile**				m_tiles;
 	CPlatform**			m_platforms;
-
-	SDL_Rect*			m_gridRects;
 
 	VECTOR2				m_cameraPos;
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
 	Int32				m_numPlatforms;
 	Int32				m_numRects;
-
-	Int8*				m_tileset;
 };
 
 #endif // __PIRATEGAME_LEVEL_H__

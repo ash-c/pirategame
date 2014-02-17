@@ -90,9 +90,6 @@
     <ClCompile Include="editor\tools\tiletool.cpp">
       <Filter>editor\tools</Filter>
     </ClCompile>
-    <ClCompile Include="editor\level\tile.cpp">
-      <Filter>editor\level</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />

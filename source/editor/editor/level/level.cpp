@@ -344,3 +344,36 @@ Bool CLevel::AddTile(VECTOR2 _pos)
 	}
 	return true;
 }
+
+Bool CLevel::RemoveTile(VECTOR2 _pos)
+{	
+	// check _pos against the grid first.
+	for (Int16 i = 0; i < m_numRects; ++i)
+	{		
+		if (m_gridRects[i].x <= _pos.x && m_gridRects[i].y <= _pos.y
+			&& (m_gridRects[i].x + m_gridRects[i].w) > _pos.x 
+			&& (m_gridRects[i].y + m_gridRects[i].h) > _pos.y)
+		{
+			_pos.x = m_gridRects[i].x + m_gridRects[i].w * 0.5f;
+			_pos.y = m_gridRects[i].y + m_gridRects[i].h * 0.5f;
+		}
+	}
+
+	// check for existing
+	for (Int32 i = 0; i < m_numTiles; ++i)
+	{
+		if (m_tiles[i]->GetPos().x == _pos.x &&
+			m_tiles[i]->GetPos().y == _pos.y)
+		{
+			// Tile exists, remove
+			PY_DELETE_RELEASE(m_tiles[i]);
+			m_tiles.erase(m_tiles.begin() + i);
+			--m_numTiles;
+
+			return true;
+		}
+	}
+
+	// Tile doesn't exist
+	return false;
+}

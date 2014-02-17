@@ -61,6 +61,7 @@ Bool CTile::ShutDown()
 
 	for (UInt16 i = 0; i < m_linked.size(); ++i)
 	{
+		m_linked[i]->RemoveLink(this);
 		m_linked[i]->Release();
 		m_linked[i] = 0;
 	}
@@ -192,46 +193,49 @@ void CTile::UpdateType()
 
 	for (UInt16 i = 0; i < m_linked.size(); ++i)
 	{
-		VECTOR2 pos = m_linked[i]->GetPos();
-		// left
-		if (m_around[0].x == pos.x && m_around[0].y == pos.y)
+		if (0 != m_linked[i])
 		{
-			around[0] = true;
-		}
-		// top left
-		if (m_around[1].x == pos.x && m_around[1].y == pos.y)
-		{
-			around[1] = true;
-		}
-		// top
-		if (m_around[2].x == pos.x && m_around[2].y == pos.y)
-		{
-			around[2] = true;
-		}
-		// top right
-		if (m_around[3].x == pos.x && m_around[3].y == pos.y)
-		{
-			around[3] = true;
-		}
-		// right
-		if (m_around[4].x == pos.x && m_around[4].y == pos.y)
-		{
-			around[4] = true;
-		}
-		// bottom right
-		if (m_around[5].x == pos.x && m_around[5].y == pos.y)
-		{
-			around[5] = true;
-		}
-		// bottom
-		if (m_around[6].x == pos.x && m_around[6].y == pos.y)
-		{
-			around[6] = true;
-		}
-		// bottom left
-		if (m_around[7].x == pos.x && m_around[7].y == pos.y)
-		{
-			around[7] = true;
+			VECTOR2 pos = m_linked[i]->GetPos();
+			// left
+			if (m_around[0].x == pos.x && m_around[0].y == pos.y)
+			{
+				around[0] = true;
+			}
+			// top left
+			if (m_around[1].x == pos.x && m_around[1].y == pos.y)
+			{
+				around[1] = true;
+			}
+			// top
+			if (m_around[2].x == pos.x && m_around[2].y == pos.y)
+			{
+				around[2] = true;
+			}
+			// top right
+			if (m_around[3].x == pos.x && m_around[3].y == pos.y)
+			{
+				around[3] = true;
+			}
+			// right
+			if (m_around[4].x == pos.x && m_around[4].y == pos.y)
+			{
+				around[4] = true;
+			}
+			// bottom right
+			if (m_around[5].x == pos.x && m_around[5].y == pos.y)
+			{
+				around[5] = true;
+			}
+			// bottom
+			if (m_around[6].x == pos.x && m_around[6].y == pos.y)
+			{
+				around[6] = true;
+			}
+			// bottom left
+			if (m_around[7].x == pos.x && m_around[7].y == pos.y)
+			{
+				around[7] = true;
+			}
 		}
 	}
 	
@@ -313,5 +317,22 @@ void CTile::UpdateType()
 		SetType(TYPE_BOT_RIGHT);
 	}
 
-	//else if (!around[0] && !around[1] && !around[2] && !around[3] && !around[4] && !around[5] && !around[6] && !around[7])
+	if (!around[0] && !around[1] && !around[2] && !around[3] && !around[4] && !around[5] && !around[6] && !around[7])
+	{
+		SetType(TYPE_ALONE);
+	}
+}
+
+void CTile::RemoveLink(CTile* _link)
+{
+	for (UInt32 i = 0; i < m_linked.size(); ++i)
+	{
+		if (m_linked[i] == _link)
+		{
+			m_linked[i]->Release();
+			m_linked.erase(m_linked.begin() + i);
+			this->UpdateType();
+			break;
+		}
+	}
 }

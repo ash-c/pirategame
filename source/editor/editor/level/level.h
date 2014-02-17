@@ -37,6 +37,7 @@ public:
 	void			CameraPos(VECTOR2 _pos);
 
 	Bool			AddTile(VECTOR2 _pos);
+	Bool			RemoveTile(VECTOR2 _pos);
 
 	// Member Variables
 protected:

@@ -14,7 +14,7 @@
 CLevelEdit::CLevelEdit()
 	: m_level(0)
 	, m_toolContext(0)
-	, m_activeTool(INVALID_TOOL)
+	, m_activeTool(TOOL_TILE)
 	, m_screenHeight(0)
 	, m_screenWidth(0)
 	, m_rightMouseDown(false)
@@ -29,7 +29,8 @@ CLevelEdit::~CLevelEdit()
 
 Bool CLevelEdit::Initialise()
 {
-	lua_register(Logger::luaState, "ChangeTool", ChangeTool);
+	//lua_register(Logger::luaState, "ChangeTool", ChangeTool);
+	sm_pTheInstance = this;
 
 	CREATEPOINTER(m_level, CLevel);
 	assert(m_level);
@@ -43,9 +44,9 @@ Bool CLevelEdit::Initialise()
 	SDL_memset(m_tools, 0, sizeof(ITool*) * MAX_TOOL);
 
 	// Initialise tools.
-	CREATEPOINTER(m_tools[TOOL_TILE], CToolTile);
-	assert(m_tools[TOOL_TILE]);
-	VALIDATE(m_tools[TOOL_TILE]->Initialise());
+	//CREATEPOINTER(m_tools[TOOL_TILE], CToolTile);
+	//assert(m_tools[TOOL_TILE]);
+	//VALIDATE(m_tools[TOOL_TILE]->Initialise());
 
 	m_toolContext = UI::LoadInterface("data/interfaces/editorBuildContext.ini", false, true);
 	assert(m_toolContext);
@@ -61,13 +62,13 @@ Bool CLevelEdit::ShutDown()
 	PY_DELETE_RELEASE(m_level);
 	PY_SAFE_RELEASE(m_toolContext);
 
-	m_tools[m_activeTool]->Release();
+	//m_tools[m_activeTool]->Release();
 
-	for (UInt16 i = 0; i < MAX_TOOL; ++i)
+	/*for (UInt16 i = 0; i < MAX_TOOL; ++i)
 	{
 		if (0 != m_tools[i]) m_tools[i]->ShutDown();
 		CLEANDELETE(m_tools[i]);
-	}
+	}*/
 
 	return true;
 }
@@ -121,19 +122,18 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
 
 				// Place tool.
-				if (m_tools[m_activeTool]->AddToLevel(m_level, tilePos - m_cameraPos))
+				if (TOOL_TILE == m_activeTool)
 				{
-					//Logger::Write("Tool placed at (%.2f, %.2f)", tilePos.x, tilePos.y);
+					m_level->AddTile(tilePos - m_cameraPos);
 				}
-				else
+				else if (TOOL_REMOVE == m_activeTool)
 				{
-					//Logger::Write("Error, failed to place tool %i", m_activeTool);
+					m_level->RemoveTile(tilePos - m_cameraPos);
 				}
 			}
 			else 
 			{
 				m_activeTool = TOOL_TILE;
-				m_tools[m_activeTool]->AddRef();
 			}
 		}
 	}
@@ -150,7 +150,7 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		}
 		if (SDL_BUTTON_LEFT == _e->button.button)
 		{
-			//m_toolContext->Hide();
+			m_toolContext->Hide();
 			m_leftMouseDown = false;
 		}
 	}
@@ -175,22 +175,20 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
 
 				// Place tool.
-				if (m_tools[m_activeTool]->AddToLevel(m_level, tilePos - m_cameraPos))
+				if (TOOL_TILE == m_activeTool)
 				{
-					//Logger::Write("Tool placed at (%.2f, %.2f)", tilePos.x, tilePos.y);
+					m_level->AddTile(tilePos - m_cameraPos);
 				}
-				else
+				else if (TOOL_REMOVE == m_activeTool)
 				{
-					//Logger::Write("Error, failed to place tool %i", m_activeTool);
+					m_level->RemoveTile(tilePos - m_cameraPos);
 				}
 			}
 		}
 	}
 }
 
-Int32 CLevelEdit::ChangeTool(lua_State* L)
+void CLevelEdit::SetTool(Int32 _new)
 {
-	Logger::Write("Changing tool...");
-
-	return 0;
+	m_activeTool = static_cast<EToolType>(_new);
 }

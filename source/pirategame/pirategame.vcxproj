@@ -112,6 +112,7 @@
     <ClCompile Include="..\papyrus\sprite\animsprite.cpp" />
     <ClCompile Include="..\papyrus\sprite\sprite.cpp" />
     <ClCompile Include="..\papyrus\sprite\staticsprite.cpp" />
+    <ClCompile Include="..\papyrus\ui\context.cpp" />
     <ClCompile Include="..\papyrus\ui\interactive.cpp" />
     <ClCompile Include="..\papyrus\ui\objects\uibutton.cpp" />
     <ClCompile Include="..\papyrus\ui\staticui.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="..\papyrus\sprite\isprite.h" />
     <ClInclude Include="..\papyrus\sprite\sprite.h" />
     <ClInclude Include="..\papyrus\sprite\staticsprite.h" />
+    <ClInclude Include="..\papyrus\ui\context.h" />
     <ClInclude Include="..\papyrus\ui\interactive.h" />
     <ClInclude Include="..\papyrus\ui\interface.h" />
     <ClInclude Include="..\papyrus\ui\objects\uibutton.h" />

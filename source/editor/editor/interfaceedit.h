@@ -23,6 +23,8 @@ public:
 
 	virtual Bool		Save();
 
+	virtual void		SetTool(Int32 _new);
+
 	virtual void		Notify(SDL_Event* _e);
 
 	// Member Variables

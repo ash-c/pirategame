@@ -91,7 +91,7 @@ Float32 Core::Process()
 void Core::Render()
 {
 	Logger::Render();
-	//Physics::RenderDebug();
+	Physics::RenderDebug();
 }
 
 Bool Core::ShutDown()

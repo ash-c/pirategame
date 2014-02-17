@@ -90,6 +90,9 @@
     <ClCompile Include="..\papyrus\ui\objects\uibutton.cpp">
       <Filter>papyrus\ui\objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\papyrus\ui\context.cpp">
+      <Filter>papyrus\ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -286,6 +289,9 @@
     </ClInclude>
     <ClInclude Include="..\papyrus\defines.h">
       <Filter>papyrus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\ui\context.h">
+      <Filter>papyrus\ui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

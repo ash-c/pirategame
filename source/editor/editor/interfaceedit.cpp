@@ -35,6 +35,10 @@ Bool CIntEdit::Save()
 	return true;
 }
 
+void CIntEdit::SetTool(Int32 _new)
+{
+}
+
 void CIntEdit::Notify(SDL_Event* _e)
 {
 }
