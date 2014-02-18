@@ -96,6 +96,9 @@
     <ClCompile Include="..\papyrus\ui\context.cpp">
       <Filter>papyrus\ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\pirategame\character\enemy.cpp">
+      <Filter>editor\level\character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -249,6 +252,12 @@
     <ClInclude Include="..\papyrus\ui\context.h">
       <Filter>papyrus\ui</Filter>
     </ClInclude>
+    <ClInclude Include="..\pirategame\character\character.h">
+      <Filter>editor\level\character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pirategame\character\enemy.h">
+      <Filter>editor\level\character</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -307,6 +316,9 @@
     </Filter>
     <Filter Include="editor\tools">
       <UniqueIdentifier>{b53fed25-0af7-4818-b3f5-5d8c408f7fbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="editor\level\character">
+      <UniqueIdentifier>{c1bdf77d-49c4-4afb-a6ee-b06c95999daf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

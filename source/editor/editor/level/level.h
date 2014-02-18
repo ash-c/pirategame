@@ -39,6 +39,13 @@ public:
 	Bool			AddTile(VECTOR2 _pos);
 	Bool			RemoveTile(VECTOR2 _pos);
 
+	Bool			AddEnemy(VECTOR2 _pos);
+	Bool			RemoveEnemy(VECTOR2 _pos);
+
+private:
+	void			CheckAgainstGrid(VECTOR2* _pos);
+	Bool			CheckForExistingTile(VECTOR2* _pos);
+
 	// Member Variables
 protected:
 
@@ -47,6 +54,7 @@ protected:
 
 	Sprite::ISprite*	m_background;
 	ICharacter*			m_playable;
+	std::vector<ICharacter*>	m_enemies;
 	std::vector<CTile*>	m_tiles;
 	CPlatform**			m_platforms;
 
@@ -56,6 +64,7 @@ protected:
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
 	Int32				m_numPlatforms;
+	Int32				m_numEnemies;
 	Int32				m_numRects;
 
 	Int8*				m_tileset;

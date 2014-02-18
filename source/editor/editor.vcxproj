@@ -114,6 +114,7 @@
     <ClCompile Include="..\papyrus\ui\objects\uibutton.cpp" />
     <ClCompile Include="..\papyrus\ui\staticui.cpp" />
     <ClCompile Include="..\papyrus\ui\ui.cpp" />
+    <ClCompile Include="..\pirategame\character\enemy.cpp" />
     <ClCompile Include="editor\interfaceedit.cpp" />
     <ClCompile Include="editor\leveledit.cpp" />
     <ClCompile Include="editor\level\level.cpp" />
@@ -166,6 +167,8 @@
     <ClInclude Include="..\papyrus\ui\staticui.h" />
     <ClInclude Include="..\papyrus\ui\ui.h" />
     <ClInclude Include="..\papyrus\ui\uiobject.h" />
+    <ClInclude Include="..\pirategame\character\character.h" />
+    <ClInclude Include="..\pirategame\character\enemy.h" />
     <ClInclude Include="editor\editor.h" />
     <ClInclude Include="editor\interfaceedit.h" />
     <ClInclude Include="editor\leveledit.h" />

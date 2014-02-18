@@ -6,6 +6,7 @@
 
 #include "tile.h"
 #include "platform.h"
+#include "../../../pirategame/character/enemy.h"
 
 #include "../../parser/parser.h"
 
@@ -19,6 +20,7 @@ CLevel::CLevel()
 	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
 	, m_numPlatforms(0)
+	, m_numEnemies(0)
 {
 
 }
@@ -38,6 +40,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	VALIDATE(setup->GetValue("tiles", m_numTiles));
 	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
+	VALIDATE(setup->GetValue("enemies", m_numEnemies));
 
 	Int8 path[MAX_BUFFER];
 	VALIDATE(setup->GetValue("tileset", &m_tileset));
@@ -138,10 +141,22 @@ Bool CLevel::ShutDown()
 		m_tiles[i]->ShutDown();
 	}
 
+	for (UInt16 i = 0; i < m_enemies.size(); ++i)
+	{
+		m_enemies[i]->ShutDown();
+	}
+
 	for (UInt16 i = 0; i < m_tiles.size(); ++i)
 	{
 		CLEANDELETE(m_tiles[i]);
 	}
+	m_tiles.clear();
+
+	for (UInt16 i = 0; i < m_enemies.size(); ++i)
+	{
+		CLEANDELETE(m_enemies[i]);
+	}
+	m_enemies.clear();
 
 	PY_SAFE_RELEASE(m_background);
 
@@ -154,10 +169,6 @@ Bool CLevel::ShutDown()
 
 void CLevel::Process(Float32 _delta)
 {
-	for (Int16 i = 0; i < m_numPlatforms; ++i)
-	{
-		m_platforms[i]->Process(_delta);
-	}
 }
 
 void CLevel::Render()
@@ -194,6 +205,12 @@ void CLevel::Render()
 	{
 		m_platforms[i]->Render();
 	}
+
+	// Render Enemies
+	for (Int16 i = 0; i < m_numEnemies; ++i) 
+	{
+		m_enemies[i]->Render(m_cameraPos);
+	}
 }
 
 Bool CLevel::Save()
@@ -206,6 +223,7 @@ Bool CLevel::Save()
 	VALIDATE(save->AddValue("tileset", m_tileset));
 	VALIDATE(save->AddValue("tiles", m_numTiles));
 	VALIDATE(save->AddValue("platforms", m_numPlatforms));
+	VALIDATE(save->AddValue("enemies", m_numEnemies));
 	VALIDATE(save->AddValue("levelNumber", 1));
 
 	Int8 text[MAX_BUFFER];
@@ -215,6 +233,11 @@ Bool CLevel::Save()
 		VALIDATE(save->AddValue(text, m_tiles[i]->GetPos()));
 		SDL_snprintf(text, MAX_BUFFER, "%i-type", i + 1);
 		VALIDATE(save->AddValue(text, m_tiles[i]->GetType()));
+	}
+
+	for (UInt16 i = 0; i < m_numEnemies; ++i)
+	{
+
 	}
 
 	VALIDATE(save->Save());
@@ -230,27 +253,10 @@ void CLevel::CameraPos(VECTOR2 _pos)
 
 Bool CLevel::AddTile(VECTOR2 _pos)
 {
-	// check _pos against the grid first.
-	for (Int16 i = 0; i < m_numRects; ++i)
-	{		
-		if (m_gridRects[i].x <= _pos.x && m_gridRects[i].y <= _pos.y
-			&& (m_gridRects[i].x + m_gridRects[i].w) > _pos.x 
-			&& (m_gridRects[i].y + m_gridRects[i].h) > _pos.y)
-		{
-			_pos.x = m_gridRects[i].x + m_gridRects[i].w * 0.5f;
-			_pos.y = m_gridRects[i].y + m_gridRects[i].h * 0.5f;
-		}
-	}
+	CheckAgainstGrid(&_pos);
 
 	// check for pre existing
-	for (Int32 i = 0; i < m_numTiles; ++i)
-	{
-		if (m_tiles[i]->GetPos().x == _pos.x &&
-			m_tiles[i]->GetPos().y == _pos.y)
-		{
-			return false;
-		}
-	}
+	if (CheckForExistingTile(&_pos)) return false;
 
 	// Calculate right type of tile.
 	ETileType type = TYPE_ALONE;
@@ -347,18 +353,8 @@ Bool CLevel::AddTile(VECTOR2 _pos)
 
 Bool CLevel::RemoveTile(VECTOR2 _pos)
 {	
-	// check _pos against the grid first.
-	for (Int16 i = 0; i < m_numRects; ++i)
-	{		
-		if (m_gridRects[i].x <= _pos.x && m_gridRects[i].y <= _pos.y
-			&& (m_gridRects[i].x + m_gridRects[i].w) > _pos.x 
-			&& (m_gridRects[i].y + m_gridRects[i].h) > _pos.y)
-		{
-			_pos.x = m_gridRects[i].x + m_gridRects[i].w * 0.5f;
-			_pos.y = m_gridRects[i].y + m_gridRects[i].h * 0.5f;
-		}
-	}
-
+	CheckAgainstGrid(&_pos);
+	
 	// check for existing
 	for (Int32 i = 0; i < m_numTiles; ++i)
 	{
@@ -375,5 +371,71 @@ Bool CLevel::RemoveTile(VECTOR2 _pos)
 	}
 
 	// Tile doesn't exist
+	return false;
+}
+
+Bool CLevel::AddEnemy(VECTOR2 _pos)
+{
+	CheckAgainstGrid(&_pos);
+
+	CEnemy* temp = 0;
+	CREATEPOINTER(temp, CEnemy);
+	assert(temp);
+	VALIDATE(temp->Initialise("data/art/characters/enemies/basic.png", "data/art/characters/enemies/basic.xml", "data/xml/characters/basicEnemy.xml"));
+
+	_pos.y -= TILE_HEIGHT * 0.5f;
+	temp->SetPosition(_pos);
+	++m_numEnemies;
+
+	m_enemies.push_back(temp);
+
+	return true;
+}
+
+Bool CLevel::RemoveEnemy(VECTOR2 _pos)
+{
+	CheckAgainstGrid(&_pos);
+
+
+	return false;
+}
+
+//
+// PRIVATE FUNCTIONS
+//
+
+void CLevel::CheckAgainstGrid(VECTOR2* _pos)
+{
+	// check _pos against the grid first.
+	for (Int16 i = 0; i < m_numRects; ++i)
+	{		
+		if (m_gridRects[i].x <= _pos->x && m_gridRects[i].y <= _pos->y
+			&& (m_gridRects[i].x + m_gridRects[i].w) > _pos->x 
+			&& (m_gridRects[i].y + m_gridRects[i].h) > _pos->y)
+		{
+			_pos->x = m_gridRects[i].x + m_gridRects[i].w * 0.5f;
+			_pos->y = m_gridRects[i].y + m_gridRects[i].h * 0.5f;
+			break;
+		}
+	}
+}
+
+Bool CLevel::CheckForExistingTile(VECTOR2* _pos)
+{
+	// check for existing
+	for (Int32 i = 0; i < m_numTiles; ++i)
+	{
+		if (m_tiles[i]->GetPos().x == _pos->x &&
+			m_tiles[i]->GetPos().y == _pos->y)
+		{
+			// Tile exists, remove
+			PY_DELETE_RELEASE(m_tiles[i]);
+			m_tiles.erase(m_tiles.begin() + i);
+			--m_numTiles;
+
+			return true;
+		}
+	}
+
 	return false;
 }

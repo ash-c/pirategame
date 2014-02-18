@@ -130,6 +130,10 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				{
 					m_level->RemoveTile(tilePos - m_cameraPos);
 				}
+				else if (TOOL_BASIC_ENEMY == m_activeTool)
+				{
+					m_level->AddEnemy(tilePos - m_cameraPos);
+				}
 			}
 			else 
 			{

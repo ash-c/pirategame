@@ -10,9 +10,7 @@
 using namespace Papyrus;
 
 CPlayable::CPlayable()
-	: m_actor(0)
-	, m_currAnim(ANIM_IDLE_RIGHT)
-	, m_moveDir(MOVE_IDLE)
+	: m_moveDir(MOVE_IDLE)
 {
 	m_pos.x = 800;
 	m_pos.y = 450;

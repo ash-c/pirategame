@@ -32,27 +32,6 @@ protected:
 
 	// Member Variables
 protected:
-	typedef enum _EAnims
-	{
-		INVALID_ANIM = INVALID_ID,
-		ANIM_IDLE_LEFT,
-		ANIM_IDLE_RIGHT,
-		ANIM_RUN_LEFT,
-		ANIM_RUN_RIGHT,
-		ANIM_DEATH_LEFT,
-		ANIM_DEATH_RIGHT,
-		ANIM_ATTACK_LEFT,
-		ANIM_ATTACK_RIGHT,
-		ANIM_JUMP_LEFT,
-		ANIM_JUMP_RIGHT,
-		ANIM_SLIDE_LEFT,
-		ANIM_SLIDE_RIGHT,
-		ANIM_LADDER_CLIMB,
-		ANIM_VINE_LEFT,
-		ANIM_VINE_RIGHT,
-		MAX_ANIMS
-	} EAnims;
-
 	typedef enum _EMovement
 	{
 		INVALID_MOVE = INVALID_ID,
@@ -61,10 +40,6 @@ protected:
 		MOVE_LEFT,
 		MAX_MOVE
 	} EMovement;
-
-	Physics::IDynamicActor*	m_actor;
-
-	EAnims					m_currAnim;
 	EMovement				m_moveDir;
 };
 

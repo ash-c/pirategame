@@ -7,3 +7,13 @@ function setremovetool()
 	ChangeTool(0)
 	return 'tool changed to remove'
 end
+
+function setbasicenemytool()
+	ChangeTool(3)
+	return 'tool changed to basic enemy'
+end
+
+function playerstarttool()
+	ChangeTool(4)
+	return 'tool changed to player start'
+end
