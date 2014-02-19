@@ -37,6 +37,7 @@ public:
 	virtual void		Notify(SDL_Event* _e) = 0;
 
 	virtual void		SetTool(Int32 _new) = 0;
+	virtual void		Load(const Int8* _path) = 0;
 
 	static Int32		ChangeTool(lua_State* L)
 	{
@@ -45,6 +46,15 @@ public:
 		sm_pTheInstance->SetTool(i);
 
 		Papyrus::Logger::Write("Tool changed to %i", i);
+
+		return 0;
+	}
+
+	static Int32		LoadFile(lua_State* L)
+	{
+		const Int8* path = luaL_checkstring(L, 1);		
+
+		sm_pTheInstance->Load(path);
 
 		return 0;
 	}

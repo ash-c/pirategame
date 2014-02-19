@@ -105,3 +105,18 @@ Bool Input::CInputManager::Register(IInputObserver* _obs)
 	Logger::Write("Input Observer failed to register, reached max.");
 	return false;
 }
+
+Bool Input::CInputManager::DeRegister(IInputObserver* _obs)
+{
+	for (Int16 i = 0; i < MAX_OBSERVERS; ++i)
+	{
+		if (_obs == m_observers[i])
+		{
+			m_observers[i] = 0;
+			return true;
+		}
+	}
+
+	Logger::Write("Could not find input observer to deregister");
+	return false;
+}

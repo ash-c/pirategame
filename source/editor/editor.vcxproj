@@ -57,6 +57,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <PreprocessorDefinitions>PAPYRUS_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

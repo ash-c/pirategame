@@ -6,6 +6,7 @@
 
 #include "..\character\character.h"
 #include "..\character\playable.h"
+#include "..\character\enemy.h"
 #include "tile.h"
 #include "platform.h"
 
@@ -13,9 +14,11 @@ CLevel::CLevel()
 	: m_background(0)
 	, m_playable(0)
 	, m_tiles(0)
+	, m_enemies(0)
 	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
-	, m_static(0)
+	, m_numTiles(0)
+	, m_numEnemies(0)
 	, m_numPlatforms(0)
 	, m_screenW(0)
 {
@@ -38,6 +41,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	VALIDATE(setup->GetValue("tiles", m_numTiles));
 	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
+	VALIDATE(setup->GetValue("enemies", m_numEnemies));
 
 	Int8* tileset = 0;
 	Int8 path[MAX_BUFFER];
@@ -84,6 +88,29 @@ Bool CLevel::Initialise(Int8* _setup)
 		m_tiles[i]->AddRef();
 	}
 
+	m_enemies = new CEnemy*[m_numEnemies];
+	assert(m_enemies);
+	SDL_memset(m_enemies, 0, sizeof(CEnemy*) * m_numEnemies);
+
+	for (Int32 i = 0; i < m_numEnemies; ++i)
+	{
+		Int8* sprite = 0;
+		Int8* spriteSettings = 0;
+		Int8* settings = 0;
+		SDL_snprintf(text, MAX_BUFFER, "e%i-pos", i + 1);
+		VALIDATE(setup->GetValue(text, pos));
+		SDL_snprintf(text, MAX_BUFFER, "e%i-sprite", i + 1);
+		VALIDATE(setup->GetValue(text, &sprite));		
+		SDL_snprintf(text, MAX_BUFFER, "e%i-spriteSettings", i + 1);
+		VALIDATE(setup->GetValue(text, &spriteSettings));		
+		SDL_snprintf(text, MAX_BUFFER, "e%i-settings", i + 1);
+		VALIDATE(setup->GetValue(text, &settings));		
+
+		CREATEPOINTER(m_enemies[i], CEnemy);
+		VALIDATE(m_enemies[i]->Initialise(sprite, spriteSettings, settings));
+		m_enemies[i]->SetPosition(pos);
+	}
+
 	m_platforms = new CPlatform*[m_numPlatforms];
 	assert(m_platforms);
 	SDL_memset(m_platforms, 0, sizeof(CPlatform*) * m_numPlatforms);
@@ -101,18 +128,6 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
 	}
 	
-	/*Renderer::activeRenderer->CreateTexture(SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, LEVEL_WIDTH, LEVEL_HEIGHT, &m_static);
-	assert(m_static);
-
-	VALIDATE(Renderer::activeRenderer->SetRenderTarget(m_static));
-
-	for (Int16 i = 0; i < m_numTiles; ++i)
-	{
-		m_tiles[i]->Render(m_cameraPos);
-	}
-
-	VALIDATE(Renderer::activeRenderer->SetRenderTarget(NULL));*/
-	
 	setup->Release();
 
 	CLEANARRAY(tileset);
@@ -128,12 +143,17 @@ Bool CLevel::ShutDown()
 		CLEANDELETE(m_platforms[i]);
 	}
 
+	for (Int16 i = 0; i < m_numEnemies; ++i)
+	{
+		m_enemies[i]->ShutDown();
+		CLEANDELETE(m_enemies[i]);
+	}
+	CLEANARRAY(m_enemies);
+
 	for (Int16 i = 0; i < m_numTiles; ++i)
 	{
 		PY_DELETE_RELEASE(m_tiles[i]);
 	}
-	SDL_DestroyTexture(m_static);
-
 	CLEANARRAY(m_tiles);
 
 	PY_SAFE_RELEASE(m_background);
@@ -191,28 +211,25 @@ void CLevel::Render()
 {
 	m_background->Render();
 
+	// Render tiles
 	for (Int16 i = 0; i < m_numTiles; ++i)
 	{
 		m_tiles[i]->Render(m_cameraPos);
 	}
-
-	/*SDL_Rect dst;
-	dst.w = LEVEL_WIDTH;
-	dst.h = LEVEL_HEIGHT;
-	dst.x = m_cameraPos.x;
-	dst.y = m_cameraPos.y;
-	Renderer::activeRenderer->Render(m_static, &dst, NULL);
-
-	for (Int16 i = 0; i < m_numTiles; ++i)
-	{
-		m_tiles[i]->Render(m_cameraPos);
-	}*/
-
+	
+	// Render platforms
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
 		m_platforms[i]->Render();
 	}
 
+	// Render Enemies
+	for (Int16 i = 0; i < m_numEnemies; ++i) 
+	{
+		m_enemies[i]->Render(m_cameraPos);
+	}
+
+	// Render player
 	if (0 != m_playable)
 	{
 		m_playable->Render(m_cameraPos);

@@ -53,6 +53,8 @@ public:
 	virtual Float32		GetWidth() { return m_sprite->GetScale().x; }
 	virtual Float32		GetHeight() { return m_sprite->GetScale().y; }
 
+	virtual Papyrus::Physics::EType GetType() { return m_actor->GetType(); }
+
 	// Member Variables
 protected:
 	Sprite::ISprite*		m_sprite;
@@ -64,6 +66,13 @@ protected:
 	VECTOR2					m_slowDownForce;
 
 	EAnims					m_currAnim;
+
+#ifdef PAPYRUS_EDITOR
+public:
+	Int8				m_spriteSheet[MAX_BUFFER];
+	Int8				m_spriteSettings[MAX_BUFFER];
+	Int8				m_settings[MAX_BUFFER];
+#endif // PAPYRUS_EDITOR
 };
 
 #endif // __PIRATEGAME_CHARACTER_H__

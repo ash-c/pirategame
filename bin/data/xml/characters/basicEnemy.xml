@@ -3,3 +3,4 @@
 <maxAcc x="1000" y="2000">maxAcc</maxAcc>
 <moveForce x="200" y="1150">moveForce</moveForce>
 <slowDownForce x="15000" y="0">slowDownForce</slowDownForce>
+<type>3</type>

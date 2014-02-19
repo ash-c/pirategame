@@ -57,6 +57,7 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 
 Bool CPlayable::ShutDown()
 {
+	Input::inputManager->DeRegister(this);
 	PY_SAFE_RELEASE(m_sprite);
 	PY_SAFE_RELEASE(m_actor);
 	return true;

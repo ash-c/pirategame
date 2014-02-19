@@ -53,6 +53,8 @@ namespace Papyrus
 			*/
 			Bool				Register(IInputObserver* _obs);
 
+			Bool				DeRegister(IInputObserver* _obs);
+
 			// Member Variables
 		protected:
 			static const Int16	MAX_OBSERVERS = 20;

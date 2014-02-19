@@ -19,7 +19,7 @@ namespace Papyrus
 			TYPE_STATIC,
 			TYPE_PLAYER,
 			TYPE_PLATFORM,
-			TYPE_ENEMY,
+			TYPE_BASIC_ENEMY,
 			MAX_TYPE
 		} EType;
 

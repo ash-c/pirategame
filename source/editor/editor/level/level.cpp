@@ -35,63 +35,6 @@ Bool CLevel::Initialise(Int8* _setup)
 	// Make platforms
 	Int32 width = Renderer::activeRenderer->GetWidth();
 
-	FileParser::IParser* setup = FileParser::LoadFile(_setup);
-	setup->AddRef();
-	VALIDATE(setup->GetValue("tiles", m_numTiles));
-	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
-	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
-	VALIDATE(setup->GetValue("enemies", m_numEnemies));
-
-	Int8 path[MAX_BUFFER];
-	VALIDATE(setup->GetValue("tileset", &m_tileset));
-	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/background.png", m_tileset);
-	
-	m_background = Sprite::CreateSprite(path, 0, false);
-	assert(m_background);
-	m_background->AddRef();
-	PY_WRITETOFILE("Background created");
-	
-	VECTOR2 pos;
-	
-	UInt32 type = 0;
-	Int8 text[MAX_BUFFER];
-	
-	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", m_tileset);
-
-	for (Int32 i = 0; i < m_numTiles; ++i)
-	{
-		SDL_snprintf(text, MAX_BUFFER, "%i-pos", i + 1);
-		VALIDATE(setup->GetValue(text, pos));
-
-		SDL_snprintf(text, MAX_BUFFER, "%i-type", i + 1);
-		VALIDATE(setup->GetValue(text, type));
-
-		CTile* temp = 0;
-		CREATEPOINTER(temp, CTile);
-		VALIDATE(temp->Initialise(path, pos, static_cast<ETileType>(type)));
-		temp->AddRef();
-		m_tiles.push_back(temp);
-	}
-
-	m_platforms = new CPlatform*[m_numPlatforms];
-	assert(m_platforms);
-	SDL_memset(m_platforms, 0, sizeof(CPlatform*) * m_numPlatforms);
-
-	for (Int32 i = 0; i < m_numPlatforms; ++i)
-	{
-		CREATEPOINTER(m_platforms[i], CPlatform);
-		assert(m_platforms[i]);
-
-		SDL_snprintf(text, MAX_BUFFER, "%iplatform-num", i + 1);
-
-		Int32 number = 0;
-		VALIDATE(setup->GetValue(text, number));
-
-		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
-	}
-
-	setup->Release();
-
 	// Fill grid with rectangles.
 	m_numRects = LEVEL_WIDTH/TILE_WIDTH * LEVEL_HEIGHT/TILE_WIDTH;
 
@@ -120,6 +63,80 @@ Bool CLevel::Initialise(Int8* _setup)
 
 	VALIDATE(Renderer::activeRenderer->LoadTexture("data/art/editor/grid.png", &m_grid));
 	assert(m_grid);
+
+	FileParser::IParser* setup = FileParser::LoadFile(_setup);
+	setup->AddRef();
+	Int32 tiles = 0;
+	VALIDATE(setup->GetValue("tiles", tiles));
+	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
+	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
+	VALIDATE(setup->GetValue("enemies", m_numEnemies));
+
+	Int8 path[MAX_BUFFER];
+	VALIDATE(setup->GetValue("tileset", &m_tileset));
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/background.png", m_tileset);
+	
+	m_background = Sprite::CreateSprite(path, 0, false);
+	assert(m_background);
+	m_background->AddRef();
+	PY_WRITETOFILE("Background created");
+	
+	VECTOR2 pos;
+	
+	UInt32 type = 0;
+	Int8 text[MAX_BUFFER];
+	
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", m_tileset);
+
+	for (Int32 i = 0; i < tiles; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "%i-pos", i + 1);
+		VALIDATE(setup->GetValue(text, pos));
+		AddTile(pos);
+	}
+
+	for (Int32 i = 0; i < m_numEnemies; ++i)
+	{
+		Int8* sprite = 0;
+		Int8* spriteSettings = 0;
+		Int8* settings = 0;
+		SDL_snprintf(text, MAX_BUFFER, "e%i-pos", i + 1);
+		VALIDATE(setup->GetValue(text, pos));
+		SDL_snprintf(text, MAX_BUFFER, "e%i-sprite", i + 1);
+		VALIDATE(setup->GetValue(text, &sprite));		
+		SDL_snprintf(text, MAX_BUFFER, "e%i-spriteSettings", i + 1);
+		VALIDATE(setup->GetValue(text, &spriteSettings));		
+		SDL_snprintf(text, MAX_BUFFER, "e%i-settings", i + 1);
+		VALIDATE(setup->GetValue(text, &settings));		
+
+		CEnemy* temp = 0;
+		CREATEPOINTER(temp, CEnemy);
+		VALIDATE(temp->Initialise(sprite, spriteSettings, settings));
+		temp->SetPosition(pos);
+		m_enemies.push_back(temp);
+		CLEANARRAY(sprite);
+		CLEANARRAY(spriteSettings);
+		CLEANARRAY(settings);
+	}
+
+	m_platforms = new CPlatform*[m_numPlatforms];
+	assert(m_platforms);
+	SDL_memset(m_platforms, 0, sizeof(CPlatform*) * m_numPlatforms);
+
+	for (Int32 i = 0; i < m_numPlatforms; ++i)
+	{
+		CREATEPOINTER(m_platforms[i], CPlatform);
+		assert(m_platforms[i]);
+
+		SDL_snprintf(text, MAX_BUFFER, "%iplatform-num", i + 1);
+
+		Int32 number = 0;
+		VALIDATE(setup->GetValue(text, number));
+
+		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
+	}
+
+	setup->Release();
 
 	Logger::TrackValue(&m_cameraPos, "Camera Position");
 
@@ -195,7 +212,7 @@ void CLevel::Render()
 	}
 
 	// Render tiles
-	for (Int16 i = 0; i < m_numTiles; ++i)
+	for (UInt16 i = 0; i < m_tiles.size(); ++i)
 	{
 		m_tiles[i]->Render(m_cameraPos);
 	}
@@ -207,7 +224,7 @@ void CLevel::Render()
 	}
 
 	// Render Enemies
-	for (Int16 i = 0; i < m_numEnemies; ++i) 
+	for (UInt16 i = 0; i < m_enemies.size(); ++i) 
 	{
 		m_enemies[i]->Render(m_cameraPos);
 	}
@@ -219,7 +236,7 @@ Bool CLevel::Save()
 	assert(save);
 	save->AddRef();
 	
-	VALIDATE(save->AddValue("playerStart", VECTOR2(200.0f, 930.0f)));
+	VALIDATE(save->AddValue("playerStart", VECTOR2(225.0f, 831.0f)));
 	VALIDATE(save->AddValue("tileset", m_tileset));
 	VALIDATE(save->AddValue("tiles", m_numTiles));
 	VALIDATE(save->AddValue("platforms", m_numPlatforms));
@@ -237,7 +254,14 @@ Bool CLevel::Save()
 
 	for (UInt16 i = 0; i < m_numEnemies; ++i)
 	{
-
+		SDL_snprintf(text, MAX_BUFFER, "e%i-pos", i + 1);
+		VALIDATE(save->AddValue(text, m_enemies[i]->GetPosition()));
+		SDL_snprintf(text, MAX_BUFFER, "e%i-sprite", i + 1);
+		VALIDATE(save->AddValue(text, m_enemies[i]->m_spriteSheet));
+		SDL_snprintf(text, MAX_BUFFER, "e%i-spriteSettings", i + 1);
+		VALIDATE(save->AddValue(text, m_enemies[i]->m_spriteSettings));
+		SDL_snprintf(text, MAX_BUFFER, "e%i-settings", i + 1);
+		VALIDATE(save->AddValue(text, m_enemies[i]->m_settings));
 	}
 
 	VALIDATE(save->Save());
@@ -288,7 +312,7 @@ Bool CLevel::AddTile(VECTOR2 _pos)
 	surr[7].x -= TILE_WIDTH;
 	surr[7].y += TILE_HEIGHT;
 
-	for (UInt16 i = 0; i < m_numTiles; ++i)
+	for (UInt16 i = 0; i < m_tiles.size(); ++i)
 	{
 		VECTOR2 pos = m_tiles[i]->GetPos();
 		// left
@@ -374,14 +398,21 @@ Bool CLevel::RemoveTile(VECTOR2 _pos)
 	return false;
 }
 
-Bool CLevel::AddEnemy(VECTOR2 _pos)
+Bool CLevel::AddEnemy(VECTOR2 _pos, Physics::EType _type)
 {
 	CheckAgainstGrid(&_pos);
 
 	CEnemy* temp = 0;
 	CREATEPOINTER(temp, CEnemy);
 	assert(temp);
-	VALIDATE(temp->Initialise("data/art/characters/enemies/basic.png", "data/art/characters/enemies/basic.xml", "data/xml/characters/basicEnemy.xml"));
+	switch(_type)
+	{
+	case Physics::EType::TYPE_BASIC_ENEMY:
+		VALIDATE(temp->Initialise("data/art/characters/enemies/basic.png", "data/art/characters/enemies/basic.xml", "data/xml/characters/basicEnemy.xml"));
+		break;
+	default:
+		break;
+	}
 
 	_pos.y -= TILE_HEIGHT * 0.5f;
 	temp->SetPosition(_pos);
@@ -395,8 +426,23 @@ Bool CLevel::AddEnemy(VECTOR2 _pos)
 Bool CLevel::RemoveEnemy(VECTOR2 _pos)
 {
 	CheckAgainstGrid(&_pos);
+	_pos.y -= TILE_HEIGHT * 0.5f;	
+	
+	// check for existing
+	for (Int32 i = 0; i < m_numEnemies; ++i)
+	{
+		if (m_enemies[i]->GetPosition().x == _pos.x &&
+			m_enemies[i]->GetPosition().y == _pos.y)
+		{
+			// Tile exists, remove
+			m_enemies[i]->ShutDown();
+			CLEANDELETE(m_enemies[i]);
+			m_enemies.erase(m_enemies.begin() + i);
+			--m_numEnemies;
 
-
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -423,16 +469,11 @@ void CLevel::CheckAgainstGrid(VECTOR2* _pos)
 Bool CLevel::CheckForExistingTile(VECTOR2* _pos)
 {
 	// check for existing
-	for (Int32 i = 0; i < m_numTiles; ++i)
+	for (UInt32 i = 0; i < m_tiles.size(); ++i)
 	{
 		if (m_tiles[i]->GetPos().x == _pos->x &&
 			m_tiles[i]->GetPos().y == _pos->y)
 		{
-			// Tile exists, remove
-			PY_DELETE_RELEASE(m_tiles[i]);
-			m_tiles.erase(m_tiles.begin() + i);
-			--m_numTiles;
-
 			return true;
 		}
 	}

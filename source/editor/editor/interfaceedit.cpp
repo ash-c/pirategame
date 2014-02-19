@@ -42,3 +42,7 @@ void CIntEdit::SetTool(Int32 _new)
 void CIntEdit::Notify(SDL_Event* _e)
 {
 }
+
+void CIntEdit::Load(const Int8* _path)
+{
+}

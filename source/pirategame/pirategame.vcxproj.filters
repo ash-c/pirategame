@@ -93,6 +93,9 @@
     <ClCompile Include="..\papyrus\ui\context.cpp">
       <Filter>papyrus\ui</Filter>
     </ClCompile>
+    <ClCompile Include="character\enemy.cpp">
+      <Filter>character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="..\papyrus\ui\context.h">
       <Filter>papyrus\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="character\enemy.h">
+      <Filter>character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -39,7 +39,7 @@ public:
 	Bool			AddTile(VECTOR2 _pos);
 	Bool			RemoveTile(VECTOR2 _pos);
 
-	Bool			AddEnemy(VECTOR2 _pos);
+	Bool			AddEnemy(VECTOR2 _pos, Physics::EType _type);
 	Bool			RemoveEnemy(VECTOR2 _pos);
 
 private:

@@ -5,7 +5,6 @@
 
 // Library Includes
 
-
 // Local Includes
 #include "character.h"
 

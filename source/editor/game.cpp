@@ -39,6 +39,7 @@ Bool CGame::Initialise()
 	lua_register(Logger::luaState, "StartLevelEditor", StartLevelEditor);
 	lua_register(Logger::luaState, "StartInterfaceEditor", StartInterfaceEditor);
 	lua_register(Logger::luaState, "ChangeTool", IEditor::ChangeTool);
+	lua_register(Logger::luaState, "LoadFile", IEditor::LoadFile);
 
 	VALIDATE(Input::inputManager->Register(this));
 

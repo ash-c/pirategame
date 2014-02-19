@@ -29,7 +29,6 @@ CLevelEdit::~CLevelEdit()
 
 Bool CLevelEdit::Initialise()
 {
-	//lua_register(Logger::luaState, "ChangeTool", ChangeTool);
 	sm_pTheInstance = this;
 
 	CREATEPOINTER(m_level, CLevel);
@@ -40,13 +39,6 @@ Bool CLevelEdit::Initialise()
 
 	m_screenHeight = Renderer::activeRenderer->GetHeight();
 	m_screenWidth = Renderer::activeRenderer->GetWidth();
-
-	SDL_memset(m_tools, 0, sizeof(ITool*) * MAX_TOOL);
-
-	// Initialise tools.
-	//CREATEPOINTER(m_tools[TOOL_TILE], CToolTile);
-	//assert(m_tools[TOOL_TILE]);
-	//VALIDATE(m_tools[TOOL_TILE]->Initialise());
 
 	m_toolContext = UI::LoadInterface("data/interfaces/editorBuildContext.ini", false, true);
 	assert(m_toolContext);
@@ -61,14 +53,6 @@ Bool CLevelEdit::ShutDown()
 {
 	PY_DELETE_RELEASE(m_level);
 	PY_SAFE_RELEASE(m_toolContext);
-
-	//m_tools[m_activeTool]->Release();
-
-	/*for (UInt16 i = 0; i < MAX_TOOL; ++i)
-	{
-		if (0 != m_tools[i]) m_tools[i]->ShutDown();
-		CLEANDELETE(m_tools[i]);
-	}*/
 
 	return true;
 }
@@ -116,9 +100,9 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		}
 		else if (SDL_BUTTON_LEFT == _e->button.button && !m_rightMouseDown)
 		{
-			m_leftMouseDown = true;
-			if (INVALID_TOOL != m_activeTool && MAX_TOOL > m_activeTool)
+			if (!m_toolContext->IsActive())
 			{
+				m_leftMouseDown = true;
 				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
 
 				// Place tool.
@@ -128,16 +112,18 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				}
 				else if (TOOL_REMOVE == m_activeTool)
 				{
-					m_level->RemoveTile(tilePos - m_cameraPos);
+					if (!m_level->RemoveTile(tilePos - m_cameraPos))
+					{
+						m_level->RemoveEnemy(tilePos - m_cameraPos);
+					}
 				}
 				else if (TOOL_BASIC_ENEMY == m_activeTool)
 				{
-					m_level->AddEnemy(tilePos - m_cameraPos);
+					m_level->AddEnemy(tilePos - m_cameraPos, Physics::EType::TYPE_BASIC_ENEMY);
 				}
-			}
-			else 
-			{
-				m_activeTool = TOOL_TILE;
+				else if (TOOL_PLAYER_START == m_activeTool)
+				{
+				}
 			}
 		}
 	}
@@ -172,21 +158,18 @@ void CLevelEdit::Notify(SDL_Event* _e)
 			if (m_cameraPos.x > 0.0f) m_cameraPos.x = 0.0f; 
 			if (m_cameraPos.x < -(LEVEL_WIDTH - m_screenWidth)) m_cameraPos.x = -static_cast<Float32>(LEVEL_WIDTH - m_screenWidth);
 		}
-		if (m_leftMouseDown)
+		else if (m_leftMouseDown)
 		{
-			if (INVALID_TOOL != m_activeTool && MAX_TOOL > m_activeTool)
-			{
-				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
+			VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
 
-				// Place tool.
-				if (TOOL_TILE == m_activeTool)
-				{
-					m_level->AddTile(tilePos - m_cameraPos);
-				}
-				else if (TOOL_REMOVE == m_activeTool)
-				{
-					m_level->RemoveTile(tilePos - m_cameraPos);
-				}
+			// Place tool.
+			if (TOOL_TILE == m_activeTool)
+			{
+				m_level->AddTile(tilePos - m_cameraPos);
+			}
+			else if (TOOL_REMOVE == m_activeTool)
+			{
+				m_level->RemoveTile(tilePos - m_cameraPos);
 			}
 		}
 	}
@@ -195,4 +178,19 @@ void CLevelEdit::Notify(SDL_Event* _e)
 void CLevelEdit::SetTool(Int32 _new)
 {
 	m_activeTool = static_cast<EToolType>(_new);
+}
+
+void CLevelEdit::Load(const Int8* _path)
+{
+	CLevel* temp = new CLevel;
+	if (!temp->Initialise((Int8*)_path))
+	{
+		Logger::Write("Failed to load level %s", _path);
+		CLEANDELETE(temp);
+		return;
+	}
+
+	PY_DELETE_RELEASE(m_level);
+	m_level = temp;
+	m_level->AddRef();
 }

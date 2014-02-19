@@ -14,6 +14,7 @@ using namespace Papyrus;
 class ICharacter;
 class CTile;
 class CPlatform;
+class CEnemy;
 
 static const Int32			LEVEL_WIDTH = 10000;
 static const Int32			LEVEL_HEIGHT = 2000;
@@ -36,14 +37,14 @@ protected:
 	Sprite::ISprite*	m_background;
 	ICharacter*			m_playable;
 	CTile**				m_tiles;
+	CEnemy**			m_enemies;
 	CPlatform**			m_platforms;
-
-	SDL_Texture*		m_static;
 
 	VECTOR2				m_cameraPos;
 
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
+	Int32				m_numEnemies;
 	Int32				m_numPlatforms;
 	Int32				m_screenW;
 	Int32				m_screenH;

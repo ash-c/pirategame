@@ -12,3 +12,4 @@ function exit()
 	Quit()
 	return 'Game exited'
 end
+

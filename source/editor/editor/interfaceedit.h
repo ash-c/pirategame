@@ -26,6 +26,7 @@ public:
 	virtual void		SetTool(Int32 _new);
 
 	virtual void		Notify(SDL_Event* _e);
+	virtual void		Load(const Int8* _path);
 
 	// Member Variables
 protected:

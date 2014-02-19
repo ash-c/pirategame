@@ -14,7 +14,6 @@ class Papyrus::UI::IUIInterface;
 
 class CLevelEdit : public IEditor
 {
-
 	// Member Functions
 public:
 	CLevelEdit();
@@ -31,6 +30,7 @@ public:
 	virtual void		Notify(SDL_Event* _e);
 
 	virtual void		SetTool(Int32 _new);
+	virtual void		Load(const Int8* _path);
 
 	// Member Variables
 protected:
