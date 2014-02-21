@@ -7,6 +7,7 @@
 #include "tile.h"
 #include "platform.h"
 #include "../../../pirategame/character/enemy.h"
+#include "../../../pirategame/character/playable.h"
 
 #include "../../parser/parser.h"
 
@@ -16,11 +17,16 @@ CLevel::CLevel()
 	: m_surface(0)
 	, m_grid(0)
 	, m_background(0)
+	, m_playable(0)
 	, m_tiles(0)
-	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
+	, m_gridRects(0)
+	, m_levelNumber(INVALID_ID)
+	, m_numTiles(0)
 	, m_numPlatforms(0)
 	, m_numEnemies(0)
+	, m_numRects(0)
+	, m_tileset(0)
 {
 
 }
@@ -181,6 +187,9 @@ Bool CLevel::ShutDown()
 
 	SDL_DestroyTexture(m_grid);
 
+	if (0 != m_playable) m_playable->ShutDown();
+	CLEANDELETE(m_playable);
+
 	return true;
 }
 
@@ -228,6 +237,9 @@ void CLevel::Render()
 	{
 		m_enemies[i]->Render(m_cameraPos);
 	}
+
+	// Render player start
+	if (0 != m_playable) m_playable->Render(m_cameraPos);
 }
 
 Bool CLevel::Save()
@@ -236,7 +248,7 @@ Bool CLevel::Save()
 	assert(save);
 	save->AddRef();
 	
-	VALIDATE(save->AddValue("playerStart", VECTOR2(225.0f, 831.0f)));
+	VALIDATE(save->AddValue("playerStart", m_playable->GetPosition()));
 	VALIDATE(save->AddValue("tileset", m_tileset));
 	VALIDATE(save->AddValue("tiles", m_numTiles));
 	VALIDATE(save->AddValue("platforms", m_numPlatforms));
@@ -444,6 +456,22 @@ Bool CLevel::RemoveEnemy(VECTOR2 _pos)
 		}
 	}
 	return false;
+}
+
+Bool CLevel::SetPlayerStart(VECTOR2 _pos)
+{
+	CheckAgainstGrid(&_pos);
+	_pos.y -= TILE_HEIGHT * 0.5f;	
+
+	if (0 == m_playable)
+	{
+		CREATEPOINTER(m_playable, CPlayable);
+		assert(m_playable);
+		VALIDATE(m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml"));
+	}
+	m_playable->SetPosition(_pos);
+
+	return true;
 }
 
 //

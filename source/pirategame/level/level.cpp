@@ -59,7 +59,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	{
 		CREATEPOINTER(m_playable, CPlayable);
 		assert(m_playable);
-		m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml");
+		VALIDATE(m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml"));
 		PY_WRITETOFILE("Player created");
 
 		VALIDATE(setup->GetValue("playerStart", pos));

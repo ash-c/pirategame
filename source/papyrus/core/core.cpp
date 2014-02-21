@@ -74,6 +74,7 @@ Float32 Core::Process()
 {
 	Float32 delta = 0.0f;
 
+
 	if (!timer->Paused())
 	{
 		delta = timer->Restart();

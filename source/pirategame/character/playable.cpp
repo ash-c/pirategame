@@ -65,6 +65,7 @@ Bool CPlayable::ShutDown()
 
 void CPlayable::Process(Float32 _delta)
 {
+#ifndef PAPYRUS_EDITOR
 	switch (m_currAnim)
 	{
 	case ANIM_SLIDE_LEFT:
@@ -173,6 +174,7 @@ void CPlayable::Process(Float32 _delta)
 
 	m_pos = m_actor->GetPosition();
 	m_sprite->Process(_delta);
+#endif // PAPYRUS_EDITOR
 }
 
 void CPlayable::Render(VECTOR2 _camPos)
@@ -184,6 +186,10 @@ void CPlayable::Render(VECTOR2 _camPos)
 void CPlayable::SetPosition(VECTOR2 _v)
 {
 	m_actor->SetPosition(_v);
+#ifdef PAPYRUS_EDITOR
+	m_pos = _v;
+	m_sprite->SetPosition(static_cast<Int32>(_v.x), static_cast<Int32>(_v.y));
+#endif // PAPYRUS_EDITOR
 }
 
 void CPlayable::Notify(SDL_Event* _e)

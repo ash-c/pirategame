@@ -123,6 +123,7 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				}
 				else if (TOOL_PLAYER_START == m_activeTool)
 				{
+					m_level->SetPlayerStart(tilePos - m_cameraPos);
 				}
 			}
 		}

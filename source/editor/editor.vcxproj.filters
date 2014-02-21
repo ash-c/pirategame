@@ -99,6 +99,9 @@
     <ClCompile Include="..\pirategame\character\enemy.cpp">
       <Filter>editor\level\character</Filter>
     </ClCompile>
+    <ClCompile Include="..\pirategame\character\playable.cpp">
+      <Filter>editor\level\character</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -256,6 +259,9 @@
       <Filter>editor\level\character</Filter>
     </ClInclude>
     <ClInclude Include="..\pirategame\character\enemy.h">
+      <Filter>editor\level\character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pirategame\character\playable.h">
       <Filter>editor\level\character</Filter>
     </ClInclude>
   </ItemGroup>

@@ -161,6 +161,7 @@ Int32 CGame::LoadLevel(lua_State* L)
 	{
 		sm_pTheInstance->m_interface->Toggle();
 		sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
+		SDL_ShowCursor(0);
 	}
 	else 
 	{

@@ -42,13 +42,14 @@ public:
 	Bool			AddEnemy(VECTOR2 _pos, Physics::EType _type);
 	Bool			RemoveEnemy(VECTOR2 _pos);
 
+	Bool			SetPlayerStart(VECTOR2 _pos);
+
 private:
 	void			CheckAgainstGrid(VECTOR2* _pos);
 	Bool			CheckForExistingTile(VECTOR2* _pos);
 
 	// Member Variables
 protected:
-
 	SDL_Surface*		m_surface;
 	SDL_Texture*		m_grid;
 
