@@ -115,3 +115,8 @@ void Sprite::CAnimSprite::PlayAnim(Int16 _i)
 		SetAnim(_i);
 	}
 }
+
+void Sprite::CAnimSprite::SetAnimSpeed(Float32 _f)
+{
+	m_timePerFrame = _f;
+}

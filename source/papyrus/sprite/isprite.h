@@ -143,6 +143,14 @@ namespace Papyrus
 			*/
 			virtual void		PlayAnim(Int16 _i) {}
 
+			/*
+			* Set the animation speed, only implemented for animated sprites.
+			*
+			* @param	_f				New animation speed.
+			* @return	Returns void.
+			*/
+			virtual void		SetAnimSpeed(Float32 _f) {}
+
 			// Member Variables
 		protected:
 			SDL_Texture*		m_spriteSheet;

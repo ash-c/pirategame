@@ -28,7 +28,9 @@ namespace Papyrus
 
 		void			PlayerStaticCollision(IActor* _actor1, IActor* _actor2);
 		void			PlayerPlatformCollision(IActor* _actor1, IActor* _actor2);
+		void			PlayerEnemyCollision(IActor* _actor1, IActor* _actor2);
 		void			StaticPlatformCollision(IActor* _actor1, IActor* _actor2);
+		void			EnemyStaticCollision(IActor* _actor1, IActor* _actor2);
 
 		static Int32	ToggleRenderDebug(lua_State* L);
 

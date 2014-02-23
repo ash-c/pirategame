@@ -205,6 +205,11 @@ void CLevel::Process(Float32 _delta)
 	{
 		m_platforms[i]->Process(_delta);
 	}
+
+	for (Int16 i = 0; i < m_numEnemies; ++i)
+	{
+		m_enemies[i]->Process(_delta);
+	}
 }
 
 void CLevel::Render()

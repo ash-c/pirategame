@@ -25,6 +25,11 @@ public:
 
 	// Member Variables
 protected:
+	Float32				m_attackDelay;
+	Int32				m_screenW;
+	Int32				m_screenH;
+
+	Bool				m_left;
 };
 
 #endif // __PAPYRUS_CHARACTER_ENEMY_H__

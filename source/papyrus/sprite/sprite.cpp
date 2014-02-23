@@ -54,13 +54,16 @@ Bool Sprite::ShutDown()
 	assert(_spriteSheet != 0 && "Need a spritesheet path");
 
 	// First check that the sprite has not already been loaded.
-	for (Int16 i = 0; i < maxNumSprites; ++i)
+	if (!_animated)
 	{
-		if (0 != activeSprites[i])
+		for (Int16 i = 0; i < maxNumSprites; ++i)
 		{
-			if (activeSprites[i]->CompareFilePath(_spriteSheet))
+			if (0 != activeSprites[i])
 			{
-				return activeSprites[i];
+				if (activeSprites[i]->CompareFilePath(_spriteSheet))
+				{
+					return activeSprites[i];
+				}
 			}
 		}
 	}

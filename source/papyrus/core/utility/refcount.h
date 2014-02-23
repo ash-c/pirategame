@@ -55,6 +55,16 @@ public:
 	}
 
 	/*
+	* Gets the ref count for this object.
+	*
+	* @return	Returns the ref count for this object.
+	*/
+	virtual UInt16 GetRefCount()
+	{
+		return m_refCount;
+	}
+
+	/*
 	* Compares the given file path against the one loaded into this parser.
 	*
 	* @param	_path		Path to compare.

@@ -9,6 +9,7 @@
 #include "../logging/logger.h"
 
 using namespace Papyrus;
+using namespace Papyrus::Physics;
 
 Physics::IActor**	Physics::actors = 0;
 VECTOR2 Physics::camPosition;
@@ -43,6 +44,7 @@ void Physics::Process(Float32 _frameTime)
 		actors[i]->SetHCollided(false);
 		actors[i]->SetVCollided(false);
 		actors[i]->SetPPCollided(0, false);
+		actors[i]->SetPECollided(false);
 	}
 
 	// collision detection
@@ -55,27 +57,43 @@ void Physics::Process(Float32 _frameTime)
 				Physics::EType type1 = actors[i]->GetType();
 				Physics::EType type2 = actors[j]->GetType();
 
-				if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_STATIC)
+				if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_STATIC)
 				{
 					PlayerStaticCollision(actors[i], actors[j]);
 				}
-				else if (type2 == Physics::EType::TYPE_PLAYER && type1 == Physics::EType::TYPE_STATIC)
+				else if (type2 == EType::TYPE_PLAYER && type1 == EType::TYPE_STATIC)
 				{
 					PlayerStaticCollision(actors[j], actors[i]);
 				}
-				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_STATIC)
+				else if (type1 == EType::TYPE_BASIC_ENEMY && type2 == EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[i], actors[j]);
+				}
+				else if (type2 == EType::TYPE_BASIC_ENEMY && type1 == EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_BASIC_ENEMY)
+				{
+					PlayerEnemyCollision(actors[i], actors[j]);
+				}
+				else if (type2 == EType::TYPE_BASIC_ENEMY && type1 == EType::TYPE_PLAYER)
+				{
+					PlayerEnemyCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_PLATFORM && type2 == EType::TYPE_STATIC)
 				{
 					StaticPlatformCollision(actors[i], actors[j]);
 				}
-				else if (type1 == Physics::EType::TYPE_STATIC && type2 == Physics::EType::TYPE_PLATFORM)
+				else if (type1 == EType::TYPE_STATIC && type2 == EType::TYPE_PLATFORM)
 				{
 					StaticPlatformCollision(actors[j], actors[i]);
 				}
-				else if (type1 == Physics::EType::TYPE_PLAYER && type2 == Physics::EType::TYPE_PLATFORM)
+				else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_PLATFORM)
 				{
 					PlayerPlatformCollision(actors[i], actors[j]);
 				}
-				else if (type1 == Physics::EType::TYPE_PLATFORM && type2 == Physics::EType::TYPE_PLAYER)
+				else if (type1 == EType::TYPE_PLATFORM && type2 == EType::TYPE_PLAYER)
 				{
 					PlayerPlatformCollision(actors[j], actors[i]);
 				}
@@ -274,6 +292,18 @@ void Physics::PlayerPlatformCollision(IActor* _actor1, IActor* _actor2)
 	}
 }
 
+void Physics::PlayerEnemyCollision(IActor* _actor1, IActor* _actor2)
+{
+	// actor1 is always the player
+	// actor2 is always the enemy
+	SDL_Rect result;
+	if (SDL_IntersectRect(&_actor1->GetRect(), &_actor2->GetRect(), &result))
+	{
+		_actor1->SetPECollided(true);
+		_actor2->SetPECollided(true);
+	}
+}
+
 void Physics::StaticPlatformCollision(IActor* _actor1, IActor* _actor2)
 {
 	SDL_Rect result;
@@ -298,6 +328,58 @@ void Physics::StaticPlatformCollision(IActor* _actor1, IActor* _actor2)
 		{
 			pos.x += result.w;
 			_actor1->SetPosition(VECTOR2(pos.x, pos.y));
+		}
+	}
+}
+
+void Physics::EnemyStaticCollision(IActor* _actor1, IActor* _actor2)
+{
+	// actor1 is always dynamic
+	// actor2 is always the static physics object
+	SDL_Rect result;
+	SDL_Rect rect1 = _actor1->GetRect();
+	SDL_Rect rect2 = _actor2->GetRect();
+	if (SDL_IntersectRect(&rect1, &rect2, &result))
+	{
+		VECTOR2 pos = _actor1->GetPosition();
+		VECTOR2 pos2 = _actor2->GetPosition();
+		
+		// vertical collision
+		if (pos.x > rect2.x && pos.x < rect2.x + rect2.w) 
+		{
+			if (pos2.y < pos.y) // below
+			{
+				pos.y = pos2.y + rect2.h * 0.5f + rect1.h * 0.5f;
+				_actor1->SetYPos(pos.y);
+				_actor1->SetVCollided(true);
+				_actor2->SetVCollided(true);
+			}
+			else if (pos2.y > pos.y) // above
+			{
+				pos.y = pos2.y - rect2.h * 0.5f - rect1.h * 0.5f + 1.0f;
+				_actor1->SetYPos(pos.y);
+				_actor1->SetVCollided(true);
+				_actor2->SetVCollided(true);
+			}
+		}
+
+		// horizontal collision
+		if (pos.y > rect2.y && pos.y < rect2.y + rect2.h)
+		{
+			if (pos2.x > pos.x) // left
+			{
+				pos.x = rect2.x - rect1.w * 0.5f;
+				_actor1->SetXPos(pos.x);
+				_actor1->SetHCollided(true);
+				_actor2->SetHCollided(true);
+			}
+			else if (pos2.x < pos.x) // right
+			{
+				pos.x = rect2.x + rect2.w + rect1.w * 0.5f;
+				_actor1->SetXPos(pos.x);
+				_actor1->SetHCollided(true);
+				_actor2->SetHCollided(true);
+			}
 		}
 	}
 }

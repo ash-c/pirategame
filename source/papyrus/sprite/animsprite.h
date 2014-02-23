@@ -30,6 +30,8 @@ namespace Papyrus
 			virtual void		SetAnim(Int16 _i);
 			virtual void		PlayAnim(Int16 _i);
 
+			virtual void		SetAnimSpeed(Float32 _f);
+
 			// Member Variables
 		private:
 			SDL_Rect*			m_clips;
