@@ -49,6 +49,7 @@ Bool CEnemy::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 
 	VECTOR2 scale = m_sprite->GetScale();
 	scale.x *= 2.0f;
+	m_pos.x += scale.x * 0.5f;
 	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, scale, mass, static_cast<Physics::EType>(type));
 	assert(m_actor);
 	m_actor->AddRef();
@@ -82,6 +83,7 @@ void CEnemy::Process(Float32 _delta)
 			if (ANIM_RUN_LEFT == m_currAnim)
 			{
 				m_currAnim = ANIM_RUN_RIGHT;
+				m_sprite->SetAnim(m_currAnim);
 			}
 			vel.x = m_moveForce.x;
 		}
@@ -91,6 +93,7 @@ void CEnemy::Process(Float32 _delta)
 			if (ANIM_RUN_RIGHT == m_currAnim)
 			{
 				m_currAnim = ANIM_RUN_LEFT;
+				m_sprite->SetAnim(m_currAnim);
 			}
 			vel.x = -m_moveForce.x;
 		}
@@ -116,6 +119,15 @@ void CEnemy::Process(Float32 _delta)
 	}
 	
 	m_pos = m_actor->GetPosition();
+
+	if (ANIM_ATTACK_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim)
+	{
+		m_pos.x += m_sprite->GetScale().x * 0.5f;
+	}
+	else if (ANIM_ATTACK_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim)
+	{
+		m_pos.x -= m_sprite->GetScale().x * 0.5f;
+	}
 	m_sprite->Process(_delta);
 }
 

@@ -208,6 +208,18 @@ void CPlayable::Notify(SDL_Event* _e)
 		case SDLK_UP: // Jump or climb a ladder
 			Jump(&vel);
 			break;
+		case SDLK_SPACE: // Attack
+			if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim ||
+					ANIM_FALL_LEFT == m_currAnim)
+			{
+				m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
+			}
+			else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim ||
+					ANIM_FALL_RIGHT == m_currAnim)
+			{
+				m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
+			}
+			break;
 		default:
 			break;
 		}
@@ -256,9 +268,9 @@ void CPlayable::Notify(SDL_Event* _e)
 		if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_A) // Jump or climb a ladder
 		{ 
 			Jump(&vel);
+			m_sprite->SetAnim(m_currAnim);
 		}
 	}
-	m_sprite->SetAnim(m_currAnim);
 }
 
 void CPlayable::Move(VECTOR2* _vel, Bool _left)
