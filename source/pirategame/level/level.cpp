@@ -203,12 +203,18 @@ void CLevel::Process(Float32 _delta)
 
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
-		m_platforms[i]->Process(_delta);
+		if (m_platforms[i]->IsActive())
+		{
+			m_platforms[i]->Process(_delta);
+		}
 	}
 
 	for (Int16 i = 0; i < m_numEnemies; ++i)
 	{
-		m_enemies[i]->Process(_delta);
+		if (m_enemies[i]->IsActive())
+		{
+			m_enemies[i]->Process(_delta);
+		}
 	}
 }
 

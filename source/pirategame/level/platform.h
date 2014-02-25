@@ -23,6 +23,8 @@ public:
 	void		Process(Float32 _delta);
 	void		Render();
 
+	Bool		IsActive() { return m_actor->IsActive(); }
+
 	// Member Variables
 protected:
 	Sprite::ISprite**		m_sprites;

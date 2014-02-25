@@ -23,6 +23,8 @@ public:
 
 	virtual void		SetPosition(VECTOR2 _v);
 
+	Bool				IsActive() { return m_actor->IsActive(); }
+
 	// Member Variables
 protected:
 	Float32				m_attackDelay;

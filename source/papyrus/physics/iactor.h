@@ -34,6 +34,7 @@ namespace Papyrus
 				, m_hCollision(false)
 				, m_vCollision(false)
 				, m_ppCollision(false)
+				, m_peCollision(false)
 			{}
 
 			virtual ~IActor() {}

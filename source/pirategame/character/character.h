@@ -55,6 +55,8 @@ public:
 
 	virtual Papyrus::Physics::EType GetType() { return m_actor->GetType(); }
 
+	virtual Bool		IsAttacking() { return ANIM_ATTACK_LEFT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim; }
+
 	// Member Variables
 protected:
 	Sprite::ISprite*		m_sprite;

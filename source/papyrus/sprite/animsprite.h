@@ -42,6 +42,7 @@ namespace Papyrus
 			UInt16				m_currFrame;
 			Int16				m_currClip;
 			Int16				m_prevAnim;
+			Bool				m_playingAnim;
 		};
 	}
 }

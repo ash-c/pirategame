@@ -6,6 +6,8 @@
 #include "../renderer/renderer.h"
 #include "../parser/parser.h"
 
+#include "../../pirategame/character/playable.h"
+
 using namespace Papyrus;
 
 Sprite::CAnimSprite::CAnimSprite()
@@ -14,6 +16,7 @@ Sprite::CAnimSprite::CAnimSprite()
 	, m_currFrame(0)
 	, m_currClip(0)
 	, m_prevAnim(INVALID_ID)
+	, m_playingAnim(false)
 {
 }
 
@@ -77,10 +80,11 @@ void Sprite::CAnimSprite::Process(Float32 _delta)
 		{
 			m_clips[m_currClip].x = 0;
 			m_currFrame = 0;
-			if (INVALID_ID != m_prevAnim)
+ 			if (INVALID_ID != m_prevAnim)
 			{
-				m_currClip = m_prevAnim;
+ 				m_currClip = m_prevAnim;
 				m_prevAnim = INVALID_ID;
+				m_playingAnim = false;
 			}
 		}
 		else
@@ -98,7 +102,7 @@ void Sprite::CAnimSprite::Render()
 
 void Sprite::CAnimSprite::SetAnim(Int16 _i)
 {
-	if (m_currClip != _i)
+	if (m_currClip != _i && !m_playingAnim)
 	{
 		m_clips[m_currClip].x = 0;
 		m_currFrame = 0;
@@ -113,6 +117,7 @@ void Sprite::CAnimSprite::PlayAnim(Int16 _i)
 	{
 		m_prevAnim = m_currClip;
 		SetAnim(_i);
+		m_playingAnim = true;
 	}
 }
 

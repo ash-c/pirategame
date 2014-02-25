@@ -11,6 +11,8 @@
 #include "../core/utility/refcount.h"
 #include "../parser/parser.h"
 
+class CPlayable;
+
 namespace Papyrus
 {
 	namespace Sprite

@@ -29,6 +29,7 @@ protected:
 	virtual void		Move(VECTOR2* _vel, Bool _left);
 	virtual void		StopMove(Bool _left);
 	virtual void		Jump(VECTOR2* _vel);
+	virtual void		Attack();
 
 	// Member Variables
 protected:
@@ -41,6 +42,7 @@ protected:
 		MAX_MOVE
 	} EMovement;
 	EMovement				m_moveDir;
+	Bool					m_attacking;
 };
 
 #endif // __PIRATEGAME_CHARACTER_PLAYABLE_H__
