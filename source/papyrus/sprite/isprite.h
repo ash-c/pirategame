@@ -146,6 +146,13 @@ namespace Papyrus
 			virtual void		PlayAnim(Int16 _i) {}
 
 			/*
+			* Gets which animation is currently being played.
+			*
+			* @return	Returns which animation is being played.
+			*/
+			virtual Int16		GetAnim() { return INVALID_ID; }
+
+			/*
 			* Set the animation speed, only implemented for animated sprites.
 			*
 			* @param	_f				New animation speed.

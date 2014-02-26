@@ -68,6 +68,13 @@ namespace Papyrus
 				return m_renderPos;
 			}
 
+			virtual void	SetScale(VECTOR2 _v)
+			{
+				m_bounds.rect.h = static_cast<Int32>(_v.y);
+				m_bounds.rect.w = static_cast<Int32>(_v.x);
+				UpdateBounds();
+			}
+
 			virtual Bool IsStationary() { return m_stationary; }
 
 			virtual void	ApplyForce(VECTOR2 _force)
@@ -233,7 +240,7 @@ namespace Papyrus
 				VECTOR2		preP;	// previous position
 			} State;
 
-			virtual void UpdateBounds()
+			void UpdateBounds()
 			{
 				m_bounds.topLX = m_currState.pos.x - m_bounds.rect.w * 0.5f;
 				m_bounds.topLY = m_currState.pos.y - m_bounds.rect.h * 0.5f;

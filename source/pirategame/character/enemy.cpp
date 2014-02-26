@@ -8,6 +8,7 @@ CEnemy::CEnemy()
 	, m_screenW(0)
 	, m_screenH(0)
 	, m_left(true)
+	, m_alive(true)
 {
 }
 
@@ -48,8 +49,8 @@ Bool CEnemy::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 	VALIDATE(settings->GetValue("type", type));
 
 	VECTOR2 scale = m_sprite->GetScale();
-	scale.x *= 2.0f;
-	m_pos.x += scale.x * 0.5f;
+	//scale.x *= 2.0f;
+	//m_pos.x += scale.x * 0.5f;
 	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, scale, mass, static_cast<Physics::EType>(type));
 	assert(m_actor);
 	m_actor->AddRef();
@@ -72,6 +73,14 @@ Bool CEnemy::ShutDown()
 
 void CEnemy::Process(Float32 _delta)
 {
+	if (m_actor->IsPECollided() && ANIM_ATTACK_LEFT != m_currAnim && ANIM_ATTACK_RIGHT != m_currAnim)
+	{
+		//Logger::Write("enemy dead");
+		m_alive = false;
+		m_actor->SetActive(false);
+		return;
+	}
+
 	if (0 < m_attackDelay) m_attackDelay -= _delta;
 
 	if (m_actor->IsHCollided())
@@ -119,22 +128,13 @@ void CEnemy::Process(Float32 _delta)
 	}
 	
 	m_pos = m_actor->GetPosition();
-
-	if (ANIM_ATTACK_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim)
-	{
-		m_pos.x += m_sprite->GetScale().x * 0.5f;
-	}
-	else if (ANIM_ATTACK_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim)
-	{
-		m_pos.x -= m_sprite->GetScale().x * 0.5f;
-	}
 	m_sprite->Process(_delta);
 }
 
 void CEnemy::Render(VECTOR2 _camPos)
 {
 	if ((m_pos.x + _camPos.x) > -50 && (m_pos.y + _camPos.y) > -100 &&
-		(m_pos.x + _camPos.x) < (m_screenW + 50) && (m_pos.y + _camPos.y) < (m_screenH + 100))
+		(m_pos.x + _camPos.x) < (m_screenW + 50) && (m_pos.y + _camPos.y) < (m_screenH + 100) && m_alive)
 	{
 		m_actor->SetActive(true);
 		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));

@@ -42,6 +42,8 @@ namespace Papyrus
 			virtual void	SetPosition(VECTOR2 _v) { m_pos = _v; } 
 			virtual VECTOR2	GetPosition() { return m_pos; }
 
+			virtual void	SetScale(VECTOR2 _v) { }
+
 			// Member Variables
 		protected:
 			VECTOR2			m_pos;

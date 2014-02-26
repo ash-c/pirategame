@@ -11,7 +11,6 @@ using namespace Papyrus;
 
 CPlayable::CPlayable()
 	: m_moveDir(MOVE_IDLE)
-	, m_attacking(false)
 {
 	m_pos.x = 800;
 	m_pos.y = 450;
@@ -67,6 +66,11 @@ Bool CPlayable::ShutDown()
 void CPlayable::Process(Float32 _delta)
 {
 #ifndef PAPYRUS_EDITOR
+	if (m_actor->IsPECollided() && ANIM_ATTACK_LEFT != m_currAnim && ANIM_ATTACK_RIGHT != m_currAnim)
+	{
+		//Logger::Write("player dead");
+	}
+
 	switch (m_currAnim)
 	{
 	case ANIM_SLIDE_LEFT:
@@ -99,7 +103,22 @@ void CPlayable::Process(Float32 _delta)
 		break;
 	case ANIM_IDLE_LEFT:
 	case ANIM_IDLE_RIGHT:
-		m_moveDir = MOVE_IDLE;
+		{
+			m_moveDir = MOVE_IDLE;
+		}
+		break;
+	case ANIM_ATTACK_LEFT:
+	case ANIM_ATTACK_RIGHT:
+		{
+			EAnims currPlayed = static_cast<EAnims>(m_sprite->GetAnim());
+
+			if (ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
+			{
+				m_currAnim = currPlayed;
+				//VECTOR2 scale = m_sprite->GetScale();
+				//m_actor->SetScale(scale);
+			}
+		}
 		break;
 	case ANIM_JUMP_LEFT:
 		{
@@ -364,13 +383,13 @@ void CPlayable::Attack()
 {
 	if (ANIM_ATTACK_RIGHT != m_currAnim && ANIM_ATTACK_LEFT != m_currAnim)
 	{
+		VECTOR2 scale = m_sprite->GetScale();
 		// attack left
 		if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim ||
 				ANIM_FALL_LEFT == m_currAnim)
 		{
 			m_currAnim = ANIM_ATTACK_LEFT;
 			m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
-			m_attacking = true;
 		} 
 		// attack right
 		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim ||
@@ -378,11 +397,6 @@ void CPlayable::Attack()
 		{
 			m_currAnim = ANIM_ATTACK_RIGHT;
 			m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
-			m_attacking = true;
 		}
-	}
-	else 
-	{
-		Logger::Write("finished attacking");
 	}
 }

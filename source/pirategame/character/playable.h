@@ -42,7 +42,6 @@ protected:
 		MAX_MOVE
 	} EMovement;
 	EMovement				m_moveDir;
-	Bool					m_attacking;
 };
 
 #endif // __PIRATEGAME_CHARACTER_PLAYABLE_H__

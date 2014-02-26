@@ -51,6 +51,8 @@ namespace Papyrus
 			virtual void	SetPosition(VECTOR2 _v) = 0;
 			virtual VECTOR2	GetPosition() = 0;
 
+			virtual void	SetScale(VECTOR2 _v) = 0;
+
 			virtual SDL_Rect GetRect() { return m_bounds.rect; }
 
 			virtual Bool	IsActive() { return m_active; }

@@ -121,6 +121,11 @@ void Sprite::CAnimSprite::PlayAnim(Int16 _i)
 	}
 }
 
+Int16 Sprite::CAnimSprite::GetAnim()
+{
+	return m_currClip;
+}
+
 void Sprite::CAnimSprite::SetAnimSpeed(Float32 _f)
 {
 	m_timePerFrame = _f;
