@@ -302,11 +302,12 @@ void Physics::PlayerEnemyCollision(IActor* _actor1, IActor* _actor2)
 		VECTOR2 vel1 = ((IDynamicActor*)_actor1)->GetVelocity();
 		VECTOR2 vel2 = ((IDynamicActor*)_actor2)->GetVelocity();
 
-		if (vel1.x < 0.0f && vel2.x > 0.0f || 
-			vel1.x > 0.0f && vel2.x < 0.0f)
-		{
+		//if (vel1.x < 0.0f && vel2.x > 0.0f || 
+		//	vel1.x > 0.0f && vel2.x < 0.0f)
+		//{
 			_actor2->SetPECollided(true);
-		}
+		//}
+			
 		_actor1->SetPECollided(true);
 	}
 }

@@ -27,6 +27,10 @@ public:
 
 	Bool			LoadLevel(Int8* _lvl);
 
+	Bool			ResetLevel();
+
+	static Int32	RestartLevel(lua_State* L);
+
 protected:
 	CLevelManager();
 

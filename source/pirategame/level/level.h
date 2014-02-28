@@ -29,6 +29,8 @@ public:
 	Bool			Initialise(Int8* _setup);
 	Bool			ShutDown();
 
+	Bool			Reset();
+
 	void			Process(Float32 _delta);
 	void			Render();
 

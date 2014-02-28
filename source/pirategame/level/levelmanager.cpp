@@ -16,6 +16,8 @@ CLevelManager::~CLevelManager()
 
 Bool CLevelManager::Initialise()
 {
+	lua_register(Logger::luaState, "RestartLevel", RestartLevel);
+
 	return true;
 }
 
@@ -57,4 +59,17 @@ Bool CLevelManager::LoadLevel(Int8* _lvl)
 	m_currLevel->AddRef();
 
 	return true;
+}
+
+Bool CLevelManager::ResetLevel()
+{
+	VALIDATE(m_currLevel->Reset());
+	return true;
+}
+
+Int32 CLevelManager::RestartLevel(lua_State* L)
+{
+	sm_pTheInstance->ResetLevel();
+
+	return 0;
 }

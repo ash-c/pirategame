@@ -6,6 +6,7 @@
 #include "../../parser/parser.h"
 
 #include "../level/level.h"
+#include "../level/levelmanager.h"
 
 using namespace Papyrus;
 
@@ -23,13 +24,18 @@ CPlayable::~CPlayable()
 Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 {
 	assert(0 != _spriteSheet && 0 != _spriteInfo);
+	m_currAnim = ANIM_IDLE_RIGHT;
+	m_moveDir = MOVE_IDLE;
 
-	m_sprite = Sprite::CreateSprite(_spriteSheet, _spriteInfo, true);
-	assert(m_sprite);
-	m_sprite->AddRef();
+	if (0 == m_sprite)
+	{
+		m_sprite = Sprite::CreateSprite(_spriteSheet, _spriteInfo, true);
+		assert(m_sprite);
+		m_sprite->AddRef();
+
+		Input::inputManager->Register(this);
+	}
 	m_sprite->SetAnim(m_currAnim);
-
-	Input::inputManager->Register(this);
 
 	FileParser::IParser* settings = FileParser::LoadFile(_settings);
 	assert(settings);
@@ -45,9 +51,12 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 	VALIDATE(settings->GetValue("moveForce", m_moveForce));
 	VALIDATE(settings->GetValue("slowDownForce", m_slowDownForce));
 
-	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass, Physics::EType::TYPE_PLAYER);
-	assert(m_actor);
-	m_actor->AddRef();
+	if (0 == m_actor)
+	{
+		m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass, Physics::EType::TYPE_PLAYER);
+		assert(m_actor);
+		m_actor->AddRef();
+	}
 	m_actor->SetActive(true);
 	m_actor->SetVCollided(true);
 	settings->Release();
@@ -66,9 +75,34 @@ Bool CPlayable::ShutDown()
 void CPlayable::Process(Float32 _delta)
 {
 #ifndef PAPYRUS_EDITOR
-	if (m_actor->IsPECollided() && ANIM_ATTACK_LEFT != m_currAnim && ANIM_ATTACK_RIGHT != m_currAnim)
+	EAnims currPlayed = static_cast<EAnims>(m_sprite->GetAnim());
+
+	if (m_actor->IsPECollided() && ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
 	{
-		//Logger::Write("player dead");
+		if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim || ANIM_FALL_LEFT == m_currAnim)
+		{
+			m_sprite->PlayAnim(ANIM_DEATH_LEFT);
+			m_currAnim = ANIM_DEATH_LEFT;
+		}
+		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim || ANIM_FALL_RIGHT == m_currAnim)
+		{
+			m_sprite->PlayAnim(ANIM_DEATH_RIGHT);
+			m_currAnim = ANIM_DEATH_RIGHT;
+		}
+		return;
+	}
+	if (ANIM_DEATH_LEFT == m_currAnim || ANIM_DEATH_RIGHT == m_currAnim)
+	{		
+		if (ANIM_DEATH_LEFT != currPlayed && ANIM_DEATH_RIGHT != currPlayed)
+		{
+			m_actor->SetActive(false);
+			CLevelManager::RestartLevel(0);
+		}
+		else
+		{
+			m_sprite->Process(_delta);
+		}
+		return;
 	}
 
 	switch (m_currAnim)
@@ -110,8 +144,6 @@ void CPlayable::Process(Float32 _delta)
 	case ANIM_ATTACK_LEFT:
 	case ANIM_ATTACK_RIGHT:
 		{
-			EAnims currPlayed = static_cast<EAnims>(m_sprite->GetAnim());
-
 			if (ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
 			{
 				m_currAnim = currPlayed;
@@ -206,10 +238,10 @@ void CPlayable::Render(VECTOR2 _camPos)
 void CPlayable::SetPosition(VECTOR2 _v)
 {
 	m_actor->SetPosition(_v);
-#ifdef PAPYRUS_EDITOR
+//#ifdef PAPYRUS_EDITOR
 	m_pos = _v;
 	m_sprite->SetPosition(static_cast<Int32>(_v.x), static_cast<Int32>(_v.y));
-#endif // PAPYRUS_EDITOR
+//#endif // PAPYRUS_EDITOR
 }
 
 void CPlayable::Notify(SDL_Event* _e)

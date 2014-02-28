@@ -33,24 +33,33 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _n
 	SDL_snprintf(text, MAX_BUFFER, "%iplatform-scale", _platNum);
 	VALIDATE(_setup->GetValue(text, scale));
 
-	m_actor = Physics::CreateDynamicActor(VECTOR2(300, 0), VECTOR2(0,0), m_platPosition, scale, 100.0f, Physics::EType::TYPE_PLATFORM);
-	assert(m_actor);
-	m_actor->AddRef();
+	if (0 == m_actor)
+	{
+		m_actor = Physics::CreateDynamicActor(VECTOR2(300, 0), VECTOR2(0,0), m_platPosition, scale, 100.0f, Physics::EType::TYPE_PLATFORM);
+		assert(m_actor);
+		m_actor->AddRef();
+	}
 	m_actor->SetVelocity(VECTOR2(-250,0));
 	m_actor->SetActive(true);
 
-	m_sprites = new Sprite::ISprite*[m_numSprites];
-	SDL_memset(m_sprites, 0 , sizeof(Sprite::ISprite*) * m_numSprites);
-	m_clips = new SDL_Rect[m_numSprites];
-	SDL_memset(m_clips, 0 , sizeof(SDL_Rect) * m_numSprites);
-	m_positions = new VECTOR2[m_numSprites];
-	SDL_memset(m_positions, 0 , sizeof(VECTOR2) * m_numSprites);
+	if (0 == m_sprites)
+	{
+		m_sprites = new Sprite::ISprite*[m_numSprites];
+		SDL_memset(m_sprites, 0 , sizeof(Sprite::ISprite*) * m_numSprites);
+		m_clips = new SDL_Rect[m_numSprites];
+		SDL_memset(m_clips, 0 , sizeof(SDL_Rect) * m_numSprites);
+		m_positions = new VECTOR2[m_numSprites];
+		SDL_memset(m_positions, 0 , sizeof(VECTOR2) * m_numSprites);
+	}
 
 	for (Int16 i = 0; i < m_numSprites; ++i)
 	{
-		m_sprites[i] = Sprite::CreateSprite(_tileset, 0, false);
-		assert(m_sprites[i]);
-		m_sprites[i]->AddRef();
+		if (0 == m_sprites[i])
+		{
+			m_sprites[i] = Sprite::CreateSprite(_tileset, 0, false);
+			assert(m_sprites[i]);
+			m_sprites[i]->AddRef();
+		}
 
 		SDL_snprintf(text, MAX_BUFFER, "%iplatform-%ipos", _platNum, i + 1);
 		VALIDATE(_setup->GetValue(text, m_positions[i]));

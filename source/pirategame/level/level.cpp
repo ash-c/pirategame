@@ -32,6 +32,15 @@ CLevel::~CLevel()
 
 Bool CLevel::Initialise(Int8* _setup)
 {
+	if (0 == m_filePath)
+	{
+		m_filePath = new Int8[MAX_BUFFER];
+		SDL_snprintf(m_filePath, MAX_BUFFER, "%s", _setup);
+	}
+
+	m_cameraPos.x = 0.0f;
+	m_cameraPos.y = 0.0f;
+
 	// Make platforms
 	m_screenW = Renderer::activeRenderer->GetWidth();
 	m_screenH = Renderer::activeRenderer->GetHeight();
@@ -48,10 +57,13 @@ Bool CLevel::Initialise(Int8* _setup)
 	VALIDATE(setup->GetValue("tileset", &tileset));
 	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/background.png", tileset);
 	
-	m_background = Sprite::CreateSprite(path, 0, false);
-	assert(m_background);
-	m_background->AddRef();
-	PY_WRITETOFILE("Background created");
+	if (0 == m_background)
+	{
+		m_background = Sprite::CreateSprite(path, 0, false);
+		assert(m_background);
+		m_background->AddRef();
+		PY_WRITETOFILE("Background created");
+	}
 	
 	VECTOR2 pos;
 
@@ -65,32 +77,38 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(setup->GetValue("playerStart", pos));
 		m_playable->SetPosition(pos);
 	}
-
-	m_tiles = new CTile*[m_numTiles];
-	assert(m_tiles);
-	SDL_memset(m_tiles, 0, sizeof(CTile*) * m_numTiles);
 	
 	UInt32 type = 0;
 	Int8 text[MAX_BUFFER];
-	
-	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", tileset);
 
-	for (Int32 i = 0; i < m_numTiles; ++i)
+	if (0 == m_tiles)
 	{
-		SDL_snprintf(text, MAX_BUFFER, "%i-pos", i + 1);
-		VALIDATE(setup->GetValue(text, pos));
+		m_tiles = new CTile*[m_numTiles];
+		assert(m_tiles);
+		SDL_memset(m_tiles, 0, sizeof(CTile*) * m_numTiles);
+	
+		SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", tileset);
 
-		SDL_snprintf(text, MAX_BUFFER, "%i-type", i + 1);
-		VALIDATE(setup->GetValue(text, type));
+		for (Int32 i = 0; i < m_numTiles; ++i)
+		{
+			SDL_snprintf(text, MAX_BUFFER, "%i-pos", i + 1);
+			VALIDATE(setup->GetValue(text, pos));
 
-		CREATEPOINTER(m_tiles[i], CTile);
-		VALIDATE(m_tiles[i]->Initialise(path, pos, static_cast<ETileType>(type)));
-		m_tiles[i]->AddRef();
+			SDL_snprintf(text, MAX_BUFFER, "%i-type", i + 1);
+			VALIDATE(setup->GetValue(text, type));
+
+			CREATEPOINTER(m_tiles[i], CTile);
+			VALIDATE(m_tiles[i]->Initialise(path, pos, static_cast<ETileType>(type)));
+			m_tiles[i]->AddRef();
+		}
 	}
 
-	m_enemies = new CEnemy*[m_numEnemies];
-	assert(m_enemies);
-	SDL_memset(m_enemies, 0, sizeof(CEnemy*) * m_numEnemies);
+	if (0 == m_enemies)
+	{
+		m_enemies = new CEnemy*[m_numEnemies];
+		assert(m_enemies);
+		SDL_memset(m_enemies, 0, sizeof(CEnemy*) * m_numEnemies);
+	}
 
 	for (Int32 i = 0; i < m_numEnemies; ++i)
 	{
@@ -111,9 +129,12 @@ Bool CLevel::Initialise(Int8* _setup)
 		m_enemies[i]->SetPosition(pos);
 	}
 
-	m_platforms = new CPlatform*[m_numPlatforms];
-	assert(m_platforms);
-	SDL_memset(m_platforms, 0, sizeof(CPlatform*) * m_numPlatforms);
+	if (0 == m_platforms)
+	{
+		m_platforms = new CPlatform*[m_numPlatforms];
+		assert(m_platforms);
+		SDL_memset(m_platforms, 0, sizeof(CPlatform*) * m_numPlatforms);
+	}
 
 	for (Int32 i = 0; i < m_numPlatforms; ++i)
 	{
@@ -166,6 +187,13 @@ Bool CLevel::ShutDown()
 
 	Logger::TrackValue(&m_cameraPos, "Camera Position");
 
+	return true;
+}
+
+Bool CLevel::Reset()
+{
+	VALIDATE(this->Initialise(m_filePath));
+	Logger::WriteToScreen("Level reset");
 	return true;
 }
 

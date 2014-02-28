@@ -19,9 +19,12 @@ CTile::~CTile()
 
 Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 {
-	m_sprite = Sprite::CreateSprite(_spritesheet, 0, false);
-	assert(m_sprite);
-	m_sprite->AddRef();
+	if (0 == m_sprite)
+	{
+		m_sprite = Sprite::CreateSprite(_spritesheet, 0, false);
+		assert(m_sprite);
+		m_sprite->AddRef();
+	}
 	m_sprite->SetScale(TILE_WIDTH, TILE_HEIGHT);
 	m_clips.w = TILE_WIDTH;
 	m_clips.h = TILE_HEIGHT;
@@ -30,8 +33,11 @@ Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 
 	SetType(m_type);
 
-	m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(static_cast<Float32>(TILE_WIDTH),static_cast<Float32>(TILE_HEIGHT)));
-	assert(m_actor);
+	if (0 == m_actor)
+	{
+		m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(static_cast<Float32>(TILE_WIDTH),static_cast<Float32>(TILE_HEIGHT)));
+		assert(m_actor);
+	}
 	m_actor->SetActive(false);
 	
 	m_screenW = Renderer::activeRenderer->GetWidth();

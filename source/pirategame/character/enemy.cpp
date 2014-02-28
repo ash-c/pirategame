@@ -26,10 +26,16 @@ Bool CEnemy::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 	SDL_snprintf(m_settings, MAX_BUFFER, _settings);
 #endif // PAPYRUS_EDITOR
 
+	m_left = true;
+	m_alive = true;
+
 	m_currAnim = ANIM_RUN_LEFT;
-	m_sprite = Sprite::CreateSprite(_spriteSheet, _spriteInfo, true);
-	assert(m_sprite);
-	m_sprite->AddRef();
+	if (0 == m_sprite)
+	{
+		m_sprite = Sprite::CreateSprite(_spriteSheet, _spriteInfo, true);
+		assert(m_sprite);
+		m_sprite->AddRef();
+	}
 	m_sprite->SetAnim(m_currAnim);
 
 	FileParser::IParser* settings = FileParser::LoadFile(_settings);
@@ -49,11 +55,17 @@ Bool CEnemy::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 	VALIDATE(settings->GetValue("type", type));
 
 	VECTOR2 scale = m_sprite->GetScale();
-	//scale.x *= 2.0f;
-	//m_pos.x += scale.x * 0.5f;
-	m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, scale, mass, static_cast<Physics::EType>(type));
-	assert(m_actor);
-	m_actor->AddRef();
+	if (0 == m_actor)
+	{
+		m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, scale, mass, static_cast<Physics::EType>(type));
+		assert(m_actor);
+		m_actor->AddRef();
+	}
+	else 
+	{
+		m_actor->SetPosition(m_pos);
+	}
+
 	m_actor->SetVCollided(true);
 	m_actor->SetVelocity(VECTOR2(-m_moveForce.x, 0.0f));
 	settings->Release();
@@ -73,11 +85,33 @@ Bool CEnemy::ShutDown()
 
 void CEnemy::Process(Float32 _delta)
 {
-	if (m_actor->IsPECollided() && ANIM_ATTACK_LEFT != m_currAnim && ANIM_ATTACK_RIGHT != m_currAnim)
+	EAnims currPlayed = static_cast<EAnims>(m_sprite->GetAnim());
+
+	if (m_actor->IsPECollided() && ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed && m_alive)
 	{
-		//Logger::Write("enemy dead");
-		m_alive = false;
-		m_actor->SetActive(false);
+		if (ANIM_RUN_LEFT == m_currAnim)
+		{
+			m_sprite->PlayAnim(ANIM_DEATH_LEFT);
+			m_currAnim = ANIM_DEATH_LEFT;
+		}
+		else if (ANIM_RUN_RIGHT == m_currAnim)
+		{
+			m_sprite->PlayAnim(ANIM_DEATH_RIGHT);
+			m_currAnim = ANIM_DEATH_RIGHT;
+		}
+		return;
+	}
+	if (ANIM_DEATH_LEFT == m_currAnim || ANIM_DEATH_RIGHT == m_currAnim)
+	{		
+		if (ANIM_DEATH_LEFT != currPlayed && ANIM_DEATH_RIGHT != currPlayed)
+		{
+			m_alive = false;
+			m_actor->SetActive(false);
+		}
+		else
+		{
+			m_sprite->Process(_delta);
+		}
 		return;
 	}
 
@@ -109,21 +143,18 @@ void CEnemy::Process(Float32 _delta)
 		m_actor->SetVelocity(vel);
 	}
 
-	if (m_actor->IsPECollided())
+	if (0 >= m_attackDelay)
 	{
-		if (0 >= m_attackDelay)
+		switch (m_currAnim)
 		{
-			switch (m_currAnim)
-			{
-			case ANIM_RUN_LEFT:
-				m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
-				m_attackDelay = 1.5f;
-				break;
-			case ANIM_RUN_RIGHT:
-				m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
-				m_attackDelay = 1.5f;
-				break;
-			}
+		case ANIM_RUN_LEFT:
+			m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
+			m_attackDelay = 2.5f;
+			break;
+		case ANIM_RUN_RIGHT:
+			m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
+			m_attackDelay = 2.5f;
+			break;
 		}
 	}
 	
