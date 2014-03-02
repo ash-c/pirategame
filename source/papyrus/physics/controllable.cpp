@@ -8,6 +8,7 @@
 using namespace Papyrus::Physics;
 
 CControllable::CControllable()
+	: m_owner(0)
 {
 }
 
@@ -55,4 +56,14 @@ Bool CControllable::ShutDown()
 void CControllable::Process(Float32 _delta)
 {
 	IDynamicActor::Process(_delta);
+}
+
+void CControllable::SetOwner(void* _owner)
+{
+	m_owner = _owner;
+}
+
+void* CControllable::GetOwner()
+{
+	return m_owner;
 }

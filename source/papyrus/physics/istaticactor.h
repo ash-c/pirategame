@@ -44,6 +44,9 @@ namespace Papyrus
 
 			virtual void	SetScale(VECTOR2 _v) { }
 
+			virtual void	SetOwner(void* _owner) { }
+			virtual void*	GetOwner() { return 0; }
+
 			// Member Variables
 		protected:
 			VECTOR2			m_pos;

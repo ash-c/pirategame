@@ -127,6 +127,7 @@ Bool CLevel::Initialise(Int8* _setup)
 		CREATEPOINTER(m_enemies[i], CEnemy);
 		VALIDATE(m_enemies[i]->Initialise(sprite, spriteSettings, settings));
 		m_enemies[i]->SetPosition(pos);
+		m_enemies[i]->SetPlayer(m_playable);
 	}
 
 	if (0 == m_platforms)

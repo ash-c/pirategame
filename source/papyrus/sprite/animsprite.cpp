@@ -111,11 +111,15 @@ void Sprite::CAnimSprite::SetAnim(Int16 _i)
 	}
 }
 
-void Sprite::CAnimSprite::PlayAnim(Int16 _i)
+void Sprite::CAnimSprite::PlayAnim(Int16 _i, Bool _override)
 {
-	if (m_currClip != _i)
+	if (m_currClip != _i || _override)
 	{
-		m_prevAnim = m_currClip;
+		if (_override)
+		{
+			m_prevAnim = m_currClip;
+			m_playingAnim = false;
+		}
 		SetAnim(_i);
 		m_playingAnim = true;
 	}

@@ -141,9 +141,10 @@ namespace Papyrus
 			* Play an animation once.
 			*
 			* @param	_i				Which animation to play.
+			* @param	_override		Overrides currently playing animation if there is one.
 			* @return	Returns void.
 			*/
-			virtual void		PlayAnim(Int16 _i) {}
+			virtual void		PlayAnim(Int16 _i, Bool _override = false) {}
 
 			/*
 			* Gets which animation is currently being played.

@@ -8,6 +8,8 @@
 // Local Includes
 #include "idynamicactor.h"
 
+class ICharacter;
+
 namespace Papyrus
 {
 	namespace Physics
@@ -24,8 +26,12 @@ namespace Papyrus
 
 			virtual void	Process(Float32 _delta);
 
+			virtual void	SetOwner(void* _owner);
+			virtual void*	GetOwner();
+
 			// Member Variables
 		protected:
+			void*		m_owner;
 		};
 	}
 }

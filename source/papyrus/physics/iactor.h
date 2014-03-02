@@ -53,6 +53,9 @@ namespace Papyrus
 
 			virtual void	SetScale(VECTOR2 _v) = 0;
 
+			virtual void	SetOwner(void* _owner) = 0;
+			virtual void* GetOwner() = 0;
+
 			virtual SDL_Rect GetRect() { return m_bounds.rect; }
 
 			virtual Bool	IsActive() { return m_active; }

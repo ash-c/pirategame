@@ -25,8 +25,12 @@ public:
 
 	Bool				IsActive() { return m_actor->IsActive(); }
 
+	void				SetPlayer(ICharacter* _player) { m_player = _player; }
+
 	// Member Variables
 protected:
+	ICharacter*			m_player;
+
 	Float32				m_attackDelay;
 	Int32				m_screenW;
 	Int32				m_screenH;

@@ -75,7 +75,10 @@ namespace Papyrus
 				UpdateBounds();
 			}
 
-			virtual Bool IsStationary() { return m_stationary; }
+			virtual void	SetOwner(void* _owner) = 0;
+			virtual void* GetOwner() = 0;
+
+			virtual Bool	IsStationary() { return m_stationary; }
 
 			virtual void	ApplyForce(VECTOR2 _force)
 			{

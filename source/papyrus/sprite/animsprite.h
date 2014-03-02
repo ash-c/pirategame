@@ -28,7 +28,7 @@ namespace Papyrus
 			virtual void		Render();
 
 			virtual void		SetAnim(Int16 _i);
-			virtual void		PlayAnim(Int16 _i);
+			virtual void		PlayAnim(Int16 _i, Bool _override = false);
 			virtual Int16		GetAnim();
 
 			virtual void		SetAnimSpeed(Float32 _f);

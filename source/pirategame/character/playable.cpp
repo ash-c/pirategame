@@ -56,6 +56,7 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 		m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass, Physics::EType::TYPE_PLAYER);
 		assert(m_actor);
 		m_actor->AddRef();
+		m_actor->SetOwner((void*)this);
 	}
 	m_actor->SetActive(true);
 	m_actor->SetVCollided(true);
@@ -77,16 +78,16 @@ void CPlayable::Process(Float32 _delta)
 #ifndef PAPYRUS_EDITOR
 	EAnims currPlayed = static_cast<EAnims>(m_sprite->GetAnim());
 
-	if (m_actor->IsPECollided() && ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
+	if (m_actor->IsPECollided() && ANIM_DEATH_LEFT != m_currAnim && ANIM_DEATH_RIGHT != m_currAnim)// && ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
 	{
-		if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim || ANIM_FALL_LEFT == m_currAnim)
+		if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim || ANIM_FALL_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
 		{
-			m_sprite->PlayAnim(ANIM_DEATH_LEFT);
+			m_sprite->PlayAnim(ANIM_DEATH_LEFT, true);
 			m_currAnim = ANIM_DEATH_LEFT;
 		}
-		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim || ANIM_FALL_RIGHT == m_currAnim)
+		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim || ANIM_FALL_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
 		{
-			m_sprite->PlayAnim(ANIM_DEATH_RIGHT);
+			m_sprite->PlayAnim(ANIM_DEATH_RIGHT, true);
 			m_currAnim = ANIM_DEATH_RIGHT;
 		}
 		return;

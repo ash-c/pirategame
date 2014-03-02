@@ -8,6 +8,8 @@
 #include "static.h"
 #include "../logging/logger.h"
 
+#include "../../pirategame/character/character.h"
+
 using namespace Papyrus;
 using namespace Papyrus::Physics;
 
@@ -302,13 +304,20 @@ void Physics::PlayerEnemyCollision(IActor* _actor1, IActor* _actor2)
 		VECTOR2 vel1 = ((IDynamicActor*)_actor1)->GetVelocity();
 		VECTOR2 vel2 = ((IDynamicActor*)_actor2)->GetVelocity();
 
-		//if (vel1.x < 0.0f && vel2.x > 0.0f || 
-		//	vel1.x > 0.0f && vel2.x < 0.0f)
-		//{
+		ICharacter* player = ((ICharacter*)_actor1->GetOwner());
+		ICharacter* enemy = ((ICharacter*)_actor2->GetOwner());
+
+		Bool playerAttacking = player->IsAttacking();
+		Bool enemyAttacking = enemy->IsAttacking();
+
+		if (enemyAttacking && playerAttacking || enemyAttacking)
+		{
+			_actor1->SetPECollided(true);
+		}
+		else if (!enemyAttacking && playerAttacking)
+		{
 			_actor2->SetPECollided(true);
-		//}
-			
-		_actor1->SetPECollided(true);
+		}
 	}
 }
 
