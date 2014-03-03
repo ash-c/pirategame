@@ -27,6 +27,8 @@ public:
 
 	void				SetPlayer(ICharacter* _player) { m_player = _player; }
 
+	virtual void		TriggerAttack(Bool _left);
+
 	// Member Variables
 protected:
 	ICharacter*			m_player;

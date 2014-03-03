@@ -47,7 +47,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	m_gridRects = new SDL_Rect[m_numRects];
 
 	m_gridRects[0].x = 0;
-	m_gridRects[0].y = static_cast<Int32>(Renderer::activeRenderer->GetHeight() - TILE_HEIGHT);
+	m_gridRects[0].y = 0;
 	m_gridRects[0].w = TILE_WIDTH;
 	m_gridRects[0].h = TILE_HEIGHT;
 
@@ -63,7 +63,7 @@ Bool CLevel::Initialise(Int8* _setup)
 		if (m_gridRects[i].x >= (LEVEL_WIDTH))
 		{
 			m_gridRects[i].x = 0;
-			m_gridRects[i].y -= TILE_HEIGHT;
+			m_gridRects[i].y += TILE_HEIGHT;
 		}
 	}
 
@@ -190,6 +190,8 @@ Bool CLevel::ShutDown()
 	if (0 != m_playable) m_playable->ShutDown();
 	CLEANDELETE(m_playable);
 
+	Logger::StopTracking("Camera Position");
+
 	return true;
 }
 
@@ -204,7 +206,7 @@ void CLevel::Render()
 	// Render grid
 	SDL_Rect rectPos;
 	rectPos.x = static_cast<Int32>(m_cameraPos.x);
-	rectPos.y = static_cast<Int32>(Renderer::activeRenderer->GetHeight() - TILE_HEIGHT + m_cameraPos.y);
+	rectPos.y = static_cast<Int32>((LEVEL_HEIGHT - TILE_HEIGHT) - m_cameraPos.y);//(Renderer::activeRenderer->GetHeight() - TILE_HEIGHT + m_cameraPos.y);
 	rectPos.w = TILE_WIDTH;
 	rectPos.h = TILE_HEIGHT;
 

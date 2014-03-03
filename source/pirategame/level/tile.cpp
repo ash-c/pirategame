@@ -54,12 +54,12 @@ Bool CTile::ShutDown()
 
 void CTile::Render(VECTOR2 _camPos)
 {
-	if ((m_pos.x + _camPos.x) > -(TILE_WIDTH * 2.0f) && (m_pos.y + _camPos.y) > -(TILE_HEIGHT * 2.0f) &&
-		(m_pos.x + _camPos.x) < (m_screenW + TILE_WIDTH * 2.0f) && (m_pos.y + _camPos.y) < (m_screenH + TILE_HEIGHT * 2.0f))
+	if ((m_pos.x + _camPos.x) > -(TILE_WIDTH * 2.0f) && (m_pos.y - _camPos.y) > -(TILE_HEIGHT * 2.0f) &&
+		(m_pos.x + _camPos.x) < (m_screenW + TILE_WIDTH * 2.0f) && (m_pos.y - _camPos.y) < (m_screenH + TILE_HEIGHT * 2.0f))
 	{
 		m_actor->SetActive(true);
 		m_sprite->SetClip(&m_clips);
-		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));
+		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y - _camPos.y));
 		m_sprite->Render();
 	}
 	else if (m_actor->IsActive())

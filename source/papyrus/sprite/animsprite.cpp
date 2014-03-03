@@ -109,6 +109,10 @@ void Sprite::CAnimSprite::SetAnim(Int16 _i)
 		m_currClip = _i;
 		m_timer -= m_timePerFrame;
 	}
+	else
+	{
+		m_prevAnim = _i;
+	}
 }
 
 void Sprite::CAnimSprite::PlayAnim(Int16 _i, Bool _override)
@@ -119,6 +123,10 @@ void Sprite::CAnimSprite::PlayAnim(Int16 _i, Bool _override)
 		{
 			m_prevAnim = m_currClip;
 			m_playingAnim = false;
+		}
+		else if (INVALID_ID == m_prevAnim)
+		{
+			m_prevAnim = m_currClip;
 		}
 		SetAnim(_i);
 		m_playingAnim = true;

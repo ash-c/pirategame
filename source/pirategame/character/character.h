@@ -58,6 +58,8 @@ public:
 	virtual Bool		IsAttacking() { return ANIM_ATTACK_LEFT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim; }
 	virtual EAnims		GetAnim() { return m_currAnim; }
 
+	virtual void		TriggerAttack(Bool _left) { }
+
 	// Member Variables
 protected:
 	Sprite::ISprite*		m_sprite;

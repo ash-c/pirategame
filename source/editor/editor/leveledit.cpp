@@ -39,6 +39,7 @@ Bool CLevelEdit::Initialise()
 
 	m_screenHeight = Renderer::activeRenderer->GetHeight();
 	m_screenWidth = Renderer::activeRenderer->GetWidth();
+	m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenHeight);
 
 	m_toolContext = UI::LoadInterface("data/interfaces/editorBuildContext.ini", false, true);
 	assert(m_toolContext);
@@ -104,26 +105,29 @@ void CLevelEdit::Notify(SDL_Event* _e)
 			{
 				m_leftMouseDown = true;
 				VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
+				VECTOR2 newPos;
+				newPos.y = tilePos.y + m_cameraPos.y;
+				newPos.x = tilePos.x - m_cameraPos.x;
 
 				// Place tool.
 				if (TOOL_TILE == m_activeTool)
 				{
-					m_level->AddTile(tilePos - m_cameraPos);
+					m_level->AddTile(newPos);
 				}
 				else if (TOOL_REMOVE == m_activeTool)
 				{
-					if (!m_level->RemoveTile(tilePos - m_cameraPos))
+					if (!m_level->RemoveTile(tilePos + m_cameraPos))
 					{
-						m_level->RemoveEnemy(tilePos - m_cameraPos);
+						m_level->RemoveEnemy(tilePos + m_cameraPos);
 					}
 				}
 				else if (TOOL_BASIC_ENEMY == m_activeTool)
 				{
-					m_level->AddEnemy(tilePos - m_cameraPos, Physics::EType::TYPE_BASIC_ENEMY);
+					m_level->AddEnemy(tilePos + m_cameraPos, Physics::EType::TYPE_BASIC_ENEMY);
 				}
 				else if (TOOL_PLAYER_START == m_activeTool)
 				{
-					m_level->SetPlayerStart(tilePos - m_cameraPos);
+					m_level->SetPlayerStart(tilePos + m_cameraPos);
 				}
 			}
 		}
@@ -151,7 +155,7 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		if (m_rightMouseDown)
 		{
 			m_cameraPos.x += _e->motion.xrel;
-			m_cameraPos.y += _e->motion.yrel;
+			m_cameraPos.y -= _e->motion.yrel;
 
 			if (m_cameraPos.y < 0.0f) m_cameraPos.y = 0.0f;
 			if (m_cameraPos.y > (LEVEL_HEIGHT - m_screenHeight)) m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenHeight);
@@ -162,11 +166,14 @@ void CLevelEdit::Notify(SDL_Event* _e)
 		else if (m_leftMouseDown)
 		{
 			VECTOR2 tilePos(static_cast<Float32>(_e->button.x), static_cast<Float32>(_e->button.y));
+			VECTOR2 newPos;
+			newPos.y = tilePos.y + m_cameraPos.y;
+			newPos.x = tilePos.x - m_cameraPos.x;
 
 			// Place tool.
 			if (TOOL_TILE == m_activeTool)
 			{
-				m_level->AddTile(tilePos - m_cameraPos);
+				m_level->AddTile(newPos);
 			}
 			else if (TOOL_REMOVE == m_activeTool)
 			{

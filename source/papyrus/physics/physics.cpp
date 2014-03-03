@@ -301,8 +301,8 @@ void Physics::PlayerEnemyCollision(IActor* _actor1, IActor* _actor2)
 	SDL_Rect result;
 	if (SDL_IntersectRect(&_actor1->GetRect(), &_actor2->GetRect(), &result))
 	{
-		VECTOR2 vel1 = ((IDynamicActor*)_actor1)->GetVelocity();
-		VECTOR2 vel2 = ((IDynamicActor*)_actor2)->GetVelocity();
+		VECTOR2 pos1 = ((IDynamicActor*)_actor1)->GetPosition();
+		VECTOR2 pos2 = ((IDynamicActor*)_actor2)->GetPosition();
 
 		ICharacter* player = ((ICharacter*)_actor1->GetOwner());
 		ICharacter* enemy = ((ICharacter*)_actor2->GetOwner());
@@ -317,6 +317,17 @@ void Physics::PlayerEnemyCollision(IActor* _actor1, IActor* _actor2)
 		else if (!enemyAttacking && playerAttacking)
 		{
 			_actor2->SetPECollided(true);
+		}
+		else // Neither attacking, enemy face player and attack
+		{
+			if (pos1.x < pos2.x) // player to the left
+			{
+				enemy->TriggerAttack(true);
+			}
+			else // player to the right
+			{
+				enemy->TriggerAttack(false);
+			}
 		}
 	}
 }

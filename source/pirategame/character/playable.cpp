@@ -58,6 +58,7 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 		m_actor->AddRef();
 		m_actor->SetOwner((void*)this);
 	}
+	m_actor->SetVelocity(VECTOR2(0.0f, 0.0f));
 	m_actor->SetActive(true);
 	m_actor->SetVCollided(true);
 	settings->Release();
@@ -232,7 +233,7 @@ void CPlayable::Process(Float32 _delta)
 
 void CPlayable::Render(VECTOR2 _camPos)
 {
-	m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));
+	m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y - _camPos.y));
 	m_sprite->Render();
 }
 
@@ -247,6 +248,9 @@ void CPlayable::SetPosition(VECTOR2 _v)
 
 void CPlayable::Notify(SDL_Event* _e)
 {
+	// don't take input if death animation is playing.
+	if (ANIM_DEATH_LEFT == m_currAnim || ANIM_DEATH_RIGHT == m_currAnim) return;
+
 	VECTOR2 vel = m_actor->GetVelocity();
 	if (_e->type == SDL_KEYDOWN)
 	{

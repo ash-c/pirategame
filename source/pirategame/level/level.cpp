@@ -154,6 +154,9 @@ Bool CLevel::Initialise(Int8* _setup)
 
 	CLEANARRAY(tileset);
 
+	m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight());
+	Logger::TrackValue(&m_cameraPos, "Camera Position");
+
 	return true;
 }
 
@@ -186,7 +189,7 @@ Bool CLevel::ShutDown()
 		CLEANDELETE(m_playable);
 	}
 
-	Logger::TrackValue(&m_cameraPos, "Camera Position");
+	Logger::StopTracking("Camera Position");
 
 	return true;
 }
@@ -208,7 +211,7 @@ void CLevel::Process(Float32 _delta)
 		VECTOR2 pos = m_playable->GetPosition();
 
 		Int32 scrollLeft = static_cast<Int32>(m_screenW * 0.5f);
-		Int32 scrollUp = static_cast<Int32>(m_screenH * 0.5f);
+		Int32 scrollUp = LEVEL_HEIGHT - static_cast<Int32>(m_screenH * 0.5f);
 
 		if (pos.x >= scrollLeft && pos.x + scrollLeft < LEVEL_WIDTH)
 		{
@@ -216,15 +219,15 @@ void CLevel::Process(Float32 _delta)
 		}
 		if (pos.y < scrollUp)
 		{
-			m_cameraPos.y = -(pos.y - scrollUp);
-			if (m_cameraPos.y > LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight())
+			m_cameraPos.y = LEVEL_HEIGHT - pos.y;
+			if (m_cameraPos.y < 0.0f)
 			{
-				m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight());
+				m_cameraPos.y = 0.0f;
 			}
 		}
 		else
 		{
-			m_cameraPos.y = 0.0f;
+			m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight());
 		}
 
 		Physics::camPosition = m_cameraPos;

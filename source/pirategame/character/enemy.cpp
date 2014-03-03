@@ -125,20 +125,26 @@ void CEnemy::Process(Float32 _delta)
 		if (m_left)
 		{
 			m_left = false;
-			if (ANIM_RUN_LEFT == m_currAnim)
+			if (ANIM_RUN_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
 			{
-				m_currAnim = ANIM_RUN_RIGHT;
-				m_sprite->SetAnim(m_currAnim);
+				if (ANIM_ATTACK_LEFT != m_currAnim)
+				{
+					m_currAnim = ANIM_RUN_RIGHT;
+				}
+				m_sprite->SetAnim(ANIM_RUN_RIGHT);
 			}
 			vel.x = m_moveForce.x;
 		}
 		else
 		{
 			m_left = true;
-			if (ANIM_RUN_RIGHT == m_currAnim)
+			if (ANIM_RUN_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
 			{
-				m_currAnim = ANIM_RUN_LEFT;
-				m_sprite->SetAnim(m_currAnim);
+				if (ANIM_ATTACK_RIGHT != m_currAnim)
+				{
+					m_currAnim = ANIM_RUN_LEFT;
+				}
+				m_sprite->SetAnim(ANIM_RUN_LEFT);
 			}
 			vel.x = -m_moveForce.x;
 		}
@@ -169,6 +175,7 @@ void CEnemy::Process(Float32 _delta)
 			if (ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
 			{
 				m_currAnim = currPlayed;
+				m_sprite->SetAnim(m_currAnim);
 				//VECTOR2 scale = m_sprite->GetScale();
 				//m_actor->SetScale(scale);
 			}
@@ -182,11 +189,11 @@ void CEnemy::Process(Float32 _delta)
 
 void CEnemy::Render(VECTOR2 _camPos)
 {
-	if ((m_pos.x + _camPos.x) > -50 && (m_pos.y + _camPos.y) > -100 &&
-		(m_pos.x + _camPos.x) < (m_screenW + 50) && (m_pos.y + _camPos.y) < (m_screenH + 100) && m_alive)
+	if ((m_pos.x + _camPos.x) > -50 && (m_pos.y - _camPos.y) > -100 &&
+		(m_pos.x + _camPos.x) < (m_screenW + 50) && (m_pos.y - _camPos.y) < (m_screenH + 100) && m_alive)
 	{
 		m_actor->SetActive(true);
-		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y + _camPos.y));
+		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y - _camPos.y));
 		m_sprite->Render();
 	}
 	else if (m_actor->IsActive()) 
@@ -199,4 +206,38 @@ void CEnemy::SetPosition(VECTOR2 _v)
 {
 	m_actor->SetPosition(_v);
 	m_pos = _v;
+}
+
+void CEnemy::TriggerAttack(Bool _left)
+{
+	VECTOR2 vel = m_actor->GetVelocity();
+
+	if (_left)
+	{
+		m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
+		m_currAnim = ANIM_ATTACK_LEFT;
+		m_attackDelay = 2.5f;
+
+		if (!m_left)
+		{
+			m_left = true;
+			m_sprite->SetAnim(m_currAnim);
+			vel.x = -m_moveForce.x;
+			m_actor->SetVelocity(vel);
+		}
+	}
+	else
+	{
+		m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
+		m_currAnim = ANIM_ATTACK_RIGHT;
+		m_attackDelay = 2.5f;
+
+		if (m_left)
+		{
+			m_left = false;
+			m_sprite->SetAnim(m_currAnim);
+			vel.x = m_moveForce.x;
+			m_actor->SetVelocity(vel);
+		}
+	}
 }
