@@ -154,7 +154,7 @@ Bool CLevel::Initialise(Int8* _setup)
 
 	CLEANARRAY(tileset);
 
-	m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight());
+	m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenH);
 	Logger::TrackValue(&m_cameraPos, "Camera Position");
 
 	return true;
@@ -219,7 +219,7 @@ void CLevel::Process(Float32 _delta)
 		}
 		if (pos.y < scrollUp)
 		{
-			m_cameraPos.y = LEVEL_HEIGHT - pos.y;
+			m_cameraPos.y = (LEVEL_HEIGHT - m_screenH) - (scrollUp - pos.y);
 			if (m_cameraPos.y < 0.0f)
 			{
 				m_cameraPos.y = 0.0f;
@@ -227,7 +227,7 @@ void CLevel::Process(Float32 _delta)
 		}
 		else
 		{
-			m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - Renderer::activeRenderer->GetHeight());
+			m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenH);
 		}
 
 		Physics::camPosition = m_cameraPos;

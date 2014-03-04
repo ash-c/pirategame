@@ -423,14 +423,14 @@ void CPlayable::Attack()
 		VECTOR2 scale = m_sprite->GetScale();
 		// attack left
 		if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim ||
-				ANIM_FALL_LEFT == m_currAnim)
+				ANIM_FALL_LEFT == m_currAnim || ANIM_SLIDE_LEFT == m_currAnim)
 		{
 			m_currAnim = ANIM_ATTACK_LEFT;
 			m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
 		} 
 		// attack right
 		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim ||
-				ANIM_FALL_RIGHT == m_currAnim)
+				ANIM_FALL_RIGHT == m_currAnim || ANIM_SLIDE_RIGHT == m_currAnim)
 		{
 			m_currAnim = ANIM_ATTACK_RIGHT;
 			m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);

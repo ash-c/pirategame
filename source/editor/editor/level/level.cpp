@@ -88,6 +88,18 @@ Bool CLevel::Initialise(Int8* _setup)
 	PY_WRITETOFILE("Background created");
 	
 	VECTOR2 pos;
+
+	Bool playerExists = setup->GetValue("playerStart", pos);
+	if (playerExists) 
+	{
+		if (pos.x != 0 && pos.y != 0)
+		{
+			CREATEPOINTER(m_playable, CPlayable);
+			assert(m_playable);
+			VALIDATE(m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml"));
+			m_playable->SetPosition(pos);
+		}
+	}
 	
 	UInt32 type = 0;
 	Int8 text[MAX_BUFFER];
@@ -429,6 +441,7 @@ Bool CLevel::AddEnemy(VECTOR2 _pos, Physics::EType _type)
 	}
 
 	_pos.y -= TILE_HEIGHT * 0.5f;
+	_pos.y += 1.0f;
 	temp->SetPosition(_pos);
 	++m_numEnemies;
 
@@ -464,6 +477,7 @@ Bool CLevel::SetPlayerStart(VECTOR2 _pos)
 {
 	CheckAgainstGrid(&_pos);
 	_pos.y -= TILE_HEIGHT * 0.5f;	
+	_pos.y += 1.0f;
 
 	if (0 == m_playable)
 	{

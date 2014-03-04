@@ -116,18 +116,18 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				}
 				else if (TOOL_REMOVE == m_activeTool)
 				{
-					if (!m_level->RemoveTile(tilePos + m_cameraPos))
+					if (!m_level->RemoveTile(newPos))
 					{
-						m_level->RemoveEnemy(tilePos + m_cameraPos);
+						m_level->RemoveEnemy(newPos);
 					}
 				}
 				else if (TOOL_BASIC_ENEMY == m_activeTool)
 				{
-					m_level->AddEnemy(tilePos + m_cameraPos, Physics::EType::TYPE_BASIC_ENEMY);
+					m_level->AddEnemy(newPos, Physics::EType::TYPE_BASIC_ENEMY);
 				}
 				else if (TOOL_PLAYER_START == m_activeTool)
 				{
-					m_level->SetPlayerStart(tilePos + m_cameraPos);
+					m_level->SetPlayerStart(newPos);
 				}
 			}
 		}
@@ -177,7 +177,7 @@ void CLevelEdit::Notify(SDL_Event* _e)
 			}
 			else if (TOOL_REMOVE == m_activeTool)
 			{
-				m_level->RemoveTile(tilePos - m_cameraPos);
+				m_level->RemoveTile(newPos);
 			}
 		}
 	}
