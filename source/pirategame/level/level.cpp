@@ -21,6 +21,7 @@ CLevel::CLevel()
 	, m_numEnemies(0)
 	, m_numPlatforms(0)
 	, m_screenW(0)
+	, m_complete(false)
 {
 
 }
@@ -154,8 +155,11 @@ Bool CLevel::Initialise(Int8* _setup)
 
 	CLEANARRAY(tileset);
 
-	m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenH);
-	Logger::TrackValue(&m_cameraPos, "Camera Position");
+	if (0 == m_playable)
+	{
+		m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenH);
+		Logger::TrackValue(&m_cameraPos, "Camera Position");
+	}
 
 	return true;
 }
@@ -231,6 +235,12 @@ void CLevel::Process(Float32 _delta)
 		}
 
 		Physics::camPosition = m_cameraPos;
+
+		// check player position for end of level
+		if (pos.x >= (LEVEL_WIDTH - 200))
+		{
+			m_complete = true;
+		}
 	}
 
 	for (Int16 i = 0; i < m_numPlatforms; ++i)

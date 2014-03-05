@@ -10,14 +10,16 @@
 CGame::CGame()
 	: m_levelMan(0)
 	, m_interface(0)
+	, m_currLevel(0)
+	, m_startLevel(0)
 	, m_active(true)
 	, m_paused(false)
 {
-
 }
 
 CGame::~CGame()
 {
+	CLEANARRAY(m_currLevel);
 	m_levelMan->ShutDown();
 	m_levelMan->DestroyInstance();
 	m_levelMan = 0;
@@ -43,9 +45,24 @@ Bool CGame::Initialise()
 
 	VALIDATE(Input::inputManager->Register(this));
 
+	FileParser::IParser* levels = FileParser::LoadFile("data/xml/saveState.xml");
+	assert(levels);
+	levels->AddRef();
+
+	Int32 maxLevels = 0;
+	Int32 currLevel = 0;
+	VALIDATE(levels->GetValue("totalLevels", maxLevels));
+	VALIDATE(levels->GetValue("currLevel", currLevel));
+	VALIDATE(levels->GetValue("startLevel", &m_startLevel));
+
+	m_currLevel = new Int8[MAX_BUFFER];
+	SDL_snprintf(m_currLevel, MAX_BUFFER, "data/levels/%i.json", currLevel);
+
 	m_levelMan = &CLevelManager::GetInstance();
-	VALIDATE(m_levelMan->Initialise());
-	VALIDATE(m_levelMan->LoadLevel("data/levels/title.json"));
+	VALIDATE(m_levelMan->Initialise(maxLevels, currLevel));
+	VALIDATE(m_levelMan->LoadLevel(m_startLevel));
+
+	levels->Release();
 	
 	m_interface = UI::LoadInterface("data/interfaces/main.ini");
 	assert(m_interface);
@@ -62,6 +79,16 @@ void CGame::Process(Float32 _delta)
 	if (!m_paused)
 	{
 		m_levelMan->Process(_delta);
+
+		if (m_levelMan->IsFinished())
+		{
+			m_levelMan->Initialise(0, 1);
+			m_levelMan->LoadLevel(m_startLevel);
+
+			m_interface->Toggle();
+			m_interface = UI::LoadInterface("data/interfaces/main.ini");
+			SDL_ShowCursor(true);
+		}
 	}
 }
 
@@ -119,7 +146,6 @@ void CGame::Notify(SDL_Event* _e)
 		{
 		case SDLK_ESCAPE:
 			Pause();
-			//m_active = false;
 			break;
 		case SDLK_BACKQUOTE: // `
 			Logger::ToggleConsole(nullptr);
@@ -143,7 +169,7 @@ Int32 CGame::StartGame(lua_State* L)
 	sm_pTheInstance->m_interface->Toggle();
 	sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
 	SDL_ShowCursor(false);
-	sm_pTheInstance->m_levelMan->LoadLevel("data/levels/1.json");
+	sm_pTheInstance->m_levelMan->LoadLevel(sm_pTheInstance->m_currLevel);
 	return 0;
 }
 

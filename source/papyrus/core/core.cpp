@@ -12,7 +12,7 @@ Timer::CTimer* Core::timer = 0;
 Bool Core::Initialise()
 {
 	FileParser::CIniparser setup;
-	setup.Initialise("data/papyrus/setup.ini");
+	setup.Initialise("data/papyrus.ini");
 	setup.Load();
 
 	Int32 width, height, numParsers, numSprites, numActors, numInterfaces;
@@ -73,7 +73,6 @@ Bool Core::Initialise()
 Float32 Core::Process()
 {
 	Float32 delta = 0.0f;
-
 
 	if (!timer->Paused())
 	{

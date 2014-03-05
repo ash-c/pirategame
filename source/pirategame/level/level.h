@@ -34,6 +34,8 @@ public:
 	void			Process(Float32 _delta);
 	void			Render();
 
+	Bool			IsComplete() { return m_complete; }
+
 	// Member Variables
 protected:
 	Sprite::ISprite*	m_background;
@@ -50,6 +52,8 @@ protected:
 	Int32				m_numPlatforms;
 	Int32				m_screenW;
 	Int32				m_screenH;
+
+	Bool				m_complete;
 };
 
 #endif // __PIRATEGAME_LEVEL_H__

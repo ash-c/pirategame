@@ -26,6 +26,8 @@ namespace Papyrus
 
 		IDynamicActor*	CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, VECTOR2 _scale, Float32 _mass, EType _type);
 
+		Bool			FlushActor(IActor* _actor);
+
 		void			PlayerStaticCollision(IActor* _actor1, IActor* _actor2);
 		void			PlayerPlatformCollision(IActor* _actor1, IActor* _actor2);
 		void			PlayerEnemyCollision(IActor* _actor1, IActor* _actor2);

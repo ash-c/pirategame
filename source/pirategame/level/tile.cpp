@@ -39,6 +39,7 @@ Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 		assert(m_actor);
 	}
 	m_actor->SetActive(false);
+	m_actor->AddRef();
 	
 	m_screenW = Renderer::activeRenderer->GetWidth();
 	m_screenH = Renderer::activeRenderer->GetHeight();
@@ -49,6 +50,7 @@ Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 Bool CTile::ShutDown()
 {
 	PY_SAFE_RELEASE(m_sprite);
+	Physics::FlushActor(m_actor);
 	return true;
 }
 

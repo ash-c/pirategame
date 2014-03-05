@@ -19,7 +19,7 @@ class CLevelManager : public TSingleton<CLevelManager>
 public:
 	virtual ~CLevelManager();
 
-	Bool			Initialise();
+	Bool			Initialise(Int32 _numLevels, Int32 _currLevel);
 	Bool			ShutDown();
 
 	void			Process(Float32 _delta);
@@ -28,6 +28,7 @@ public:
 	Bool			LoadLevel(Int8* _lvl);
 
 	Bool			ResetLevel();
+	Bool			IsFinished() { return m_finLevels; }
 
 	static Int32	RestartLevel(lua_State* L);
 
@@ -36,8 +37,11 @@ protected:
 
 	// Member Variables
 protected:	
-	CLevel*			m_currLevel;
+	CLevel*			m_current;
 	Int32			m_numlevels;
+	Int32			m_currLevel;
+
+	Bool			m_finLevels;
 };
 
 #endif // __PIRATEGAME_LEVEL_MANAGER_H__

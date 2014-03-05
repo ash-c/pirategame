@@ -227,7 +227,7 @@ namespace Papyrus
 			{
 				SDL_Rect rect = m_bounds.rect;
 				rect.x += static_cast<Int32>(_camPos.x);
-				rect.y += static_cast<Int32>(_camPos.y);
+				rect.y -= static_cast<Int32>(_camPos.y);
 				Renderer::activeRenderer->DrawRect(&rect, m_vCollision || m_hCollision);
 			}
 

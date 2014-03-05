@@ -50,6 +50,16 @@ Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, V
 
 Bool CControllable::ShutDown()
 {
+	if (m_type == Physics::EType::TYPE_PLAYER)
+	{
+		Logger::StopTracking("active");
+		Logger::StopTracking("position");
+		Logger::StopTracking("velocity");
+		Logger::StopTracking("acceleration");
+		Logger::StopTracking("vCollided");
+		Logger::StopTracking("hCollided");
+	}
+
 	return true;
 }
 

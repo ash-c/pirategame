@@ -101,7 +101,7 @@ Bool CPlatform::ShutDown()
 		m_sprites[i]->Release();
 	}
 	
-	m_actor->Release();
+	Physics::FlushActor(m_actor);
 
 	return true;
 }

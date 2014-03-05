@@ -40,7 +40,6 @@ Bool Physics::ShutDown()
 
 void Physics::Process(Float32 _frameTime)
 {
-
 	for (UInt16 i = 0; i < numActors; ++i)
 	{
 		actors[i]->SetHCollided(false);
@@ -186,6 +185,31 @@ Physics::IDynamicActor* Physics::CreateDynamicActor(VECTOR2 _maxVel, VECTOR2 _ma
 
 	Logger::Write("Not enough room to create new dynamic actor. Increase maxActors.");
 	return actor;
+}
+
+Bool Physics::FlushActor(IActor* _actor)
+{
+	if (0 != _actor)
+	{
+		for (Int32 i = 0; i < numActors; ++i)
+		{
+			if (_actor == actors[i])
+			{
+				PY_DELETE_RELEASE(actors[i]);
+				--numActors;
+
+				for (Int32 k = i; k < (numActors); ++k)
+				{
+					actors[k] = actors[k + 1];
+					if (0 == actors[k]) break;
+				}
+				actors[numActors] = 0;
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 void Physics::PlayerStaticCollision(IActor* _actor1, IActor* _actor2)

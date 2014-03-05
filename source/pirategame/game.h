@@ -86,6 +86,9 @@ protected:
 	CLevelManager*				m_levelMan;
 	UI::IUIInterface*			m_interface;
 
+	Int8*						m_currLevel;
+	Int8*						m_startLevel;
+
 	Bool						m_active;
 	Bool						m_paused;
 };

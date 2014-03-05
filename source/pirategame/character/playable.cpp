@@ -13,8 +13,8 @@ using namespace Papyrus;
 CPlayable::CPlayable()
 	: m_moveDir(MOVE_IDLE)
 {
-	m_pos.x = 800;
-	m_pos.y = 450;
+	m_pos.x = 0;
+	m_pos.y = 0;
 }
 
 CPlayable::~CPlayable()
@@ -70,7 +70,7 @@ Bool CPlayable::ShutDown()
 {
 	Input::inputManager->DeRegister(this);
 	PY_SAFE_RELEASE(m_sprite);
-	PY_SAFE_RELEASE(m_actor);
+	Physics::FlushActor(m_actor);
 	return true;
 }
 
