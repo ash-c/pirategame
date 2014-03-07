@@ -109,7 +109,7 @@ void Sprite::CAnimSprite::SetAnim(Int16 _i)
 		m_currClip = _i;
 		m_timer -= m_timePerFrame;
 	}
-	else
+	else if (m_playingAnim)
 	{
 		m_prevAnim = _i;
 	}

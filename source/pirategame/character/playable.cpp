@@ -106,7 +106,8 @@ void CPlayable::Process(Float32 _delta)
 		}
 		return;
 	}
-
+	
+	VECTOR2 vel = m_actor->GetVelocity();
 	switch (m_currAnim)
 	{
 	case ANIM_SLIDE_LEFT:
@@ -117,7 +118,8 @@ void CPlayable::Process(Float32 _delta)
 		}
 		else 
 		{
-			m_actor->ApplyForce(VECTOR2(m_slowDownForce.x, 0.0f));
+			m_actor->SetVelocity(VECTOR2(vel.x * m_slowDownForce.x, vel.y));
+			//m_actor->ApplyForce(VECTOR2(m_slowDownForce.x, 0.0f));
 		}
 		break;
 	case ANIM_SLIDE_RIGHT:
@@ -128,7 +130,8 @@ void CPlayable::Process(Float32 _delta)
 		}
 		else 
 		{
-			m_actor->ApplyForce(VECTOR2(-m_slowDownForce.x, 0.0f));
+			m_actor->SetVelocity(VECTOR2(vel.x * m_slowDownForce.x, vel.y));
+			//m_actor->ApplyForce(VECTOR2(-m_slowDownForce.x, 0.0f));
 		}
 		break;
 	case ANIM_RUN_LEFT:

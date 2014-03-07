@@ -14,6 +14,7 @@ CGame::CGame()
 	, m_startLevel(0)
 	, m_active(true)
 	, m_paused(false)
+	, m_gameRunning(false)
 {
 }
 
@@ -38,6 +39,7 @@ Bool CGame::Initialise()
 
 	// Register the quit function called via the debug console
 	lua_register(Logger::luaState, "QuitGame", QuitGame);
+	lua_register(Logger::luaState, "TitleMenu", TitleMenu);
 	lua_register(Logger::luaState, "StartGame", StartGame);
 	lua_register(Logger::luaState, "PauseGame", PauseGame);
 	lua_register(Logger::luaState, "LoadLevel", LoadLevel);
@@ -145,7 +147,10 @@ void CGame::Notify(SDL_Event* _e)
 		switch (_e->key.keysym.sym)
 		{
 		case SDLK_ESCAPE:
-			Pause();
+			if (m_gameRunning)
+			{
+				Pause();
+			}
 			break;
 		case SDLK_BACKQUOTE: // `
 			Logger::ToggleConsole(nullptr);
@@ -160,7 +165,26 @@ Int32 CGame::QuitGame(lua_State* L)
 {
 	// Function is static so can't access m_active normally.
 	// Access member variable through the singleton pointer.
+	sm_pTheInstance->m_gameRunning = false;
 	sm_pTheInstance->m_active = false;
+	return 0;
+}
+
+Int32 CGame::TitleMenu(lua_State* L)
+{
+	sm_pTheInstance->m_levelMan->Initialise(0, 1);
+	sm_pTheInstance->m_levelMan->LoadLevel(sm_pTheInstance->m_startLevel);
+
+	sm_pTheInstance->m_interface->Toggle();
+	sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/main.ini");
+	SDL_ShowCursor(true);
+
+	sm_pTheInstance->m_gameRunning = false;
+
+	// Because Escape had been hit, game has been paused, so unpause
+	Core::Pause();
+	sm_pTheInstance->m_paused = false;
+
 	return 0;
 }
 
@@ -170,6 +194,7 @@ Int32 CGame::StartGame(lua_State* L)
 	sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
 	SDL_ShowCursor(false);
 	sm_pTheInstance->m_levelMan->LoadLevel(sm_pTheInstance->m_currLevel);
+	sm_pTheInstance->m_gameRunning = true;
 	return 0;
 }
 

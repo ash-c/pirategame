@@ -19,10 +19,9 @@ CLevelManager::~CLevelManager()
 
 Bool CLevelManager::Initialise(Int32 _numLevels, Int32 _currLevel)
 {
-	lua_register(Logger::luaState, "RestartLevel", RestartLevel);
-
 	if (0 != _numLevels)
 	{
+		lua_register(Logger::luaState, "RestartLevel", RestartLevel);
 		m_numlevels = _numLevels;
 	}
 	m_currLevel = _currLevel;
@@ -68,7 +67,7 @@ void CLevelManager::Process(Float32 _delta)
 
 void CLevelManager::Render()
 {
-	if (0 != m_currLevel)
+	if (0 != m_current)
 	{
 		m_current->Render();
 	}
@@ -76,6 +75,7 @@ void CLevelManager::Render()
 
 Bool CLevelManager::LoadLevel(Int8* _lvl)
 {	
+	Core::Pause();
 	PY_DELETE_RELEASE(m_current);
 
 	CLevel* temp = new CLevel;
@@ -88,6 +88,8 @@ Bool CLevelManager::LoadLevel(Int8* _lvl)
 
 	m_current = temp;
 	m_current->AddRef();
+
+	Core::Pause();
 
 	return true;
 }

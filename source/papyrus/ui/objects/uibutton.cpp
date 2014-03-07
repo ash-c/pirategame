@@ -116,6 +116,8 @@ void UI::CUIButton::SetActive(Bool _b)
 	m_currState = BUTTON_STATE_NORMAL;
 	m_buttonDown = false;
 
+	m_sprite->SetPosition(static_cast<Int32>(m_rect.x + m_rect.w * 0.5f), static_cast<Int32>(m_rect.y + m_rect.h * 0.5f));
+
 	CUIObject::SetActive(_b);
 }
 

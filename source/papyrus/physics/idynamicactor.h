@@ -19,7 +19,7 @@ namespace Papyrus
 			// Member Functions
 		public:
 			IDynamicActor() 
-				: m_zero(10.0f)
+				: m_zero(50.0f)
 				, m_mass(0.0f)
 				, m_tileW(25)
 				, m_levelW(10000)
@@ -76,7 +76,7 @@ namespace Papyrus
 			}
 
 			virtual void	SetOwner(void* _owner) = 0;
-			virtual void* GetOwner() = 0;
+			virtual void*	GetOwner() = 0;
 
 			virtual Bool	IsStationary() { return m_stationary; }
 
