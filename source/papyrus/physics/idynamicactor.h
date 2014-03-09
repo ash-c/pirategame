@@ -19,7 +19,7 @@ namespace Papyrus
 			// Member Functions
 		public:
 			IDynamicActor() 
-				: m_zero(50.0f)
+				: m_zero(100.0f)
 				, m_mass(0.0f)
 				, m_tileW(25)
 				, m_levelW(10000)
@@ -144,14 +144,6 @@ namespace Papyrus
 					m_currState.acc.y += 1000.0f * _delta;
 				}
 
-				// Check if at rest
-				if (m_currState.vel.x < m_zero && m_currState.vel.x > -m_zero)
-				{
-					m_currState.acc.x = 0.0f;
-					m_currState.vel.x = 0.0f;
-					m_stationary = true;
-				}
-
 				// Player on the platform, update position
 				if (m_ppCollision && 0 != m_player)
 				{
@@ -175,6 +167,14 @@ namespace Papyrus
 				//{
 					m_currState.vel.x += m_currState.acc.x * _delta;
 				//}
+
+				// Check if at rest
+				if (m_currState.vel.x < m_zero && m_currState.vel.x > -m_zero)
+				{
+					m_currState.acc.x = 0.0f;
+					m_currState.vel.x = 0.0f;
+					m_stationary = true;
+				}
 
 				// change position	
 				//if (!m_hCollision)

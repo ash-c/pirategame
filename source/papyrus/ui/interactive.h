@@ -21,10 +21,14 @@ namespace Papyrus
 
 			virtual Bool		Initialise(Int8* _path);
 			virtual Bool		ShutDown();
+			virtual void		Process(Float32 _delta);
 			virtual void		Render();
 
 			// Member Variables
 		protected:
+			// These variables are used for controllers navigating buttons
+			Int32				m_firstButton;
+			Int32				m_activeButton;
 		};
 	}
 }

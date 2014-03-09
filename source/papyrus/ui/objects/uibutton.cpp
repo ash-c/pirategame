@@ -8,8 +8,10 @@
 using namespace Papyrus;
 
 UI::CUIButton::CUIButton()
-	: m_currState(BUTTON_STATE_NORMAL)
+	: m_next(0)
+	, m_currState(BUTTON_STATE_NORMAL)
 	, m_buttonDown(false)
+	, m_stateChanged(false)
 {
 }
 
@@ -52,6 +54,11 @@ Bool UI::CUIButton::ShutDown()
 {
 	VALIDATE(CUIObject::ShutDown());
 	return true;
+}
+
+void UI::CUIButton::Process(Float32 _delta)
+{
+	m_stateChanged = false;
 }
 
 void UI::CUIButton::Render()
@@ -108,6 +115,17 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 				}
 			}
 		}
+		else if (_e->type == SDL_CONTROLLERAXISMOTION)
+		{
+			if (_e->caxis.axis == SDL_CONTROLLER_AXIS_LEFTY)
+			{
+				if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged)
+				{
+					m_next->SetButtonState(BUTTON_STATE_HOVER);
+					m_currState = BUTTON_STATE_NORMAL;
+				}
+			}
+		}
 	}
 }
 
@@ -136,6 +154,17 @@ Int32 UI::CUIButton::GetHeight()
 Int32 UI::CUIButton::GetWidth()
 {
 	return m_rect.w;
+}
+
+void UI::CUIButton::SetButtonState(EButtonState _state) 
+{ 
+	m_currState = _state; 
+	m_stateChanged = true;
+}
+
+void UI::CUIButton::SetNext(UI::CUIButton* _next)
+{ 
+	m_next = _next; 
 }
 
 Bool UI::CUIButton::CheckForHover(VECTOR2 _mouse)

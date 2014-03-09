@@ -9,6 +9,8 @@
 using namespace Papyrus;
 
 UI::CInteractiveUI::CInteractiveUI()
+	: m_firstButton(0)
+	, m_activeButton(0)
 {
 }
 
@@ -55,6 +57,7 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 	}
 
 	// Make buttons.
+	m_firstButton = count;
 	for (k = 0; k < numButtons; ++k)
 	{
 		CREATEPOINTER(m_objects[count], CUIButton);
@@ -72,9 +75,18 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 		m_objects[count]->AddRef();
 		CLEANARRAY(spritePath);
 		CLEANARRAY(luaFunc);
+
+		if (0 != k)
+		{
+			((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[count]);
+		}
+
 		++count;
 	}
 	CLEANARRAY(luaFile);
+
+	((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[m_firstButton]);
+	((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
 
 	setup->Release();
 
@@ -85,6 +97,17 @@ Bool UI::CInteractiveUI::ShutDown()
 {
 	VALIDATE(IUIInterface::ShutDown());
 	return true;
+}
+
+void UI::CInteractiveUI::Process(Float32 _delta)
+{
+	for (UInt16 i = 0; i < m_numObjects; ++i)
+	{
+		if (m_objects[i]->IsActive())
+		{
+			m_objects[i]->Process(_delta);
+		}
+	}
 }
 
 void UI::CInteractiveUI::Render()

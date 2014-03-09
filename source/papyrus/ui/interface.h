@@ -53,6 +53,21 @@ namespace Papyrus
 
 				return true;
 			}
+			
+			/*
+			* Processes the UI object.
+			*
+			* @param	_delta			Time passed since last process.
+			* @return	Returns void.
+			*/
+			virtual void	Process(Float32 _delta) = 0;
+
+			/*
+			* Renders this interface to screen.
+			*
+			* @return		Returns void.
+			*/
+			virtual void	Render() = 0;
 
 			virtual Bool	Toggle()
 			{
@@ -87,13 +102,6 @@ namespace Papyrus
 			{
 				return m_active;
 			}
-
-			/*
-			* Renders this interface to screen.
-			*
-			* @return		Returns void.
-			*/
-			virtual void	Render() = 0;
 
 			// Member Variables
 		protected:

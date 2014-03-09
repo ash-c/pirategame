@@ -454,6 +454,7 @@ Bool CLevel::RemoveEnemy(VECTOR2 _pos)
 {
 	CheckAgainstGrid(&_pos);
 	_pos.y -= TILE_HEIGHT * 0.5f;	
+	_pos.y += 1.0f;
 	
 	// check for existing
 	for (Int32 i = 0; i < m_numEnemies; ++i)

@@ -80,6 +80,8 @@ void CGame::Process(Float32 _delta)
 {
 	if (!m_paused)
 	{
+		if (0 != m_interface) m_interface->Process(_delta);
+
 		m_levelMan->Process(_delta);
 
 		if (m_levelMan->IsFinished())

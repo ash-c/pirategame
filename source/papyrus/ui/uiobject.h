@@ -48,6 +48,14 @@ namespace Papyrus
 			}
 
 			/*
+			* Processes the UI object.
+			*
+			* @param	_delta			Time passed since last process.
+			* @return	Returns void.
+			*/
+			virtual void	Process(Float32 _delta) = 0;
+
+			/*
 			* Renders this object to screen.
 			*
 			* @return	Returns void.

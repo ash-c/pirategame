@@ -33,8 +33,8 @@ Bool CLevelEdit::Initialise()
 
 	CREATEPOINTER(m_level, CLevel);
 	assert(m_level);
-	VALIDATE(m_level->Initialise("data/levels/editorNew.json"));
-	//VALIDATE(m_level->Initialise("1.json"));
+	//VALIDATE(m_level->Initialise("data/levels/editorNew.json"));
+	VALIDATE(m_level->Initialise("data/levels/1.json"));
 	m_level->AddRef();
 
 	m_screenHeight = Renderer::activeRenderer->GetHeight();

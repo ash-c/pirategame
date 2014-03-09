@@ -51,9 +51,12 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 	VALIDATE(settings->GetValue("moveForce", m_moveForce));
 	VALIDATE(settings->GetValue("slowDownForce", m_slowDownForce));
 
+	VECTOR2 scale = m_sprite->GetScale();
+	scale.x *= 0.65f;
+
 	if (0 == m_actor)
 	{
-		m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, m_sprite->GetScale(), mass, Physics::EType::TYPE_PLAYER);
+		m_actor = Physics::CreateDynamicActor(max, maxA, m_pos, scale, mass, Physics::EType::TYPE_PLAYER);
 		assert(m_actor);
 		m_actor->AddRef();
 		m_actor->SetOwner((void*)this);
@@ -108,6 +111,7 @@ void CPlayable::Process(Float32 _delta)
 	}
 	
 	VECTOR2 vel = m_actor->GetVelocity();
+
 	switch (m_currAnim)
 	{
 	case ANIM_SLIDE_LEFT:
