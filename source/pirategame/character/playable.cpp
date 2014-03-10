@@ -255,78 +255,81 @@ void CPlayable::SetPosition(VECTOR2 _v)
 
 void CPlayable::Notify(SDL_Event* _e)
 {
-	// don't take input if death animation is playing.
-	if (ANIM_DEATH_LEFT == m_currAnim || ANIM_DEATH_RIGHT == m_currAnim) return;
+	if (!Core::IsPaused())
+	{
+		// don't take input if death animation is playing.
+		if (ANIM_DEATH_LEFT == m_currAnim || ANIM_DEATH_RIGHT == m_currAnim) return;
 
-	VECTOR2 vel = m_actor->GetVelocity();
-	if (_e->type == SDL_KEYDOWN)
-	{
-		switch (_e->key.keysym.sym)
+		VECTOR2 vel = m_actor->GetVelocity();
+		if (_e->type == SDL_KEYDOWN)
 		{
-		case SDLK_LEFT: // Run left
-			Move(&vel, true);
-			break;
-		case SDLK_RIGHT: // Run right
-			Move(&vel, false);
-			break; 
-		case SDLK_UP: // Jump or climb a ladder
-			Jump(&vel);
-			break;
-		case SDLK_SPACE: // Attack
-			Attack();
-			break;
-		default:
-			break;
-		}
-	}
-	else if (_e->type == SDL_KEYUP)
-	{
-		switch(_e->key.keysym.sym)
-		{
-		case SDLK_LEFT:
-			StopMove(true);
-			break;
-		case SDLK_RIGHT:
-			StopMove(false);
-			break;
-		default:
-			break;
-		}
-	}
-	else if (_e->type == SDL_CONTROLLERAXISMOTION)
-	{
-		if (_e->caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) // x axis on the left stick
-		{
-			if(_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE) // left.
+			switch (_e->key.keysym.sym)
 			{
+			case SDLK_LEFT: // Run left
 				Move(&vel, true);
-			}
-			else if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE) // right.
-			{
+				break;
+			case SDLK_RIGHT: // Run right
 				Move(&vel, false);
-			}
-			else if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim) // Idle
-			{
-				if (ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim)
-				{
-					StopMove(true);
-				}
-				else if (ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim)
-				{
-					StopMove(false);
-				}
+				break; 
+			case SDLK_UP: // Jump or climb a ladder
+				Jump(&vel);
+				break;
+			case SDLK_SPACE: // Attack
+				Attack();
+				break;
+			default:
+				break;
 			}
 		}
-	}
-	else if (_e->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
-	{
-		if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_A) // Jump or climb a ladder
-		{ 
-			Jump(&vel);
-		}
-		else if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_B) // Attack
+		else if (_e->type == SDL_KEYUP)
 		{
-			Attack();
+			switch(_e->key.keysym.sym)
+			{
+			case SDLK_LEFT:
+				StopMove(true);
+				break;
+			case SDLK_RIGHT:
+				StopMove(false);
+				break;
+			default:
+				break;
+			}
+		}
+		else if (_e->type == SDL_CONTROLLERAXISMOTION)
+		{
+			if (_e->caxis.axis == SDL_CONTROLLER_AXIS_LEFTX) // x axis on the left stick
+			{
+				if(_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE) // left.
+				{
+					Move(&vel, true);
+				}
+				else if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE) // right.
+				{
+					Move(&vel, false);
+				}
+				else if (ANIM_SLIDE_RIGHT != m_currAnim && ANIM_SLIDE_LEFT != m_currAnim) // Idle
+				{
+					if (ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim)
+					{
+						StopMove(true);
+					}
+					else if (ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim)
+					{
+						StopMove(false);
+					}
+				}
+			}
+		}
+		else if (_e->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
+		{
+			if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_A) // Jump or climb a ladder
+			{ 
+				Jump(&vel);
+			}
+			else if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_B) // Attack
+			{
+				Attack();
+			}
 		}
 	}
 }

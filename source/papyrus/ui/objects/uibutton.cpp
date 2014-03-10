@@ -7,8 +7,11 @@
 
 using namespace Papyrus;
 
+Float32 UI::CUIButton::m_timer = 0.0f;
+
 UI::CUIButton::CUIButton()
 	: m_next(0)
+	, m_prev(0)
 	, m_currState(BUTTON_STATE_NORMAL)
 	, m_buttonDown(false)
 	, m_stateChanged(false)
@@ -52,6 +55,7 @@ Bool UI::CUIButton::Initialise(Int8* _luaFile, Int8* _luaFunc, Int8* _sprite, VE
 
 Bool UI::CUIButton::ShutDown()
 {
+	Input::inputManager->DeRegister(this);
 	VALIDATE(CUIObject::ShutDown());
 	return true;
 }
@@ -59,6 +63,8 @@ Bool UI::CUIButton::ShutDown()
 void UI::CUIButton::Process(Float32 _delta)
 {
 	m_stateChanged = false;
+
+	if (m_timer > 0.0f) m_timer -= _delta;
 }
 
 void UI::CUIButton::Render()
@@ -119,10 +125,31 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 		{
 			if (_e->caxis.axis == SDL_CONTROLLER_AXIS_LEFTY)
 			{
-				if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged)
+				if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged && m_timer <= 0.0f)
 				{
 					m_next->SetButtonState(BUTTON_STATE_HOVER);
 					m_currState = BUTTON_STATE_NORMAL;
+					m_stateChanged = true;
+					m_timer = 0.75f;
+				}
+				else if (_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged && m_timer <= 0.0f)
+				{
+					m_prev->SetButtonState(BUTTON_STATE_HOVER);
+					m_currState = BUTTON_STATE_NORMAL;
+					m_stateChanged = true;
+					m_timer = 0.75f;
+				}
+			}
+		}
+		else if (_e->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
+		{
+			if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_A) // Jump or climb a ladder
+			{ 
+				m_buttonDown = true;
+				if (BUTTON_STATE_HOVER == m_currState)
+				{
+					m_currState = BUTTON_STATE_CLICK;
+					ButtonClicked();
 				}
 			}
 		}
@@ -165,6 +192,11 @@ void UI::CUIButton::SetButtonState(EButtonState _state)
 void UI::CUIButton::SetNext(UI::CUIButton* _next)
 { 
 	m_next = _next; 
+}
+
+void UI::CUIButton::SetPrev(UI::CUIButton* _prev)
+{ 
+	m_prev = _prev;
 }
 
 Bool UI::CUIButton::CheckForHover(VECTOR2 _mouse)

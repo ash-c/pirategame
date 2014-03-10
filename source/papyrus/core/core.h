@@ -30,6 +30,8 @@ namespace Papyrus
 		Bool		ShutDown();
 
 		void		Pause();
+
+		Bool		IsPaused();
 		
 		extern Timer::CTimer* timer;
 	}

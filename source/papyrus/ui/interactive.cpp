@@ -5,6 +5,7 @@
 #include "interactive.h"
 #include "../parser/parser.h"
 #include "objects/uibutton.h"
+#include "../input/input.h"
 
 using namespace Papyrus;
 
@@ -79,14 +80,21 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 		if (0 != k)
 		{
 			((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[count]);
+			((CUIButton*)m_objects[count])->SetPrev((CUIButton*)m_objects[count - 1]);
 		}
 
 		++count;
 	}
 	CLEANARRAY(luaFile);
 
-	((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[m_firstButton]);
-	((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
+	if (0 < numButtons)
+	{
+		((CUIButton*)m_objects[m_firstButton])->SetPrev((CUIButton*)m_objects[count - 1]);
+		((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[m_firstButton]);
+
+		// Need to check if controllers present first
+		((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
+	}
 
 	setup->Release();
 

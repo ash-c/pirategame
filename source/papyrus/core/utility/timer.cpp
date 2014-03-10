@@ -32,6 +32,7 @@ Papyrus::Timer::CTimer::~CTimer()
 Bool Papyrus::Timer::CTimer::Initialise()
 {
 	Papyrus::Logger::TrackValue((Float32*)(&m_FPS), "FPS");
+	Papyrus::Logger::TrackValue(&m_delta, "delta");
 		
 	return true;
 }
@@ -39,8 +40,9 @@ Bool Papyrus::Timer::CTimer::Initialise()
 void Papyrus::Timer::CTimer::Start()
 {
 	m_started = true;
-	m_paused = false;
+	//m_paused = false;
 	m_startTicks = static_cast<Float32>(SDL_GetTicks());
+	//if (m_paused) m_pausedTicks = static_cast<Float32>(SDL_GetTicks());
 }
 
 void Papyrus::Timer::CTimer::Stop()
@@ -81,7 +83,10 @@ Float32 Papyrus::Timer::CTimer::Ticks()
 	if (m_started)
 	{
 		if (m_paused)
-			return m_pausedTicks;
+		{
+			m_delta = (SDL_GetTicks() - m_startTicks) / 1000.0f;
+			return m_delta;
+		}
 		else
 		{
 			m_delta = (SDL_GetTicks() - m_startTicks) / 1000.0f;

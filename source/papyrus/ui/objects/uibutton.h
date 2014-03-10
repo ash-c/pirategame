@@ -47,6 +47,7 @@ namespace Papyrus
 
 			void			SetButtonState(EButtonState _state);
 			void			SetNext(CUIButton* _next);
+			void			SetPrev(CUIButton* _prev);
 
 		private:
 			Bool			CheckForHover(VECTOR2 _mouse);
@@ -54,7 +55,10 @@ namespace Papyrus
 
 			// Member Variables
 		protected:
+			static Float32	m_timer;
+
 			CUIButton*		m_next;
+			CUIButton*		m_prev;
 			SDL_Rect		m_clips[BUTTON_STATE_MAX];
 			SDL_Rect		m_rect;
 			Int8			m_luaFile[MAX_BUFFER];
