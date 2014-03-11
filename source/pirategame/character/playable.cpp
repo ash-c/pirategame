@@ -12,6 +12,7 @@ using namespace Papyrus;
 
 CPlayable::CPlayable()
 	: m_moveDir(MOVE_IDLE)
+	, m_startDelay(0.25f)
 {
 	m_pos.x = 0;
 	m_pos.y = 0;
@@ -235,6 +236,8 @@ void CPlayable::Process(Float32 _delta)
 
 	m_pos = m_actor->GetPosition();
 	m_sprite->Process(_delta);
+
+	if (0.0f < m_startDelay) m_startDelay -= _delta;
 #endif // PAPYRUS_EDITOR
 }
 
@@ -255,7 +258,7 @@ void CPlayable::SetPosition(VECTOR2 _v)
 
 void CPlayable::Notify(SDL_Event* _e)
 {
-	if (!Core::IsPaused())
+	if (!Core::IsPaused() && m_startDelay <= 0.0f)
 	{
 		// don't take input if death animation is playing.
 		if (ANIM_DEATH_LEFT == m_currAnim || ANIM_DEATH_RIGHT == m_currAnim) return;

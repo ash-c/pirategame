@@ -89,10 +89,12 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 				}
 				else
 				{
+					m_next->SetButtonState(BUTTON_STATE_NORMAL);
+					m_prev->SetButtonState(BUTTON_STATE_NORMAL);
 					m_currState = BUTTON_STATE_HOVER;
 				}
 			}
-			else 
+			else if (Input::inputManager->GetNumControllers() <= 0)
 			{
 				m_currState = BUTTON_STATE_NORMAL;
 			}

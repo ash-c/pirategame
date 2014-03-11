@@ -120,3 +120,9 @@ Bool Input::CInputManager::DeRegister(IInputObserver* _obs)
 	Logger::Write("Could not find input observer to deregister");
 	return false;
 }
+
+Int32 Input::CInputManager::GetNumControllers()
+{
+	if (0 == m_controller) return 0;
+	else return 1;
+}

@@ -7,12 +7,13 @@
 
 // Local Includes
 #include "interface.h"
+#include "../input/input.h"
 
 namespace Papyrus
 {
 	namespace UI
 	{
-		class CInteractiveUI : public IUIInterface
+		class CInteractiveUI : public IUIInterface, Input::IInputObserver
 		{
 			// Member Functions
 		public:
@@ -23,6 +24,10 @@ namespace Papyrus
 			virtual Bool		ShutDown();
 			virtual void		Process(Float32 _delta);
 			virtual void		Render();
+
+			virtual Bool		Toggle();
+
+			virtual void		Notify(SDL_Event* _e);
 
 			// Member Variables
 		protected:

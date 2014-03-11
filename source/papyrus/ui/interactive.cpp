@@ -10,8 +10,8 @@
 using namespace Papyrus;
 
 UI::CInteractiveUI::CInteractiveUI()
-	: m_firstButton(0)
-	, m_activeButton(0)
+	: m_firstButton(INVALID_ID)
+	, m_activeButton(INVALID_ID)
 {
 }
 
@@ -58,7 +58,10 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 	}
 
 	// Make buttons.
-	m_firstButton = count;
+	if (0 < numButtons)
+	{
+		m_firstButton = count;
+	}
 	for (k = 0; k < numButtons; ++k)
 	{
 		CREATEPOINTER(m_objects[count], CUIButton);
@@ -93,8 +96,13 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 		((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[m_firstButton]);
 
 		// Need to check if controllers present first
-		((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
+		if (Input::inputManager->GetNumControllers() > 0)
+		{
+			((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
+		}
 	}
+
+	Input::inputManager->Register(this);
 
 	setup->Release();
 
@@ -127,4 +135,20 @@ void UI::CInteractiveUI::Render()
 			m_objects[i]->Render();
 		}
 	}
+}
+
+Bool UI::CInteractiveUI::Toggle()
+{				
+	VALIDATE(IUIInterface::Toggle());
+
+	if (Input::inputManager->GetNumControllers() > 0 && INVALID_ID != m_firstButton)
+	{
+		((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
+	}
+
+	return true;
+}
+
+void UI::CInteractiveUI::Notify(SDL_Event* _e)
+{
 }

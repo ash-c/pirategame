@@ -41,6 +41,8 @@ protected:
 		MOVE_LEFT,
 		MAX_MOVE
 	} EMovement;
+
+	Float32					m_startDelay;
 	EMovement				m_moveDir;
 };
 

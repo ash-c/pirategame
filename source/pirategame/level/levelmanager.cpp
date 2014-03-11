@@ -83,6 +83,7 @@ Bool CLevelManager::LoadLevel(Int8* _lvl)
 	{
 		Logger::Write("Failed to load level %s", _lvl);
 		CLEANDELETE(temp);
+		Core::Pause();
 		return false;
 	}
 
@@ -96,7 +97,9 @@ Bool CLevelManager::LoadLevel(Int8* _lvl)
 
 Bool CLevelManager::ResetLevel()
 {
+	Core::Pause();
 	VALIDATE(m_current->Reset());
+	Core::Pause();
 	return true;
 }
 
