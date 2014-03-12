@@ -33,8 +33,8 @@ Bool CLevelEdit::Initialise()
 
 	CREATEPOINTER(m_level, CLevel);
 	assert(m_level);
-	//VALIDATE(m_level->Initialise("data/levels/editorNew.json"));
-	VALIDATE(m_level->Initialise("data/levels/1.json"));
+	VALIDATE(m_level->Initialise("data/levels/editorNew.json"));
+	//VALIDATE(m_level->Initialise("data/levels/1.json"));
 	m_level->AddRef();
 
 	m_screenHeight = Renderer::activeRenderer->GetHeight();
@@ -47,6 +47,11 @@ Bool CLevelEdit::Initialise()
 
 	VALIDATE(IEditor::Initialise());
 
+	m_escMenu = UI::LoadInterface("data/interfaces/editorLevelMenu.ini");
+	assert(m_escMenu);
+	m_escMenu->AddRef();
+	m_escMenu->Toggle();
+
 	return true;
 }
 
@@ -54,6 +59,7 @@ Bool CLevelEdit::ShutDown()
 {
 	PY_DELETE_RELEASE(m_level);
 	PY_SAFE_RELEASE(m_toolContext);
+	PY_SAFE_RELEASE(m_escMenu);
 
 	return true;
 }
@@ -75,6 +81,8 @@ void CLevelEdit::Render()
 {
 	if (0 != m_level) m_level->Render();
 	if (0!= m_toolContext) m_toolContext->Render();
+
+	if (m_escMenu->IsActive()) m_escMenu->Render();
 }
 
 Bool CLevelEdit::Save()
@@ -201,4 +209,9 @@ void CLevelEdit::Load(const Int8* _path)
 	PY_DELETE_RELEASE(m_level);
 	m_level = temp;
 	m_level->AddRef();
+}
+
+void CLevelEdit::ToggleEscMenu()
+{
+	m_escMenu->Toggle();
 }

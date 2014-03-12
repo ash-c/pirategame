@@ -89,15 +89,22 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 				}
 				else
 				{
-					m_next->SetButtonState(BUTTON_STATE_NORMAL);
-					m_prev->SetButtonState(BUTTON_STATE_NORMAL);
+					if (0 != m_next) m_next->SetButtonState(BUTTON_STATE_NORMAL);
+					if (0 != m_prev) m_prev->SetButtonState(BUTTON_STATE_NORMAL);
 					m_currState = BUTTON_STATE_HOVER;
 				}
 			}
+#ifdef PAPYRUS_EDITOR
+			else
+			{
+				m_currState = BUTTON_STATE_NORMAL;
+			}
+#else
 			else if (Input::inputManager->GetNumControllers() <= 0)
 			{
 				m_currState = BUTTON_STATE_NORMAL;
 			}
+#endif // PAPYRUS_EDITOR
 		}
 		else if (_e->type == SDL_MOUSEBUTTONDOWN)
 		{
@@ -129,14 +136,14 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 			{
 				if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged && m_timer <= 0.0f)
 				{
-					m_next->SetButtonState(BUTTON_STATE_HOVER);
+					if (0 != m_next) m_next->SetButtonState(BUTTON_STATE_HOVER);
 					m_currState = BUTTON_STATE_NORMAL;
 					m_stateChanged = true;
 					m_timer = 0.75f;
 				}
 				else if (_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged && m_timer <= 0.0f)
 				{
-					m_prev->SetButtonState(BUTTON_STATE_HOVER);
+					if (0 != m_prev) m_prev->SetButtonState(BUTTON_STATE_HOVER);
 					m_currState = BUTTON_STATE_NORMAL;
 					m_stateChanged = true;
 					m_timer = 0.75f;
@@ -164,6 +171,15 @@ void UI::CUIButton::SetActive(Bool _b)
 	m_buttonDown = false;
 
 	m_sprite->SetPosition(static_cast<Int32>(m_rect.x + m_rect.w * 0.5f), static_cast<Int32>(m_rect.y + m_rect.h * 0.5f));
+
+	if (_b && !m_active)
+	{
+		Input::inputManager->Register(this);
+	} 
+	else if (!_b && m_active)
+	{
+		Input::inputManager->DeRegister(this);
+	}
 
 	CUIObject::SetActive(_b);
 }

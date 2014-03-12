@@ -75,7 +75,10 @@ namespace Papyrus
 			* @param	_b			The new active status of the UI object.
 			* @return	Returns void.
 			*/
-			virtual void	SetActive(Bool _b) { m_active = _b; }
+			virtual void	SetActive(Bool _b) 
+			{ 
+				m_active = _b; 
+			}
 
 			/*
 			* Set the position of the UI object.

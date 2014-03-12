@@ -1,6 +1,9 @@
 
 // Library Includes
 #include <SDL.h>
+#include <fstream>
+#include <Windows.h>
+#include <commdlg.h>
 
 // Local Includes
 #include "game.h"
@@ -38,6 +41,9 @@ Bool CGame::Initialise()
 	lua_register(Logger::luaState, "Quit", Quit);
 	lua_register(Logger::luaState, "StartLevelEditor", StartLevelEditor);
 	lua_register(Logger::luaState, "StartInterfaceEditor", StartInterfaceEditor);
+	lua_register(Logger::luaState, "ToggleEscMenu", ToggleEscMenu);
+	lua_register(Logger::luaState, "LoadFromFile", LoadFromFile);
+	lua_register(Logger::luaState, "SaveToFile", SaveToFile);
 	lua_register(Logger::luaState, "ChangeTool", IEditor::ChangeTool);
 	lua_register(Logger::luaState, "LoadFile", IEditor::LoadFile);
 
@@ -49,6 +55,8 @@ Bool CGame::Initialise()
 	// Finish setup logging, open error logging file.
 	PY_WRITETOFILE("Initialistion complete");
 	Logger::InitFile("data/papyrus/editorErrors.log");
+
+	StartLevelEditor(0);
 
 	return true;
 }
@@ -88,10 +96,11 @@ void CGame::Notify(SDL_Event* _e)
 		switch (_e->key.keysym.sym)
 		{
 		case SDLK_ESCAPE:
-			m_active = false;
+			if (0 != m_editor) m_editor->ToggleEscMenu();
+			//m_active = false;
 			break;
 		case SDLK_F1:
-			m_editor->Save();
+			if (0 != m_editor) m_editor->Save();
 			break;
 		case SDLK_BACKQUOTE: // `
 			Logger::ToggleConsole(nullptr);
@@ -149,6 +158,50 @@ Int32 CGame::StartInterfaceEditor(lua_State* L)
 		sm_pTheInstance->m_interface = 0;
 		sm_pTheInstance->m_editor->AddRef();
 	}
+
+	return 0;
+}
+
+Int32 CGame::ToggleEscMenu(lua_State* L)
+{
+	sm_pTheInstance->m_editor->ToggleEscMenu();
+
+	return 0;
+}
+
+Int32 CGame::LoadFromFile(lua_State* L)
+{
+	OPENFILENAME file;
+	ZeroMemory(&file, sizeof(OPENFILENAME));
+
+	Int8 path[MAX_BUFFER];
+	path[0] = NULL;
+
+	file.lStructSize = sizeof(OPENFILENAME);
+	file.hwndOwner = Renderer::activeRenderer->GetWindow();
+	file.lpstrFilter = "JSON Files, *.json\0*.*json\0\0";
+	file.nFilterIndex = 1;
+	file.lpstrFile = path;
+	file.nMaxFile = MAX_BUFFER;
+	file.lpstrDefExt = "json";
+	file.Flags = OFN_CREATEPROMPT | OFN_PATHMUSTEXIST |
+				OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+	file.lpstrInitialDir = "data\\levels";
+
+	GetOpenFileName(&file);
+
+	Logger::Write(file.lpstrFile);
+
+	if (SDL_strlen(file.lpstrFile) > 0)
+	{
+		sm_pTheInstance->m_editor->Load(file.lpstrFile);
+	}
+
+	return 0;
+}
+
+Int32 CGame::SaveToFile(lua_State* L)
+{
 
 	return 0;
 }

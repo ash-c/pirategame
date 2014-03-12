@@ -95,11 +95,13 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 		((CUIButton*)m_objects[m_firstButton])->SetPrev((CUIButton*)m_objects[count - 1]);
 		((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[m_firstButton]);
 
+#ifndef PAPYRUS_EDITOR
 		// Need to check if controllers present first
 		if (Input::inputManager->GetNumControllers() > 0)
 		{
 			((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
 		}
+#endif // PAPYRUS_EDITOR
 	}
 
 	Input::inputManager->Register(this);
@@ -141,10 +143,12 @@ Bool UI::CInteractiveUI::Toggle()
 {				
 	VALIDATE(IUIInterface::Toggle());
 
+#ifndef PAPYRUS_EDITOR
 	if (Input::inputManager->GetNumControllers() > 0 && INVALID_ID != m_firstButton)
 	{
 		((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
 	}
+#endif // PAPYRUS_EDITOR
 
 	return true;
 }

@@ -100,6 +100,11 @@ Bool Input::CInputManager::Register(IInputObserver* _obs)
 			m_observers[i] = _obs;
 			return true;
 		}
+		else if (_obs == m_observers[i])
+		{
+			Logger::Write("Duplicate observer, not registered.");
+			return true;
+		}
 	}
 
 	Logger::Write("Input Observer failed to register, reached max.");

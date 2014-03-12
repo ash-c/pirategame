@@ -38,6 +38,10 @@ namespace Papyrus
 
 			virtual void	DrawRect(SDL_Rect* _rect, Bool _red = false);
 
+#ifdef PAPYRUS_EDITOR
+			virtual HWND	GetWindow();
+#endif // PAPYRUS_EDITOR
+
 			// Member Variables
 		protected:
 			SDL_Window*		m_Window;

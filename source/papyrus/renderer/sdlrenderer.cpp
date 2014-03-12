@@ -1,6 +1,7 @@
 
 // Library Includes
 #include <SDL_image.h>
+#include <SDL_syswm.h>
 
 // Local Includes
 #include "sdlrenderer.h"
@@ -119,3 +120,20 @@ void Renderer::CSDLRenderer::DrawRect(SDL_Rect* _rect, Bool _red)
 		SDL_RenderDrawRect(m_Renderer, _rect);
 	}
 }
+
+#ifdef PAPYRUS_EDITOR
+HWND Renderer::CSDLRenderer::GetWindow()
+{
+	SDL_SysWMinfo info;
+	SDL_VERSION(&info.version);
+
+	if (SDL_GetWindowWMInfo(m_Window, &info))
+	{
+		return info.info.win.window;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+#endif // PAPYRUS_EDITOR
