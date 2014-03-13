@@ -28,6 +28,8 @@ public:
 	virtual void		Notify(SDL_Event* _e);
 	virtual void		Load(const Int8* _path);
 
+	virtual void		ToggleEscMenu() {}
+
 	// Member Variables
 protected:
 };

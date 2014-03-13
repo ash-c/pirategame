@@ -100,6 +100,11 @@ Bool Input::CInputManager::Register(IInputObserver* _obs)
 			m_observers[i] = _obs;
 			return true;
 		}
+		else if (_obs == m_observers[i])
+		{
+			Logger::Write("Duplicate observer, not registered.");
+			return true;
+		}
 	}
 
 	Logger::Write("Input Observer failed to register, reached max.");
@@ -119,4 +124,10 @@ Bool Input::CInputManager::DeRegister(IInputObserver* _obs)
 
 	Logger::Write("Could not find input observer to deregister");
 	return false;
+}
+
+Int32 Input::CInputManager::GetNumControllers()
+{
+	if (0 == m_controller) return 0;
+	else return 1;
 }

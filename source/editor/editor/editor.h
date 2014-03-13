@@ -12,6 +12,7 @@
 #include "../../input/input.h"
 #include "../../input/observer.h"
 #include "../../logging/logger.h"
+#include "../../ui/ui.h"
 
 class IEditor : public TRefCount<IEditor>, Papyrus::Input::IInputObserver, public TSingleton<IEditor>
 {
@@ -19,7 +20,9 @@ class IEditor : public TRefCount<IEditor>, Papyrus::Input::IInputObserver, publi
 
 	// Member Functions
 public:
-	IEditor() {}
+	IEditor() 
+	: m_escMenu(0)
+	{}
 	virtual ~IEditor() {}
 
 	virtual Bool		Initialise()
@@ -38,6 +41,8 @@ public:
 
 	virtual void		SetTool(Int32 _new) = 0;
 	virtual void		Load(const Int8* _path) = 0;
+
+	virtual void		ToggleEscMenu() = 0;
 
 	static Int32		ChangeTool(lua_State* L)
 	{
@@ -61,6 +66,7 @@ public:
 
 	// Member Variables
 protected:
+	Papyrus::UI::IUIInterface*	m_escMenu;
 };
 
 #endif // __EDITOR_H__

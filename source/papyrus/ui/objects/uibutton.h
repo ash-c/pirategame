@@ -34,6 +34,7 @@ namespace Papyrus
 
 			virtual Bool	Initialise(Int8* _luaFile, Int8* _luaFunc, Int8* _sprite, VECTOR2 _pos, UInt16 _w, UInt16 _h);
 			virtual Bool	ShutDown();
+			virtual void	Process(Float32 _delta);
 			virtual void	Render();
 
 			virtual void	Notify(SDL_Event* _e);
@@ -44,18 +45,27 @@ namespace Papyrus
 			virtual Int32	GetHeight();
 			virtual Int32	GetWidth();
 
+			void			SetButtonState(EButtonState _state);
+			void			SetNext(CUIButton* _next);
+			void			SetPrev(CUIButton* _prev);
+
 		private:
 			Bool			CheckForHover(VECTOR2 _mouse);
 			void			ButtonClicked();
 
 			// Member Variables
 		protected:
+			static Float32	m_timer;
+
+			CUIButton*		m_next;
+			CUIButton*		m_prev;
 			SDL_Rect		m_clips[BUTTON_STATE_MAX];
 			SDL_Rect		m_rect;
 			Int8			m_luaFile[MAX_BUFFER];
 			Int8			m_luaFunc[MAX_BUFFER];
 			EButtonState	m_currState;
 			Bool			m_buttonDown;
+			Bool			m_stateChanged;
 		};
 	}
 }

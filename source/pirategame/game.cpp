@@ -78,6 +78,8 @@ Bool CGame::Initialise()
 
 void CGame::Process(Float32 _delta)
 {
+	if (0 != m_interface) m_interface->Process(_delta);
+
 	if (!m_paused)
 	{
 		m_levelMan->Process(_delta);
@@ -100,10 +102,7 @@ void CGame::Render()
 
 	m_levelMan->Render();
 
-	if (0 != m_interface)
-	{
-		m_interface->Render();
-	}
+	if (0 != m_interface) m_interface->Render();
 	
 	// Render core last, as it renders logging and physics debug, in that order.
 	Core::Render();
@@ -157,6 +156,16 @@ void CGame::Notify(SDL_Event* _e)
 			break;
 		default:
 			break;
+		}
+	}
+	else if (_e->type == SDL_CONTROLLERBUTTONDOWN)
+	{
+		if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_START)
+		{
+			if (m_gameRunning)
+			{
+				Pause();
+			}
 		}
 	}
 }

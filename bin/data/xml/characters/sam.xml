@@ -2,4 +2,4 @@
 <maxVel x="500" y="500">maxVel</maxVel>
 <maxAcc x="2500" y="2000">maxAcc</maxAcc>
 <moveForce x="400" y="1150">moveForce</moveForce>
-<slowDownForce x="0.8" y="0">slowDownForce</slowDownForce>
+<slowDownForce x="0.7" y="0">slowDownForce</slowDownForce>

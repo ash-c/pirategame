@@ -48,6 +48,14 @@ namespace Papyrus
 			}
 
 			/*
+			* Processes the UI object.
+			*
+			* @param	_delta			Time passed since last process.
+			* @return	Returns void.
+			*/
+			virtual void	Process(Float32 _delta) = 0;
+
+			/*
 			* Renders this object to screen.
 			*
 			* @return	Returns void.
@@ -67,7 +75,10 @@ namespace Papyrus
 			* @param	_b			The new active status of the UI object.
 			* @return	Returns void.
 			*/
-			virtual void	SetActive(Bool _b) { m_active = _b; }
+			virtual void	SetActive(Bool _b) 
+			{ 
+				m_active = _b; 
+			}
 
 			/*
 			* Set the position of the UI object.

@@ -5,10 +5,13 @@
 #include "interactive.h"
 #include "../parser/parser.h"
 #include "objects/uibutton.h"
+#include "../input/input.h"
 
 using namespace Papyrus;
 
 UI::CInteractiveUI::CInteractiveUI()
+	: m_firstButton(INVALID_ID)
+	, m_activeButton(INVALID_ID)
 {
 }
 
@@ -55,6 +58,10 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 	}
 
 	// Make buttons.
+	if (0 < numButtons)
+	{
+		m_firstButton = count;
+	}
 	for (k = 0; k < numButtons; ++k)
 	{
 		CREATEPOINTER(m_objects[count], CUIButton);
@@ -72,9 +79,32 @@ Bool UI::CInteractiveUI::Initialise(Int8* _path)
 		m_objects[count]->AddRef();
 		CLEANARRAY(spritePath);
 		CLEANARRAY(luaFunc);
+
+		if (0 != k)
+		{
+			((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[count]);
+			((CUIButton*)m_objects[count])->SetPrev((CUIButton*)m_objects[count - 1]);
+		}
+
 		++count;
 	}
 	CLEANARRAY(luaFile);
+
+	if (0 < numButtons)
+	{
+		((CUIButton*)m_objects[m_firstButton])->SetPrev((CUIButton*)m_objects[count - 1]);
+		((CUIButton*)m_objects[count - 1])->SetNext((CUIButton*)m_objects[m_firstButton]);
+
+#ifndef PAPYRUS_EDITOR
+		// Need to check if controllers present first
+		if (Input::inputManager->GetNumControllers() > 0)
+		{
+			((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
+		}
+#endif // PAPYRUS_EDITOR
+	}
+
+	Input::inputManager->Register(this);
 
 	setup->Release();
 
@@ -87,6 +117,17 @@ Bool UI::CInteractiveUI::ShutDown()
 	return true;
 }
 
+void UI::CInteractiveUI::Process(Float32 _delta)
+{
+	for (UInt16 i = 0; i < m_numObjects; ++i)
+	{
+		if (m_objects[i]->IsActive())
+		{
+			m_objects[i]->Process(_delta);
+		}
+	}
+}
+
 void UI::CInteractiveUI::Render()
 {
 	for (UInt16 i = 0; i < m_numObjects; ++i)
@@ -96,4 +137,22 @@ void UI::CInteractiveUI::Render()
 			m_objects[i]->Render();
 		}
 	}
+}
+
+Bool UI::CInteractiveUI::Toggle()
+{				
+	VALIDATE(IUIInterface::Toggle());
+
+#ifndef PAPYRUS_EDITOR
+	if (Input::inputManager->GetNumControllers() > 0 && INVALID_ID != m_firstButton)
+	{
+		((CUIButton*)m_objects[m_firstButton])->SetButtonState(BUTTON_STATE_HOVER);
+	}
+#endif // PAPYRUS_EDITOR
+
+	return true;
+}
+
+void UI::CInteractiveUI::Notify(SDL_Event* _e)
+{
 }

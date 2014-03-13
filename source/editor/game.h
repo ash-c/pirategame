@@ -67,6 +67,9 @@ public:
 	static Int32		Quit(lua_State* L);
 	static Int32		StartLevelEditor(lua_State* L);
 	static Int32		StartInterfaceEditor(lua_State* L);
+	static Int32		ToggleEscMenu(lua_State* L);
+	static Int32		LoadFromFile(lua_State* L);
+	static Int32		SaveToFile(lua_State* L);
 
 protected:
 	// Default Constructor

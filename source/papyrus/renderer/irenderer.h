@@ -6,6 +6,9 @@
 
 // Library Includes
 #include <SDL.h>
+#ifdef PAPYRUS_EDITOR
+#include <Windows.h>
+#endif // PAPYRUS_EDITOR
 
 // Local Includes
 #include "../core/utility/refcount.h"
@@ -49,6 +52,10 @@ namespace Papyrus
 			virtual Int32	GetHeight() const = 0;
 
 			virtual void	DrawRect(SDL_Rect* _rect, Bool _red = false) = 0;
+			
+#ifdef PAPYRUS_EDITOR
+			virtual HWND	GetWindow() = 0;
+#endif // PAPYRUS_EDITOR
 
 			// Member Variables
 		protected:

@@ -7,9 +7,14 @@
 
 using namespace Papyrus;
 
+Float32 UI::CUIButton::m_timer = 0.0f;
+
 UI::CUIButton::CUIButton()
-	: m_currState(BUTTON_STATE_NORMAL)
+	: m_next(0)
+	, m_prev(0)
+	, m_currState(BUTTON_STATE_NORMAL)
 	, m_buttonDown(false)
+	, m_stateChanged(false)
 {
 }
 
@@ -50,8 +55,16 @@ Bool UI::CUIButton::Initialise(Int8* _luaFile, Int8* _luaFunc, Int8* _sprite, VE
 
 Bool UI::CUIButton::ShutDown()
 {
+	Input::inputManager->DeRegister(this);
 	VALIDATE(CUIObject::ShutDown());
 	return true;
+}
+
+void UI::CUIButton::Process(Float32 _delta)
+{
+	m_stateChanged = false;
+
+	if (m_timer > 0.0f) m_timer -= _delta;
 }
 
 void UI::CUIButton::Render()
@@ -76,13 +89,22 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 				}
 				else
 				{
+					if (0 != m_next) m_next->SetButtonState(BUTTON_STATE_NORMAL);
+					if (0 != m_prev) m_prev->SetButtonState(BUTTON_STATE_NORMAL);
 					m_currState = BUTTON_STATE_HOVER;
 				}
 			}
-			else 
+#ifdef PAPYRUS_EDITOR
+			else
 			{
 				m_currState = BUTTON_STATE_NORMAL;
 			}
+#else
+			else if (Input::inputManager->GetNumControllers() <= 0)
+			{
+				m_currState = BUTTON_STATE_NORMAL;
+			}
+#endif // PAPYRUS_EDITOR
 		}
 		else if (_e->type == SDL_MOUSEBUTTONDOWN)
 		{
@@ -108,6 +130,38 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 				}
 			}
 		}
+		else if (_e->type == SDL_CONTROLLERAXISMOTION)
+		{
+			if (_e->caxis.axis == SDL_CONTROLLER_AXIS_LEFTY)
+			{
+				if (_e->caxis.value > Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged && m_timer <= 0.0f)
+				{
+					if (0 != m_next) m_next->SetButtonState(BUTTON_STATE_HOVER);
+					m_currState = BUTTON_STATE_NORMAL;
+					m_stateChanged = true;
+					m_timer = 0.75f;
+				}
+				else if (_e->caxis.value < -Input::CONTROLLER_DEAD_ZONE && BUTTON_STATE_HOVER == m_currState && !m_stateChanged && m_timer <= 0.0f)
+				{
+					if (0 != m_prev) m_prev->SetButtonState(BUTTON_STATE_HOVER);
+					m_currState = BUTTON_STATE_NORMAL;
+					m_stateChanged = true;
+					m_timer = 0.75f;
+				}
+			}
+		}
+		else if (_e->cbutton.type == SDL_CONTROLLERBUTTONDOWN)
+		{
+			if (_e->cbutton.button == SDL_CONTROLLER_BUTTON_A) // Jump or climb a ladder
+			{ 
+				m_buttonDown = true;
+				if (BUTTON_STATE_HOVER == m_currState)
+				{
+					m_currState = BUTTON_STATE_CLICK;
+					ButtonClicked();
+				}
+			}
+		}
 	}
 }
 
@@ -117,6 +171,15 @@ void UI::CUIButton::SetActive(Bool _b)
 	m_buttonDown = false;
 
 	m_sprite->SetPosition(static_cast<Int32>(m_rect.x + m_rect.w * 0.5f), static_cast<Int32>(m_rect.y + m_rect.h * 0.5f));
+
+	if (_b && !m_active)
+	{
+		Input::inputManager->Register(this);
+	} 
+	else if (!_b && m_active)
+	{
+		Input::inputManager->DeRegister(this);
+	}
 
 	CUIObject::SetActive(_b);
 }
@@ -136,6 +199,22 @@ Int32 UI::CUIButton::GetHeight()
 Int32 UI::CUIButton::GetWidth()
 {
 	return m_rect.w;
+}
+
+void UI::CUIButton::SetButtonState(EButtonState _state) 
+{ 
+	m_currState = _state; 
+	m_stateChanged = true;
+}
+
+void UI::CUIButton::SetNext(UI::CUIButton* _next)
+{ 
+	m_next = _next; 
+}
+
+void UI::CUIButton::SetPrev(UI::CUIButton* _prev)
+{ 
+	m_prev = _prev;
 }
 
 Bool UI::CUIButton::CheckForHover(VECTOR2 _mouse)

@@ -101,7 +101,7 @@ void Logger::CLogToScreen::Process(Float32 _fDelta)
 					SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f", m_trackedInfo[i]->tag, *(UInt32*)(m_trackedInfo[i]->value));
 					break;
 				case TRACKTYPE_FLOAT:
-					SDL_snprintf(displayText, MAX_BUFFER, "%s: %.2f", m_trackedInfo[i]->tag, *(Float32*)(m_trackedInfo[i]->value));
+					SDL_snprintf(displayText, MAX_BUFFER, "%s: %.4f", m_trackedInfo[i]->tag, *(Float32*)(m_trackedInfo[i]->value));
 					break;
 				case TRACKTYPE_VECTOR2:
 					{

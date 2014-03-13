@@ -28,6 +28,17 @@ Bool UI::CStaticUI::ShutDown()
 	return true;
 }
 
+void UI::CStaticUI::Process(Float32 _delta)
+{
+	for (UInt16 i = 0; i < m_numObjects; ++i)
+	{
+		if (m_objects[i]->IsActive())
+		{
+			m_objects[i]->Process(_delta);
+		}
+	}
+}
+
 void UI::CStaticUI::Render()
 {
 }

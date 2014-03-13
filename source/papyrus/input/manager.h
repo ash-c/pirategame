@@ -53,7 +53,20 @@ namespace Papyrus
 			*/
 			Bool				Register(IInputObserver* _obs);
 
+			/*
+			* Allows an observer to deregister itself with the manager.
+			*
+			* @param	_obs		Pointer to the observer trying to deregister.
+			* @return	Returns true if deregistered successfully, false otherwise.
+			*/
 			Bool				DeRegister(IInputObserver* _obs);
+
+			/*
+			* Get the number of controllers connected.
+			*
+			* @return	Returns the number of controllers connected, as an Integer.
+			*/
+			Int32				GetNumControllers();
 
 			// Member Variables
 		protected:

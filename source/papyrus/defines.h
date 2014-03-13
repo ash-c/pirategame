@@ -55,7 +55,7 @@ typedef _TVECTOR4	VECTOR4;
 #define CLEANDELETE(Object) if (Object != 0) { delete Object; Object = 0; }
 #define CLEANARRAY(Object) if (Object != 0) { delete[] Object; Object = 0; }
 
-#define PY_DELETE_RELEASE(Object) if (0 != Object) { Object->Release(); if (0 == Object->GetRefCount()) { Object->ShutDown(); delete Object; Object = 0; } }
+#define PY_DELETE_RELEASE(Object) if (0 != Object) { Object->Release(); Object->ShutDown(); if (0 == Object->GetRefCount()) { delete Object; Object = 0; } }
 #define PY_SAFE_RELEASE(Object) if (0 != Object) { Object->Release(); Object = 0; }
 
 #define PY_CLEANARRAY(Array, Length) \

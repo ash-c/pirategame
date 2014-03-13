@@ -32,6 +32,8 @@ public:
 	virtual void		SetTool(Int32 _new);
 	virtual void		Load(const Int8* _path);
 
+	virtual void		ToggleEscMenu();
+
 	// Member Variables
 protected:
 	CLevel*				m_level;
