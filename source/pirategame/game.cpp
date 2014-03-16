@@ -219,9 +219,10 @@ Int32 CGame::LoadLevel(lua_State* L)
 
 	if (sm_pTheInstance->m_levelMan->LoadLevel((Int8*)path))
 	{
+		sm_pTheInstance->m_gameRunning = true;
 		sm_pTheInstance->m_interface->Toggle();
 		sm_pTheInstance->m_interface = UI::LoadInterface("data/interfaces/game.ini");
-		SDL_ShowCursor(0);
+		SDL_ShowCursor(false);
 	}
 	else 
 	{

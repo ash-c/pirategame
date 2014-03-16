@@ -85,9 +85,9 @@ void CLevelEdit::Render()
 	if (m_escMenu->IsActive()) m_escMenu->Render();
 }
 
-Bool CLevelEdit::Save()
+Bool CLevelEdit::Save(Int8* _path)
 {
-	if (m_level->Save())
+	if (m_level->Save(_path))
 	{
 		Logger::Write("Saved level");
 		return true;

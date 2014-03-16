@@ -11,6 +11,8 @@
 using namespace Papyrus;
 
 UI::IUIInterface**		UI::interfaces = 0;
+Float32					UI::hScale = 0.0f;
+Float32					UI::wScale = 0.0f;
 UInt16					UI::numInterfaces = 10;		
 
 Bool UI::Initialise() 
@@ -20,6 +22,9 @@ Bool UI::Initialise()
 	interfaces = new IUIInterface*[numInterfaces];
 	assert(interfaces);
 	SDL_memset(interfaces, 0, sizeof(IUIInterface*) * numInterfaces);
+
+	hScale = Renderer::activeRenderer->GetHeight() / 1080.0f;
+	wScale = Renderer::activeRenderer->GetWidth() / 1920.0f;
 
 	return true;
 }

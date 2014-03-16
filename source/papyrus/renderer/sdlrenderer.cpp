@@ -1,7 +1,9 @@
 
 // Library Includes
 #include <SDL_image.h>
+#ifdef PAPYRUS_EDITOR
 #include <SDL_syswm.h>
+#endif // PAPYRUS_EDITOR
 
 // Local Includes
 #include "sdlrenderer.h"

@@ -1,8 +1,1 @@
-{
-	"tileset": "ship",
-	"levelNumber": 0,
-	"tiles": 0,
-	"platforms": 0,
-	"enemies": 0,
-	"playerStart":[0,0]
-}
+{"tileset":"ship","levelNumber":1,"tiles":0,"platforms":0,"enemies":0,"playerStart":[0,0]}

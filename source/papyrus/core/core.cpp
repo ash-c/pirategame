@@ -9,10 +9,18 @@ using namespace Papyrus;
 
 Timer::CTimer* Core::timer = 0;
 
-Bool Core::Initialise()
+Bool Core::Initialise(Int8* _setup)
 {
 	FileParser::CIniparser setup;
-	setup.Initialise("data/papyrus.ini");
+
+	if (0 != _setup)
+	{
+		setup.Initialise(_setup);
+	}
+	else
+	{
+		setup.Initialise("data/papyrus.ini");
+	}
 	setup.Load();
 
 	Int32 width, height, numParsers, numSprites, numActors, numInterfaces;
@@ -76,10 +84,12 @@ Float32 Core::Process()
 	
 	delta = timer->Restart();
 
+#ifndef PAPYRUS_EDITOR
 	if (!timer->Paused())
 	{
 		Physics::Process(delta);
 	} 
+#endif // PAPYRUS_EDITOR
 
 	Input::inputManager->Process(delta);
 

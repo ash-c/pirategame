@@ -32,7 +32,7 @@ public:
 	void			Process(Float32 _delta);
 	void			Render();
 
-	Bool			Save();
+	Bool			Save(Int8* _path = 0);
 
 	void			CameraPos(VECTOR2 _pos);
 
@@ -43,6 +43,9 @@ public:
 	Bool			RemoveEnemy(VECTOR2 _pos);
 
 	Bool			SetPlayerStart(VECTOR2 _pos);
+
+	Bool			AddMovingPlatform(VECTOR2 _pos);
+	Bool			RemoveMovingPlatform(VECTOR2 _pos);
 
 private:
 	void			CheckAgainstGrid(VECTOR2* _pos);
@@ -57,7 +60,7 @@ protected:
 	ICharacter*			m_playable;
 	std::vector<ICharacter*>	m_enemies;
 	std::vector<CTile*>	m_tiles;
-	CPlatform**			m_platforms;
+	std::vector<CPlatform*>	m_platforms;
 
 	SDL_Rect*			m_gridRects;
 

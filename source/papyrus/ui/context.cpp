@@ -7,6 +7,8 @@
 #include "../parser/parser.h"
 #include "objects/uibutton.h"
 
+#include "ui.h"
+
 using namespace Papyrus;
 
 UI::CContextMenu::CContextMenu()
@@ -87,7 +89,7 @@ Bool UI::CContextMenu::Initialise(Int8* _path)
 	m_background = Sprite::CreateSprite(luaFile, 0, false);
 	assert(m_background);
 	m_background->AddRef();
-	m_background->SetScale(m_width, m_height);
+	m_background->SetScale(static_cast<Int32>(m_width * UI::wScale), m_height);
 
 	CLEANARRAY(luaFile);
 

@@ -30,7 +30,7 @@ void CIntEdit::Render()
 {
 }
 
-Bool CIntEdit::Save()
+Bool CIntEdit::Save(Int8* _path)
 {
 	return true;
 }

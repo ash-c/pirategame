@@ -5,6 +5,8 @@
 #include "uibutton.h"
 #include "../../input/input.h"
 
+#include "../ui.h"
+
 using namespace Papyrus;
 
 Float32 UI::CUIButton::m_timer = 0.0f;
@@ -31,7 +33,9 @@ Bool UI::CUIButton::Initialise(Int8* _luaFile, Int8* _luaFunc, Int8* _sprite, VE
 	SDL_strlcpy(m_luaFile, _luaFile, MAX_BUFFER);
 	SDL_strlcpy(m_luaFunc, _luaFunc, MAX_BUFFER);
 	
-	m_sprite->SetScale(_w, _h);
+	m_sprite->SetScale(static_cast<Int32>(_w * UI::wScale), static_cast<Int32>(_h * UI::hScale));
+	_pos.x *= UI::wScale;
+	_pos.y *= UI::hScale;
 	m_sprite->SetPosition(static_cast<Int32>(_pos.x), static_cast<Int32>(_pos.y));
 	m_rect.w = _w;
 	m_rect.h = _h;

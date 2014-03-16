@@ -39,46 +39,33 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _n
 	m_actor->SetVelocity(VECTOR2(-250,0));
 	m_actor->SetActive(true);
 
-	m_sprites = new Sprite::ISprite*[m_numSprites];
+	/*m_sprites = new Sprite::ISprite*[m_numSprites];
 	SDL_memset(m_sprites, 0 , sizeof(Sprite::ISprite*) * m_numSprites);
 	m_clips = new SDL_Rect[m_numSprites];
 	SDL_memset(m_clips, 0 , sizeof(SDL_Rect) * m_numSprites);
 	m_positions = new VECTOR2[m_numSprites];
-	SDL_memset(m_positions, 0 , sizeof(VECTOR2) * m_numSprites);
+	SDL_memset(m_positions, 0 , sizeof(VECTOR2) * m_numSprites);*/
 
 	for (Int16 i = 0; i < m_numSprites; ++i)
 	{
-		m_sprites[i] = Sprite::CreateSprite(_tileset, 0, false);
-		assert(m_sprites[i]);
-		m_sprites[i]->AddRef();
+		Sprite::ISprite* temp = 0;
+		temp = Sprite::CreateSprite(_tileset, 0, false);
+		assert(temp);
+		temp->AddRef();
+		m_sprites.push_back(temp);
 
 		SDL_snprintf(text, MAX_BUFFER, "%iplatform-%ipos", _platNum, i + 1);
-		VALIDATE(_setup->GetValue(text, m_positions[i]));
+		VECTOR2 pos;
+		VALIDATE(_setup->GetValue(text, pos));
+		m_positions.push_back(pos);
 		SDL_snprintf(text, MAX_BUFFER, "%iplatform-%itype", _platNum, i + 1);
 		VALIDATE(_setup->GetValue(text, type));
 
-		m_clips[i].w = 50;
-		m_clips[i].h = 50;
-
-		switch (type)
-		{
-		case TYPE_LEFT:
-			m_clips[i].x = 0;
-			m_clips[i].y = 150;
-			break;
-		case TYPE_MID:
-			m_clips[i].x = 50;
-			m_clips[i].y = 150;
-			break;
-		case TYPE_RIGHT:
-			m_clips[i].x = 100;
-			m_clips[i].y = 150;
-			break;
-		default:
-			m_clips[i].x = 0;
-			m_clips[i].y = 0;
-			break;
-		}
+		SDL_Rect clip;
+		clip.w = temp->GetScale().x;
+		clip.h = temp->GetScale().y;
+		CheckType(&clip, type);
+		m_clips.push_back(clip);
 	}
 
 	_setup->Release();
@@ -115,7 +102,7 @@ void CPlatform::Process(Float32 _delta)
 
 	VECTOR2 pos = m_actor->GetPosition();
 	VECTOR2 diff = pos - m_platPosition;
-	for (Int16 i = 0; i < m_numSprites; ++i)
+	for (UInt16 i = 0; i < m_sprites.size(); ++i)
 	{
 		m_positions[i] += diff;
 	}
@@ -129,10 +116,88 @@ void CPlatform::Process(Float32 _delta)
 
 void CPlatform::Render()
 {
-	for (Int16 i = 0; i < m_numSprites; ++i)
+	for (UInt16 i = 0; i < m_sprites.size(); ++i)
 	{
 		m_sprites[i]->SetClip(&m_clips[i]);
 		m_sprites[i]->SetPosition(static_cast<Int32>(m_positions[i].x), static_cast<Int32>(m_positions[i].y));
 		m_sprites[i]->Render();
+	}
+}
+
+Bool CPlatform::CheckPosition(VECTOR2 _pos)
+{
+	for (UInt16 i = 0; i < m_positions.size(); ++i)
+	{
+		// Is the given position this piece?
+		if (m_positions[i] == _pos)
+		{
+			return false;
+		}
+
+		// to the left
+		if (m_positions[i].x - m_clips[i].w == _pos.x && m_positions[i].y == _pos.y)
+		{
+			return true;
+		}
+
+		// to the right
+		if (m_positions[i].x + m_clips[i].w == _pos.x && m_positions[i].y == _pos.y)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+Bool CPlatform::AddPosition(VECTOR2 _pos, Int8* _tileset)
+{
+	// Add sprite
+	Sprite::ISprite* temp = 0;
+	temp = Sprite::CreateSprite(_tileset, 0, false);
+	assert(temp);
+	temp->AddRef();
+	m_sprites.push_back(temp);
+
+	// Add position
+	m_positions.push_back(_pos);
+
+	// calculate type
+	UInt32 type = 0;
+	
+
+	// Add clips, based on type
+	SDL_Rect clip;
+	clip.w = temp->GetScale().x;
+	clip.h = temp->GetScale().y;
+	CheckType(&clip, type);
+	m_clips.push_back(clip);
+
+	return true;
+}
+
+//
+// PRIVATE FUNCTIONS
+//
+void CPlatform::CheckType(SDL_Rect* _clip, UInt32 _type)
+{
+	switch (_type)
+	{
+	case TYPE_LEFT:
+		_clip->x = 0;
+		_clip->y = 150;
+		break;
+	case TYPE_MID:
+		_clip->x = 50;
+		_clip->y = 150;
+		break;
+	case TYPE_RIGHT:
+		_clip->x = 100;
+		_clip->y = 150;
+		break;
+	default:
+		_clip->x = 0;
+		_clip->y = 0;
+		break;
 	}
 }
