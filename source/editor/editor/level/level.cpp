@@ -248,9 +248,9 @@ void CLevel::Render()
 	}
 
 	// Render platforms
-	for (Int16 i = 0; i < m_numPlatforms; ++i)
+	for (UInt16 i = 0; i < m_platforms.size(); ++i)
 	{
-		m_platforms[i]->Render();
+		m_platforms[i]->Render(m_cameraPos);
 	}
 
 	// Render Enemies
@@ -300,6 +300,14 @@ Bool CLevel::Save(Int8* _path)
 		VALIDATE(save->AddValue(text, m_tiles[i]->GetPos()));
 		SDL_snprintf(text, MAX_BUFFER, "%i-type", i + 1);
 		VALIDATE(save->AddValue(text, m_tiles[i]->GetType()));
+	}
+
+	for (UInt16 i = 0; i < m_numPlatforms; ++i)
+	{
+		if (!m_platforms[i]->Save(save, i + 1))
+		{
+			Logger::Write("Saving platform number %i failed", i + 1);
+		}
 	}
 
 	for (UInt16 i = 0; i < m_numEnemies; ++i)
@@ -528,6 +536,7 @@ Bool CLevel::AddMovingPlatform(VECTOR2 _pos)
 		if (m_platforms[i]->CheckPosition(_pos))
 		{
 			temp = m_platforms[i];
+			break;
 		}
 	}
 
@@ -535,17 +544,21 @@ Bool CLevel::AddMovingPlatform(VECTOR2 _pos)
 	if (0 == temp)
 	{
 		CREATEPOINTER(temp, CPlatform);
-		assert(temp);		
+		assert(temp);	
+		temp->Initialise(0, m_tileset, 0, m_platforms.size() + 1);
+		temp->CheckPosition(_pos);
+		m_platforms.push_back(temp);
+		++m_numPlatforms;
 	}
 
 	if (temp->AddPosition(_pos, m_tileset))
 	{
-		Logger::Write("Moving platform piece added succesfully");
+		//Logger::Write("Moving platform piece added succesfully");
 		return true;
 	}
 	else
 	{
-		Logger::Write("Failed to add piece to moving platform");
+		//Logger::Write("Failed to add piece to moving platform");
 		return false;
 	}
 }

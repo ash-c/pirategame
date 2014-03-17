@@ -137,6 +137,10 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				{
 					m_level->SetPlayerStart(newPos);
 				}
+				else if (TOOL_PLATFORM == m_activeTool)
+				{
+					m_level->AddMovingPlatform(newPos);
+				}
 			}
 		}
 	}
@@ -186,6 +190,10 @@ void CLevelEdit::Notify(SDL_Event* _e)
 			else if (TOOL_REMOVE == m_activeTool)
 			{
 				m_level->RemoveTile(newPos);
+			}
+			else if (TOOL_PLATFORM == m_activeTool)
+			{
+				m_level->AddMovingPlatform(newPos);
 			}
 		}
 	}

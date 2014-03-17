@@ -22,7 +22,9 @@ public:
 	Bool		ShutDown();
 
 	void		Process(Float32 _delta);
-	void		Render();
+	void		Render(VECTOR2 _camPos);
+
+	Bool		Save(FileParser::IParser* _save, Int32 _platNum);
 
 	Bool		CheckPosition(VECTOR2 _pos);
 	Bool		AddPosition(VECTOR2 _pos, Int8* _tileset);
@@ -39,7 +41,11 @@ protected:
 	std::vector<VECTOR2>	m_positions;
 
 	VECTOR2					m_platPosition;
+	VECTOR2					m_scale;
 	Int32					m_numSprites;
+	Int32					m_screenW;
+	Int32					m_screenH;
+	UInt32					m_newType;
 	Bool					m_moveLeft;
 };
 

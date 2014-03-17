@@ -11,6 +11,8 @@ CPlatform::CPlatform()
 	, m_clips(0)
 	, m_positions(0)
 	, m_numSprites(0)
+	, m_screenW(0)
+	, m_screenH(0)
 	, m_moveLeft(true)
 {
 }
@@ -35,12 +37,11 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _n
 
 	if (0 == m_actor)
 	{
-		m_actor = Physics::CreateDynamicActor(VECTOR2(300, 0), VECTOR2(0,0), m_platPosition, scale, 100.0f, Physics::EType::TYPE_PLATFORM);
+		m_actor = Physics::CreateDynamicActor(VECTOR2(300.0f, 0.0f), VECTOR2(0.0f,0.0f), m_platPosition, scale, 100.0f, Physics::EType::TYPE_PLATFORM);
 		assert(m_actor);
 		m_actor->AddRef();
 	}
-	m_actor->SetVelocity(VECTOR2(-250,0));
-	m_actor->SetActive(true);
+	m_actor->SetVelocity(VECTOR2(-250.0f,0.0f));
 
 	if (0 == m_sprites)
 	{
@@ -83,6 +84,10 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _n
 			m_clips[i].x = 100;
 			m_clips[i].y = 150;
 			break;
+		case TYPE_ALONE:
+			m_clips->x = 0;
+			m_clips->y = 250;
+			break;
 		default:
 			m_clips[i].x = 0;
 			m_clips[i].y = 0;
@@ -91,6 +96,10 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _n
 	}
 
 	_setup->Release();
+	
+	m_screenW = Renderer::activeRenderer->GetWidth();
+	m_screenH = Renderer::activeRenderer->GetHeight();
+
 	return true;
 }
 
@@ -136,12 +145,21 @@ void CPlatform::Process(Float32 _delta)
 	}
 }
 
-void CPlatform::Render()
+void CPlatform::Render(VECTOR2 _camPos)
 {
-	for (Int16 i = 0; i < m_numSprites; ++i)
+	if ((m_platPosition.x + _camPos.x) > -(TILE_WIDTH * 3.0f) && (m_platPosition.y - _camPos.y) > -(TILE_HEIGHT * 3.0f) &&
+		(m_platPosition.x + _camPos.x) < (m_screenW + TILE_WIDTH * 3.0f) && (m_platPosition.y - _camPos.y) < (m_screenH + TILE_HEIGHT * 3.0f))
 	{
-		m_sprites[i]->SetClip(&m_clips[i]);
-		m_sprites[i]->SetPosition(static_cast<Int32>(m_positions[i].x), static_cast<Int32>(m_positions[i].y));
-		m_sprites[i]->Render();
+		m_actor->SetActive(true);
+		for (Int16 i = 0; i < m_numSprites; ++i)
+		{
+			m_sprites[i]->SetClip(&m_clips[i]);
+			m_sprites[i]->SetPosition(static_cast<Int32>(m_positions[i].x + _camPos.x), static_cast<Int32>(m_positions[i].y - _camPos.y));
+			m_sprites[i]->Render();
+		}
+	}
+	else if (m_actor->IsActive())
+	{
+		m_actor->SetActive(false);
 	}
 }
