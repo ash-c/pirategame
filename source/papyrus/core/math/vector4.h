@@ -59,6 +59,11 @@ struct _TVECTOR4
 		return *this;
 	}
 
+	bool operator== (const _TVECTOR4& _rhs)
+	{
+		return (_rhs.x == x && _rhs.y == y && _rhs.z == z && _rhs.w == w ? true : false);
+	}
+
 	const _TVECTOR4 operator+ (const _TVECTOR4& _rhs)
 	{
 		_TVECTOR4 result = *this;

@@ -59,6 +59,8 @@ namespace Papyrus
 		// Holds pointers to the loaded interfaces
 		extern IUIInterface**	interfaces;
 
+		extern Float32			hScale;
+		extern Float32			wScale;
 		extern UInt16			numInterfaces;
 	}
 }

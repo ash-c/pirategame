@@ -21,7 +21,7 @@ public:
 	Bool		ShutDown();
 
 	void		Process(Float32 _delta);
-	void		Render();
+	void		Render(VECTOR2 _camPos);
 
 	Bool		IsActive() { return m_actor->IsActive(); }
 
@@ -35,6 +35,8 @@ protected:
 
 	VECTOR2					m_platPosition;
 	Int32					m_numSprites;
+	Int32					m_screenW;
+	Int32					m_screenH;
 	Bool					m_moveLeft;
 };
 

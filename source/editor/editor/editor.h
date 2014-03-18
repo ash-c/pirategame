@@ -35,7 +35,7 @@ public:
 	virtual void		Process(Float32 _delta) = 0;
 	virtual void		Render() = 0;
 
-	virtual Bool		Save() = 0;
+	virtual Bool		Save(Int8* _path = 0) = 0;
 
 	virtual void		Notify(SDL_Event* _e) = 0;
 

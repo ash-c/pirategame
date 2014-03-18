@@ -1,9 +1,11 @@
 
 // Library Includes
 #include <SDL.h>
+#ifdef PAPYRUS_EDITOR
 #include <fstream>
 #include <Windows.h>
 #include <commdlg.h>
+#endif // PAPYRUS_EDITOR
 
 // Local Includes
 #include "game.h"
@@ -35,7 +37,7 @@ void CGame::ExecuteOneFrame()
 
 Bool CGame::Initialise()
 {
-	VALIDATE(Core::Initialise());
+	VALIDATE(Core::Initialise("data/editor.ini"));
 
 	// Register functions called by lua
 	lua_register(Logger::luaState, "Quit", Quit);
@@ -57,6 +59,8 @@ Bool CGame::Initialise()
 	Logger::InitFile("data/papyrus/editorErrors.log");
 
 	StartLevelEditor(0);
+
+	Physics::m_renderDebug = true;
 
 	return true;
 }
@@ -99,8 +103,11 @@ void CGame::Notify(SDL_Event* _e)
 			if (0 != m_editor) m_editor->ToggleEscMenu();
 			//m_active = false;
 			break;
-		case SDLK_F1:
-			if (0 != m_editor) m_editor->Save();
+		case SDLK_s:
+			if (_e->key.keysym.mod & KMOD_CTRL)
+			{
+				if (0 != m_editor) m_editor->Save();
+			}
 			break;
 		case SDLK_BACKQUOTE: // `
 			Logger::ToggleConsole(nullptr);
@@ -126,7 +133,6 @@ Int32 CGame::StartLevelEditor(lua_State* L)
 	}
 
 	CREATEPOINTER(sm_pTheInstance->m_editor, CLevelEdit);
-	//sm_pTheInstance->m_editor = &CLevelEdit::GetInstance();
 	assert(sm_pTheInstance->m_editor);
 
 	if (sm_pTheInstance->m_editor->Initialise()) 
@@ -190,7 +196,7 @@ Int32 CGame::LoadFromFile(lua_State* L)
 
 	GetOpenFileName(&file);
 
-	Logger::Write(file.lpstrFile);
+	//Logger::Write(file.lpstrFile);
 
 	if (SDL_strlen(file.lpstrFile) > 0)
 	{
@@ -202,6 +208,31 @@ Int32 CGame::LoadFromFile(lua_State* L)
 
 Int32 CGame::SaveToFile(lua_State* L)
 {
+	OPENFILENAME file;
+	ZeroMemory(&file, sizeof(OPENFILENAME));
+
+	Int8 path[MAX_BUFFER];
+	path[0] = NULL;
+
+	file.lStructSize = sizeof(OPENFILENAME);
+	file.hwndOwner = Renderer::activeRenderer->GetWindow();
+	file.lpstrFilter = "JSON Files, *.json\0*.*json\0\0";
+	file.nFilterIndex = 1;
+	file.lpstrFile = path;
+	file.nMaxFile = MAX_BUFFER;
+	file.lpstrDefExt = "json";
+	file.Flags = OFN_CREATEPROMPT | OFN_PATHMUSTEXIST |
+				OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
+	file.lpstrInitialDir = "data\\levels";
+
+	GetSaveFileName(&file);
+
+	//Logger::Write(file.lpstrFile);
+
+	if (SDL_strlen(file.lpstrFile) > 0)
+	{
+		sm_pTheInstance->m_editor->Save(file.lpstrFile);
+	}
 
 	return 0;
 }

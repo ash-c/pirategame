@@ -17,3 +17,8 @@ function playerstarttool()
 	ChangeTool(4)
 	return 'tool changed to player start'
 end
+
+function platformstool()
+	ChangeTool(2)
+	return 'tool changed to moving platforms'
+end

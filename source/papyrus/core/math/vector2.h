@@ -45,6 +45,11 @@ struct _TVECTOR2
 		return *this;
 	}
 
+	bool operator== (const _TVECTOR2& _rhs)
+	{
+		return (_rhs.x == x && _rhs.y == y ? true : false);
+	}
+
 	bool operator> (const _TVECTOR2& _rhs)
 	{
 		return (x > _rhs.x && y > _rhs.y ? true : false);

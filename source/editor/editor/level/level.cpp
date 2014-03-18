@@ -38,6 +38,14 @@ CLevel::~CLevel()
 
 Bool CLevel::Initialise(Int8* _setup)
 {
+	UInt16 len = SDL_strlen(_setup);
+
+	if (len > 0)
+	{
+		m_filePath = new Int8[len + 1];
+		SDL_strlcpy(m_filePath, _setup, len + 1);
+	}
+
 	// Make platforms
 	Int32 width = Renderer::activeRenderer->GetWidth();
 
@@ -137,14 +145,12 @@ Bool CLevel::Initialise(Int8* _setup)
 		CLEANARRAY(settings);
 	}
 
-	m_platforms = new CPlatform*[m_numPlatforms];
-	assert(m_platforms);
-	SDL_memset(m_platforms, 0, sizeof(CPlatform*) * m_numPlatforms);
-
 	for (Int32 i = 0; i < m_numPlatforms; ++i)
 	{
-		CREATEPOINTER(m_platforms[i], CPlatform);
-		assert(m_platforms[i]);
+		CPlatform* temp = 0;
+		CREATEPOINTER(temp, CPlatform);
+		assert(temp);
+		m_platforms.push_back(temp);
 
 		SDL_snprintf(text, MAX_BUFFER, "%iplatform-num", i + 1);
 
@@ -163,11 +169,12 @@ Bool CLevel::Initialise(Int8* _setup)
 
 Bool CLevel::ShutDown()
 {
-	for (Int16 i = 0; i < m_numPlatforms; ++i)
+	for (UInt16 i = 0; i < m_platforms.size(); ++i)
 	{
 		m_platforms[i]->ShutDown();
 		CLEANDELETE(m_platforms[i]);
 	}
+	m_platforms.clear();
 
 	// Need to release and shutdown all before deleting because of the tiles knowing of tiles nearby.
 	for (UInt16 i = 0; i < m_tiles.size(); ++i)
@@ -241,9 +248,9 @@ void CLevel::Render()
 	}
 
 	// Render platforms
-	for (Int16 i = 0; i < m_numPlatforms; ++i)
+	for (UInt16 i = 0; i < m_platforms.size(); ++i)
 	{
-		m_platforms[i]->Render();
+		m_platforms[i]->Render(m_cameraPos);
 	}
 
 	// Render Enemies
@@ -256,13 +263,30 @@ void CLevel::Render()
 	if (0 != m_playable) m_playable->Render(m_cameraPos);
 }
 
-Bool CLevel::Save()
+Bool CLevel::Save(Int8* _path)
 {
-	FileParser::IParser* save = FileParser::CreateParser("1.json");
+	FileParser::IParser* save = 0;
+	if (0 == _path && 0 != m_filePath)
+	{
+		save = FileParser::CreateParser(m_filePath);
+	}
+	else if (0 != _path)
+	{
+		save = FileParser::CreateParser(_path);
+	}
+	else
+	{
+		assert("No valid file path!");
+		Logger::Write("No valid file path");
+		return false;
+	}
 	assert(save);
 	save->AddRef();
 	
-	VALIDATE(save->AddValue("playerStart", m_playable->GetPosition()));
+	if (0 != m_playable)
+	{
+		VALIDATE(save->AddValue("playerStart", m_playable->GetPosition()));
+	}
 	VALIDATE(save->AddValue("tileset", m_tileset));
 	VALIDATE(save->AddValue("tiles", m_numTiles));
 	VALIDATE(save->AddValue("platforms", m_numPlatforms));
@@ -276,6 +300,14 @@ Bool CLevel::Save()
 		VALIDATE(save->AddValue(text, m_tiles[i]->GetPos()));
 		SDL_snprintf(text, MAX_BUFFER, "%i-type", i + 1);
 		VALIDATE(save->AddValue(text, m_tiles[i]->GetType()));
+	}
+
+	for (UInt16 i = 0; i < m_numPlatforms; ++i)
+	{
+		if (!m_platforms[i]->Save(save, i + 1))
+		{
+			Logger::Write("Saving platform number %i failed", i + 1);
+		}
 	}
 
 	for (UInt16 i = 0; i < m_numEnemies; ++i)
@@ -487,6 +519,56 @@ Bool CLevel::SetPlayerStart(VECTOR2 _pos)
 		VALIDATE(m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml"));
 	}
 	m_playable->SetPosition(_pos);
+
+	return true;
+}
+
+Bool CLevel::AddMovingPlatform(VECTOR2 _pos)
+{
+	// conform position to grid
+	CheckAgainstGrid(&_pos);
+
+	CPlatform* temp = 0;
+
+	// check for existing platform near the given position
+	for (UInt16 i = 0; i < m_platforms.size(); ++i)
+	{
+		if (m_platforms[i]->CheckPosition(_pos))
+		{
+			temp = m_platforms[i];
+			break;
+		}
+	}
+
+	// If not found, create new platform
+	if (0 == temp)
+	{
+		CREATEPOINTER(temp, CPlatform);
+		assert(temp);	
+		temp->Initialise(0, m_tileset, 0, m_platforms.size() + 1);
+		temp->CheckPosition(_pos);
+		m_platforms.push_back(temp);
+		++m_numPlatforms;
+	}
+
+	if (temp->AddPosition(_pos, m_tileset))
+	{
+		//Logger::Write("Moving platform piece added succesfully");
+		return true;
+	}
+	else
+	{
+		//Logger::Write("Failed to add piece to moving platform");
+		return false;
+	}
+}
+
+Bool CLevel::RemoveMovingPlatform(VECTOR2 _pos)
+{
+	// conform position to grid
+	CheckAgainstGrid(&_pos);
+
+
 
 	return true;
 }

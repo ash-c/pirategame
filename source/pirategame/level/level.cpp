@@ -273,7 +273,7 @@ void CLevel::Render()
 	// Render platforms
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
-		m_platforms[i]->Render();
+		m_platforms[i]->Render(m_cameraPos);
 	}
 
 	// Render Enemies

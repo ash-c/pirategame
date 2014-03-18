@@ -165,7 +165,10 @@ namespace Papyrus
 				}
 				//if (!m_hCollision && m_type != Physics::EType::TYPE_PLATFORM)
 				//{
+				if (m_type != Physics::EType::TYPE_PLATFORM)
+				{
 					m_currState.vel.x += m_currState.acc.x * _delta;
+				}
 				//}
 
 				// Check if at rest
