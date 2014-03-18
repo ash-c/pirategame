@@ -18,7 +18,11 @@ VECTOR2 Physics::camPosition;
 Float32 Physics::m_accumulator = 0.0f;
 Int32 Physics::maxActors = 10;
 Int32 Physics::numActors = 0;
+#ifdef _DEBUG
+Bool Physics::m_renderDebug = true;
+#else 
 Bool Physics::m_renderDebug = false;
+#endif // _DEBUG
 
 Bool Physics::Initialise()
 {

@@ -41,6 +41,7 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _n
 		assert(m_actor);
 		m_actor->AddRef();
 	}
+	m_actor->SetPosition(m_platPosition);
 	m_actor->SetVelocity(VECTOR2(-250.0f,0.0f));
 
 	if (0 == m_sprites)

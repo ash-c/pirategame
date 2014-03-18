@@ -125,8 +125,8 @@ void CPlatform::Process(Float32 _delta)
 
 void CPlatform::Render(VECTOR2 _camPos)
 {
-	if ((m_platPosition.x + _camPos.x) > -TILE_WIDTH && (m_platPosition.y - _camPos.y) > -TILE_HEIGHT &&
-		(m_platPosition.x + _camPos.x) < (m_screenW + TILE_WIDTH) && (m_platPosition.y - _camPos.y) < (m_screenH + TILE_HEIGHT))
+	if ((m_platPosition.x + _camPos.x) > -m_scale.x && (m_platPosition.y - _camPos.y) > -m_scale.y &&
+		(m_platPosition.x + _camPos.x) < (m_screenW + m_scale.x) && (m_platPosition.y - _camPos.y) < (m_screenH + m_scale.y))
 	{
 		m_actor->SetActive(true);
 		for (UInt16 i = 0; i < m_sprites.size(); ++i)
@@ -242,7 +242,7 @@ Bool CPlatform::CheckPosition(VECTOR2 _pos)
 	}
 
 	// No match, new platform
-	return true;
+	return false;
 }
 
 Bool CPlatform::AddPosition(VECTOR2 _pos, Int8* _tileset)
@@ -286,10 +286,40 @@ Bool CPlatform::AddPosition(VECTOR2 _pos, Int8* _tileset)
 		else if (m_positions[i].x >= high) high = m_positions[i].x;
 	}
 
-	m_platPosition.x = (high - low) * 0.5f + low;
+	if (-10000.0f == high || 10000.0f == low)
+	{
+		m_platPosition.x = _pos.x;
+	}
+	else
+	{
+		m_platPosition.x = (high - low) * 0.5f + low;
+	}
 	m_platPosition.y = _pos.y;
 
 	return true;
+}
+
+Bool CPlatform::RemovePosition(VECTOR2 _pos)
+{
+	for (UInt16 i = 0; i < m_positions.size(); ++i)
+	{
+		if (_pos == m_positions[i])
+		{
+			m_positions.erase(m_positions.begin() + i);
+			m_clips.erase(m_clips.begin() + i);
+			PY_SAFE_RELEASE(m_sprites[i]);
+			m_sprites.erase(m_sprites.begin() + i);
+			--m_numSprites;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+UInt32 CPlatform::GetNumPositions() const
+{
+	return m_positions.size();
 }
 
 //

@@ -28,6 +28,8 @@ public:
 
 	Bool		CheckPosition(VECTOR2 _pos);
 	Bool		AddPosition(VECTOR2 _pos, Int8* _tileset);
+	Bool		RemovePosition(VECTOR2 _pos);
+	UInt32		GetNumPositions() const;
 
 private:
 	void		CheckType(SDL_Rect* _clip, UInt32 _type);
