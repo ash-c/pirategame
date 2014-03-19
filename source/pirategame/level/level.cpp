@@ -67,18 +67,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	}
 	
 	VECTOR2 pos;
-
-	if (0 < m_numTiles)
-	{
-		CREATEPOINTER(m_playable, CPlayable);
-		assert(m_playable);
-		VALIDATE(m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml"));
-		PY_WRITETOFILE("Player created");
-
-		VALIDATE(setup->GetValue("playerStart", pos));
-		m_playable->SetPosition(pos);
-	}
-	
+		
 	UInt32 type = 0;
 	Int8 text[MAX_BUFFER];
 
@@ -149,6 +138,17 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(setup->GetValue(text, number));
 
 		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
+	}
+
+	if (0 < m_numTiles)
+	{
+		CREATEPOINTER(m_playable, CPlayable);
+		assert(m_playable);
+		VALIDATE(m_playable->Initialise("data/art/characters/sam/male.png", "data/art/characters/sam/male.xml", "data/xml/characters/sam.xml"));
+		PY_WRITETOFILE("Player created");
+
+		VALIDATE(setup->GetValue("playerStart", pos));
+		m_playable->SetPosition(pos);
 	}
 	
 	setup->Release();

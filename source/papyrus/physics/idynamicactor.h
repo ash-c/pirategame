@@ -103,15 +103,6 @@ namespace Papyrus
 
 			virtual void	Process(Float32 _delta)
 			{
-				if (m_ppCollision && m_type == Physics::EType::TYPE_PLAYER)
-				{
-					m_currState.acc.x = 0.0f;
-					if ((m_currState.vel.x >= 250) || (m_currState.vel.x <= -250))
-					{
-						m_currState.vel.x = 0.0f;
-					}
-				}
-
 				// save previous states
 				m_currState.preV = m_currState.vel;
 				m_currState.preP = m_currState.pos;
@@ -144,32 +135,15 @@ namespace Papyrus
 					m_currState.acc.y += 1000.0f * _delta;
 				}
 
-				// Player on the platform, update position
-				if (m_ppCollision && 0 != m_player)
-				{
-					/*VECTOR2 pos = m_currState.pos - m_currState.preP;
-					VECTOR2 player = m_player->GetPosition();
-					player.x += pos.x;
-					m_player->SetPosition(player);*/
-					IDynamicActor* player = reinterpret_cast<IDynamicActor*>(m_player);
-					assert(player);
-					VECTOR2 vel = player->GetVelocity();
-					vel.x = m_currState.vel.x;
-					player->SetVelocity(vel);
-				}
-
 				// accelerate
 				if (!m_vCollision && m_type != Physics::EType::TYPE_PLATFORM)
 				{
 					m_currState.vel.y += m_currState.acc.y * _delta;
 				}
-				//if (!m_hCollision && m_type != Physics::EType::TYPE_PLATFORM)
-				//{
 				if (m_type != Physics::EType::TYPE_PLATFORM)
 				{
 					m_currState.vel.x += m_currState.acc.x * _delta;
 				}
-				//}
 
 				// Check if at rest
 				if (m_currState.vel.x < m_zero && m_currState.vel.x > -m_zero)
@@ -188,6 +162,15 @@ namespace Papyrus
 				if (!m_vCollision)
 				{
 					m_currState.pos.y += m_currState.vel.y * _delta; 
+				}
+
+				// Player on the platform, update position
+				if (m_ppCollision && 0 != m_player)
+				{
+					VECTOR2 pos = m_currState.pos - m_currState.preP;
+					VECTOR2 player = m_player->GetPosition();
+					player.x += pos.x;
+					m_player->SetPosition(player);
 				}
 
 				// Prevent going off the sides of the screen

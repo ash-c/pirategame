@@ -139,11 +139,6 @@ void CPlatform::Process(Float32 _delta)
 		m_positions[i] += diff;
 	}
 	m_platPosition = pos;
-
-	if (m_actor->IsPPCollided())
-	{
-		m_actor->UpdatePlayer(diff);
-	}
 }
 
 void CPlatform::Render(VECTOR2 _camPos)
