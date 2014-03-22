@@ -268,11 +268,11 @@ Bool CLevel::Save(Int8* _path)
 	FileParser::IParser* save = 0;
 	if (0 == _path && 0 != m_filePath)
 	{
-		save = FileParser::CreateParser(m_filePath);
+		save = FileParser::LoadFile(m_filePath);
 	}
 	else if (0 != _path)
 	{
-		save = FileParser::CreateParser(_path);
+		save = FileParser::LoadFile(_path);
 	}
 	else
 	{
@@ -568,9 +568,25 @@ Bool CLevel::RemoveMovingPlatform(VECTOR2 _pos)
 	// conform position to grid
 	CheckAgainstGrid(&_pos);
 
-
-
-	return true;
+	CPlatform* temp = 0;
+	// check for existing platform near the given position
+	for (UInt16 i = 0; i < m_platforms.size(); ++i)
+	{
+		if (m_platforms[i]->CheckPosition(_pos))
+		{
+			if (m_platforms[i]->RemovePosition(_pos))
+			{
+				if (m_platforms[i]->GetNumPositions() <= 0)
+				{
+					m_platforms[i]->ShutDown();
+					CLEANDELETE(m_platforms[i]);
+					m_platforms.erase(m_platforms.begin() + i);
+				}
+			}
+			return true;
+		}
+	}
+	return false;
 }
 
 //

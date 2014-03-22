@@ -41,6 +41,7 @@ Bool CPlatform::Initialise(FileParser::IParser* _setup, Int8* _tileset, Int32 _n
 		assert(m_actor);
 		m_actor->AddRef();
 	}
+	m_actor->SetPosition(m_platPosition);
 	m_actor->SetVelocity(VECTOR2(-250.0f,0.0f));
 
 	if (0 == m_sprites)
@@ -138,11 +139,6 @@ void CPlatform::Process(Float32 _delta)
 		m_positions[i] += diff;
 	}
 	m_platPosition = pos;
-
-	if (m_actor->IsPPCollided())
-	{
-		m_actor->UpdatePlayer(diff);
-	}
 }
 
 void CPlatform::Render(VECTOR2 _camPos)

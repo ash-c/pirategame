@@ -126,7 +126,10 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				{
 					if (!m_level->RemoveTile(newPos))
 					{
-						m_level->RemoveEnemy(newPos);
+						if (!m_level->RemoveEnemy(newPos))
+						{
+							m_level->RemoveMovingPlatform(newPos);
+						}
 					}
 				}
 				else if (TOOL_BASIC_ENEMY == m_activeTool)
@@ -189,7 +192,13 @@ void CLevelEdit::Notify(SDL_Event* _e)
 			}
 			else if (TOOL_REMOVE == m_activeTool)
 			{
-				m_level->RemoveTile(newPos);
+				if (!m_level->RemoveTile(newPos))
+				{
+					if (!m_level->RemoveEnemy(newPos))
+					{
+						m_level->RemoveMovingPlatform(newPos);
+					}
+				}
 			}
 			else if (TOOL_PLATFORM == m_activeTool)
 			{
