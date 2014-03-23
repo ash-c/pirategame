@@ -122,6 +122,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="level\level.cpp" />
     <ClCompile Include="level\levelmanager.cpp" />
+    <ClCompile Include="level\parallax.cpp" />
     <ClCompile Include="level\platform.cpp" />
     <ClCompile Include="level\tile.cpp" />
     <ClCompile Include="main.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="level\level.h" />
     <ClInclude Include="level\levelmanager.h" />
+    <ClInclude Include="level\parallax.h" />
     <ClInclude Include="level\platform.h" />
     <ClInclude Include="level\tile.h" />
   </ItemGroup>

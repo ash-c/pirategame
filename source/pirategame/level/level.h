@@ -15,6 +15,7 @@ class ICharacter;
 class CTile;
 class CPlatform;
 class CEnemy;
+class CParallax;
 
 static const Int32			LEVEL_WIDTH = 10000;
 static const Int32			LEVEL_HEIGHT = 2000;
@@ -43,6 +44,7 @@ protected:
 	CTile**				m_tiles;
 	CEnemy**			m_enemies;
 	CPlatform**			m_platforms;
+	CParallax*			m_parallax[2];
 
 	VECTOR2				m_cameraPos;
 

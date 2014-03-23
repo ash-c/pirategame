@@ -9,6 +9,7 @@
 #include "..\character\enemy.h"
 #include "tile.h"
 #include "platform.h"
+#include "parallax.h"
 
 CLevel::CLevel()
 	: m_background(0)
@@ -23,7 +24,7 @@ CLevel::CLevel()
 	, m_screenW(0)
 	, m_complete(false)
 {
-
+	SDL_memset(m_parallax, 0, sizeof(CParallax*) * 2);
 }
 
 CLevel::~CLevel()
@@ -152,9 +153,18 @@ Bool CLevel::Initialise(Int8* _setup)
 	}
 	
 	setup->Release();
-
 	CLEANARRAY(tileset);
 
+	// setup parallax
+	CREATEPOINTER(m_parallax[0], CParallax);
+	assert(m_parallax[0]);
+	m_parallax[0]->Initialise(static_cast<Int32>(LEVEL_WIDTH * 0.3f), static_cast<Int32>(LEVEL_HEIGHT * 0.3f), "");
+
+	CREATEPOINTER(m_parallax[1], CParallax);
+	assert(m_parallax[1]);
+	m_parallax[1]->Initialise(static_cast<Int32>(LEVEL_WIDTH * 0.6f), static_cast<Int32>(LEVEL_HEIGHT * 0.6f), "");
+
+	// set camera position if player exists
 	if (0 == m_playable)
 	{
 		m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenH);
@@ -166,6 +176,12 @@ Bool CLevel::Initialise(Int8* _setup)
 
 Bool CLevel::ShutDown()
 {
+	for (Int16 i = 0; i < 2; ++i)
+	{
+		m_parallax[i]->ShutDown();
+		CLEANDELETE(m_parallax[i]);
+	}
+
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
 		m_platforms[i]->ShutDown();
@@ -258,11 +274,20 @@ void CLevel::Process(Float32 _delta)
 			m_enemies[i]->Process(_delta);
 		}
 	}
+
+	for (Int16 i = 0; i < 2; ++i)
+	{
+		m_parallax[i]->Process(_delta);
+	}
 }
 
 void CLevel::Render()
 {
 	m_background->Render();
+
+	// Render parallax layers
+	m_parallax[1]->Render(m_cameraPos);
+	m_parallax[0]->Render(m_cameraPos);
 
 	// Render tiles
 	for (Int16 i = 0; i < m_numTiles; ++i)

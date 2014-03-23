@@ -96,6 +96,9 @@
     <ClCompile Include="character\enemy.cpp">
       <Filter>character</Filter>
     </ClCompile>
+    <ClCompile Include="level\parallax.cpp">
+      <Filter>level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -298,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="character\enemy.h">
       <Filter>character</Filter>
+    </ClInclude>
+    <ClInclude Include="level\parallax.h">
+      <Filter>level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
