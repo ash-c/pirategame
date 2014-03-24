@@ -44,7 +44,7 @@ protected:
 	CTile**				m_tiles;
 	CEnemy**			m_enemies;
 	CPlatform**			m_platforms;
-	CParallax*			m_parallax[2];
+	CParallax**			m_parallax;
 
 	VECTOR2				m_cameraPos;
 
@@ -52,6 +52,7 @@ protected:
 	Int32				m_numTiles;
 	Int32				m_numEnemies;
 	Int32				m_numPlatforms;
+	Int32				m_paraCount;
 	Int32				m_screenW;
 	Int32				m_screenH;
 

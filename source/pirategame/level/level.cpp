@@ -18,13 +18,14 @@ CLevel::CLevel()
 	, m_enemies(0)
 	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
+	, m_parallax(0)
 	, m_numTiles(0)
 	, m_numEnemies(0)
 	, m_numPlatforms(0)
+	, m_paraCount(0)
 	, m_screenW(0)
 	, m_complete(false)
 {
-	SDL_memset(m_parallax, 0, sizeof(CParallax*) * 2);
 }
 
 CLevel::~CLevel()
@@ -57,15 +58,6 @@ Bool CLevel::Initialise(Int8* _setup)
 	Int8* tileset = 0;
 	Int8 path[MAX_BUFFER];
 	VALIDATE(setup->GetValue("tileset", &tileset));
-	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/background.png", tileset);
-	
-	if (0 == m_background)
-	{
-		m_background = Sprite::CreateSprite(path, 0, false);
-		assert(m_background);
-		m_background->AddRef();
-		PY_WRITETOFILE("Background created");
-	}
 	
 	VECTOR2 pos;
 		
@@ -153,17 +145,48 @@ Bool CLevel::Initialise(Int8* _setup)
 	}
 	
 	setup->Release();
-	CLEANARRAY(tileset);
+	VALIDATE(setup->ShutDown());
+	setup = 0;
 
 	// setup parallax
-	CREATEPOINTER(m_parallax[0], CParallax);
-	assert(m_parallax[0]);
-	m_parallax[0]->Initialise(static_cast<Int32>(LEVEL_WIDTH * 0.3f), static_cast<Int32>(LEVEL_HEIGHT * 0.3f), "");
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tileset.ini", tileset);
+	setup = FileParser::LoadFile(path);
+	assert(setup);
+	setup->AddRef();
 
-	CREATEPOINTER(m_parallax[1], CParallax);
-	assert(m_parallax[1]);
-	m_parallax[1]->Initialise(static_cast<Int32>(LEVEL_WIDTH * 0.6f), static_cast<Int32>(LEVEL_HEIGHT * 0.6f), "");
+	Int8* background = 0;
+	VALIDATE(setup->GetValue("static", &background, "parallax"));
+	assert(background);
 
+	if (0 == m_background)
+	{
+		m_background = Sprite::CreateSprite(background, 0, false);
+		assert(m_background);
+		m_background->AddRef();
+		PY_WRITETOFILE("Background created");
+	}
+
+	setup->Release();
+	CLEANARRAY(tileset);
+
+	VALIDATE(setup->GetValue("count", m_paraCount, "parallax"));
+
+	if (0 < m_paraCount)
+	{
+		m_parallax = new CParallax*[m_paraCount];
+		assert(m_parallax);
+		SDL_memset(m_parallax, 0, sizeof(CParallax*) * m_paraCount);
+
+		for (Int16 i = 0; i < m_paraCount; ++i)
+		{
+			CREATEPOINTER(m_parallax[i], CParallax);
+			assert(m_parallax[i]);
+			Int8 temp[MAX_BUFFER];
+			SDL_snprintf(temp, MAX_BUFFER, "%i", i + 1);
+			VALIDATE(m_parallax[i]->Initialise(setup, temp));
+		}
+	}
+	
 	// set camera position if player exists
 	if (0 == m_playable)
 	{
@@ -176,10 +199,13 @@ Bool CLevel::Initialise(Int8* _setup)
 
 Bool CLevel::ShutDown()
 {
-	for (Int16 i = 0; i < 2; ++i)
+	if (0 != m_parallax)
 	{
-		m_parallax[i]->ShutDown();
-		CLEANDELETE(m_parallax[i]);
+		for (Int16 i = 0; i < m_paraCount; ++i)
+		{
+			m_parallax[i]->ShutDown();
+			CLEANDELETE(m_parallax[i]);
+		}
 	}
 
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
@@ -275,9 +301,12 @@ void CLevel::Process(Float32 _delta)
 		}
 	}
 
-	for (Int16 i = 0; i < 2; ++i)
+	if (0 != m_parallax)
 	{
-		m_parallax[i]->Process(_delta);
+		for (Int16 i = 0; i < m_paraCount; ++i)
+		{
+			m_parallax[i]->Process(_delta);
+		}
 	}
 }
 
@@ -286,8 +315,13 @@ void CLevel::Render()
 	m_background->Render();
 
 	// Render parallax layers
-	m_parallax[1]->Render(m_cameraPos);
-	m_parallax[0]->Render(m_cameraPos);
+	if (0 != m_parallax)
+	{
+		for (Int16 i = 0; i < m_paraCount; ++i)
+		{
+			m_parallax[i]->Render(m_cameraPos);
+		}
+	}	
 
 	// Render tiles
 	for (Int16 i = 0; i < m_numTiles; ++i)
