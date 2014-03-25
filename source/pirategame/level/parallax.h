@@ -27,8 +27,8 @@ public:
 	// Member Variables
 protected:
 	std::vector<Sprite::ISprite*>	m_sprites;
-
 	std::vector<VECTOR2>			m_positions;
+	std::vector<Bool>				m_move;
 
 	Bool		m_animated;
 };
