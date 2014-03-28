@@ -28,7 +28,10 @@ public:
 protected:
 	std::vector<Sprite::ISprite*>	m_sprites;
 	std::vector<VECTOR2>			m_positions;
+	std::vector<VECTOR2>			m_speed;
 	std::vector<Bool>				m_move;
+
+	Float32		m_scale;
 
 	Bool		m_animated;
 };
