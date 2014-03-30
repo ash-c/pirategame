@@ -103,6 +103,8 @@ namespace Papyrus
 
 			virtual void	Process(Float32 _delta)
 			{
+				if (m_pwCollision || m_peCollision) return;
+
 				// save previous states
 				m_currState.preV = m_currState.vel;
 				m_currState.preP = m_currState.pos;

@@ -8,6 +8,7 @@
 #include "..\character\playable.h"
 #include "..\character\enemy.h"
 #include "tile.h"
+#include "water.h"
 #include "platform.h"
 #include "parallax.h"
 
@@ -15,11 +16,13 @@ CLevel::CLevel()
 	: m_background(0)
 	, m_playable(0)
 	, m_tiles(0)
+	, m_water(0)
 	, m_enemies(0)
 	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
 	, m_parallax(0)
 	, m_numTiles(0)
+	, m_numWater(0)
 	, m_numEnemies(0)
 	, m_numPlatforms(0)
 	, m_paraCount(0)
@@ -54,6 +57,7 @@ Bool CLevel::Initialise(Int8* _setup)
 	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
 	VALIDATE(setup->GetValue("enemies", m_numEnemies));
+	VALIDATE(setup->GetValue("water", m_numWater));
 
 	Int8* tileset = 0;
 	Int8 path[MAX_BUFFER];
@@ -86,6 +90,28 @@ Bool CLevel::Initialise(Int8* _setup)
 		}
 	}
 
+	if (0 == m_water)
+	{
+		m_water = new CWater*[m_numWater];
+		assert(m_water);
+		SDL_memset(m_water, 0, sizeof(CWater*) * m_numWater);
+	
+		SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/water.png", tileset);
+
+		for (Int32 i = 0; i < m_numWater; ++i)
+		{
+			SDL_snprintf(text, MAX_BUFFER, "%iw-pos", i + 1);
+			VALIDATE(setup->GetValue(text, pos));
+
+			SDL_snprintf(text, MAX_BUFFER, "%iw-type", i + 1);
+			VALIDATE(setup->GetValue(text, type));
+
+			CREATEPOINTER(m_water[i], CWater);
+			VALIDATE(m_water[i]->Initialise(path, pos, static_cast<ETileType>(type)));
+			m_water[i]->AddRef();
+		}
+	}
+
 	if (0 == m_enemies)
 	{
 		m_enemies = new CEnemy*[m_numEnemies];
@@ -113,6 +139,7 @@ Bool CLevel::Initialise(Int8* _setup)
 		m_enemies[i]->SetPlayer(m_playable);
 	}
 
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", tileset);
 	if (0 == m_platforms)
 	{
 		m_platforms = new CPlatform*[m_numPlatforms];
@@ -227,6 +254,12 @@ Bool CLevel::ShutDown()
 	}
 	CLEANARRAY(m_tiles);
 
+	for (Int16 i = 0; i < m_numWater; ++i)
+	{
+		PY_DELETE_RELEASE(m_water[i]);
+	}
+	CLEANARRAY(m_water);
+
 	PY_SAFE_RELEASE(m_background);
 
 	if (0 != m_playable)
@@ -322,6 +355,12 @@ void CLevel::Render()
 			m_parallax[i]->Render(m_cameraPos);
 		}
 	}	
+
+	// Render water
+	for (Int16 i = 0; i < m_numWater; ++i)
+	{
+		m_water[i]->Render(m_cameraPos);
+	}
 
 	// Render tiles
 	for (Int16 i = 0; i < m_numTiles; ++i)

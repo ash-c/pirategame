@@ -125,6 +125,7 @@
     <ClCompile Include="level\parallax.cpp" />
     <ClCompile Include="level\platform.cpp" />
     <ClCompile Include="level\tile.cpp" />
+    <ClCompile Include="level\water.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +180,7 @@
     <ClInclude Include="level\parallax.h" />
     <ClInclude Include="level\platform.h" />
     <ClInclude Include="level\tile.h" />
+    <ClInclude Include="level\water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,7 @@ using namespace Papyrus;
 
 class ICharacter;
 class CTile;
+class CWater;
 class CPlatform;
 class CEnemy;
 class CParallax;
@@ -42,6 +43,7 @@ protected:
 	Sprite::ISprite*	m_background;
 	ICharacter*			m_playable;
 	CTile**				m_tiles;
+	CWater**			m_water;
 	CEnemy**			m_enemies;
 	CPlatform**			m_platforms;
 	CParallax**			m_parallax;
@@ -50,6 +52,7 @@ protected:
 
 	Int32				m_levelNumber;
 	Int32				m_numTiles;
+	Int32				m_numWater;
 	Int32				m_numEnemies;
 	Int32				m_numPlatforms;
 	Int32				m_paraCount;

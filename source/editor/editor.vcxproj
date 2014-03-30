@@ -123,6 +123,7 @@
     <ClCompile Include="editor\level\level.cpp" />
     <ClCompile Include="editor\level\platform.cpp" />
     <ClCompile Include="editor\level\tile.cpp" />
+    <ClCompile Include="editor\level\water.cpp" />
     <ClCompile Include="editor\tools\tiletool.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="editor\level\level.h" />
     <ClInclude Include="editor\level\platform.h" />
     <ClInclude Include="editor\level\tile.h" />
+    <ClInclude Include="editor\level\water.h" />
     <ClInclude Include="editor\tool.h" />
     <ClInclude Include="editor\tools\tiletool.h" />
     <ClInclude Include="game.h" />

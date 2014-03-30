@@ -69,6 +69,7 @@ Bool CParallax::ShutDown()
 {
 	for (UInt16 i = 0; i < m_sprites.size(); ++i)
 	{
+		m_sprites[i]->Release();
 		Sprite::FlushFile(m_sprites[i]);
 		m_sprites[i] = 0;
 	}

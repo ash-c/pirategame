@@ -50,6 +50,7 @@ void Physics::Process(Float32 _frameTime)
 		actors[i]->SetVCollided(false);
 		actors[i]->SetPPCollided(0, false);
 		actors[i]->SetPECollided(false);
+		actors[i]->SetPWCollided(false);
 	}
 
 	// process physics objects
@@ -108,6 +109,14 @@ void Physics::Process(Float32 _frameTime)
 					else if (type1 == EType::TYPE_PLATFORM && type2 == EType::TYPE_PLAYER)
 					{
 						PlayerPlatformCollision(actors[j], actors[i]);
+					}
+					else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_WATER)
+					{
+						PlayerWaterCollision(actors[i], actors[j]);
+					}
+					else if (type1 == EType::TYPE_WATER && type2 == EType::TYPE_PLAYER)
+					{
+						PlayerWaterCollision(actors[j], actors[i]);
 					}
 				}
 			}
@@ -431,6 +440,35 @@ void Physics::EnemyStaticCollision(IActor* _actor1, IActor* _actor2)
 				_actor1->SetXPos(pos.x);
 				_actor1->SetHCollided(true);
 				_actor2->SetHCollided(true);
+			}
+		}
+	}
+}
+
+void Physics::PlayerWaterCollision(IActor* _actor1, IActor* _actor2)
+{
+	// actor1 is always the player
+	// actor2 is always the static physics object
+	SDL_Rect result;
+	SDL_Rect rect1 = _actor1->GetRect();
+	SDL_Rect rect2 = _actor2->GetRect();
+	if (SDL_IntersectRect(&rect1, &rect2, &result))
+	{
+		VECTOR2 pos = _actor1->GetPosition();
+		VECTOR2 pos2 = _actor2->GetPosition();
+		
+		// vertical collision
+		if (pos.x > rect2.x && pos.x < rect2.x + rect2.w) 
+		{
+			if (pos2.y < pos.y) // below, should never hit this one
+			{
+				pos.y = pos2.y + rect2.h * 0.5f + rect1.h * 0.5f;
+				_actor1->SetPWCollided(true);
+			}
+			else if (pos2.y > pos.y) // above
+			{
+				pos.y = pos2.y - rect2.h * 0.5f - rect1.h * 0.5f + 1.0f;
+				_actor1->SetPWCollided(true);
 			}
 		}
 	}

@@ -83,7 +83,7 @@ void CPlayable::Process(Float32 _delta)
 #ifndef PAPYRUS_EDITOR
 	EAnims currPlayed = static_cast<EAnims>(m_sprite->GetAnim());
 
-	if (m_actor->IsPECollided() && ANIM_DEATH_LEFT != m_currAnim && ANIM_DEATH_RIGHT != m_currAnim)// && ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
+	if ((m_actor->IsPECollided() || m_actor->IsPWCollided()) && ANIM_DEATH_LEFT != m_currAnim && ANIM_DEATH_RIGHT != m_currAnim)// && ANIM_ATTACK_LEFT != currPlayed && ANIM_ATTACK_RIGHT != currPlayed)
 	{
 		if (ANIM_IDLE_LEFT == m_currAnim || ANIM_RUN_LEFT == m_currAnim || ANIM_JUMP_LEFT == m_currAnim || ANIM_FALL_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
 		{
