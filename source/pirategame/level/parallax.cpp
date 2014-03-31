@@ -33,32 +33,35 @@ Bool CParallax::Initialise(FileParser::IParser* _setup, Int8* _num, Bool _animat
 	Int8* path = 0;
 	Bool anim = false;
 
-	for (Int16 i = 0; i < objects; ++i)
+	if (0 > m_sprites.size())
 	{
-		SDL_snprintf(text, MAX_BUFFER, "%i", i + 1);
-		VALIDATE(_setup->GetValue(text, &path, _num));
-		SDL_snprintf(text, MAX_BUFFER, "%ianim", i + 1);
-		VALIDATE(_setup->GetValue(text, anim, _num));
-		SDL_snprintf(text, MAX_BUFFER, "%ipos", i + 1);
-		VALIDATE(_setup->GetValue(text, pos, _num));
-
-		Sprite::ISprite* temp = Sprite::CreateSprite(path, 0, anim);
-		temp->AddRef();
-		m_sprites.push_back(temp);
-		m_positions.push_back(pos);
-		CLEANARRAY(path);
-
-		// Moving background, or stationary
-		SDL_snprintf(text, MAX_BUFFER, "%imove", i + 1);
-		VECTOR2 speed;
-		if (_setup->GetValue(text, anim, _num))
+		for (Int16 i = 0; i < objects; ++i)
 		{
-			SDL_snprintf(text, MAX_BUFFER, "%ispeed", i + 1);
-			VALIDATE(_setup->GetValue(text, speed, _num));
-		}
-		else
-		{
-			m_speed.push_back(speed);
+			SDL_snprintf(text, MAX_BUFFER, "%i", i + 1);
+			VALIDATE(_setup->GetValue(text, &path, _num));
+			SDL_snprintf(text, MAX_BUFFER, "%ianim", i + 1);
+			VALIDATE(_setup->GetValue(text, anim, _num));
+			SDL_snprintf(text, MAX_BUFFER, "%ipos", i + 1);
+			VALIDATE(_setup->GetValue(text, pos, _num));
+
+			Sprite::ISprite* temp = Sprite::CreateSprite(path, 0, anim);
+			temp->AddRef();
+			m_sprites.push_back(temp);
+			m_positions.push_back(pos);
+			CLEANARRAY(path);
+
+			// Moving background, or stationary
+			SDL_snprintf(text, MAX_BUFFER, "%imove", i + 1);
+			VECTOR2 speed;
+			if (_setup->GetValue(text, anim, _num))
+			{
+				SDL_snprintf(text, MAX_BUFFER, "%ispeed", i + 1);
+				VALIDATE(_setup->GetValue(text, speed, _num));
+			}
+			else
+			{
+				m_speed.push_back(speed);
+			}
 		}
 	}
 

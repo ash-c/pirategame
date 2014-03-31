@@ -84,21 +84,14 @@ Bool CLevel::Initialise(Int8* _setup)
 	FileParser::IParser* setup = FileParser::LoadFile(_setup);
 	setup->AddRef();
 	Int32 tiles = 0;
-	Int32 platforms = 0;
-	Int32 enemies = 0;
 	Int32 water = 0;
 	Int32 quicksand = 0;
 	VALIDATE(setup->GetValue("tiles", tiles));
 	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
-	VALIDATE(setup->GetValue("platforms", platforms));
-	VALIDATE(setup->GetValue("enemies", enemies));
+	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
+	VALIDATE(setup->GetValue("enemies", m_numEnemies));
 	VALIDATE(setup->GetValue("water", water));
 	VALIDATE(setup->GetValue("quicksand", quicksand));	
-
-	m_numEnemies = enemies;
-	m_numPlatforms = platforms;
-	m_numWater = water;
-	m_numQuicksand = quicksand;
 
 	Int8 path[MAX_BUFFER];
 	VALIDATE(setup->GetValue("tileset", &m_tileset));
@@ -175,10 +168,10 @@ Bool CLevel::Initialise(Int8* _setup)
 	}
 	
 	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/water.png", m_tileset);
-	for (Int32 i = 0; i < m_numWater; ++i)
+	for (Int32 i = 0; i < water; ++i)
 	{
 		SDL_snprintf(text, MAX_BUFFER, "%iw-pos", i + 1);
-		VALIDATE(setup->GetValue(text, pos));
+		setup->GetValue(text, pos);
 		AddWater(pos);
 	}
 
@@ -316,7 +309,6 @@ Bool CLevel::Save(Int8* _path)
 	}
 	else
 	{
-		assert("No valid file path!");
 		Logger::Write("No valid file path");
 		return false;
 	}

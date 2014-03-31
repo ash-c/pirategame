@@ -460,15 +460,17 @@ void Physics::PlayerWaterCollision(IActor* _actor1, IActor* _actor2)
 		// vertical collision
 		if (pos.x > rect2.x && pos.x < rect2.x + rect2.w) 
 		{
-			if (pos2.y < pos.y) // below, should never hit this one
+			//if (pos2.y < pos.y) // below, should never hit this one
+			//{
+			//	//pos.y = pos2.y + rect2.h * 0.5f + rect1.h * 0.5f;
+			//	_actor1->SetPWCollided(true);
+			//}
+			if (pos2.y > pos.y) // above
 			{
-				pos.y = pos2.y + rect2.h * 0.5f + rect1.h * 0.5f;
-				_actor1->SetPWCollided(true);
-			}
-			else if (pos2.y > pos.y) // above
-			{
-				pos.y = pos2.y - rect2.h * 0.5f - rect1.h * 0.5f + 1.0f;
-				_actor1->SetPWCollided(true);
+				if (pos.y > pos2.y - rect2.h)
+				{
+					_actor1->SetPWCollided(true);
+				}
 			}
 		}
 	}

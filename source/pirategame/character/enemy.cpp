@@ -119,6 +119,7 @@ void CEnemy::Process(Float32 _delta)
 
 	if (0 < m_attackDelay) m_attackDelay -= _delta;
 
+	// react to wall collision
 	if (m_actor->IsHCollided())
 	{
 		VECTOR2 vel = m_actor->GetVelocity();
@@ -150,6 +151,9 @@ void CEnemy::Process(Float32 _delta)
 		}
 		m_actor->SetVelocity(vel);
 	}
+
+	// check for ground in front, turn around if nothing
+
 
 	switch (m_currAnim)
 	{

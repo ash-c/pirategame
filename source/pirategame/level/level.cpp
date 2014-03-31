@@ -198,20 +198,20 @@ Bool CLevel::Initialise(Int8* _setup)
 
 	VALIDATE(setup->GetValue("count", m_paraCount, "parallax"));
 
-	if (0 < m_paraCount)
+	if (0 < m_paraCount && 0 == m_parallax)
 	{
 		m_parallax = new CParallax*[m_paraCount];
 		assert(m_parallax);
 		SDL_memset(m_parallax, 0, sizeof(CParallax*) * m_paraCount);
+	}
 
-		for (Int16 i = 0; i < m_paraCount; ++i)
-		{
-			CREATEPOINTER(m_parallax[i], CParallax);
-			assert(m_parallax[i]);
-			Int8 temp[MAX_BUFFER];
-			SDL_snprintf(temp, MAX_BUFFER, "%i", i + 1);
-			VALIDATE(m_parallax[i]->Initialise(setup, temp));
-		}
+	for (Int16 i = 0; i < m_paraCount; ++i)
+	{
+		CREATEPOINTER(m_parallax[i], CParallax);
+		assert(m_parallax[i]);
+		Int8 temp[MAX_BUFFER];
+		SDL_snprintf(temp, MAX_BUFFER, "%i", i + 1);
+		VALIDATE(m_parallax[i]->Initialise(setup, temp));
 	}
 	
 	// set camera position if player exists
