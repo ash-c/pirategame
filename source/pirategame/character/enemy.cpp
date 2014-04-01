@@ -3,8 +3,11 @@
 // Local Includes
 #include "enemy.h"
 
+#include "../level/level.h"
+
 CEnemy::CEnemy()
 	: m_player(0)
+	, m_level(0)
 	, m_attackDelay(0.0f)
 	, m_screenW(0)
 	, m_screenH(0)
@@ -120,9 +123,10 @@ void CEnemy::Process(Float32 _delta)
 	if (0 < m_attackDelay) m_attackDelay -= _delta;
 
 	// react to wall collision
+	VECTOR2 vel = m_actor->GetVelocity();
+
 	if (m_actor->IsHCollided())
 	{
-		VECTOR2 vel = m_actor->GetVelocity();
 		if (m_left)
 		{
 			m_left = false;
@@ -152,26 +156,23 @@ void CEnemy::Process(Float32 _delta)
 		m_actor->SetVelocity(vel);
 	}
 
-	// check for ground in front, turn around if nothing
-
-
 	switch (m_currAnim)
 	{
 	case ANIM_RUN_LEFT:
-		if (0 >= m_attackDelay)
+		/*if (0 >= m_attackDelay)
 		{
 			m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
 			m_currAnim = ANIM_ATTACK_LEFT;
 			m_attackDelay = 2.5f;
-		}
+		}*/
 		break;
 	case ANIM_RUN_RIGHT:
-		if (0 >= m_attackDelay)
+		/*if (0 >= m_attackDelay)
 		{
 			m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
 			m_currAnim = ANIM_ATTACK_RIGHT;
 			m_attackDelay = 2.5f;
-		}
+		}*/
 		break;
 	case ANIM_ATTACK_LEFT:
 	case ANIM_ATTACK_RIGHT:
@@ -189,6 +190,40 @@ void CEnemy::Process(Float32 _delta)
 	
 	m_pos = m_actor->GetPosition();
 	m_sprite->Process(_delta);
+
+	// check for ground in front, turn around if nothing
+	if (vel.x < 0.0f)
+	{
+		if (!m_level->IsNext(VECTOR2(m_pos.x - m_sprite->GetScale().x * 0.5f, m_pos.y + m_sprite->GetScale().y * 0.5f))) 
+		{
+			vel.x *= -1.0f;
+			m_actor->SetVelocity(vel);
+			if (ANIM_RUN_LEFT == m_currAnim || ANIM_ATTACK_LEFT == m_currAnim)
+			{
+				if (ANIM_ATTACK_LEFT != m_currAnim)
+				{
+					m_currAnim = ANIM_RUN_RIGHT;
+				}
+				m_sprite->SetAnim(ANIM_RUN_RIGHT);
+			}
+		}
+	}
+	else if (vel.x > 0.0f)
+	{
+		if (!m_level->IsNext(VECTOR2(m_pos.x + m_sprite->GetScale().x * 0.5f, m_pos.y + m_sprite->GetScale().y * 0.5f))) 
+		{
+			vel.x *= -1.0f;
+			m_actor->SetVelocity(vel);
+			if (ANIM_RUN_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
+			{
+				if (ANIM_ATTACK_RIGHT != m_currAnim)
+				{
+					m_currAnim = ANIM_RUN_LEFT;
+				}
+				m_sprite->SetAnim(ANIM_RUN_LEFT);
+			}
+		}
+	}
 }
 
 void CEnemy::Render(VECTOR2 _camPos)

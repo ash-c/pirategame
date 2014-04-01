@@ -137,6 +137,7 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(m_enemies[i]->Initialise(sprite, spriteSettings, settings));
 		m_enemies[i]->SetPosition(pos);
 		m_enemies[i]->SetPlayer(m_playable);
+		m_enemies[i]->SetLevel(this);
 	}
 
 	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", tileset);
@@ -385,4 +386,21 @@ void CLevel::Render()
 	{
 		m_playable->Render(m_cameraPos);
 	}
+}
+
+Bool CLevel::IsNext(VECTOR2 _pos)
+{
+	for (Int32 i = 0; i < m_numTiles; ++i)
+	{
+		VECTOR2 tilePos = m_tiles[i]->GetPos();
+		if (_pos.x < tilePos.x + TILE_WIDTH * 0.5f && 
+			_pos.x > tilePos.x - TILE_WIDTH * 0.5f &&
+			_pos.y + TILE_HEIGHT * 0.5f > tilePos.y &&
+			_pos.y < tilePos.y)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

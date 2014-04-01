@@ -38,6 +38,8 @@ public:
 
 	Bool			IsComplete() { return m_complete; }
 
+	Bool			IsNext(VECTOR2 _pos);
+
 	// Member Variables
 protected:
 	Sprite::ISprite*	m_background;
