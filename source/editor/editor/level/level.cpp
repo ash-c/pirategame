@@ -7,6 +7,7 @@
 #include "tile.h"
 #include "water.h"
 #include "platform.h"
+#include "../../../pirategame/level/coin.h"
 #include "../../../pirategame/character/enemy.h"
 #include "../../../pirategame/character/playable.h"
 
@@ -22,13 +23,13 @@ CLevel::CLevel()
 	, m_tiles(0)
 	, m_platforms(0)
 	, m_gridRects(0)
-	, m_levelNumber(INVALID_ID)
 	, m_numTiles(0)
 	, m_numWater(0)
 	, m_numQuicksand(0)
 	, m_numPlatforms(0)
 	, m_numEnemies(0)
 	, m_numRects(0)
+	, m_numCoins(0)
 	, m_tileset(0)
 {
 
@@ -86,12 +87,13 @@ Bool CLevel::Initialise(Int8* _setup)
 	Int32 tiles = 0;
 	Int32 water = 0;
 	Int32 quicksand = 0;
+	Int32 coins = 0;
 	VALIDATE(setup->GetValue("tiles", tiles));
-	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
 	VALIDATE(setup->GetValue("enemies", m_numEnemies));
 	VALIDATE(setup->GetValue("water", water));
 	VALIDATE(setup->GetValue("quicksand", quicksand));	
+	VALIDATE(setup->GetValue("coins", coins));	
 
 	Int8 path[MAX_BUFFER];
 	VALIDATE(setup->GetValue("tileset", &m_tileset));
@@ -166,6 +168,13 @@ Bool CLevel::Initialise(Int8* _setup)
 
 		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
 	}
+
+	for (Int32 i = 0; i < coins; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "c%i-pos", i + 1);
+		VALIDATE(setup->GetValue(text, pos));
+		AddCoin(pos);
+	}
 	
 	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/water.png", m_tileset);
 	for (Int32 i = 0; i < water; ++i)
@@ -227,6 +236,13 @@ Bool CLevel::ShutDown()
 	}
 	m_enemies.clear();
 
+	for (UInt16 i = 0; i < m_coins.size(); ++i)
+	{
+		m_coins[i]->ShutDown();
+		CLEANDELETE(m_coins[i]);
+	}
+	m_coins.clear();
+
 	PY_SAFE_RELEASE(m_background);
 
 	CLEANARRAY(m_tileset);
@@ -286,6 +302,12 @@ void CLevel::Render()
 		m_platforms[i]->Render(m_cameraPos);
 	}
 
+	// Render Coins
+	for (UInt16 i = 0; i < m_coins.size(); ++i) 
+	{
+		m_coins[i]->Render(m_cameraPos);
+	}
+
 	// Render Enemies
 	for (UInt16 i = 0; i < m_enemies.size(); ++i) 
 	{
@@ -325,7 +347,7 @@ Bool CLevel::Save(Int8* _path)
 	VALIDATE(save->AddValue("quicksand", m_numQuicksand));
 	VALIDATE(save->AddValue("platforms", m_numPlatforms));
 	VALIDATE(save->AddValue("enemies", m_numEnemies));
-	VALIDATE(save->AddValue("levelNumber", 1));
+	VALIDATE(save->AddValue("coins", m_numCoins));
 
 	Int8 text[MAX_BUFFER];
 	for (UInt16 i = 0; i < m_numTiles; ++i)
@@ -350,6 +372,12 @@ Bool CLevel::Save(Int8* _path)
 		{
 			Logger::Write("Saving platform number %i failed", i + 1);
 		}
+	}
+
+	for (UInt16 i = 0; i < m_numCoins; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "c%i-pos", i + 1);
+		VALIDATE(save->AddValue(text, m_coins[i]->GetPos()));
 	}
 
 	for (UInt16 i = 0; i < m_numEnemies; ++i)
@@ -489,6 +517,45 @@ Bool CLevel::RemoveTile(VECTOR2 _pos)
 			PY_DELETE_RELEASE(m_tiles[i]);
 			m_tiles.erase(m_tiles.begin() + i);
 			--m_numTiles;
+
+			return true;
+		}
+	}
+
+	// Tile doesn't exist
+	return false;
+}
+
+Bool CLevel::AddCoin(VECTOR2 _pos)
+{
+	//CheckAgainstGrid(&_pos);
+
+	CCoin* temp = 0;
+	CREATEPOINTER(temp, CCoin);
+	
+	VALIDATE(temp->Initialise(_pos));
+
+	m_coins.push_back(temp);
+	++m_numCoins;
+
+	return true;
+}
+
+Bool CLevel::RemoveCoin(VECTOR2 _pos)
+{
+	//CheckAgainstGrid(&_pos);
+
+	// check for existing
+	for (Int32 i = 0; i < m_numTiles; ++i)
+	{
+		if (m_coins[i]->GetPos().x == _pos.x &&
+			m_coins[i]->GetPos().y == _pos.y)
+		{
+			// Coin exists, remove
+			m_coins[i]->ShutDown();
+			CLEANDELETE(m_coins[i]);
+			m_coins.erase(m_coins.begin() + i);
+			--m_numCoins;
 
 			return true;
 		}

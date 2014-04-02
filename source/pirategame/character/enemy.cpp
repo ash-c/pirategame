@@ -191,6 +191,7 @@ void CEnemy::Process(Float32 _delta)
 	m_pos = m_actor->GetPosition();
 	m_sprite->Process(_delta);
 
+#ifndef PAPYRUS_EDITOR
 	// check for ground in front, turn around if nothing
 	if (vel.x < 0.0f)
 	{
@@ -224,6 +225,7 @@ void CEnemy::Process(Float32 _delta)
 			}
 		}
 	}
+#endif // PAPYRUS_EDITOR
 }
 
 void CEnemy::Render(VECTOR2 _camPos)

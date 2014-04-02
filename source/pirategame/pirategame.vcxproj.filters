@@ -102,6 +102,7 @@
     <ClCompile Include="level\water.cpp">
       <Filter>level</Filter>
     </ClCompile>
+    <ClCompile Include="level\coin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -309,6 +310,9 @@
       <Filter>level</Filter>
     </ClInclude>
     <ClInclude Include="level\water.h">
+      <Filter>level</Filter>
+    </ClInclude>
+    <ClInclude Include="level\coin.h">
       <Filter>level</Filter>
     </ClInclude>
   </ItemGroup>

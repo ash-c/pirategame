@@ -14,6 +14,7 @@ using namespace Papyrus;
 class ICharacter;
 class CTile;
 class CWater;
+class CCoin;
 class CPlatform;
 class CEnemy;
 class CParallax;
@@ -46,17 +47,18 @@ protected:
 	ICharacter*			m_playable;
 	CTile**				m_tiles;
 	CWater**			m_water;
+	CCoin**				m_coins;
 	CEnemy**			m_enemies;
 	CPlatform**			m_platforms;
 	CParallax**			m_parallax;
 
 	VECTOR2				m_cameraPos;
 
-	Int32				m_levelNumber;
 	Int32				m_numTiles;
 	Int32				m_numWater;
 	Int32				m_numEnemies;
 	Int32				m_numPlatforms;
+	Int32				m_numCoins;
 	Int32				m_paraCount;
 	Int32				m_screenW;
 	Int32				m_screenH;

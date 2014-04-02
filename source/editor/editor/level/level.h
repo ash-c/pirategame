@@ -16,6 +16,7 @@ class ICharacter;
 class CTile;
 class CWater;
 class CPlatform;
+class CCoin;
 
 static const Int32			LEVEL_WIDTH = 10000;
 static const Int32			LEVEL_HEIGHT = 2000;
@@ -39,6 +40,9 @@ public:
 
 	Bool			AddTile(VECTOR2 _pos);
 	Bool			RemoveTile(VECTOR2 _pos);
+
+	Bool			AddCoin(VECTOR2 _pos);
+	Bool			RemoveCoin(VECTOR2 _pos);
 
 	Bool			AddWater(VECTOR2 _pos);
 	Bool			RemoveWater(VECTOR2 _pos);
@@ -66,17 +70,18 @@ protected:
 	std::vector<CTile*>	m_tiles;
 	std::vector<CWater*> m_water;
 	std::vector<CPlatform*>	m_platforms;
+	std::vector<CCoin*>		m_coins;
 
 	SDL_Rect*			m_gridRects;
 
 	VECTOR2				m_cameraPos;
-	Int32				m_levelNumber;
 	Int32				m_numTiles;
 	Int32				m_numWater;
 	Int32				m_numQuicksand;
 	Int32				m_numPlatforms;
 	Int32				m_numEnemies;
 	Int32				m_numRects;
+	Int32				m_numCoins;
 
 	Int8*				m_tileset;
 };

@@ -9,6 +9,7 @@
 #include "..\character\enemy.h"
 #include "tile.h"
 #include "water.h"
+#include "coin.h"
 #include "platform.h"
 #include "parallax.h"
 
@@ -17,14 +18,15 @@ CLevel::CLevel()
 	, m_playable(0)
 	, m_tiles(0)
 	, m_water(0)
+	, m_coins(0)
 	, m_enemies(0)
-	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
 	, m_parallax(0)
 	, m_numTiles(0)
 	, m_numWater(0)
 	, m_numEnemies(0)
 	, m_numPlatforms(0)
+	, m_numCoins(0)
 	, m_paraCount(0)
 	, m_screenW(0)
 	, m_complete(false)
@@ -54,10 +56,10 @@ Bool CLevel::Initialise(Int8* _setup)
 	FileParser::IParser* setup = FileParser::LoadFile(_setup);
 	setup->AddRef();
 	VALIDATE(setup->GetValue("tiles", m_numTiles));
-	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
 	VALIDATE(setup->GetValue("enemies", m_numEnemies));
 	VALIDATE(setup->GetValue("water", m_numWater));
+	VALIDATE(setup->GetValue("coins", m_numCoins));
 
 	Int8* tileset = 0;
 	Int8 path[MAX_BUFFER];
@@ -110,6 +112,21 @@ Bool CLevel::Initialise(Int8* _setup)
 			VALIDATE(m_water[i]->Initialise(path, pos, static_cast<ETileType>(type)));
 			m_water[i]->AddRef();
 		}
+	}
+
+	if (0 == m_coins)
+	{
+		m_coins = new CCoin*[m_numCoins];
+		assert(m_coins);
+		SDL_memset(m_coins, 0, sizeof(CCoin*) * m_numCoins);
+	}
+
+	for (Int32 i = 0; i < m_numCoins; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "c%i-pos", i + 1);
+		VALIDATE(setup->GetValue(text, pos));
+		CREATEPOINTER(m_coins[i], CCoin);
+		VALIDATE(m_coins[i]->Initialise(pos));
 	}
 
 	if (0 == m_enemies)
@@ -249,6 +266,13 @@ Bool CLevel::ShutDown()
 	}
 	CLEANARRAY(m_enemies);
 
+	for (Int16 i = 0; i < m_numCoins; ++i)
+	{
+		m_coins[i]->ShutDown();
+		CLEANDELETE(m_coins[i]);
+	}
+	CLEANARRAY(m_coins);
+
 	for (Int16 i = 0; i < m_numTiles; ++i)
 	{
 		PY_DELETE_RELEASE(m_tiles[i]);
@@ -335,6 +359,14 @@ void CLevel::Process(Float32 _delta)
 		}
 	}
 
+	for (Int16 i = 0; i < m_numCoins; ++i)
+	{
+		if (m_coins[i]->IsActive())
+		{
+			m_coins[i]->Process(_delta);
+		}
+	}
+
 	if (0 != m_parallax)
 	{
 		for (Int16 i = 0; i < m_paraCount; ++i)
@@ -373,6 +405,12 @@ void CLevel::Render()
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
 		m_platforms[i]->Render(m_cameraPos);
+	}
+
+	// Render Coins
+	for (Int16 i = 0; i < m_numCoins; ++i) 
+	{
+		m_coins[i]->Render(m_cameraPos);
 	}
 
 	// Render Enemies

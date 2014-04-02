@@ -21,6 +21,7 @@ namespace Papyrus
 			TYPE_PLATFORM,
 			TYPE_BASIC_ENEMY,
 			TYPE_WATER,
+			TYPE_COIN,
 			MAX_TYPE
 		} EType;
 

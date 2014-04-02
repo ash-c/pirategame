@@ -121,6 +121,7 @@
     <ClCompile Include="..\papyrus\ui\ui.cpp" />
     <ClCompile Include="..\pirategame\character\enemy.cpp" />
     <ClCompile Include="..\pirategame\character\playable.cpp" />
+    <ClCompile Include="..\pirategame\level\coin.cpp" />
     <ClCompile Include="editor\interfaceedit.cpp" />
     <ClCompile Include="editor\leveledit.cpp" />
     <ClCompile Include="editor\level\level.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="..\pirategame\character\character.h" />
     <ClInclude Include="..\pirategame\character\enemy.h" />
     <ClInclude Include="..\pirategame\character\playable.h" />
+    <ClInclude Include="..\pirategame\level\coin.h" />
     <ClInclude Include="editor\editor.h" />
     <ClInclude Include="editor\interfaceedit.h" />
     <ClInclude Include="editor\leveledit.h" />

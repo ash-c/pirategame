@@ -18,6 +18,7 @@ typedef enum _EToolType
 	TOOL_BASIC_ENEMY,
 	TOOL_PLAYER_START,
 	TOOL_WATER,
+	TOOL_COIN,
 	MAX_TOOL
 } EToolType;
 

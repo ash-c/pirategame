@@ -126,6 +126,10 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				{
 					m_level->AddWater(newPos);
 				}
+				else if (TOOL_COIN == m_activeTool)
+				{
+					m_level->AddCoin(newPos);
+				}
 				else if (TOOL_REMOVE == m_activeTool)
 				{
 					if (!m_level->RemoveTile(newPos))

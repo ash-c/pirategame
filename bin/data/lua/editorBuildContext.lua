@@ -27,3 +27,8 @@ function setwatertool()
 	ChangeTool(5)
 	return 'tool changed to place water'
 end
+
+function setcointool()
+	ChangeTool(6)
+	return 'tool changed to place coin'
+end

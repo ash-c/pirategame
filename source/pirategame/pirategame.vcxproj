@@ -123,6 +123,7 @@
     <ClCompile Include="character\enemy.cpp" />
     <ClCompile Include="character\playable.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="level\coin.cpp" />
     <ClCompile Include="level\level.cpp" />
     <ClCompile Include="level\levelmanager.cpp" />
     <ClCompile Include="level\parallax.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="character\enemy.h" />
     <ClInclude Include="character\playable.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="level\coin.h" />
     <ClInclude Include="level\level.h" />
     <ClInclude Include="level\levelmanager.h" />
     <ClInclude Include="level\parallax.h" />
