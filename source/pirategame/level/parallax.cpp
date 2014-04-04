@@ -33,7 +33,7 @@ Bool CParallax::Initialise(FileParser::IParser* _setup, Int8* _num, Bool _animat
 	Int8* path = 0;
 	Bool anim = false;
 
-	if (0 > m_sprites.size())
+	if (0 >= m_sprites.size())
 	{
 		for (Int16 i = 0; i < objects; ++i)
 		{
@@ -72,7 +72,7 @@ Bool CParallax::ShutDown()
 {
 	for (UInt16 i = 0; i < m_sprites.size(); ++i)
 	{
-		m_sprites[i]->Release();
+		//m_sprites[i]->Release();
 		Sprite::FlushFile(m_sprites[i]);
 		m_sprites[i] = 0;
 	}
