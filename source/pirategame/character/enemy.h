@@ -34,6 +34,8 @@ public:
 
 	// Member Variables
 protected:
+	static const Int32	SCORE_VALUE = 500;
+
 	ICharacter*			m_player;
 	CLevel*				m_level;
 

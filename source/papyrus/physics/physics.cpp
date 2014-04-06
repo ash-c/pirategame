@@ -51,69 +51,78 @@ void Physics::Process(Float32 _frameTime)
 		actors[i]->SetPPCollided(0, false);
 		actors[i]->SetPECollided(false);
 		actors[i]->SetPWCollided(false);
+		actors[i]->SetPCCollided(false);
 	}
 
 	// collision detection
-		for (Int16 i = 0; i < numActors; ++i)
-		{
-			for (Int16 j = i + 1; j < numActors; ++j)
-			{					
-				if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
-				{
-					Physics::EType type1 = actors[i]->GetType();
-					Physics::EType type2 = actors[j]->GetType();
+	for (Int16 i = 0; i < numActors; ++i)
+	{
+		for (Int16 j = i + 1; j < numActors; ++j)
+		{					
+			if (actors[i] != actors[j] && actors[i]->IsActive() && actors[j]->IsActive())
+			{
+				Physics::EType type1 = actors[i]->GetType();
+				Physics::EType type2 = actors[j]->GetType();
 
-					if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_STATIC)
-					{
-						PlayerStaticCollision(actors[i], actors[j]);
-					}
-					else if (type1 == EType::TYPE_STATIC && type2 == EType::TYPE_PLAYER)
-					{
-						PlayerStaticCollision(actors[j], actors[i]);
-					}
-					else if (type1 == EType::TYPE_BASIC_ENEMY && type2 == EType::TYPE_STATIC)
-					{
-						PlayerStaticCollision(actors[i], actors[j]);
-					}
-					else if (type1 == EType::TYPE_STATIC && type2 == EType::TYPE_BASIC_ENEMY)
-					{
-						PlayerStaticCollision(actors[j], actors[i]);
-					}
-					else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_BASIC_ENEMY)
-					{
-						PlayerEnemyCollision(actors[i], actors[j]);
-					}
-					else if (type1 == EType::TYPE_BASIC_ENEMY && type2 == EType::TYPE_PLAYER)
-					{
-						PlayerEnemyCollision(actors[j], actors[i]);
-					}
-					else if (type1 == EType::TYPE_PLATFORM && type2 == EType::TYPE_STATIC)
-					{
-						StaticPlatformCollision(actors[i], actors[j]);
-					}
-					else if (type1 == EType::TYPE_STATIC && type2 == EType::TYPE_PLATFORM)
-					{
-						StaticPlatformCollision(actors[j], actors[i]);
-					}
-					else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_PLATFORM)
-					{
-						PlayerPlatformCollision(actors[i], actors[j]);
-					}
-					else if (type1 == EType::TYPE_PLATFORM && type2 == EType::TYPE_PLAYER)
-					{
-						PlayerPlatformCollision(actors[j], actors[i]);
-					}
-					else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_WATER)
-					{
-						PlayerWaterCollision(actors[i], actors[j]);
-					}
-					else if (type1 == EType::TYPE_WATER && type2 == EType::TYPE_PLAYER)
-					{
-						PlayerWaterCollision(actors[j], actors[i]);
-					}
+				if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[i], actors[j]);
+				}
+				else if (type1 == EType::TYPE_STATIC && type2 == EType::TYPE_PLAYER)
+				{
+					PlayerStaticCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_BASIC_ENEMY && type2 == EType::TYPE_STATIC)
+				{
+					PlayerStaticCollision(actors[i], actors[j]);
+				}
+				else if (type1 == EType::TYPE_STATIC && type2 == EType::TYPE_BASIC_ENEMY)
+				{
+					PlayerStaticCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_BASIC_ENEMY)
+				{
+					PlayerEnemyCollision(actors[i], actors[j]);
+				}
+				else if (type1 == EType::TYPE_BASIC_ENEMY && type2 == EType::TYPE_PLAYER)
+				{
+					PlayerEnemyCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_PLATFORM && type2 == EType::TYPE_STATIC)
+				{
+					StaticPlatformCollision(actors[i], actors[j]);
+				}
+				else if (type1 == EType::TYPE_STATIC && type2 == EType::TYPE_PLATFORM)
+				{
+					StaticPlatformCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_PLATFORM)
+				{
+					PlayerPlatformCollision(actors[i], actors[j]);
+				}
+				else if (type1 == EType::TYPE_PLATFORM && type2 == EType::TYPE_PLAYER)
+				{
+					PlayerPlatformCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_WATER)
+				{
+					PlayerWaterCollision(actors[i], actors[j]);
+				}
+				else if (type1 == EType::TYPE_WATER && type2 == EType::TYPE_PLAYER)
+				{
+					PlayerWaterCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_COIN)
+				{
+					PlayerCoinCollision(actors[j], actors[i]);
+				}
+				else if (type1 == EType::TYPE_COIN && type2 == EType::TYPE_PLAYER)
+				{
+					PlayerCoinCollision(actors[j], actors[i]);
 				}
 			}
 		}
+	}
 
 	// process physics objects
 	// fix the framerate that the physics is calculated at.
@@ -473,6 +482,22 @@ void Physics::PlayerWaterCollision(IActor* _actor1, IActor* _actor2)
 				}
 			}
 		}
+	}
+}
+
+void Physics::PlayerCoinCollision(IActor* _actor1, IActor* _actor2)
+{
+	// actor1 is always the player
+	// actor2 is always the coin physics object
+	SDL_Rect result;
+	SDL_Rect rect1 = _actor1->GetRect();
+	SDL_Rect rect2 = _actor2->GetRect();
+	if (SDL_IntersectRect(&rect1, &rect2, &result))
+	{
+		VECTOR2 pos = _actor1->GetPosition();
+		VECTOR2 pos2 = _actor2->GetPosition();
+
+		_actor2->SetPCCollided(true);
 	}
 }
 

@@ -45,6 +45,17 @@ void CLevelManager::Process(Float32 _delta)
 
 		if (m_current->IsComplete())
 		{
+			// save score from completed level
+			FileParser::IParser* save = FileParser::LoadFile("data/xml/saveState.xml");
+			assert(save);
+			save->AddRef();
+
+			Int8 text[MAX_BUFFER];
+			SDL_snprintf(text, MAX_BUFFER, "%iScore", m_currLevel);
+			save->AddValue(text, m_current->GetScore());
+			save->Save();
+			save->Release();
+
 			++m_currLevel;
 
 			if (m_currLevel <= m_numlevels)
@@ -79,7 +90,7 @@ Bool CLevelManager::LoadLevel(Int8* _lvl)
 	PY_DELETE_RELEASE(m_current);
 
 	CLevel* temp = new CLevel;
-	if (!temp->Initialise(_lvl))
+	if (!temp->Initialise(_lvl, m_currLevel))
 	{
 		Logger::Write("Failed to load level %s", _lvl);
 		CLEANDELETE(temp);

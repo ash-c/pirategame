@@ -102,6 +102,15 @@ Bool FileParser::CXMLParser::Save(const Int8* _path)
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, const Bool _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%i", _value);
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(buffer));
@@ -111,6 +120,15 @@ Bool FileParser::CXMLParser::AddValue(const Int8* _key, const Bool _value, const
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, const Int8* _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_value));
 	m_xml.append_node(node);
 	return true;
@@ -118,15 +136,33 @@ Bool FileParser::CXMLParser::AddValue(const Int8* _key, const Int8* _value, cons
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, Int32 _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%i", _value);
-	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(buffer));
-	m_xml.append_node(node);
+	rapidxml::xml_node<>* newNode = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(buffer));
+	m_xml.append_node(newNode);
 	return true;
 }
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, UInt32 _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%u", _value);
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(buffer));
@@ -136,6 +172,15 @@ Bool FileParser::CXMLParser::AddValue(const Int8* _key, UInt32 _value, const Int
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, Float32 _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	Int8 buffer[MAX_BUFFER];
 	sprintf_s(buffer, MAX_BUFFER, "%f", _value);
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(buffer));
@@ -145,6 +190,15 @@ Bool FileParser::CXMLParser::AddValue(const Int8* _key, Float32 _value, const In
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR2& _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_key));
 	m_xml.append_node(node);
 	Int8 buffer[MAX_BUFFER];
@@ -157,6 +211,15 @@ Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR2& _value, c
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR3& _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_key));
 	m_xml.append_node(node);
 	Int8 buffer[MAX_BUFFER];
@@ -171,6 +234,15 @@ Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR3& _value, c
 
 Bool FileParser::CXMLParser::AddValue(const Int8* _key, const VECTOR4& _value, const Int8* _section)
 {
+	for (rapidxml::xml_node<>* node = m_xml.first_node(); node; node = node->next_sibling())  
+	{
+		if (!strcmp(node->name(), _key)) 
+		{
+			m_xml.remove_node(node);
+			break;
+		}
+	}
+	
 	rapidxml::xml_node<> *node = m_xml.allocate_node(rapidxml::node_type::node_element, m_xml.allocate_string(_key), m_xml.allocate_string(_key));
 	m_xml.append_node(node);
 	Int8 buffer[MAX_BUFFER];

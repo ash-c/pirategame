@@ -98,11 +98,13 @@ void CEnemy::Process(Float32 _delta)
 		{
 			m_sprite->PlayAnim(ANIM_DEATH_LEFT);
 			m_currAnim = ANIM_DEATH_LEFT;
+			m_level->AddToScore(SCORE_VALUE);
 		}
 		else if (ANIM_RUN_RIGHT == m_currAnim)
 		{
 			m_sprite->PlayAnim(ANIM_DEATH_RIGHT);
 			m_currAnim = ANIM_DEATH_RIGHT;
+			m_level->AddToScore(SCORE_VALUE);
 		}
 		return;
 	}

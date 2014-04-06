@@ -38,6 +38,7 @@ namespace Papyrus
 				, m_ppCollision(false)
 				, m_peCollision(false)
 				, m_pwCollision(false)
+				, m_pcCollision(false)
 			{}
 
 			virtual ~IActor() {}
@@ -79,6 +80,9 @@ namespace Papyrus
 			virtual Bool	IsPWCollided() { return m_pwCollision; }
 			virtual void	SetPWCollided(Bool _b) { m_pwCollision = _b; }
 
+			virtual Bool	IsPCCollided() { return m_pcCollision; }
+			virtual void	SetPCCollided(Bool _b) { m_pcCollision = _b; }
+
 			virtual void	SetType(EType _e) { m_type = _e; }
 
 			virtual void	UpdatePlayer(VECTOR2 _pos) 
@@ -114,6 +118,7 @@ namespace Papyrus
 			Bool			m_ppCollision; // player on platform
 			Bool			m_peCollision; // player/enemy collision
 			Bool			m_pwCollision; // player/water collision
+			Bool			m_pcCollision; // player/coin collision
 		};
 	}
 }

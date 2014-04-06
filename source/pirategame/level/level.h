@@ -29,7 +29,7 @@ public:
 	CLevel();
 	virtual ~CLevel();
 
-	Bool			Initialise(Int8* _setup);
+	Bool			Initialise(Int8* _setup, Int32 _num);
 	Bool			ShutDown();
 
 	Bool			Reset();
@@ -40,6 +40,9 @@ public:
 	Bool			IsComplete() { return m_complete; }
 
 	Bool			IsNext(VECTOR2 _pos);
+
+	void			AddToScore(Int32 _amt) { m_score += _amt; }
+	Int32			GetScore() { return m_score; }
 
 	// Member Variables
 protected:
@@ -62,6 +65,8 @@ protected:
 	Int32				m_paraCount;
 	Int32				m_screenW;
 	Int32				m_screenH;
+	Int32				m_score;
+	Int32				m_levelNum;
 
 	Bool				m_complete;
 };

@@ -29,6 +29,8 @@ CLevel::CLevel()
 	, m_numCoins(0)
 	, m_paraCount(0)
 	, m_screenW(0)
+	, m_score(0)
+	, m_levelNum(0)
 	, m_complete(false)
 {
 }
@@ -38,7 +40,7 @@ CLevel::~CLevel()
 	
 }
 
-Bool CLevel::Initialise(Int8* _setup)
+Bool CLevel::Initialise(Int8* _setup, Int32 _num)
 {
 	if (0 == m_filePath)
 	{
@@ -48,6 +50,10 @@ Bool CLevel::Initialise(Int8* _setup)
 
 	m_cameraPos.x = 0.0f;
 	m_cameraPos.y = 0.0f;
+	m_score = 0;
+	m_levelNum = _num;
+
+	Logger::TrackValue(&m_score, "Level Score");
 
 	// Make platforms
 	m_screenW = Renderer::activeRenderer->GetWidth();
@@ -127,6 +133,7 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(setup->GetValue(text, pos));
 		CREATEPOINTER(m_coins[i], CCoin);
 		VALIDATE(m_coins[i]->Initialise(pos));
+		m_coins[i]->SetLevel(this);
 	}
 
 	if (0 == m_enemies)
@@ -244,6 +251,8 @@ Bool CLevel::Initialise(Int8* _setup)
 
 Bool CLevel::ShutDown()
 {
+	Logger::StopTracking("Level Score");
+
 	if (0 != m_parallax)
 	{
 		for (Int16 i = 0; i < m_paraCount; ++i)
@@ -300,7 +309,7 @@ Bool CLevel::ShutDown()
 
 Bool CLevel::Reset()
 {
-	VALIDATE(this->Initialise(m_filePath));
+	VALIDATE(this->Initialise(m_filePath, m_levelNum));
 	Logger::WriteToScreen("Level reset");
 	return true;
 }

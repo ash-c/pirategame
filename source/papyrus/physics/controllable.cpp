@@ -20,7 +20,6 @@ Bool CControllable::Initialise(VECTOR2 _maxVel, VECTOR2 _maxAcc, VECTOR2 _pos, V
 {
 	if (_type == Physics::EType::TYPE_PLAYER)
 	{
-		Logger::TrackValue(&m_active, "active");
 		Logger::TrackValue(&m_currState.pos, "position");
 		Logger::TrackValue(&m_currState.vel, "velocity");
 		Logger::TrackValue(&m_currState.acc, "acceleration");
@@ -50,7 +49,6 @@ Bool CControllable::ShutDown()
 {
 	if (m_type == Physics::EType::TYPE_PLAYER)
 	{
-		Logger::StopTracking("active");
 		Logger::StopTracking("position");
 		Logger::StopTracking("velocity");
 		Logger::StopTracking("acceleration");
