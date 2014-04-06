@@ -20,6 +20,8 @@ namespace Papyrus
 			TYPE_PLAYER,
 			TYPE_PLATFORM,
 			TYPE_BASIC_ENEMY,
+			TYPE_WATER,
+			TYPE_COIN,
 			MAX_TYPE
 		} EType;
 
@@ -35,6 +37,7 @@ namespace Papyrus
 				, m_vCollision(false)
 				, m_ppCollision(false)
 				, m_peCollision(false)
+				, m_pwCollision(false)
 			{}
 
 			virtual ~IActor() {}
@@ -54,7 +57,7 @@ namespace Papyrus
 			virtual void	SetScale(VECTOR2 _v) = 0;
 
 			virtual void	SetOwner(void* _owner) = 0;
-			virtual void* GetOwner() = 0;
+			virtual void*	GetOwner() = 0;
 
 			virtual SDL_Rect GetRect() { return m_bounds.rect; }
 
@@ -72,6 +75,11 @@ namespace Papyrus
 
 			virtual Bool	IsPECollided() { return m_peCollision; }
 			virtual void	SetPECollided(Bool _b) { m_peCollision = _b; }
+
+			virtual Bool	IsPWCollided() { return m_pwCollision; }
+			virtual void	SetPWCollided(Bool _b) { m_pwCollision = _b; }
+
+			virtual void	SetType(EType _e) { m_type = _e; }
 
 			virtual void	UpdatePlayer(VECTOR2 _pos) 
 			{ 
@@ -105,6 +113,7 @@ namespace Papyrus
 			Bool			m_vCollision;
 			Bool			m_ppCollision; // player on platform
 			Bool			m_peCollision; // player/enemy collision
+			Bool			m_pwCollision; // player/water collision
 		};
 	}
 }

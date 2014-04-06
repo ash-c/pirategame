@@ -8,6 +8,8 @@
 // Local Includes
 #include "character.h"
 
+class CLevel;
+
 class CEnemy : public ICharacter
 {
 	// Member Functions
@@ -26,12 +28,14 @@ public:
 	Bool				IsActive() { return m_actor->IsActive(); }
 
 	void				SetPlayer(ICharacter* _player) { m_player = _player; }
+	void				SetLevel(CLevel* _level) { m_level = _level; }
 
 	virtual void		TriggerAttack(Bool _left);
 
 	// Member Variables
 protected:
 	ICharacter*			m_player;
+	CLevel*				m_level;
 
 	Float32				m_attackDelay;
 	Int32				m_screenW;

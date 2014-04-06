@@ -23,7 +23,7 @@ Bool Sprite::CStaticSprite::Initialise(Int8* _spriteSheet, Int8* _setup, Int16 _
 
 	if (nullptr == m_spriteSheet) 
 	{
-			return false;
+		return false;
 	}
 
 	SDL_QueryTexture(m_spriteSheet, NULL, NULL, &m_sprite.w, &m_sprite.h);

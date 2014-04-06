@@ -58,6 +58,8 @@
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>PAPYRUS_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -78,6 +80,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)\papyrus\sdl\include;$(SolutionDir)\papyrus\sdl\sdl_image\include;$(SolutionDir)\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\papyrus\lua\include;$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>PAPYRUS_EDITOR;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -118,11 +121,13 @@
     <ClCompile Include="..\papyrus\ui\ui.cpp" />
     <ClCompile Include="..\pirategame\character\enemy.cpp" />
     <ClCompile Include="..\pirategame\character\playable.cpp" />
+    <ClCompile Include="..\pirategame\level\coin.cpp" />
     <ClCompile Include="editor\interfaceedit.cpp" />
     <ClCompile Include="editor\leveledit.cpp" />
     <ClCompile Include="editor\level\level.cpp" />
     <ClCompile Include="editor\level\platform.cpp" />
     <ClCompile Include="editor\level\tile.cpp" />
+    <ClCompile Include="editor\level\water.cpp" />
     <ClCompile Include="editor\tools\tiletool.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -173,12 +178,14 @@
     <ClInclude Include="..\pirategame\character\character.h" />
     <ClInclude Include="..\pirategame\character\enemy.h" />
     <ClInclude Include="..\pirategame\character\playable.h" />
+    <ClInclude Include="..\pirategame\level\coin.h" />
     <ClInclude Include="editor\editor.h" />
     <ClInclude Include="editor\interfaceedit.h" />
     <ClInclude Include="editor\leveledit.h" />
     <ClInclude Include="editor\level\level.h" />
     <ClInclude Include="editor\level\platform.h" />
     <ClInclude Include="editor\level\tile.h" />
+    <ClInclude Include="editor\level\water.h" />
     <ClInclude Include="editor\tool.h" />
     <ClInclude Include="editor\tools\tiletool.h" />
     <ClInclude Include="game.h" />

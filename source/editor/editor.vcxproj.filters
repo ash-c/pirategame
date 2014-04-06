@@ -102,6 +102,12 @@
     <ClCompile Include="..\pirategame\character\playable.cpp">
       <Filter>editor\level\character</Filter>
     </ClCompile>
+    <ClCompile Include="editor\level\water.cpp">
+      <Filter>editor\level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pirategame\level\coin.cpp">
+      <Filter>editor\level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -263,6 +269,12 @@
     </ClInclude>
     <ClInclude Include="..\pirategame\character\playable.h">
       <Filter>editor\level\character</Filter>
+    </ClInclude>
+    <ClInclude Include="editor\level\water.h">
+      <Filter>editor\level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pirategame\level\coin.h">
+      <Filter>editor\level</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

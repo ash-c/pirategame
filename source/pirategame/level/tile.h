@@ -45,15 +45,15 @@ class CTile : public TRefCount<CTile>
 	// Member Functions
 public:
 	CTile();
-	~CTile();
+	virtual ~CTile();
 
-	Bool		Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type);
+	virtual Bool		Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type);
 
-	Bool		ShutDown();
+	virtual Bool		ShutDown();
 
-	void		Render(VECTOR2 _camPos);
+	virtual void		Render(VECTOR2 _camPos);
 
-	void		SetType(ETileType _type);
+	virtual void		SetType(ETileType _type);
 
 	VECTOR2		GetPos();
 	ETileType	GetType();

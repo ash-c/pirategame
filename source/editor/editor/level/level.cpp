@@ -5,7 +5,9 @@
 #include "level.h"
 
 #include "tile.h"
+#include "water.h"
 #include "platform.h"
+#include "../../../pirategame/level/coin.h"
 #include "../../../pirategame/character/enemy.h"
 #include "../../../pirategame/character/playable.h"
 
@@ -21,11 +23,13 @@ CLevel::CLevel()
 	, m_tiles(0)
 	, m_platforms(0)
 	, m_gridRects(0)
-	, m_levelNumber(INVALID_ID)
 	, m_numTiles(0)
+	, m_numWater(0)
+	, m_numQuicksand(0)
 	, m_numPlatforms(0)
 	, m_numEnemies(0)
 	, m_numRects(0)
+	, m_numCoins(0)
 	, m_tileset(0)
 {
 
@@ -81,10 +85,15 @@ Bool CLevel::Initialise(Int8* _setup)
 	FileParser::IParser* setup = FileParser::LoadFile(_setup);
 	setup->AddRef();
 	Int32 tiles = 0;
+	Int32 water = 0;
+	Int32 quicksand = 0;
+	Int32 coins = 0;
 	VALIDATE(setup->GetValue("tiles", tiles));
-	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
 	VALIDATE(setup->GetValue("enemies", m_numEnemies));
+	VALIDATE(setup->GetValue("water", water));
+	VALIDATE(setup->GetValue("quicksand", quicksand));	
+	VALIDATE(setup->GetValue("coins", coins));	
 
 	Int8 path[MAX_BUFFER];
 	VALIDATE(setup->GetValue("tileset", &m_tileset));
@@ -160,6 +169,21 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(m_platforms[i]->Initialise(setup, path, number, i + 1));
 	}
 
+	for (Int32 i = 0; i < coins; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "c%i-pos", i + 1);
+		VALIDATE(setup->GetValue(text, pos));
+		AddCoin(pos);
+	}
+	
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/water.png", m_tileset);
+	for (Int32 i = 0; i < water; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "%iw-pos", i + 1);
+		setup->GetValue(text, pos);
+		AddWater(pos);
+	}
+
 	setup->Release();
 
 	Logger::TrackValue(&m_cameraPos, "Camera Position");
@@ -183,6 +207,12 @@ Bool CLevel::ShutDown()
 		m_tiles[i]->ShutDown();
 	}
 
+	for (UInt16 i = 0; i < m_water.size(); ++i)
+	{
+		m_water[i]->Release();
+		m_water[i]->ShutDown();
+	}
+
 	for (UInt16 i = 0; i < m_enemies.size(); ++i)
 	{
 		m_enemies[i]->ShutDown();
@@ -194,11 +224,24 @@ Bool CLevel::ShutDown()
 	}
 	m_tiles.clear();
 
+	for (UInt16 i = 0; i < m_water.size(); ++i)
+	{
+		CLEANDELETE(m_water[i]);
+	}
+	m_water.clear();
+
 	for (UInt16 i = 0; i < m_enemies.size(); ++i)
 	{
 		CLEANDELETE(m_enemies[i]);
 	}
 	m_enemies.clear();
+
+	for (UInt16 i = 0; i < m_coins.size(); ++i)
+	{
+		m_coins[i]->ShutDown();
+		CLEANDELETE(m_coins[i]);
+	}
+	m_coins.clear();
 
 	PY_SAFE_RELEASE(m_background);
 
@@ -241,6 +284,12 @@ void CLevel::Render()
 		}
 	}
 
+	// Render Water	
+	for (UInt16 i = 0; i < m_water.size(); ++i)
+	{
+		m_water[i]->Render(m_cameraPos);
+	}
+
 	// Render tiles
 	for (UInt16 i = 0; i < m_tiles.size(); ++i)
 	{
@@ -251,6 +300,12 @@ void CLevel::Render()
 	for (UInt16 i = 0; i < m_platforms.size(); ++i)
 	{
 		m_platforms[i]->Render(m_cameraPos);
+	}
+
+	// Render Coins
+	for (UInt16 i = 0; i < m_coins.size(); ++i) 
+	{
+		m_coins[i]->Render(m_cameraPos);
 	}
 
 	// Render Enemies
@@ -276,7 +331,6 @@ Bool CLevel::Save(Int8* _path)
 	}
 	else
 	{
-		assert("No valid file path!");
 		Logger::Write("No valid file path");
 		return false;
 	}
@@ -289,9 +343,11 @@ Bool CLevel::Save(Int8* _path)
 	}
 	VALIDATE(save->AddValue("tileset", m_tileset));
 	VALIDATE(save->AddValue("tiles", m_numTiles));
+	VALIDATE(save->AddValue("water", m_numWater));
+	VALIDATE(save->AddValue("quicksand", m_numQuicksand));
 	VALIDATE(save->AddValue("platforms", m_numPlatforms));
 	VALIDATE(save->AddValue("enemies", m_numEnemies));
-	VALIDATE(save->AddValue("levelNumber", 1));
+	VALIDATE(save->AddValue("coins", m_numCoins));
 
 	Int8 text[MAX_BUFFER];
 	for (UInt16 i = 0; i < m_numTiles; ++i)
@@ -302,12 +358,26 @@ Bool CLevel::Save(Int8* _path)
 		VALIDATE(save->AddValue(text, m_tiles[i]->GetType()));
 	}
 
+	for (UInt16 i = 0; i < m_numWater; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "%iw-pos", i + 1);
+		VALIDATE(save->AddValue(text, m_water[i]->GetPos()));
+		SDL_snprintf(text, MAX_BUFFER, "%iw-type", i + 1);
+		VALIDATE(save->AddValue(text, m_water[i]->GetType()));
+	}
+
 	for (UInt16 i = 0; i < m_numPlatforms; ++i)
 	{
 		if (!m_platforms[i]->Save(save, i + 1))
 		{
 			Logger::Write("Saving platform number %i failed", i + 1);
 		}
+	}
+
+	for (UInt16 i = 0; i < m_numCoins; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "c%i-pos", i + 1);
+		VALIDATE(save->AddValue(text, m_coins[i]->GetPos()));
 	}
 
 	for (UInt16 i = 0; i < m_numEnemies; ++i)
@@ -453,6 +523,167 @@ Bool CLevel::RemoveTile(VECTOR2 _pos)
 	}
 
 	// Tile doesn't exist
+	return false;
+}
+
+Bool CLevel::AddCoin(VECTOR2 _pos)
+{
+	//CheckAgainstGrid(&_pos);
+
+	CCoin* temp = 0;
+	CREATEPOINTER(temp, CCoin);
+	
+	VALIDATE(temp->Initialise(_pos));
+
+	m_coins.push_back(temp);
+	++m_numCoins;
+
+	return true;
+}
+
+Bool CLevel::RemoveCoin(VECTOR2 _pos)
+{
+	//CheckAgainstGrid(&_pos);
+
+	// check for existing
+	for (Int32 i = 0; i < m_numTiles; ++i)
+	{
+		if (m_coins[i]->GetPos().x == _pos.x &&
+			m_coins[i]->GetPos().y == _pos.y)
+		{
+			// Coin exists, remove
+			m_coins[i]->ShutDown();
+			CLEANDELETE(m_coins[i]);
+			m_coins.erase(m_coins.begin() + i);
+			--m_numCoins;
+
+			return true;
+		}
+	}
+
+	// Tile doesn't exist
+	return false;
+}
+
+Bool CLevel::AddWater(VECTOR2 _pos)
+{
+	CheckAgainstGrid(&_pos);
+
+	// check for pre existing
+	if (CheckForExistingTile(&_pos)) return false;
+
+	// Calculate right type of tile.
+	ETileType type = TYPE_ALONE;
+	CWater* temp = 0;
+	CREATEPOINTER(temp, CWater);
+	
+	Int8 path[MAX_BUFFER];
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/water.png", m_tileset);
+	VALIDATE(temp->Initialise(path, _pos, type));
+	temp->AddRef();
+
+	m_water.push_back(temp);
+	++m_numWater;
+
+	VECTOR2 surr[8]; // 0-left, 1-top left, 2-top, 3-top right, 4-right, 5-bottom right, 6-bottom, 7-bottom left
+
+	for (UInt16 i = 0; i < 8; ++i) { surr[i] = _pos; }
+
+	surr[0].x -= TILE_WIDTH;
+	surr[1].x -= TILE_WIDTH;
+	surr[1].y -= TILE_HEIGHT;
+	surr[2].y -= TILE_HEIGHT;
+	surr[3].x += TILE_WIDTH;
+	surr[3].y -= TILE_HEIGHT;
+	surr[4].x += TILE_WIDTH;
+	surr[5].x += TILE_WIDTH;
+	surr[5].y += TILE_HEIGHT;
+	surr[6].y += TILE_HEIGHT;
+	surr[7].x -= TILE_WIDTH;
+	surr[7].y += TILE_HEIGHT;
+
+	for (UInt16 i = 0; i < m_water.size(); ++i)
+	{
+		VECTOR2 pos = m_water[i]->GetPos();
+		// left
+		if (surr[0].x == pos.x && surr[0].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+		// top left
+		if (surr[1].x == pos.x && surr[1].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+		// top
+		if (surr[2].x == pos.x && surr[2].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+		// top right
+		if (surr[3].x == pos.x && surr[3].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+		// right
+		if (surr[4].x == pos.x && surr[4].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+		// bottom right
+		if (surr[5].x == pos.x && surr[5].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+		// bottom
+		if (surr[6].x == pos.x && surr[6].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+		// bottom left
+		if (surr[7].x == pos.x && surr[7].y == pos.y)
+		{
+			temp->AddLinked(m_water[i]);
+			m_water[i]->AddLinked(temp);
+			temp->UpdateType();
+		}
+	}
+	return true;
+}
+
+Bool CLevel::RemoveWater(VECTOR2 _pos)
+{
+	CheckAgainstGrid(&_pos);
+	
+	// check for existing
+	for (Int32 i = 0; i < m_numWater; ++i)
+	{
+		if (m_water[i]->GetPos().x == _pos.x &&
+			m_water[i]->GetPos().y == _pos.y)
+		{
+			// Tile exists, remove
+			PY_DELETE_RELEASE(m_water[i]);
+			m_water.erase(m_water.begin() + i);
+			--m_numWater;
+
+			return true;
+		}
+	}
+
 	return false;
 }
 
@@ -612,6 +843,14 @@ void CLevel::CheckAgainstGrid(VECTOR2* _pos)
 Bool CLevel::CheckForExistingTile(VECTOR2* _pos)
 {
 	// check for existing
+	for (UInt32 i = 0; i < m_water.size(); ++i)
+	{
+		if (m_water[i]->GetPos().x == _pos->x &&
+			m_water[i]->GetPos().y == _pos->y)
+		{
+			return true;
+		}
+	}
 	for (UInt32 i = 0; i < m_tiles.size(); ++i)
 	{
 		if (m_tiles[i]->GetPos().x == _pos->x &&

@@ -8,22 +8,29 @@
 #include "..\character\playable.h"
 #include "..\character\enemy.h"
 #include "tile.h"
+#include "water.h"
+#include "coin.h"
 #include "platform.h"
+#include "parallax.h"
 
 CLevel::CLevel()
 	: m_background(0)
 	, m_playable(0)
 	, m_tiles(0)
+	, m_water(0)
+	, m_coins(0)
 	, m_enemies(0)
-	, m_levelNumber(INVALID_ID)
 	, m_platforms(0)
+	, m_parallax(0)
 	, m_numTiles(0)
+	, m_numWater(0)
 	, m_numEnemies(0)
 	, m_numPlatforms(0)
+	, m_numCoins(0)
+	, m_paraCount(0)
 	, m_screenW(0)
 	, m_complete(false)
 {
-
 }
 
 CLevel::~CLevel()
@@ -49,22 +56,14 @@ Bool CLevel::Initialise(Int8* _setup)
 	FileParser::IParser* setup = FileParser::LoadFile(_setup);
 	setup->AddRef();
 	VALIDATE(setup->GetValue("tiles", m_numTiles));
-	VALIDATE(setup->GetValue("levelNumber", m_levelNumber));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));
 	VALIDATE(setup->GetValue("enemies", m_numEnemies));
+	VALIDATE(setup->GetValue("water", m_numWater));
+	VALIDATE(setup->GetValue("coins", m_numCoins));
 
 	Int8* tileset = 0;
 	Int8 path[MAX_BUFFER];
 	VALIDATE(setup->GetValue("tileset", &tileset));
-	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/background.png", tileset);
-	
-	if (0 == m_background)
-	{
-		m_background = Sprite::CreateSprite(path, 0, false);
-		assert(m_background);
-		m_background->AddRef();
-		PY_WRITETOFILE("Background created");
-	}
 	
 	VECTOR2 pos;
 		
@@ -93,6 +92,43 @@ Bool CLevel::Initialise(Int8* _setup)
 		}
 	}
 
+	if (0 == m_water)
+	{
+		m_water = new CWater*[m_numWater];
+		assert(m_water);
+		SDL_memset(m_water, 0, sizeof(CWater*) * m_numWater);
+	
+		SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/water.png", tileset);
+
+		for (Int32 i = 0; i < m_numWater; ++i)
+		{
+			SDL_snprintf(text, MAX_BUFFER, "%iw-pos", i + 1);
+			VALIDATE(setup->GetValue(text, pos));
+
+			SDL_snprintf(text, MAX_BUFFER, "%iw-type", i + 1);
+			VALIDATE(setup->GetValue(text, type));
+
+			CREATEPOINTER(m_water[i], CWater);
+			VALIDATE(m_water[i]->Initialise(path, pos, static_cast<ETileType>(type)));
+			m_water[i]->AddRef();
+		}
+	}
+
+	if (0 == m_coins)
+	{
+		m_coins = new CCoin*[m_numCoins];
+		assert(m_coins);
+		SDL_memset(m_coins, 0, sizeof(CCoin*) * m_numCoins);
+	}
+
+	for (Int32 i = 0; i < m_numCoins; ++i)
+	{
+		SDL_snprintf(text, MAX_BUFFER, "c%i-pos", i + 1);
+		VALIDATE(setup->GetValue(text, pos));
+		CREATEPOINTER(m_coins[i], CCoin);
+		VALIDATE(m_coins[i]->Initialise(pos));
+	}
+
 	if (0 == m_enemies)
 	{
 		m_enemies = new CEnemy*[m_numEnemies];
@@ -118,8 +154,10 @@ Bool CLevel::Initialise(Int8* _setup)
 		VALIDATE(m_enemies[i]->Initialise(sprite, spriteSettings, settings));
 		m_enemies[i]->SetPosition(pos);
 		m_enemies[i]->SetPlayer(m_playable);
+		m_enemies[i]->SetLevel(this);
 	}
 
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tiles.png", tileset);
 	if (0 == m_platforms)
 	{
 		m_platforms = new CPlatform*[m_numPlatforms];
@@ -152,9 +190,49 @@ Bool CLevel::Initialise(Int8* _setup)
 	}
 	
 	setup->Release();
+	VALIDATE(setup->ShutDown());
+	setup = 0;
 
+	// setup parallax
+	SDL_snprintf(path, MAX_BUFFER, "data/art/tilesets/%s/tileset.ini", tileset);
+	setup = FileParser::LoadFile(path);
+	assert(setup);
+	setup->AddRef();
+
+	Int8* background = 0;
+	VALIDATE(setup->GetValue("static", &background, "parallax"));
+	assert(background);
+
+	if (0 == m_background)
+	{
+		m_background = Sprite::CreateSprite(background, 0, false);
+		assert(m_background);
+		m_background->AddRef();
+		PY_WRITETOFILE("Background created");
+	}
+
+	setup->Release();
 	CLEANARRAY(tileset);
 
+	VALIDATE(setup->GetValue("count", m_paraCount, "parallax"));
+
+	if (0 < m_paraCount && 0 == m_parallax)
+	{
+		m_parallax = new CParallax*[m_paraCount];
+		assert(m_parallax);
+		SDL_memset(m_parallax, 0, sizeof(CParallax*) * m_paraCount);
+	}
+
+	for (Int16 i = 0; i < m_paraCount; ++i)
+	{
+		CREATEPOINTER(m_parallax[i], CParallax);
+		assert(m_parallax[i]);
+		Int8 temp[MAX_BUFFER];
+		SDL_snprintf(temp, MAX_BUFFER, "%i", i + 1);
+		VALIDATE(m_parallax[i]->Initialise(setup, temp));
+	}
+	
+	// set camera position if player exists
 	if (0 == m_playable)
 	{
 		m_cameraPos.y = static_cast<Float32>(LEVEL_HEIGHT - m_screenH);
@@ -166,6 +244,15 @@ Bool CLevel::Initialise(Int8* _setup)
 
 Bool CLevel::ShutDown()
 {
+	if (0 != m_parallax)
+	{
+		for (Int16 i = 0; i < m_paraCount; ++i)
+		{
+			m_parallax[i]->ShutDown();
+			CLEANDELETE(m_parallax[i]);
+		}
+	}
+
 	for (Int16 i = 0; i < m_numPlatforms; ++i)
 	{
 		m_platforms[i]->ShutDown();
@@ -179,11 +266,24 @@ Bool CLevel::ShutDown()
 	}
 	CLEANARRAY(m_enemies);
 
+	for (Int16 i = 0; i < m_numCoins; ++i)
+	{
+		m_coins[i]->ShutDown();
+		CLEANDELETE(m_coins[i]);
+	}
+	CLEANARRAY(m_coins);
+
 	for (Int16 i = 0; i < m_numTiles; ++i)
 	{
 		PY_DELETE_RELEASE(m_tiles[i]);
 	}
 	CLEANARRAY(m_tiles);
+
+	for (Int16 i = 0; i < m_numWater; ++i)
+	{
+		PY_DELETE_RELEASE(m_water[i]);
+	}
+	CLEANARRAY(m_water);
 
 	PY_SAFE_RELEASE(m_background);
 
@@ -258,11 +358,42 @@ void CLevel::Process(Float32 _delta)
 			m_enemies[i]->Process(_delta);
 		}
 	}
+
+	for (Int16 i = 0; i < m_numCoins; ++i)
+	{
+		if (m_coins[i]->IsActive())
+		{
+			m_coins[i]->Process(_delta);
+		}
+	}
+
+	if (0 != m_parallax)
+	{
+		for (Int16 i = 0; i < m_paraCount; ++i)
+		{
+			m_parallax[i]->Process(_delta);
+		}
+	}
 }
 
 void CLevel::Render()
 {
 	m_background->Render();
+
+	// Render parallax layers
+	if (0 != m_parallax)
+	{
+		for (Int16 i = 0; i < m_paraCount; ++i)
+		{
+			m_parallax[i]->Render(m_cameraPos);
+		}
+	}	
+
+	// Render water
+	for (Int16 i = 0; i < m_numWater; ++i)
+	{
+		m_water[i]->Render(m_cameraPos);
+	}
 
 	// Render tiles
 	for (Int16 i = 0; i < m_numTiles; ++i)
@@ -276,6 +407,12 @@ void CLevel::Render()
 		m_platforms[i]->Render(m_cameraPos);
 	}
 
+	// Render Coins
+	for (Int16 i = 0; i < m_numCoins; ++i) 
+	{
+		m_coins[i]->Render(m_cameraPos);
+	}
+
 	// Render Enemies
 	for (Int16 i = 0; i < m_numEnemies; ++i) 
 	{
@@ -287,4 +424,21 @@ void CLevel::Render()
 	{
 		m_playable->Render(m_cameraPos);
 	}
+}
+
+Bool CLevel::IsNext(VECTOR2 _pos)
+{
+	for (Int32 i = 0; i < m_numTiles; ++i)
+	{
+		VECTOR2 tilePos = m_tiles[i]->GetPos();
+		if (_pos.x < tilePos.x + TILE_WIDTH * 0.5f && 
+			_pos.x > tilePos.x - TILE_WIDTH * 0.5f &&
+			_pos.y + TILE_HEIGHT * 0.5f > tilePos.y &&
+			_pos.y < tilePos.y)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

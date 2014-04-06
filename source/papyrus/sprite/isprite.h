@@ -98,6 +98,11 @@ namespace Papyrus
 				m_sprite.y = static_cast<Int32>(_y - m_sprite.h * 0.5f);
 			}
 
+			virtual VECTOR2		GetPosition()
+			{
+				return VECTOR2(static_cast<Float32>(m_sprite.x), static_cast<Float32>(m_sprite.y));
+			}
+
 			/*
 			* Sets the width and height of the sprite.
 			*

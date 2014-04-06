@@ -31,7 +31,7 @@ Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 
 	SetType(_type);
 
-	m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(static_cast<Float32>(TILE_WIDTH),static_cast<Float32>(TILE_HEIGHT)));
+	m_actor = Physics::CreateStaticActor(m_pos, VECTOR2(static_cast<Float32>(TILE_WIDTH), static_cast<Float32>(TILE_HEIGHT)));
 	assert(m_actor);
 
 	for (UInt16 i = 0; i < 8; ++i) { m_around[i] = _pos; }

@@ -57,6 +57,8 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,6 +79,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(SolutionDir)\papyrus\sdl\include;$(SolutionDir)\papyrus\sdl\sdl_image\include;$(SolutionDir)\papyrus\sdl\sdl_ttf\include;$(SolutionDir)\papyrus\lua\include;$(WindowsSDK_IncludePath)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -120,10 +123,13 @@
     <ClCompile Include="character\enemy.cpp" />
     <ClCompile Include="character\playable.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="level\coin.cpp" />
     <ClCompile Include="level\level.cpp" />
     <ClCompile Include="level\levelmanager.cpp" />
+    <ClCompile Include="level\parallax.cpp" />
     <ClCompile Include="level\platform.cpp" />
     <ClCompile Include="level\tile.cpp" />
+    <ClCompile Include="level\water.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,10 +179,13 @@
     <ClInclude Include="character\enemy.h" />
     <ClInclude Include="character\playable.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="level\coin.h" />
     <ClInclude Include="level\level.h" />
     <ClInclude Include="level\levelmanager.h" />
+    <ClInclude Include="level\parallax.h" />
     <ClInclude Include="level\platform.h" />
     <ClInclude Include="level\tile.h" />
+    <ClInclude Include="level\water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

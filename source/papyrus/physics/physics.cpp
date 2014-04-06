@@ -50,16 +50,10 @@ void Physics::Process(Float32 _frameTime)
 		actors[i]->SetVCollided(false);
 		actors[i]->SetPPCollided(0, false);
 		actors[i]->SetPECollided(false);
+		actors[i]->SetPWCollided(false);
 	}
 
-	// process physics objects
-	// fix the framerate that the physics is calculated at.
-	const Float32 dt = 1.0f / 60.0f; // 60FPS
-	m_accumulator += _frameTime;
-
-	while (m_accumulator >= dt)
-	{	
-		// collision detection
+	// collision detection
 		for (Int16 i = 0; i < numActors; ++i)
 		{
 			for (Int16 j = i + 1; j < numActors; ++j)
@@ -109,10 +103,25 @@ void Physics::Process(Float32 _frameTime)
 					{
 						PlayerPlatformCollision(actors[j], actors[i]);
 					}
+					else if (type1 == EType::TYPE_PLAYER && type2 == EType::TYPE_WATER)
+					{
+						PlayerWaterCollision(actors[i], actors[j]);
+					}
+					else if (type1 == EType::TYPE_WATER && type2 == EType::TYPE_PLAYER)
+					{
+						PlayerWaterCollision(actors[j], actors[i]);
+					}
 				}
 			}
 		}
 
+	// process physics objects
+	// fix the framerate that the physics is calculated at.
+	const Float32 dt = 1.0f / 60.0f; // 60FPS
+	m_accumulator += _frameTime;
+
+	while (m_accumulator >= dt)
+	{	
 		for (Int16 i = 0; i < numActors; ++i)
 		{
 			if (actors[i]->IsActive())
@@ -431,6 +440,37 @@ void Physics::EnemyStaticCollision(IActor* _actor1, IActor* _actor2)
 				_actor1->SetXPos(pos.x);
 				_actor1->SetHCollided(true);
 				_actor2->SetHCollided(true);
+			}
+		}
+	}
+}
+
+void Physics::PlayerWaterCollision(IActor* _actor1, IActor* _actor2)
+{
+	// actor1 is always the player
+	// actor2 is always the static physics object
+	SDL_Rect result;
+	SDL_Rect rect1 = _actor1->GetRect();
+	SDL_Rect rect2 = _actor2->GetRect();
+	if (SDL_IntersectRect(&rect1, &rect2, &result))
+	{
+		VECTOR2 pos = _actor1->GetPosition();
+		VECTOR2 pos2 = _actor2->GetPosition();
+		
+		// vertical collision
+		if (pos.x > rect2.x && pos.x < rect2.x + rect2.w) 
+		{
+			//if (pos2.y < pos.y) // below, should never hit this one
+			//{
+			//	//pos.y = pos2.y + rect2.h * 0.5f + rect1.h * 0.5f;
+			//	_actor1->SetPWCollided(true);
+			//}
+			if (pos2.y > pos.y) // above
+			{
+				if (pos.y > pos2.y - rect2.h)
+				{
+					_actor1->SetPWCollided(true);
+				}
 			}
 		}
 	}
