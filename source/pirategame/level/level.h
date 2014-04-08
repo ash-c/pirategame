@@ -59,6 +59,7 @@ protected:
 	SDL_Rect			m_numberClips[10];
 
 	VECTOR2				m_numberPos;
+	VECTOR2				m_numberScale;
 	VECTOR2				m_cameraPos;
 
 	Int32				m_numTiles;

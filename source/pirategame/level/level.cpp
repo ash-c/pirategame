@@ -248,22 +248,24 @@ Bool CLevel::Initialise(Int8* _setup, Int32 _num)
 	}
 
 	// setup number display
+	m_numberScale.x = 13.0f;
+	m_numberScale.y = 20.0f;
 	Int32 x = 0;
 	for (Int16 i = 0; i < 10; ++i)
 	{
 		m_numberClips[i].y = 0;
-		m_numberClips[i].w = 30;
-		m_numberClips[i].h = 45.0f;
+		m_numberClips[i].w = static_cast<Int32>(m_numberScale.x);
+		m_numberClips[i].h = static_cast<Int32>(m_numberScale.y);
 		m_numberClips[i].x = x;
-		x += 30;
+		x += static_cast<Int32>(m_numberScale.x);
 	}
 
 	m_numbers = Sprite::CreateSprite("data/art/tilesets/numbers.png", 0, false);
 	assert(m_numbers);
-	m_numberPos.x = m_screenW - 100.0f;
+	m_numberPos.x = m_screenW - 50.0f;
 	m_numberPos.y =  50.0f;
 	m_numbers->SetClip(&m_numberClips[0]);
-	m_numbers->SetScale(30, 45);
+	m_numbers->SetScale(static_cast<Int32>(m_numberScale.x), static_cast<Int32>(m_numberScale.y));
 
 	return true;
 }
@@ -454,17 +456,15 @@ void CLevel::Render()
 	}
 
 	// Render score
-	m_numbers->SetPosition(static_cast<Int32>(m_numberPos.x), static_cast<Int32>(m_numberPos.y));
-
 	Int32 temp = m_score;
-	Float32 x = m_numberPos.x - 30.0f;
-	while (temp > 0)
+	Float32 x = m_numberPos.x;
+	while (temp > 0) // rendering the individual digits
 	{
 		Int32 index = temp % 10;
 		m_numbers->SetClip(&m_numberClips[index]);
-		m_numbers->Render();
 		m_numbers->SetPosition(static_cast<Int32>(x), static_cast<Int32>(m_numberPos.y));
-		x -= 30.0f;
+		m_numbers->Render();
+		x -= m_numberScale.x;
 
 		temp /= 10;
 	}
