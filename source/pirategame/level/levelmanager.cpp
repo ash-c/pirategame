@@ -46,6 +46,7 @@ void CLevelManager::Process(Float32 _delta)
 		if (m_current->IsComplete())
 		{
 			// save score from completed level
+			Int32 score = 0;
 			FileParser::IParser* save = FileParser::LoadFile("data/xml/saveState.xml");
 			assert(save);
 			save->AddRef();

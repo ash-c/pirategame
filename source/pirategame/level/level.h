@@ -47,6 +47,7 @@ public:
 	// Member Variables
 protected:
 	Sprite::ISprite*	m_background;
+	Sprite::ISprite*	m_numbers;
 	ICharacter*			m_playable;
 	CTile**				m_tiles;
 	CWater**			m_water;
@@ -55,6 +56,9 @@ protected:
 	CPlatform**			m_platforms;
 	CParallax**			m_parallax;
 
+	SDL_Rect			m_numberClips[10];
+
+	VECTOR2				m_numberPos;
 	VECTOR2				m_cameraPos;
 
 	Int32				m_numTiles;

@@ -15,6 +15,7 @@
 
 CLevel::CLevel()
 	: m_background(0)
+	, m_numbers(0)
 	, m_playable(0)
 	, m_tiles(0)
 	, m_water(0)
@@ -246,6 +247,24 @@ Bool CLevel::Initialise(Int8* _setup, Int32 _num)
 		Logger::TrackValue(&m_cameraPos, "Camera Position");
 	}
 
+	// setup number display
+	Int32 x = 0;
+	for (Int16 i = 0; i < 10; ++i)
+	{
+		m_numberClips[i].y = 0;
+		m_numberClips[i].w = 30;
+		m_numberClips[i].h = 45.0f;
+		m_numberClips[i].x = x;
+		x += 30;
+	}
+
+	m_numbers = Sprite::CreateSprite("data/art/tilesets/numbers.png", 0, false);
+	assert(m_numbers);
+	m_numberPos.x = m_screenW - 100.0f;
+	m_numberPos.y =  50.0f;
+	m_numbers->SetClip(&m_numberClips[0]);
+	m_numbers->SetScale(30, 45);
+
 	return true;
 }
 
@@ -432,6 +451,22 @@ void CLevel::Render()
 	if (0 != m_playable)
 	{
 		m_playable->Render(m_cameraPos);
+	}
+
+	// Render score
+	m_numbers->SetPosition(static_cast<Int32>(m_numberPos.x), static_cast<Int32>(m_numberPos.y));
+
+	Int32 temp = m_score;
+	Float32 x = m_numberPos.x - 30.0f;
+	while (temp > 0)
+	{
+		Int32 index = temp % 10;
+		m_numbers->SetClip(&m_numberClips[index]);
+		m_numbers->Render();
+		m_numbers->SetPosition(static_cast<Int32>(x), static_cast<Int32>(m_numberPos.y));
+		x -= 30.0f;
+
+		temp /= 10;
 	}
 }
 
