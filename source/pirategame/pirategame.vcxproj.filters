@@ -105,6 +105,7 @@
     <ClCompile Include="level\coin.cpp">
       <Filter>level</Filter>
     </ClCompile>
+    <ClCompile Include="..\papyrus\sound\sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -157,6 +158,9 @@
     </Filter>
     <Filter Include="papyrus\ui\objects">
       <UniqueIdentifier>{1857e74f-d1ce-4573-be12-976e4e9dba12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\sound">
+      <UniqueIdentifier>{87397be6-437c-4bdc-bd4e-d184fb9c1fc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +320,9 @@
     </ClInclude>
     <ClInclude Include="level\coin.h">
       <Filter>level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\papyrus\sound\sound.h">
+      <Filter>papyrus\sound</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

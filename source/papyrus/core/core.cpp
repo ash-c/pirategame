@@ -68,6 +68,9 @@ Bool Core::Initialise(Int8* _setup)
 	VALIDATE(UI::Initialise());
 	PY_WRITETOFILE("User Interface sub-system initialised");
 
+	VALIDATE(Sound::Initialise());
+	PY_WRITETOFILE("Sound sub-system initialised");
+
 	CREATEPOINTER(timer, Timer::CTimer);
 	VALIDATE(timer->Initialise());
 	PY_WRITETOFILE("Timing sub-system initialised");

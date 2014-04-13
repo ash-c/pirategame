@@ -205,6 +205,12 @@ namespace Papyrus
 		* @return	Returns void.
 		*/
 		Bool		LogSDLError(const Int32 _code, const Int8* _msg);
+
+		/*
+		* Logs an FMOD error. 
+		*
+		*/
+		Bool		LogFMODError(const FMOD_RESULT _result, const Int8* _msg);
 		
 		/*
 		* Function for testing parameters through console input.

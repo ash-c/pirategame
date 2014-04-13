@@ -16,6 +16,7 @@
 #include "../input/input.h"
 #include "../physics/physics.h"
 #include "../ui/ui.h"
+#include "../sound/sound.h"
 
 namespace Papyrus
 {
