@@ -9,6 +9,12 @@
 using namespace Papyrus;
 
 FMOD::System*		Sound::system = 0;
+FMOD::Sound*		Sound::bkgMusic = 0;
+FMOD::Channel*		Sound::bkgChannel = 0;
+Int8				Sound::bkgMusicPath[MAX_BUFFER];
+
+#define PY_FMOD_RELEASE(Object) if (0 != Object) { Object->release(); Object = 0; }
+#define PY_FMOD_CLOSE(Object) if (0 != Object) { Object->close(); }
 
 Bool Sound::Initialise() 
 {
@@ -40,23 +46,52 @@ Bool Sound::Initialise()
 		Logger::WriteToFile("FMOD system->init failed: %d - %s", result, FMOD_ErrorString(result));
 		return false;
 	}
-
-	FMOD::Sound* sound = 0;
-	FMOD::Channel* channel = 0;
-	result = system->createSound("data/audio/music/titleScreen.mp3", FMOD_LOOP_NORMAL | FMOD_2D, 0, &sound);
-
-	if (FMOD_OK != result)
-	{
-		Logger::WriteToFile("FMOD system->createSound - %s: %d - %s", "data/audio/music/titleScreen.mp3", result, FMOD_ErrorString(result));
-		return false;
-	}
-
-	result = system->playSound(sound, 0, false, &channel);
 	
 	return true;
 }
 
 Bool Sound::ShutDown()
 {
+	PY_FMOD_RELEASE(bkgMusic);
+	PY_FMOD_CLOSE(system);
+	PY_FMOD_RELEASE(system);
+
+	return true;
+}
+
+Bool Sound::PlayBkgMusic(Int8* _path)
+{
+	if (!SDL_strcmp(_path, bkgMusicPath))
+	{
+		// already playing, return out
+		return true;
+	}
+
+	FMOD_RESULT result;
+
+	if (0 != bkgChannel)
+	{
+		PY_FMOD_RELEASE(bkgMusic);
+		bkgChannel = 0;
+	}
+
+	result = system->createSound(_path, FMOD_LOOP_NORMAL | FMOD_2D, 0, &bkgMusic);
+
+	if (FMOD_OK != result)
+	{
+		Logger::WriteToFile("FMOD system->createSound - %s: %d - %s", _path, result, FMOD_ErrorString(result));
+		return false;
+	}
+	
+	result = system->playSound(bkgMusic, 0, false, &bkgChannel);
+
+	if (FMOD_OK != result)
+	{
+		Logger::WriteToFile("FMOD system->playSound - %s: %d - %s", _path, result, FMOD_ErrorString(result));
+		return false;
+	}
+
+	SDL_snprintf(bkgMusicPath, MAX_BUFFER, "%s", _path);
+
 	return true;
 }

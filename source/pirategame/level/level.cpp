@@ -67,6 +67,7 @@ Bool CLevel::Initialise(Int8* _setup, Int32 _num)
 	VALIDATE(setup->GetValue("enemies", m_numEnemies));
 	VALIDATE(setup->GetValue("water", m_numWater));
 	VALIDATE(setup->GetValue("coins", m_numCoins));
+	VALIDATE(setup->GetValue("bkgMusic", &m_bkgMusic));
 
 	Int8* tileset = 0;
 	Int8 path[MAX_BUFFER];
@@ -266,6 +267,8 @@ Bool CLevel::Initialise(Int8* _setup, Int32 _num)
 	m_numberPos.y =  50.0f;
 	m_numbers->SetClip(&m_numberClips[0]);
 	m_numbers->SetScale(static_cast<Int32>(m_numberScale.x), static_cast<Int32>(m_numberScale.y));
+
+	Sound::PlayBkgMusic(m_bkgMusic);
 
 	return true;
 }

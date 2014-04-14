@@ -73,6 +73,8 @@ protected:
 	Int32				m_score;
 	Int32				m_levelNum;
 
+	Int8*				m_bkgMusic;
+
 	Bool				m_complete;
 };
 

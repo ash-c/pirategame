@@ -1,5 +1,6 @@
 {
 	"tileset": "title",
+	"bkgMusic": "data/audio/music/titleScreen.wav",
 	"levelNumber": 0,
 	"tiles": 0,
 	"water": 0,

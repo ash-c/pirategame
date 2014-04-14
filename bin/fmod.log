@@ -31,21 +31,38 @@ FMOD: Thread::callback               : * FMOD stream thread started
 FMOD: Thread::initThread             : done.
 FMOD: SystemI::init                  : done
 
-FMOD: SystemI::createSoundInternal   : filename = data/audio/music/titleScreen.mp3 : mode 0000000a
+FMOD: SystemI::createSoundInternal   : filename = data/audio/music/titleScreen.wav : mode 0000000a
 FMOD: SystemI::createSoundInternal   : 18 codecs found.  Scan all until one succeeds
 FMOD: SystemI::createSoundInternal   : Scan for tags.
 FMOD: CodecTag::openInternal         : attempting to open ID3 or ASF tags..
 FMOD: Codec::release                 : 
 FMOD: Codec::release                 : done
-FMOD: CodecMPEG::openInternal        : attempting to open as MPEG..
+FMOD: CodecWav::openInternal         : attempting to open as WAV..
+FMOD: CodecWav::parseRIFF            : chunk : id fmt  size 16
+FMOD: CodecWav::parseRIFF            : offset = 28 / 30296936
+FMOD: CodecWav::parseRIFF            : chunk : id data size 30296840
+FMOD: CodecWav::parseRIFF            : offset = 30296876 / 30296936
+FMOD: CodecWav::parseRIFF            : chunk : id LIST size 18
+FMOD: CodecWav::parseRIFF            : chunk : id ICRD size 6
+FMOD: CodecWav::parseRIFF            : offset = 18 / 18
+FMOD: CodecWav::parseRIFF            : offset = 30296902 / 30296936
+FMOD: CodecWav::parseRIFF            : chunk : id id3  size 26
+FMOD: CodecWav::parseRIFF            : offset = 30296936 / 30296936
+FMOD: CodecWav::openInternal         : mSrcFormat->wFormatTag = 1
+FMOD: CodecWav::openInternal         : mSrcFormat->nChannels = 2
+FMOD: CodecWav::openInternal         : mSrcFormat->nSamplesPerSec = 44100
+FMOD: CodecWav::openInternal         : mSrcFormat->nAvgBytesPerSec = 176400
+FMOD: CodecWav::openInternal         : mSrcFormat->nBlockAlign = 4
+FMOD: CodecWav::openInternal         : mSrcFormat->wBitsPerSample = 16
+FMOD: CodecWav::openInternal         : mSrcFormat->cbSize = 0
 FMOD: SystemI::createSoundInternal   : Format has 0 subsounds.
 FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESAMPLE
 FMOD: SystemI::createSoundInternal   : creating subsound 0/0
-FMOD: SystemI::createSample          : mode 0000004a length 7575552 samples, lengthbytes 2991809
+FMOD: SystemI::createSample          : mode 0000004a length 7574210 samples, lengthbytes 30296840
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0241C8B8
-FMOD: SystemI::createSample          : mSoftware = 0241C8B8
-FMOD: OutputSoftware::createSample   : lengthpcm 7575552, lengthbytes 2991809, channels 2, format 2, freq 44100, mode 0000004a
+FMOD: SystemI::createSample          : subsample 0.  output = 00A8C8B8
+FMOD: SystemI::createSample          : mSoftware = 00A8C8B8
+FMOD: OutputSoftware::createSample   : lengthpcm 7574210, lengthbytes 30296840, channels 2, format 2, freq 44100, mode 0000004a
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
 FMOD: SystemI::createSoundInternal   : No name found in file, use filename.

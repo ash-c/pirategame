@@ -28,7 +28,13 @@ namespace Papyrus
 		*/
 		Bool		ShutDown();
 
+		Bool		PlayBkgMusic(Int8* _path);
+
 		extern FMOD::System*		system;
+
+		extern FMOD::Sound*			bkgMusic;
+		extern FMOD::Channel*		bkgChannel;
+		extern Int8					bkgMusicPath[MAX_BUFFER];
 	}
 }
 
