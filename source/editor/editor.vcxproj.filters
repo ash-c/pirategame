@@ -108,6 +108,9 @@
     <ClCompile Include="..\pirategame\level\coin.cpp">
       <Filter>editor\level</Filter>
     </ClCompile>
+    <ClCompile Include="..\papyrus\sound\sound.cpp">
+      <Filter>papyrus\sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -276,6 +279,9 @@
     <ClInclude Include="..\pirategame\level\coin.h">
       <Filter>editor\level</Filter>
     </ClInclude>
+    <ClInclude Include="..\papyrus\sound\sound.h">
+      <Filter>papyrus\sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="papyrus">
@@ -337,6 +343,9 @@
     </Filter>
     <Filter Include="editor\level\character">
       <UniqueIdentifier>{c1bdf77d-49c4-4afb-a6ee-b06c95999daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="papyrus\sound">
+      <UniqueIdentifier>{3e7fd106-61e1-4a5c-bdbe-d081e0798db0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
