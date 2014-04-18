@@ -13,6 +13,10 @@ FMOD::Sound*		Sound::bkgMusic = 0;
 FMOD::Channel*		Sound::bkgChannel = 0;
 Int8				Sound::bkgMusicPath[MAX_BUFFER];
 
+FMOD::Sound*		Sound::sfxMusic;
+FMOD::Channel*		Sound::sfxChannel;
+Int8				Sound::sfxMusicPath[MAX_BUFFER];
+
 #define PY_FMOD_RELEASE(Object) if (0 != Object) { Object->release(); Object = 0; }
 #define PY_FMOD_CLOSE(Object) if (0 != Object) { Object->close(); }
 
@@ -93,5 +97,10 @@ Bool Sound::PlayBkgMusic(Int8* _path)
 
 	SDL_snprintf(bkgMusicPath, MAX_BUFFER, "%s", _path);
 
+	return true;
+}
+
+Bool Sound::PlaySFX(Int8* _path)
+{
 	return true;
 }

@@ -28,13 +28,38 @@ namespace Papyrus
 		*/
 		Bool		ShutDown();
 
+		/*
+		* Plays background music.
+		*
+		* @param	_path			The path to the music file to play.
+		* @return	Returns true on success, false otherwise.
+		*/
 		Bool		PlayBkgMusic(Int8* _path);
 
+		/*
+		* Plays a sound effect.
+		*
+		* @param	_path			The path to the sound effect to play.
+		* @return	Returns true on success, false otherwise.
+		*/
+		Bool		PlaySFX(Int8* _path);
+
+		/*
+		* Variables.
+		*/
+
+		// FMOD system
 		extern FMOD::System*		system;
 
+		// Background music
 		extern FMOD::Sound*			bkgMusic;
 		extern FMOD::Channel*		bkgChannel;
 		extern Int8					bkgMusicPath[MAX_BUFFER];
+
+		// Sound effects
+		extern FMOD::Sound*			sfxMusic;
+		extern FMOD::Channel*		sfxChannel;
+		extern Int8					sfxMusicPath[MAX_BUFFER];
 	}
 }
 
