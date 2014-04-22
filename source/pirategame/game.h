@@ -63,6 +63,7 @@ public:
 	Bool		IsActive();
 
 	void		Pause();
+	Bool		IsPaused() { return m_paused; } 
 
 	virtual void		Notify(SDL_Event* _e);
 

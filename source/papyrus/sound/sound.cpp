@@ -107,12 +107,9 @@ Bool Sound::PlayBkgMusic(Int8* _path)
 
 Bool Sound::PreLoadSFX(Int8* _path)
 {
-	std::map<Int8*, FMOD::Sound*>::iterator iter;
-	iter = sfxSound.find(_path);
-
 	FMOD_RESULT result;
 
-	if (sfxSound.end() == iter)
+	if (sfxSound.end() == sfxSound.find(_path))
 	{
 		FMOD::Sound* temp = 0;
 		result = system->createSound(_path, FMOD_DEFAULT | FMOD_LOOP_OFF | FMOD_CREATESTREAM, 0, &temp);
@@ -132,12 +129,9 @@ Bool Sound::PreLoadSFX(Int8* _path)
 
 Bool Sound::PlaySFX(Int8* _path)
 {
-	std::map<Int8*, FMOD::Sound*>::iterator iter;
-	iter = sfxSound.find(_path);
-
 	FMOD_RESULT result;
 
-	if (sfxSound.end() == iter)
+	if (sfxSound.end() == sfxSound.find(_path))
 	{
 		FMOD::Sound* temp = 0;
 		result = system->createSound(_path, FMOD_DEFAULT | FMOD_LOOP_OFF | FMOD_CREATESTREAM, 0, &temp);
