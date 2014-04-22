@@ -67,6 +67,10 @@ Bool CPlayable::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _setting
 	m_actor->SetVCollided(true);
 	settings->Release();
 
+	Sound::PreLoadSFX("data/audio/effects/jump.wav");
+	Sound::PreLoadSFX("data/audio/effects/deathPlayer.wav");
+	Sound::PreLoadSFX("data/audio/effects/attackPlayer.wav");
+
 	return true;
 }
 
@@ -95,6 +99,7 @@ void CPlayable::Process(Float32 _delta)
 			m_sprite->PlayAnim(ANIM_DEATH_RIGHT, true);
 			m_currAnim = ANIM_DEATH_RIGHT;
 		}
+		Sound::PlaySFX("data/audio/effects/deathPlayer.wav");
 		return;
 	}
 	if (ANIM_DEATH_LEFT == m_currAnim || ANIM_DEATH_RIGHT == m_currAnim)
@@ -418,12 +423,14 @@ void CPlayable::Jump(VECTOR2* _vel)
 			m_currAnim = ANIM_JUMP_LEFT;
 			m_actor->SetVelocity(VECTOR2(_vel->x, -m_moveForce.y));
 			m_actor->SetPosition(VECTOR2(m_pos.x, m_pos.y - 10.0f)); // subtracting extra to ensure no collision with platform
+			Sound::PlaySFX("data/audio/effects/jump.wav");
 		} 
 		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_SLIDE_RIGHT == m_currAnim || ANIM_ATTACK_RIGHT == m_currAnim)
 		{
 			m_currAnim = ANIM_JUMP_RIGHT;
 			m_actor->SetVelocity(VECTOR2(_vel->x, -m_moveForce.y));
 			m_actor->SetPosition(VECTOR2(m_pos.x, m_pos.y - 10.0f));
+			Sound::PlaySFX("data/audio/effects/jump.wav");
 		}
 	}
 	m_sprite->SetAnim(m_currAnim);
@@ -440,6 +447,7 @@ void CPlayable::Attack()
 		{
 			m_currAnim = ANIM_ATTACK_LEFT;
 			m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
+			Sound::PlaySFX("data/audio/effects/attackPlayer.wav");
 		} 
 		// attack right
 		else if (ANIM_IDLE_RIGHT == m_currAnim || ANIM_RUN_RIGHT == m_currAnim || ANIM_JUMP_RIGHT == m_currAnim ||
@@ -447,6 +455,7 @@ void CPlayable::Attack()
 		{
 			m_currAnim = ANIM_ATTACK_RIGHT;
 			m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
+			Sound::PlaySFX("data/audio/effects/attackPlayer.wav");
 		}
 	}
 }

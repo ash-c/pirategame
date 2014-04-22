@@ -54,6 +54,14 @@ void Physics::Process(Float32 _frameTime)
 		actors[i]->SetPCCollided(false);
 	}
 
+	// process physics objects
+	// fix the framerate that the physics is calculated at.
+	const Float32 dt = 1.0f / 60.0f; // 60FPS
+	m_accumulator += _frameTime;
+
+	while (m_accumulator >= dt)
+	{	
+
 	// collision detection
 	for (Int16 i = 0; i < numActors; ++i)
 	{
@@ -124,13 +132,6 @@ void Physics::Process(Float32 _frameTime)
 		}
 	}
 
-	// process physics objects
-	// fix the framerate that the physics is calculated at.
-	const Float32 dt = 1.0f / 60.0f; // 60FPS
-	m_accumulator += _frameTime;
-
-	while (m_accumulator >= dt)
-	{	
 		for (Int16 i = 0; i < numActors; ++i)
 		{
 			if (actors[i]->IsActive())

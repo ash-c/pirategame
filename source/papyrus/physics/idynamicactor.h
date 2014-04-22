@@ -183,7 +183,7 @@ namespace Papyrus
 					m_currState.vel.x = 0.0f;
 					m_stationary = true;
 				}
-				if (m_currState.pos.x >= (m_levelW - m_tileW))
+				else if (m_currState.pos.x >= (m_levelW - m_tileW))
 				{
 					m_currState.pos.x = m_currState.preP.x;
 					m_currState.acc.x = 0.0f;
