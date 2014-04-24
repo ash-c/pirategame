@@ -13,9 +13,8 @@ FMOD::Sound*		Sound::bkgMusic = 0;
 FMOD::Channel*		Sound::bkgChannel = 0;
 Int8				Sound::bkgMusicPath[MAX_BUFFER];
 
-FMOD::Sound*		Sound::sfxMusic;
-FMOD::Channel*		Sound::sfxChannel;
-Int8				Sound::sfxMusicPath[MAX_BUFFER];
+std::map<Int8*, FMOD::Sound*>		Sound::sfxSound;
+std::map<Int8*, FMOD::Channel*>		Sound::sfxChannel;
 
 #define PY_FMOD_RELEASE(Object) if (0 != Object) { Object->release(); Object = 0; }
 #define PY_FMOD_CLOSE(Object) if (0 != Object) { Object->close(); }
@@ -57,6 +56,12 @@ Bool Sound::Initialise()
 Bool Sound::ShutDown()
 {
 	PY_FMOD_RELEASE(bkgMusic);
+
+	for (std::map<Int8*, FMOD::Sound*>::iterator iter = sfxSound.begin(); iter != sfxSound.end(); ++iter)
+	{
+		PY_FMOD_RELEASE(iter->second);
+	}
+
 	PY_FMOD_CLOSE(system);
 	PY_FMOD_RELEASE(system);
 
@@ -79,7 +84,7 @@ Bool Sound::PlayBkgMusic(Int8* _path)
 		bkgChannel = 0;
 	}
 
-	result = system->createSound(_path, FMOD_LOOP_NORMAL | FMOD_2D, 0, &bkgMusic);
+	result = system->createSound(_path, FMOD_LOOP_NORMAL | FMOD_2D | FMOD_CREATESTREAM, 0, &bkgMusic);
 
 	if (FMOD_OK != result)
 	{
@@ -100,7 +105,55 @@ Bool Sound::PlayBkgMusic(Int8* _path)
 	return true;
 }
 
+Bool Sound::PreLoadSFX(Int8* _path)
+{
+	FMOD_RESULT result;
+
+	if (sfxSound.end() == sfxSound.find(_path))
+	{
+		FMOD::Sound* temp = 0;
+		result = system->createSound(_path, FMOD_DEFAULT | FMOD_LOOP_OFF | FMOD_CREATESTREAM, 0, &temp);
+
+		if (FMOD_OK != result)
+		{
+			Logger::WriteToFile("FMOD system->createSound - %s: %d - %s", _path, result, FMOD_ErrorString(result));
+			return false;
+		}
+
+		sfxSound[_path] = temp;
+		sfxChannel[_path] = 0;
+	}	
+
+	return true;
+}
+
 Bool Sound::PlaySFX(Int8* _path)
 {
+	FMOD_RESULT result;
+
+	if (sfxSound.end() == sfxSound.find(_path))
+	{
+		FMOD::Sound* temp = 0;
+		result = system->createSound(_path, FMOD_DEFAULT | FMOD_LOOP_OFF | FMOD_CREATESTREAM, 0, &temp);
+
+		if (FMOD_OK != result)
+		{
+			Logger::WriteToFile("FMOD system->createSound - %s: %d - %s", _path, result, FMOD_ErrorString(result));
+			return false;
+		}
+
+		sfxSound[_path] = temp;
+		sfxChannel[_path] = 0;
+	}	
+	
+	sfxChannel[_path] = 0;
+	result = system->playSound(sfxSound[_path], 0, false, &sfxChannel[_path]);
+
+	if (FMOD_OK != result)
+	{
+		Logger::WriteToFile("FMOD system->playSound - %s: %d - %s", _path, result, FMOD_ErrorString(result));
+		return false;
+	}
+
 	return true;
 }

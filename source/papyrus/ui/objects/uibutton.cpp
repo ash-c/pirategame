@@ -4,6 +4,7 @@
 // Local Includes
 #include "uibutton.h"
 #include "../../input/input.h"
+#include "../../sound/sound.h"
 
 #include "../ui.h"
 
@@ -54,6 +55,9 @@ Bool UI::CUIButton::Initialise(Int8* _luaFile, Int8* _luaFunc, Int8* _sprite, VE
 	m_clips[BUTTON_STATE_CLICK].y = _h * 2;
 
 	Input::inputManager->Register(this);
+
+	Sound::PreLoadSFX("data/audio/effects/uiSelect.wav");
+	Sound::PreLoadSFX("data/audio/effects/uiHover.wav");
 	return true;
 }
 
@@ -91,11 +95,12 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 				{
 					m_currState = BUTTON_STATE_CLICK;
 				}
-				else
+				else if (BUTTON_STATE_HOVER != m_currState)
 				{
 					if (0 != m_next) m_next->SetButtonState(BUTTON_STATE_NORMAL);
 					if (0 != m_prev) m_prev->SetButtonState(BUTTON_STATE_NORMAL);
 					m_currState = BUTTON_STATE_HOVER;
+					Sound::PlaySFX("data/audio/effects/uiHover.wav");
 				}
 			}
 #ifdef PAPYRUS_EDITOR
@@ -116,6 +121,7 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 			if (BUTTON_STATE_HOVER == m_currState)
 			{
 				m_currState = BUTTON_STATE_CLICK;
+				Sound::PlaySFX("data/audio/effects/uiSelect.wav");
 				ButtonClicked();
 			}
 		}
@@ -162,6 +168,7 @@ void UI::CUIButton::Notify(SDL_Event* _e)
 				if (BUTTON_STATE_HOVER == m_currState)
 				{
 					m_currState = BUTTON_STATE_CLICK;
+					Sound::PlaySFX("data/audio/effects/uiSelect.wav");
 					ButtonClicked();
 				}
 			}
@@ -207,6 +214,7 @@ Int32 UI::CUIButton::GetWidth()
 
 void UI::CUIButton::SetButtonState(EButtonState _state) 
 { 
+	if (BUTTON_STATE_HOVER == _state) { Sound::PlaySFX("data/audio/effects/uiHover.wav"); }
 	m_currState = _state; 
 	m_stateChanged = true;
 }

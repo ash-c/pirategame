@@ -78,6 +78,9 @@ Bool CEnemy::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 	m_screenW = Renderer::activeRenderer->GetWidth();
 	m_screenH = Renderer::activeRenderer->GetHeight();
 
+	Sound::PreLoadSFX("data/audio/effects/deathZombie.wav");
+	Sound::PreLoadSFX("data/audio/effects/attackZombie.wav");
+
 	return true;
 }
 
@@ -99,12 +102,14 @@ void CEnemy::Process(Float32 _delta)
 			m_sprite->PlayAnim(ANIM_DEATH_LEFT);
 			m_currAnim = ANIM_DEATH_LEFT;
 			m_level->AddToScore(SCORE_VALUE);
+			Sound::PlaySFX("data/audio/effects/deathZombie.wav");
 		}
 		else if (ANIM_RUN_RIGHT == m_currAnim)
 		{
 			m_sprite->PlayAnim(ANIM_DEATH_RIGHT);
 			m_currAnim = ANIM_DEATH_RIGHT;
 			m_level->AddToScore(SCORE_VALUE);
+			Sound::PlaySFX("data/audio/effects/deathZombie.wav");
 		}
 		return;
 	}
@@ -260,6 +265,7 @@ void CEnemy::TriggerAttack(Bool _left)
 		m_sprite->PlayAnim(ANIM_ATTACK_LEFT);
 		m_currAnim = ANIM_ATTACK_LEFT;
 		m_attackDelay = 2.5f;
+		Sound::PlaySFX("data/audio/effects/attackZombie.wav");
 
 		if (!m_left)
 		{
@@ -274,6 +280,7 @@ void CEnemy::TriggerAttack(Bool _left)
 		m_sprite->PlayAnim(ANIM_ATTACK_RIGHT);
 		m_currAnim = ANIM_ATTACK_RIGHT;
 		m_attackDelay = 2.5f;
+		Sound::PlaySFX("data/audio/effects/attackZombie.wav");
 
 		if (m_left)
 		{

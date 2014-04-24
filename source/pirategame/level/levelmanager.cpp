@@ -5,6 +5,8 @@
 #include "levelmanager.h"
 #include "level.h"
 
+#include "../game.h"
+
 CLevelManager::CLevelManager()
 	: m_current(0)
 	, m_numlevels(0)
@@ -118,6 +120,10 @@ Bool CLevelManager::ResetLevel()
 Int32 CLevelManager::RestartLevel(lua_State* L)
 {
 	sm_pTheInstance->ResetLevel();
+	if (CGame::GetInstance().IsPaused())
+	{
+		CGame::PauseGame(0);
+	}
 
 	return 0;
 }

@@ -42,6 +42,8 @@ Bool CCoin::Initialise(VECTOR2 _pos)
 	m_screenH = Renderer::activeRenderer->GetHeight();
 	m_collected = false;
 
+	Sound::PreLoadSFX("data/audio/effects/collect.wav");
+
 	return true;
 }
 
@@ -59,6 +61,7 @@ void CCoin::Process(Float32 _delta)
 		m_level->AddToScore(SCORE_VALUE);
 		m_collected = true;
 		m_actor->SetActive(false);
+		Sound::PlaySFX("data/audio/effects/collect.wav");
 	}
 	else 
 	{

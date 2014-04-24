@@ -6,6 +6,7 @@
 // Library Includes
 //#include <fmod.h>
 #include <fmod.hpp>
+#include <map>
 
 // Local Includes
 #include "../defines.h"
@@ -37,6 +38,14 @@ namespace Papyrus
 		Bool		PlayBkgMusic(Int8* _path);
 
 		/*
+		* Preloads a sound effect ready for use.
+		*
+		* @param	_path			The path to the sound effect to play.
+		* @return Returns true on success, false otherwise.
+		*/
+		Bool		PreLoadSFX(Int8* _path);
+
+		/*
 		* Plays a sound effect.
 		*
 		* @param	_path			The path to the sound effect to play.
@@ -57,9 +66,8 @@ namespace Papyrus
 		extern Int8					bkgMusicPath[MAX_BUFFER];
 
 		// Sound effects
-		extern FMOD::Sound*			sfxMusic;
-		extern FMOD::Channel*		sfxChannel;
-		extern Int8					sfxMusicPath[MAX_BUFFER];
+		extern std::map<Int8*, FMOD::Sound*> sfxSound;
+		extern std::map<Int8*, FMOD::Channel*> sfxChannel;
 	}
 }
 

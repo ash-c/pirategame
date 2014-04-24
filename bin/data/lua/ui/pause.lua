@@ -3,6 +3,11 @@ function pause()
 	return 'Game resumed'
 end
 
+function restart()
+	RestartLevel()
+	return 'Level restarted'
+end
+
 function titlemenu()
 	TitleMenu()
 	return 'Returned to title menu'
