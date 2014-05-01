@@ -89,6 +89,7 @@ void CLevelManager::Render()
 
 Bool CLevelManager::LoadLevel(Int8* _lvl)
 {	
+	UI::LoadingScreen();
 	Core::Pause();
 	PY_DELETE_RELEASE(m_current);
 

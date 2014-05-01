@@ -11,6 +11,7 @@
 using namespace Papyrus;
 
 UI::IUIInterface**		UI::interfaces = 0;
+extern Sprite::ISprite* UI::loadingScreen = 0;
 Float32					UI::hScale = 0.0f;
 Float32					UI::wScale = 0.0f;
 UInt16					UI::numInterfaces = 10;		
@@ -31,6 +32,7 @@ Bool UI::Initialise()
 
 Bool UI::ShutDown()
 {
+	PY_SAFE_RELEASE(loadingScreen);	
 	PY_CLEANARRAY(interfaces, numInterfaces);
 	CLEANARRAY(interfaces);
 	return true;
@@ -129,4 +131,20 @@ UI::IUIInterface* UI::FlushInterface(IUIInterface* _interface)
 	}
 
 	return _interface;
+}
+
+void UI::LoadingScreen()
+{
+	if (0 == loadingScreen)
+	{
+		loadingScreen = Sprite::CreateSprite("data/art/ui/loadingScreen.png", 0, false);
+		assert(loadingScreen);
+		loadingScreen->AddRef();
+		loadingScreen->SetPosition(static_cast<Int32>(Renderer::activeRenderer->GetWidth() * 0.5f),
+			static_cast<Int32>(Renderer::activeRenderer->GetHeight() * 0.5f));
+	}
+
+	Renderer::Clear();
+	loadingScreen->Render();
+	Renderer::Present();
 }

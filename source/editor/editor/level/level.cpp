@@ -348,6 +348,8 @@ Bool CLevel::Save(Int8* _path)
 	VALIDATE(save->AddValue("platforms", m_numPlatforms));
 	VALIDATE(save->AddValue("enemies", m_numEnemies));
 	VALIDATE(save->AddValue("coins", m_numCoins));
+#pragma todo("this needs to save a different bkg music path based on the tileset")
+	VALIDATE(save->AddValue("bkgMusic", "data/audio/music/shipBeach.wav"));
 
 	Int8 text[MAX_BUFFER];
 	for (UInt16 i = 0; i < m_numTiles; ++i)
@@ -546,10 +548,12 @@ Bool CLevel::RemoveCoin(VECTOR2 _pos)
 	//CheckAgainstGrid(&_pos);
 
 	// check for existing
-	for (Int32 i = 0; i < m_numTiles; ++i)
+	for (Int32 i = 0; i < m_numCoins; ++i)
 	{
-		if (m_coins[i]->GetPos().x == _pos.x &&
-			m_coins[i]->GetPos().y == _pos.y)
+		if (m_coins[i]->GetPos().x <= _pos.x + 15 &&
+			m_coins[i]->GetPos().y <= _pos.y + 15 &&
+			m_coins[i]->GetPos().x >= _pos.x - 15 &&
+			m_coins[i]->GetPos().y >= _pos.y - 15)
 		{
 			// Coin exists, remove
 			m_coins[i]->ShutDown();
