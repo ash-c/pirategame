@@ -8,7 +8,8 @@ FMOD: SystemI::close                 : done.
 FMOD: SystemI::init                  : Set up software engine
 FMOD: OutputWASAPI::enumerate        : Enumerating...
 FMOD: OutputWASAPI::enumerate        : Initialise COM library.
-FMOD: OutputWASAPI::enumerate        : Found Driver: "Speakers (2- High Definition Audio Device)".
+FMOD: OutputWASAPI::enumerate        : Found Driver: "Speaker/HP (Realtek High Definition Audio)".
+FMOD: OutputWASAPI::enumerate        : Found Driver: "Microphone (Realtek High Definition Audio)".
 FMOD: OutputWASAPI::enumerate        : Done.
 FMOD: OutputWASAPI::init             : Initialising...
 FMOD: OutputWASAPI::init             : Forcing output channels to match Windows mix format: 2 channel(s)
@@ -17,8 +18,8 @@ FMOD: Thread::initThread             : Initializing FMOD (WASAPI) feeder thread.
 FMOD: Thread::initThread             : - Stacksize 0.  Stack pointer 00000000 : usesemaphore = 0 : sleeptime = 0
 FMOD: Thread::callback               : * FMOD (WASAPI) feeder thread started
 FMOD: Thread::initThread             : done.
-FMOD: OutputWASAPI::feederUpdate     : WASAPI feeder thread set to 'Audio' characteristic
 FMOD: Thread::initThread             : Initializing FMOD mixer thread.  priority 2
+FMOD: OutputWASAPI::feederUpdate     : WASAPI feeder thread set to 'Audio' characteristic
 FMOD: Thread::initThread             : - Stacksize 49152.  Stack pointer 00000000 : usesemaphore = 1 : sleeptime = 0
 FMOD: Thread::callback               : * FMOD mixer thread started
 FMOD: Thread::initThread             : done.
@@ -56,8 +57,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 262960
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
+FMOD: SystemI::createSample          : subsample 0.  output = 00A2CFC0
+FMOD: SystemI::createSample          : mSoftware = 00A2CFC0
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 262960, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
@@ -95,8 +96,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 176976
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
+FMOD: SystemI::createSample          : subsample 0.  output = 00A2CFC0
+FMOD: SystemI::createSample          : mSoftware = 00A2CFC0
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 176976, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
@@ -132,8 +133,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 677376
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
+FMOD: SystemI::createSample          : subsample 0.  output = 00A2CFC0
+FMOD: SystemI::createSample          : mSoftware = 00A2CFC0
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 677376, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
@@ -167,8 +168,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 168380
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
+FMOD: SystemI::createSample          : subsample 0.  output = 00A2CFC0
+FMOD: SystemI::createSample          : mSoftware = 00A2CFC0
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 168380, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
@@ -202,8 +203,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 115748
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
+FMOD: SystemI::createSample          : subsample 0.  output = 00A2CFC0
+FMOD: SystemI::createSample          : mSoftware = 00A2CFC0
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 115748, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
@@ -237,8 +238,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 102808
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
+FMOD: SystemI::createSample          : subsample 0.  output = 00A2CFC0
+FMOD: SystemI::createSample          : mSoftware = 00A2CFC0
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 102808, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
@@ -272,46 +273,9 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 153784
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
+FMOD: SystemI::createSample          : subsample 0.  output = 00A2CFC0
+FMOD: SystemI::createSample          : mSoftware = 00A2CFC0
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 153784, channels 2, format 2, freq 44100, mode 000000ca
-FMOD: OutputSoftware::createSample   : done
-FMOD: SystemI::createSample          : done
-FMOD: System::createSoundInternal    : Seek stream to start
-FMOD: System::createSoundInternal    : flush stream buffer
-FMOD: System::createSoundInternal    : flush successful.
-FMOD: System::createSoundInternal    : switch file handle from small blocking single buffered to large nonblocking doublebuffered.
-FMOD: SystemI::createSoundInternal   : No name found in file, use filename.
-FMOD: SystemI::createSoundInternal   : done.  OpenState now = FMOD_OPENSTATE_READY.
-
-FMOD: SystemI::createSoundInternal   : filename = data/audio/effects/collect.wav : mode 00000081
-FMOD: SystemI::createSoundInternal   : 18 codecs found.  Scan all until one succeeds
-FMOD: SystemI::createSoundInternal   : Scan for tags.
-FMOD: CodecTag::openInternal         : attempting to open ID3 or ASF tags..
-FMOD: Codec::release                 : 
-FMOD: Codec::release                 : done
-FMOD: CodecWav::openInternal         : attempting to open as WAV..
-FMOD: CodecWav::parseRIFF            : chunk : id fmt  size 16
-FMOD: CodecWav::parseRIFF            : offset = 28 / 338768
-FMOD: CodecWav::parseRIFF            : chunk : id smpl size 36
-FMOD: CodecWav::parseRIFF            : offset = 72 / 338768
-FMOD: CodecWav::parseRIFF            : chunk : id data size 338688
-FMOD: CodecWav::parseRIFF            : offset = 338768 / 338768
-FMOD: CodecWav::openInternal         : mSrcFormat->wFormatTag = 1
-FMOD: CodecWav::openInternal         : mSrcFormat->nChannels = 2
-FMOD: CodecWav::openInternal         : mSrcFormat->nSamplesPerSec = 44100
-FMOD: CodecWav::openInternal         : mSrcFormat->nAvgBytesPerSec = 176400
-FMOD: CodecWav::openInternal         : mSrcFormat->nBlockAlign = 4
-FMOD: CodecWav::openInternal         : mSrcFormat->wBitsPerSample = 16
-FMOD: CodecWav::openInternal         : mSrcFormat->cbSize = 0
-FMOD: SystemI::createSoundInternal   : Format has 0 subsounds.
-FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
-FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
-FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 338688
-FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0242C8B0
-FMOD: SystemI::createSample          : mSoftware = 0242C8B0
-FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 338688, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
 FMOD: System::createSoundInternal    : Seek stream to start
