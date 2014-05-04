@@ -136,7 +136,10 @@ void CLevelEdit::Notify(SDL_Event* _e)
 					{
 						if (!m_level->RemoveEnemy(newPos))
 						{
-							m_level->RemoveMovingPlatform(newPos);
+							if (!m_level->RemoveMovingPlatform(newPos))
+							{
+								m_level->RemoveCoin(newPos);
+							}
 						}
 					}
 				}
@@ -227,6 +230,7 @@ void CLevelEdit::SetTool(Int32 _new)
 
 void CLevelEdit::Load(const Int8* _path)
 {
+	UI::LoadingScreen();
 	CLevel* temp = new CLevel;
 	if (!temp->Initialise((Int8*)_path))
 	{

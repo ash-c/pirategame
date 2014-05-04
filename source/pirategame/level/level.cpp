@@ -461,15 +461,26 @@ void CLevel::Render()
 	// Render score
 	Int32 temp = m_score;
 	Float32 x = m_numberPos.x;
-	while (temp > 0) // rendering the individual digits
+	if (0 != m_playable)
 	{
-		Int32 index = temp % 10;
-		m_numbers->SetClip(&m_numberClips[index]);
-		m_numbers->SetPosition(static_cast<Int32>(x), static_cast<Int32>(m_numberPos.y));
-		m_numbers->Render();
-		x -= m_numberScale.x;
+		if (0 == temp)
+		{
+			m_numbers->SetClip(&m_numberClips[0]);
+			m_numbers->SetPosition(static_cast<Int32>(x), static_cast<Int32>(m_numberPos.y));
+			m_numbers->Render();
+			x -= m_numberScale.x;
+		}
 
-		temp /= 10;
+		while (temp > 0) // rendering the individual digits
+		{
+			Int32 index = temp % 10;
+			m_numbers->SetClip(&m_numberClips[index]);
+			m_numbers->SetPosition(static_cast<Int32>(x), static_cast<Int32>(m_numberPos.y));
+			m_numbers->Render();
+			x -= m_numberScale.x;
+
+			temp /= 10;
+		}
 	}
 }
 

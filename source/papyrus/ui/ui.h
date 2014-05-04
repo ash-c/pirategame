@@ -53,11 +53,20 @@ namespace Papyrus
 		IUIInterface* FlushInterface(IUIInterface* _interface);
 
 		/*
+		* Displays a loading screen.
+		*
+		* @return	Returns void.
+		*/
+		void LoadingScreen();
+
+		/*
 		* None of the below variables should be touched outside of program intialisation.
 		*/
 
 		// Holds pointers to the loaded interfaces
 		extern IUIInterface**	interfaces;
+
+		extern Sprite::ISprite* loadingScreen;
 
 		extern Float32			hScale;
 		extern Float32			wScale;

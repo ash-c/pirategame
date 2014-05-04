@@ -40,7 +40,7 @@ Bool Renderer::CSDLRenderer::Initialise(Int32 _width, Int32 _height, Int8* _titl
 	m_Renderer = SDL_CreateRenderer(m_Window, -1, SDL_RENDERER_ACCELERATED);
 	VALIDATE(PY_SDLASSERT(nullptr == m_Renderer, "SDL_CreateRenderer"));
 
-	PY_SDLASSERT(SDL_SetRenderDrawColor(m_Renderer, 255, 255, 255, 0), "SDL_SetRenderDrawColor");
+	PY_SDLASSERT(SDL_SetRenderDrawColor(m_Renderer, 0, 0, 0, 0), "SDL_SetRenderDrawColor");
 	
 	SDL_Surface* icon = IMG_Load("data/icon.png");
 	SDL_SetWindowIcon(m_Window, icon);
