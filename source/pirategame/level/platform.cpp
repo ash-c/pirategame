@@ -108,7 +108,7 @@ Bool CPlatform::ShutDown()
 {
 	for (Int16 i = 0; i < m_numSprites; ++i)
 	{
-		m_sprites[i]->Release();
+		Sprite::FlushFile(m_sprites[i]);
 	}
 	
 	Physics::FlushActor(m_actor);

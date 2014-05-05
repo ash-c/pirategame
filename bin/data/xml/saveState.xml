@@ -1,6 +1,6 @@
-<totalLevels>6</totalLevels>
+<totalLevels>7</totalLevels>
 <startLevel>data/levels/title.json</startLevel>
-<currLevel>1</currLevel>
+<currLevel>7</currLevel>
 <7Score>0</7Score>
 <8Score>0</8Score>
 <9Score>0</9Score>
@@ -15,10 +15,10 @@
 <18Score>0</18Score>
 <19Score>0</19Score>
 <20Score>0</20Score>
-<2Score>9900</2Score>
-<3Score>2500</3Score>
-<5Score>10200</5Score>
-<4Score>7800</4Score>
-<1Score>0</1Score>
-<6Score>10000</6Score>
+<3Score>7600</3Score>
+<4Score>8100</4Score>
+<5Score>7200</5Score>
+<6Score>9500</6Score>
+<2Score>7300</2Score>
+<1Score>8000</1Score>
 

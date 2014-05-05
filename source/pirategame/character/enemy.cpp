@@ -86,7 +86,7 @@ Bool CEnemy::Initialise(Int8* _spriteSheet, Int8* _spriteInfo, Int8* _settings)
 
 Bool CEnemy::ShutDown()
 {
-	PY_SAFE_RELEASE(m_sprite);
+	Sprite::FlushFile(m_sprite);
 	Physics::FlushActor(m_actor);
 	return true;
 }

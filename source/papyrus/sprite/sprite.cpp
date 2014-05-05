@@ -91,7 +91,7 @@ Bool Sprite::ShutDown()
 		}
 	}
 	// No free space!
-	PY_DELETE_RELEASE(sprite);
+	CLEANDELETE(sprite);
 	assert(0 && "Set maxNumSprites to be a larger value - no room with current value");
 	return 0;
 }
@@ -107,10 +107,12 @@ Bool Sprite::ShutDown()
 				if (_delete)
 				{
 					PY_DELETE_RELEASE(activeSprites[i]);
+					_sprite = 0;
 				}
 				else 
 				{
 					activeSprites[i] = 0;
+					_sprite = 0;
 				}
 				return 0;
 			}

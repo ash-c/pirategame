@@ -49,7 +49,7 @@ Bool CCoin::Initialise(VECTOR2 _pos)
 
 Bool CCoin::ShutDown()
 {
-	PY_SAFE_RELEASE(m_sprite);
+	Sprite::FlushFile(m_sprite);
 	Physics::FlushActor(m_actor);
 	return true;
 }

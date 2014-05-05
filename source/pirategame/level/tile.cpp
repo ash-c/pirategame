@@ -49,7 +49,7 @@ Bool CTile::Initialise(Int8* _spritesheet, VECTOR2 _pos, ETileType _type)
 
 Bool CTile::ShutDown()
 {
-	PY_SAFE_RELEASE(m_sprite);
+	Sprite::FlushFile(m_sprite);
 	Physics::FlushActor(m_actor);
 	return true;
 }
