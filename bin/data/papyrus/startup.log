@@ -3,11 +3,12 @@ Logging sub-system initialised
 File parsing sub-system initialised
 Rendering sub-system initialised
 Sprite sub-system initialised
-No controller connected
+Controller connected
 Input sub-system initialised
 Physics sub-system initialised
 User Interface sub-system initialised
 Sound sub-system initialised
 Timing sub-system initialised
 Core initialisation successfull
+Background created
 Initialistion complete

@@ -143,8 +143,8 @@ void CPlatform::Process(Float32 _delta)
 
 void CPlatform::Render(VECTOR2 _camPos)
 {
-	if ((m_platPosition.x + _camPos.x) > -(TILE_WIDTH * 3.0f) && (m_platPosition.y - _camPos.y) > -(TILE_HEIGHT * 3.0f) &&
-		(m_platPosition.x + _camPos.x) < (m_screenW + TILE_WIDTH * 3.0f) && (m_platPosition.y - _camPos.y) < (m_screenH + TILE_HEIGHT * 3.0f))
+	if ((m_platPosition.x + _camPos.x) > -(TILE_WIDTH * m_numSprites) && (m_platPosition.y - _camPos.y) > -(TILE_HEIGHT) &&
+		(m_platPosition.x + _camPos.x) < (m_screenW + TILE_WIDTH * m_numSprites) && (m_platPosition.y - _camPos.y) < (m_screenH + TILE_HEIGHT))
 	{
 		m_actor->SetActive(true);
 		for (Int16 i = 0; i < m_numSprites; ++i)

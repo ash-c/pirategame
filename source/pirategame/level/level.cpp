@@ -61,6 +61,7 @@ Bool CLevel::Initialise(Int8* _setup, Int32 _num)
 	m_screenH = Renderer::activeRenderer->GetHeight();
 
 	FileParser::IParser* setup = FileParser::LoadFile(_setup);
+	setup->Load();
 	setup->AddRef();
 	VALIDATE(setup->GetValue("tiles", m_numTiles));
 	VALIDATE(setup->GetValue("platforms", m_numPlatforms));

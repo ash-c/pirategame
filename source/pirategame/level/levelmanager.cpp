@@ -45,19 +45,19 @@ void CLevelManager::Process(Float32 _delta)
 	{
 		m_current->Process(_delta);
 
+		FileParser::IParser* save = FileParser::LoadFile("data/xml/saveState.xml");
+		assert(save);
+		save->AddRef();
+
 		if (m_current->IsComplete())
 		{
 			// save score from completed level
 			Int32 score = 0;
-			FileParser::IParser* save = FileParser::LoadFile("data/xml/saveState.xml");
-			assert(save);
-			save->AddRef();
 
 			Int8 text[MAX_BUFFER];
 			SDL_snprintf(text, MAX_BUFFER, "%iScore", m_currLevel);
 			save->AddValue(text, m_current->GetScore());
 			save->Save();
-			save->Release();
 
 			++m_currLevel;
 
@@ -73,9 +73,12 @@ void CLevelManager::Process(Float32 _delta)
 			}
 			else
 			{
+				save->AddValue("currLevel", 1);
+				m_currLevel = 1;
 				m_finLevels = true;
 			}
 		}
+		save->Release();
 	}
 }
 

@@ -134,11 +134,14 @@ void CLevelEdit::Notify(SDL_Event* _e)
 				{
 					if (!m_level->RemoveTile(newPos))
 					{
-						if (!m_level->RemoveEnemy(newPos))
+						if (!m_level->RemoveWater(newPos))
 						{
-							if (!m_level->RemoveMovingPlatform(newPos))
+							if (!m_level->RemoveEnemy(newPos))
 							{
-								m_level->RemoveCoin(newPos);
+								if (!m_level->RemoveMovingPlatform(newPos))
+								{
+									m_level->RemoveCoin(newPos);
+								}
 							}
 						}
 					}
@@ -209,9 +212,12 @@ void CLevelEdit::Notify(SDL_Event* _e)
 			{
 				if (!m_level->RemoveTile(newPos))
 				{
-					if (!m_level->RemoveEnemy(newPos))
+					if (!m_level->RemoveWater(newPos))
 					{
-						m_level->RemoveMovingPlatform(newPos);
+						if (!m_level->RemoveEnemy(newPos))
+						{
+							m_level->RemoveMovingPlatform(newPos);
+						}
 					}
 				}
 			}

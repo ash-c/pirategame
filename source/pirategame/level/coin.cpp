@@ -71,8 +71,8 @@ void CCoin::Process(Float32 _delta)
 
 void CCoin::Render(VECTOR2 _camPos)
 {
-	if ((m_pos.x + _camPos.x) > -(25.0f * 3.0f) && (m_pos.y - _camPos.y) > -(25.0f * 3.0f) &&
-		(m_pos.x + _camPos.x) < (m_screenW + 25.0f * 3.0f) && (m_pos.y - _camPos.y) < (m_screenH + 25.0f * 3.0f) && !m_collected)
+	if ((m_pos.x + _camPos.x) > -(25.0f) && (m_pos.y - _camPos.y) > -(25.0f) &&
+		(m_pos.x + _camPos.x) < (m_screenW + 25.0f) && (m_pos.y - _camPos.y) < (m_screenH + 25.0f) && !m_collected)
 	{
 		m_actor->SetActive(true);
 		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y - _camPos.y));

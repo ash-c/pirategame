@@ -237,8 +237,8 @@ void CEnemy::Process(Float32 _delta)
 
 void CEnemy::Render(VECTOR2 _camPos)
 {
-	if ((m_pos.x + _camPos.x) > - 75 && (m_pos.y - _camPos.y) > - 50 &&
-		(m_pos.x + _camPos.x) < (m_screenW + 75) && (m_pos.y - _camPos.y) < (m_screenH + 50) && m_alive)
+	if ((m_pos.x + _camPos.x) > - 75 && (m_pos.y - _camPos.y) > - 100 &&
+		(m_pos.x + _camPos.x) < (m_screenW + 75) && (m_pos.y - _camPos.y) < (m_screenH + 100) && m_alive)
 	{
 		m_actor->SetActive(true);
 		m_sprite->SetPosition(static_cast<Int32>(m_pos.x + _camPos.x), static_cast<Int32>(m_pos.y - _camPos.y));
