@@ -58,10 +58,7 @@ Bool CParallax::Initialise(FileParser::IParser* _setup, Int8* _num, Bool _animat
 				SDL_snprintf(text, MAX_BUFFER, "%ispeed", i + 1);
 				VALIDATE(_setup->GetValue(text, speed, _num));
 			}
-			else
-			{
-				m_speed.push_back(speed);
-			}
+			m_speed.push_back(speed);
 		}
 	}
 
