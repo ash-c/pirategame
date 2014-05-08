@@ -8,19 +8,18 @@ FMOD: SystemI::close                 : done.
 FMOD: SystemI::init                  : Set up software engine
 FMOD: OutputWASAPI::enumerate        : Enumerating...
 FMOD: OutputWASAPI::enumerate        : Initialise COM library.
+FMOD: OutputWASAPI::enumerate        : Found Driver: "Speakers (2- High Definition Audio Device)".
 FMOD: OutputWASAPI::enumerate        : Done.
 FMOD: OutputWASAPI::init             : Initialising...
-FMOD: OutputWASAPI::init             : No output sound devices found
-FMOD: OutputWASAPI::close            : Closing...
-FMOD: OutputWASAPI::close            : Done.
-FMOD: SystemI::init                  : No output sound devices found - switching output mode to FMOD_OUTPUTTYPE_NOSOUND
-FMOD: OutputWASAPI::close            : Closing...
-FMOD: OutputWASAPI::close            : Done.
-FMOD: OutputNoSound::init            : Initializing.
-FMOD: OutputNoSound::init            : Done.
-FMOD: OutputPolled::start            : Starting thread that automatically wakes up every 10 ms
-FMOD: Thread::initThread             : Initializing FMOD mixer thread.  priority 3
-FMOD: Thread::initThread             : - Stacksize 49152.  Stack pointer 00000000 : usesemaphore = 0 : sleeptime = 10
+FMOD: OutputWASAPI::init             : Forcing output channels to match Windows mix format: 2 channel(s)
+FMOD: OutputWASAPI::init             : Done.
+FMOD: Thread::initThread             : Initializing FMOD (WASAPI) feeder thread.  priority 0
+FMOD: Thread::initThread             : - Stacksize 0.  Stack pointer 00000000 : usesemaphore = 0 : sleeptime = 0
+FMOD: Thread::callback               : * FMOD (WASAPI) feeder thread started
+FMOD: Thread::initThread             : done.
+FMOD: OutputWASAPI::feederUpdate     : WASAPI feeder thread set to 'Audio' characteristic
+FMOD: Thread::initThread             : Initializing FMOD mixer thread.  priority 2
+FMOD: Thread::initThread             : - Stacksize 49152.  Stack pointer 00000000 : usesemaphore = 1 : sleeptime = 0
 FMOD: Thread::callback               : * FMOD mixer thread started
 FMOD: Thread::initThread             : done.
 FMOD: SystemI::init                  : Set up emulated output
@@ -57,8 +56,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 262960
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0046C8B8
-FMOD: SystemI::createSample          : mSoftware = 0046C8B8
+FMOD: SystemI::createSample          : subsample 0.  output = 021EC688
+FMOD: SystemI::createSample          : mSoftware = 021EC688
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 262960, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done
@@ -96,8 +95,8 @@ FMOD: SystemI::createSoundInternal   : Create as FMOD_CREATESTREAM
 FMOD: System::createSoundInternal    : decode buffersize = 17408 : blocksize = 256 : format = 2
 FMOD: SystemI::createSample          : mode 000000c2 length 17408 samples, lengthbytes 176976
 FMOD: SystemI::createSample          : subsamples = 1, channels = 2
-FMOD: SystemI::createSample          : subsample 0.  output = 0046C8B8
-FMOD: SystemI::createSample          : mSoftware = 0046C8B8
+FMOD: SystemI::createSample          : subsample 0.  output = 021EC688
+FMOD: SystemI::createSample          : mSoftware = 021EC688
 FMOD: OutputSoftware::createSample   : lengthpcm 17408, lengthbytes 176976, channels 2, format 2, freq 44100, mode 000000ca
 FMOD: OutputSoftware::createSample   : done
 FMOD: SystemI::createSample          : done

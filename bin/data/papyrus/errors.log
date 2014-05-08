@@ -6,6 +6,7 @@ FileParser:: Unable to find 1:3move
 FileParser:: Unable to find 2:1move
 FileParser:: Unable to find 2:2move
 FileParser:: Unable to find 2:3move
+Background created
 Player created
 Background created
 FileParser:: Unable to find 1:1move
@@ -15,7 +16,13 @@ FileParser:: Unable to find 2:1move
 FileParser:: Unable to find 2:2move
 FileParser:: Unable to find 2:3move
 Player created
-Player created
+Background created
+FileParser:: Unable to find 1:1move
+FileParser:: Unable to find 1:2move
+FileParser:: Unable to find 1:3move
+FileParser:: Unable to find 2:1move
+FileParser:: Unable to find 2:2move
+FileParser:: Unable to find 2:3move
 Player created
 Background created
 FileParser:: Unable to find 1:1move
@@ -25,5 +32,32 @@ FileParser:: Unable to find 2:1move
 FileParser:: Unable to find 2:2move
 FileParser:: Unable to find 2:3move
 Player created
+Background created
+FileParser:: Unable to find 1:1move
+FileParser:: Unable to find 1:2move
+FileParser:: Unable to find 1:3move
+FileParser:: Unable to find 2:1move
+FileParser:: Unable to find 2:2move
+FileParser:: Unable to find 2:3move
+Player created
+Background created
+FileParser:: Unable to find 1:1move
+FileParser:: Unable to find 1:2move
+FileParser:: Unable to find 1:3move
+FileParser:: Unable to find 2:1move
+FileParser:: Unable to find 2:2move
+FileParser:: Unable to find 2:3move
+Player created
+Background created
+FileParser:: Unable to find 1:1move
+FileParser:: Unable to find 1:2move
+FileParser:: Unable to find 1:3move
+FileParser:: Unable to find 2:1move
+FileParser:: Unable to find 2:2move
+FileParser:: Unable to find 2:3move
+Player created
+Background created
+Could not find input observer to deregister
+Could not find input observer to deregister
 Could not find input observer to deregister
 Could not find input observer to deregister
